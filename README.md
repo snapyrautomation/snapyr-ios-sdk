@@ -1,1 +1,0 @@
-# snapyr-ios-sdk
