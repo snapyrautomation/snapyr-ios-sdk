@@ -7,7 +7,7 @@
 //
 
 @import XCTest;
-@import Segment;
+@import Snapyr.h;
 
 #pragma mark - Internal copy-overs for testing
 

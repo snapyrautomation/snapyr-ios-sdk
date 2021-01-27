@@ -8,76 +8,76 @@
 
 /* Begin PBXBuildFile section */
 		5AF0E8AE77F57B356DACCFE7 /* AutoScreenReportingTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AF0E8457CCFC077382BF449 /* AutoScreenReportingTest.swift */; };
-		630FC8EA2107F2A500A759C5 /* SEGScreenReporting.h in Headers */ = {isa = PBXBuildFile; fileRef = 5AF0EDFEDC0EE79A0A0EB713 /* SEGScreenReporting.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		630FC8EA2107F2A500A759C5 /* SnapyrScreenReporting.h in Headers */ = {isa = PBXBuildFile; fileRef = 5AF0EDFEDC0EE79A0A0EB713 /* SnapyrScreenReporting.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		6E265C791FB1178C0030E08E /* IntegrationsManagerTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E265C781FB1178C0030E08E /* IntegrationsManagerTest.swift */; };
 		6EEC1C712017EA370089C478 /* EndToEndTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EEC1C702017EA370089C478 /* EndToEndTests.swift */; };
-		75FD4202252401B500BC8970 /* SEGWebhookIntegration.m in Sources */ = {isa = PBXBuildFile; fileRef = 75FD4201252401B500BC8970 /* SEGWebhookIntegration.m */; };
-		75FD42052524F1E000BC8970 /* SEGWebhookIntegration.h in Headers */ = {isa = PBXBuildFile; fileRef = 75FD42002524019100BC8970 /* SEGWebhookIntegration.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		96A12C2824B680DB00949804 /* NSViewController+SEGScreen.h in Headers */ = {isa = PBXBuildFile; fileRef = 96A12C2624B680DB00949804 /* NSViewController+SEGScreen.h */; };
-		96A12C2924B680DB00949804 /* NSViewController+SEGScreen.m in Sources */ = {isa = PBXBuildFile; fileRef = 96A12C2724B680DB00949804 /* NSViewController+SEGScreen.m */; };
+		75FD4202252401B500BC8970 /* SnapyrWebhookIntegration.m in Sources */ = {isa = PBXBuildFile; fileRef = 75FD4201252401B500BC8970 /* SnapyrWebhookIntegration.m */; };
+		75FD42052524F1E000BC8970 /* SnapyrWebhookIntegration.h in Headers */ = {isa = PBXBuildFile; fileRef = 75FD42002524019100BC8970 /* SnapyrWebhookIntegration.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		96A12C2824B680DB00949804 /* NSViewController+SnapyrScreen.h in Headers */ = {isa = PBXBuildFile; fileRef = 96A12C2624B680DB00949804 /* NSViewController+SnapyrScreen.h */; };
+		96A12C2924B680DB00949804 /* NSViewController+SnapyrScreen.m in Sources */ = {isa = PBXBuildFile; fileRef = 96A12C2724B680DB00949804 /* NSViewController+SnapyrScreen.m */; };
 		A31958EF2385AC3A00A47EFA /* SerializationTests.m in Sources */ = {isa = PBXBuildFile; fileRef = A31958EE2385AC3A00A47EFA /* SerializationTests.m */; };
-		A34CC6DD249AAEBB00C5E368 /* SEGState.m in Sources */ = {isa = PBXBuildFile; fileRef = A34CC6DB249AAEBA00C5E368 /* SEGState.m */; };
-		A34CC6DE249AAEBB00C5E368 /* SEGState.h in Headers */ = {isa = PBXBuildFile; fileRef = A34CC6DC249AAEBB00C5E368 /* SEGState.h */; settings = {ATTRIBUTES = (Private, ); }; };
-		A352176023AD5825005B07F6 /* SEGMacros.h in Headers */ = {isa = PBXBuildFile; fileRef = A352175F23AD5825005B07F6 /* SEGMacros.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		A34CC6DD249AAEBB00C5E368 /* SnapyrState.m in Sources */ = {isa = PBXBuildFile; fileRef = A34CC6DB249AAEBA00C5E368 /* SnapyrState.m */; };
+		A34CC6DE249AAEBB00C5E368 /* SnapyrState.h in Headers */ = {isa = PBXBuildFile; fileRef = A34CC6DC249AAEBB00C5E368 /* SnapyrState.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		A352176023AD5825005B07F6 /* SnapyrMacros.h in Headers */ = {isa = PBXBuildFile; fileRef = A352175F23AD5825005B07F6 /* SnapyrMacros.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		A3B6E29925116B3A00609A13 /* Segment.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EADEB85B1DECD080005322DA /* Segment.framework */; };
 		A3BECDD024BCE1E3009E2BD3 /* ObjcUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = A3BECDCF24BCE1E3009E2BD3 /* ObjcUtils.m */; };
-		EA88A5981DED7608009FB66A /* SEGSerializableValue.h in Headers */ = {isa = PBXBuildFile; fileRef = EA88A5971DED7608009FB66A /* SEGSerializableValue.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		EA88A5981DED7608009FB66A /* SnapyrSerializableValue.h in Headers */ = {isa = PBXBuildFile; fileRef = EA88A5971DED7608009FB66A /* SnapyrSerializableValue.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		EA8F09741E24C5C600B8B93F /* MiddlewareTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA8F09731E24C5C600B8B93F /* MiddlewareTests.swift */; };
 		EAA542771EB4035400945DA7 /* TrackingTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAA542761EB4035400945DA7 /* TrackingTests.swift */; };
-		EAA5427D1EB42B8C00945DA7 /* SEGReachability.h in Headers */ = {isa = PBXBuildFile; fileRef = EAA5427B1EB42B8C00945DA7 /* SEGReachability.h */; };
-		EAA5427E1EB42B8C00945DA7 /* SEGReachability.m in Sources */ = {isa = PBXBuildFile; fileRef = EAA5427C1EB42B8C00945DA7 /* SEGReachability.m */; };
+		EAA5427D1EB42B8C00945DA7 /* SnapyrReachability.h in Headers */ = {isa = PBXBuildFile; fileRef = EAA5427B1EB42B8C00945DA7 /* SnapyrReachability.h */; };
+		EAA5427E1EB42B8C00945DA7 /* SnapyrReachability.m in Sources */ = {isa = PBXBuildFile; fileRef = EAA5427C1EB42B8C00945DA7 /* SnapyrReachability.m */; };
 		EAA542801EB4382100945DA7 /* StoreKitTrackerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAA5427F1EB4382100945DA7 /* StoreKitTrackerTests.swift */; };
-		EADEB8601DECD080005322DA /* Segment.h in Headers */ = {isa = PBXBuildFile; fileRef = EADEB85E1DECD080005322DA /* Segment.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		EADEB8AE1DECD12B005322DA /* SEGAES256Crypto.h in Headers */ = {isa = PBXBuildFile; fileRef = EADEB8781DECD12B005322DA /* SEGAES256Crypto.h */; settings = {ATTRIBUTES = (Private, ); }; };
-		EADEB8AF1DECD12B005322DA /* SEGAES256Crypto.m in Sources */ = {isa = PBXBuildFile; fileRef = EADEB8791DECD12B005322DA /* SEGAES256Crypto.m */; };
-		EADEB8B01DECD12B005322DA /* SEGCrypto.h in Headers */ = {isa = PBXBuildFile; fileRef = EADEB87A1DECD12B005322DA /* SEGCrypto.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		EADEB8B11DECD12B005322DA /* SEGAliasPayload.h in Headers */ = {isa = PBXBuildFile; fileRef = EADEB87C1DECD12B005322DA /* SEGAliasPayload.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		EADEB8B21DECD12B005322DA /* SEGAliasPayload.m in Sources */ = {isa = PBXBuildFile; fileRef = EADEB87D1DECD12B005322DA /* SEGAliasPayload.m */; };
-		EADEB8B31DECD12B005322DA /* SEGGroupPayload.h in Headers */ = {isa = PBXBuildFile; fileRef = EADEB87E1DECD12B005322DA /* SEGGroupPayload.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		EADEB8B41DECD12B005322DA /* SEGGroupPayload.m in Sources */ = {isa = PBXBuildFile; fileRef = EADEB87F1DECD12B005322DA /* SEGGroupPayload.m */; };
-		EADEB8B51DECD12B005322DA /* SEGIdentifyPayload.h in Headers */ = {isa = PBXBuildFile; fileRef = EADEB8801DECD12B005322DA /* SEGIdentifyPayload.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		EADEB8B61DECD12B005322DA /* SEGIdentifyPayload.m in Sources */ = {isa = PBXBuildFile; fileRef = EADEB8811DECD12B005322DA /* SEGIdentifyPayload.m */; };
-		EADEB8B71DECD12B005322DA /* SEGIntegration.h in Headers */ = {isa = PBXBuildFile; fileRef = EADEB8821DECD12B005322DA /* SEGIntegration.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		EADEB8B81DECD12B005322DA /* SEGIntegrationFactory.h in Headers */ = {isa = PBXBuildFile; fileRef = EADEB8831DECD12B005322DA /* SEGIntegrationFactory.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		EADEB8B91DECD12B005322DA /* SEGIntegrationsManager.h in Headers */ = {isa = PBXBuildFile; fileRef = EADEB8841DECD12B005322DA /* SEGIntegrationsManager.h */; settings = {ATTRIBUTES = (Private, ); }; };
-		EADEB8BA1DECD12B005322DA /* SEGIntegrationsManager.m in Sources */ = {isa = PBXBuildFile; fileRef = EADEB8851DECD12B005322DA /* SEGIntegrationsManager.m */; };
-		EADEB8BB1DECD12B005322DA /* SEGPayload.h in Headers */ = {isa = PBXBuildFile; fileRef = EADEB8861DECD12B005322DA /* SEGPayload.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		EADEB8BC1DECD12B005322DA /* SEGPayload.m in Sources */ = {isa = PBXBuildFile; fileRef = EADEB8871DECD12B005322DA /* SEGPayload.m */; };
-		EADEB8BD1DECD12B005322DA /* SEGScreenPayload.h in Headers */ = {isa = PBXBuildFile; fileRef = EADEB8881DECD12B005322DA /* SEGScreenPayload.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		EADEB8BE1DECD12B005322DA /* SEGScreenPayload.m in Sources */ = {isa = PBXBuildFile; fileRef = EADEB8891DECD12B005322DA /* SEGScreenPayload.m */; };
-		EADEB8BF1DECD12B005322DA /* SEGTrackPayload.h in Headers */ = {isa = PBXBuildFile; fileRef = EADEB88A1DECD12B005322DA /* SEGTrackPayload.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		EADEB8C01DECD12B005322DA /* SEGTrackPayload.m in Sources */ = {isa = PBXBuildFile; fileRef = EADEB88B1DECD12B005322DA /* SEGTrackPayload.m */; };
-		EADEB8C11DECD12B005322DA /* NSData+SEGGZIP.h in Headers */ = {isa = PBXBuildFile; fileRef = EADEB88D1DECD12B005322DA /* NSData+SEGGZIP.h */; settings = {ATTRIBUTES = (Private, ); }; };
-		EADEB8C21DECD12B005322DA /* NSData+SEGGZIP.m in Sources */ = {isa = PBXBuildFile; fileRef = EADEB88E1DECD12B005322DA /* NSData+SEGGZIP.m */; };
-		EADEB8C31DECD12B005322DA /* SEGAnalyticsUtils.h in Headers */ = {isa = PBXBuildFile; fileRef = EADEB88F1DECD12B005322DA /* SEGAnalyticsUtils.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		EADEB8C41DECD12B005322DA /* SEGAnalyticsUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = EADEB8901DECD12B005322DA /* SEGAnalyticsUtils.m */; };
-		EADEB8C51DECD12B005322DA /* SEGFileStorage.h in Headers */ = {isa = PBXBuildFile; fileRef = EADEB8911DECD12B005322DA /* SEGFileStorage.h */; settings = {ATTRIBUTES = (Private, ); }; };
-		EADEB8C61DECD12B005322DA /* SEGFileStorage.m in Sources */ = {isa = PBXBuildFile; fileRef = EADEB8921DECD12B005322DA /* SEGFileStorage.m */; };
-		EADEB8C71DECD12B005322DA /* SEGHTTPClient.h in Headers */ = {isa = PBXBuildFile; fileRef = EADEB8931DECD12B005322DA /* SEGHTTPClient.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		EADEB8C81DECD12B005322DA /* SEGHTTPClient.m in Sources */ = {isa = PBXBuildFile; fileRef = EADEB8941DECD12B005322DA /* SEGHTTPClient.m */; };
-		EADEB8CB1DECD12B005322DA /* SEGSegmentIntegration.h in Headers */ = {isa = PBXBuildFile; fileRef = EADEB8971DECD12B005322DA /* SEGSegmentIntegration.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		EADEB8CC1DECD12B005322DA /* SEGSegmentIntegration.m in Sources */ = {isa = PBXBuildFile; fileRef = EADEB8981DECD12B005322DA /* SEGSegmentIntegration.m */; };
-		EADEB8CD1DECD12B005322DA /* SEGSegmentIntegrationFactory.h in Headers */ = {isa = PBXBuildFile; fileRef = EADEB8991DECD12B005322DA /* SEGSegmentIntegrationFactory.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		EADEB8CE1DECD12B005322DA /* SEGSegmentIntegrationFactory.m in Sources */ = {isa = PBXBuildFile; fileRef = EADEB89A1DECD12B005322DA /* SEGSegmentIntegrationFactory.m */; };
-		EADEB8CF1DECD12B005322DA /* SEGStorage.h in Headers */ = {isa = PBXBuildFile; fileRef = EADEB89B1DECD12B005322DA /* SEGStorage.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		EADEB8D01DECD12B005322DA /* SEGStoreKitTracker.h in Headers */ = {isa = PBXBuildFile; fileRef = EADEB89C1DECD12B005322DA /* SEGStoreKitTracker.h */; settings = {ATTRIBUTES = (Private, ); }; };
-		EADEB8D11DECD12B005322DA /* SEGStoreKitTracker.m in Sources */ = {isa = PBXBuildFile; fileRef = EADEB89D1DECD12B005322DA /* SEGStoreKitTracker.m */; };
-		EADEB8D21DECD12B005322DA /* SEGUserDefaultsStorage.h in Headers */ = {isa = PBXBuildFile; fileRef = EADEB89E1DECD12B005322DA /* SEGUserDefaultsStorage.h */; settings = {ATTRIBUTES = (Private, ); }; };
-		EADEB8D31DECD12B005322DA /* SEGUserDefaultsStorage.m in Sources */ = {isa = PBXBuildFile; fileRef = EADEB89F1DECD12B005322DA /* SEGUserDefaultsStorage.m */; };
-		EADEB8D41DECD12B005322DA /* SEGUtils.h in Headers */ = {isa = PBXBuildFile; fileRef = EADEB8A01DECD12B005322DA /* SEGUtils.h */; settings = {ATTRIBUTES = (Private, ); }; };
-		EADEB8D51DECD12B005322DA /* SEGUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = EADEB8A11DECD12B005322DA /* SEGUtils.m */; };
-		EADEB8D61DECD12B005322DA /* UIViewController+SEGScreen.h in Headers */ = {isa = PBXBuildFile; fileRef = EADEB8A21DECD12B005322DA /* UIViewController+SEGScreen.h */; settings = {ATTRIBUTES = (Private, ); }; };
-		EADEB8D71DECD12B005322DA /* UIViewController+SEGScreen.m in Sources */ = {isa = PBXBuildFile; fileRef = EADEB8A31DECD12B005322DA /* UIViewController+SEGScreen.m */; };
-		EADEB8D81DECD12B005322DA /* SEGContext.h in Headers */ = {isa = PBXBuildFile; fileRef = EADEB8A51DECD12B005322DA /* SEGContext.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		EADEB8D91DECD12B005322DA /* SEGContext.m in Sources */ = {isa = PBXBuildFile; fileRef = EADEB8A61DECD12B005322DA /* SEGContext.m */; };
-		EADEB8DA1DECD12B005322DA /* SEGMiddleware.h in Headers */ = {isa = PBXBuildFile; fileRef = EADEB8A71DECD12B005322DA /* SEGMiddleware.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		EADEB8DB1DECD12B005322DA /* SEGMiddleware.m in Sources */ = {isa = PBXBuildFile; fileRef = EADEB8A81DECD12B005322DA /* SEGMiddleware.m */; };
-		EADEB8DC1DECD12B005322DA /* SEGAnalytics.h in Headers */ = {isa = PBXBuildFile; fileRef = EADEB8A91DECD12B005322DA /* SEGAnalytics.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		EADEB8DD1DECD12B005322DA /* SEGAnalytics.m in Sources */ = {isa = PBXBuildFile; fileRef = EADEB8AA1DECD12B005322DA /* SEGAnalytics.m */; };
-		EADEB8DE1DECD12B005322DA /* SEGAnalyticsConfiguration.h in Headers */ = {isa = PBXBuildFile; fileRef = EADEB8AB1DECD12B005322DA /* SEGAnalyticsConfiguration.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		EADEB8DF1DECD12B005322DA /* SEGAnalyticsConfiguration.m in Sources */ = {isa = PBXBuildFile; fileRef = EADEB8AC1DECD12B005322DA /* SEGAnalyticsConfiguration.m */; };
+		EADEB8601DECD080005322DA /* Snapyr.h in Headers */ = {isa = PBXBuildFile; fileRef = EADEB85E1DECD080005322DA /* Snapyr.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		EADEB8AE1DECD12B005322DA /* SnapyrAES256Crypto.h in Headers */ = {isa = PBXBuildFile; fileRef = EADEB8781DECD12B005322DA /* SnapyrAES256Crypto.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		EADEB8AF1DECD12B005322DA /* SnapyrAES256Crypto.m in Sources */ = {isa = PBXBuildFile; fileRef = EADEB8791DECD12B005322DA /* SnapyrAES256Crypto.m */; };
+		EADEB8B01DECD12B005322DA /* SnapyrCrypto.h in Headers */ = {isa = PBXBuildFile; fileRef = EADEB87A1DECD12B005322DA /* SnapyrCrypto.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		EADEB8B11DECD12B005322DA /* SnapyrAliasPayload.h in Headers */ = {isa = PBXBuildFile; fileRef = EADEB87C1DECD12B005322DA /* SnapyrAliasPayload.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		EADEB8B21DECD12B005322DA /* SnapyrAliasPayload.m in Sources */ = {isa = PBXBuildFile; fileRef = EADEB87D1DECD12B005322DA /* SnapyrAliasPayload.m */; };
+		EADEB8B31DECD12B005322DA /* SnapyrGroupPayload.h in Headers */ = {isa = PBXBuildFile; fileRef = EADEB87E1DECD12B005322DA /* SnapyrGroupPayload.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		EADEB8B41DECD12B005322DA /* SnapyrGroupPayload.m in Sources */ = {isa = PBXBuildFile; fileRef = EADEB87F1DECD12B005322DA /* SnapyrGroupPayload.m */; };
+		EADEB8B51DECD12B005322DA /* SnapyrIdentifyPayload.h in Headers */ = {isa = PBXBuildFile; fileRef = EADEB8801DECD12B005322DA /* SnapyrIdentifyPayload.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		EADEB8B61DECD12B005322DA /* SnapyrIdentifyPayload.m in Sources */ = {isa = PBXBuildFile; fileRef = EADEB8811DECD12B005322DA /* SnapyrIdentifyPayload.m */; };
+		EADEB8B71DECD12B005322DA /* SnapyrIntegration.h in Headers */ = {isa = PBXBuildFile; fileRef = EADEB8821DECD12B005322DA /* SnapyrIntegration.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		EADEB8B81DECD12B005322DA /* SnapyrIntegrationFactory.h in Headers */ = {isa = PBXBuildFile; fileRef = EADEB8831DECD12B005322DA /* SnapyrIntegrationFactory.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		EADEB8B91DECD12B005322DA /* SnapyrIntegrationsManager.h in Headers */ = {isa = PBXBuildFile; fileRef = EADEB8841DECD12B005322DA /* SnapyrIntegrationsManager.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		EADEB8BA1DECD12B005322DA /* SnapyrIntegrationsManager.m in Sources */ = {isa = PBXBuildFile; fileRef = EADEB8851DECD12B005322DA /* SnapyrIntegrationsManager.m */; };
+		EADEB8BB1DECD12B005322DA /* SnapyrPayload.h in Headers */ = {isa = PBXBuildFile; fileRef = EADEB8861DECD12B005322DA /* SnapyrPayload.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		EADEB8BC1DECD12B005322DA /* SnapyrPayload.m in Sources */ = {isa = PBXBuildFile; fileRef = EADEB8871DECD12B005322DA /* SnapyrPayload.m */; };
+		EADEB8BD1DECD12B005322DA /* SnapyrScreenPayload.h in Headers */ = {isa = PBXBuildFile; fileRef = EADEB8881DECD12B005322DA /* SnapyrScreenPayload.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		EADEB8BE1DECD12B005322DA /* SnapyrScreenPayload.m in Sources */ = {isa = PBXBuildFile; fileRef = EADEB8891DECD12B005322DA /* SnapyrScreenPayload.m */; };
+		EADEB8BF1DECD12B005322DA /* SnapyrTrackPayload.h in Headers */ = {isa = PBXBuildFile; fileRef = EADEB88A1DECD12B005322DA /* SnapyrTrackPayload.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		EADEB8C01DECD12B005322DA /* SnapyrTrackPayload.m in Sources */ = {isa = PBXBuildFile; fileRef = EADEB88B1DECD12B005322DA /* SnapyrTrackPayload.m */; };
+		EADEB8C11DECD12B005322DA /* NSData+SnapyrGZIP.h in Headers */ = {isa = PBXBuildFile; fileRef = EADEB88D1DECD12B005322DA /* NSData+SnapyrGZIP.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		EADEB8C21DECD12B005322DA /* NSData+SnapyrGZIP.m in Sources */ = {isa = PBXBuildFile; fileRef = EADEB88E1DECD12B005322DA /* NSData+SnapyrGZIP.m */; };
+		EADEB8C31DECD12B005322DA /* SnapyrAnalyticsUtils.h in Headers */ = {isa = PBXBuildFile; fileRef = EADEB88F1DECD12B005322DA /* SnapyrAnalyticsUtils.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		EADEB8C41DECD12B005322DA /* SnapyrAnalyticsUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = EADEB8901DECD12B005322DA /* SnapyrAnalyticsUtils.m */; };
+		EADEB8C51DECD12B005322DA /* SnapyrFileStorage.h in Headers */ = {isa = PBXBuildFile; fileRef = EADEB8911DECD12B005322DA /* SnapyrFileStorage.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		EADEB8C61DECD12B005322DA /* SnapyrFileStorage.m in Sources */ = {isa = PBXBuildFile; fileRef = EADEB8921DECD12B005322DA /* SnapyrFileStorage.m */; };
+		EADEB8C71DECD12B005322DA /* SnapyrHTTPClient.h in Headers */ = {isa = PBXBuildFile; fileRef = EADEB8931DECD12B005322DA /* SnapyrHTTPClient.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		EADEB8C81DECD12B005322DA /* SnapyrHTTPClient.m in Sources */ = {isa = PBXBuildFile; fileRef = EADEB8941DECD12B005322DA /* SnapyrHTTPClient.m */; };
+		EADEB8CB1DECD12B005322DA /* SnapyrSegmentIntegration.h in Headers */ = {isa = PBXBuildFile; fileRef = EADEB8971DECD12B005322DA /* SnapyrSegmentIntegration.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		EADEB8CC1DECD12B005322DA /* SnapyrSegmentIntegration.m in Sources */ = {isa = PBXBuildFile; fileRef = EADEB8981DECD12B005322DA /* SnapyrSegmentIntegration.m */; };
+		EADEB8CD1DECD12B005322DA /* SnapyrSnapyrIntegrationFactory.h in Headers */ = {isa = PBXBuildFile; fileRef = EADEB8991DECD12B005322DA /* SnapyrSnapyrIntegrationFactory.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		EADEB8CE1DECD12B005322DA /* SnapyrSnapyrIntegrationFactory.m in Sources */ = {isa = PBXBuildFile; fileRef = EADEB89A1DECD12B005322DA /* SnapyrSnapyrIntegrationFactory.m */; };
+		EADEB8CF1DECD12B005322DA /* SnapyrStorage.h in Headers */ = {isa = PBXBuildFile; fileRef = EADEB89B1DECD12B005322DA /* SnapyrStorage.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		EADEB8D01DECD12B005322DA /* SnapyrStoreKitTracker.h in Headers */ = {isa = PBXBuildFile; fileRef = EADEB89C1DECD12B005322DA /* SnapyrStoreKitTracker.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		EADEB8D11DECD12B005322DA /* SnapyrStoreKitTracker.m in Sources */ = {isa = PBXBuildFile; fileRef = EADEB89D1DECD12B005322DA /* SnapyrStoreKitTracker.m */; };
+		EADEB8D21DECD12B005322DA /* SnapyrUserDefaultsStorage.h in Headers */ = {isa = PBXBuildFile; fileRef = EADEB89E1DECD12B005322DA /* SnapyrUserDefaultsStorage.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		EADEB8D31DECD12B005322DA /* SnapyrUserDefaultsStorage.m in Sources */ = {isa = PBXBuildFile; fileRef = EADEB89F1DECD12B005322DA /* SnapyrUserDefaultsStorage.m */; };
+		EADEB8D41DECD12B005322DA /* SnapyrUtils.h in Headers */ = {isa = PBXBuildFile; fileRef = EADEB8A01DECD12B005322DA /* SnapyrUtils.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		EADEB8D51DECD12B005322DA /* SnapyrUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = EADEB8A11DECD12B005322DA /* SnapyrUtils.m */; };
+		EADEB8D61DECD12B005322DA /* UIViewController+SnapyrScreen.h in Headers */ = {isa = PBXBuildFile; fileRef = EADEB8A21DECD12B005322DA /* UIViewController+SnapyrScreen.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		EADEB8D71DECD12B005322DA /* UIViewController+SnapyrScreen.m in Sources */ = {isa = PBXBuildFile; fileRef = EADEB8A31DECD12B005322DA /* UIViewController+SnapyrScreen.m */; };
+		EADEB8D81DECD12B005322DA /* SnapyrContext.h in Headers */ = {isa = PBXBuildFile; fileRef = EADEB8A51DECD12B005322DA /* SnapyrContext.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		EADEB8D91DECD12B005322DA /* SnapyrContext.m in Sources */ = {isa = PBXBuildFile; fileRef = EADEB8A61DECD12B005322DA /* SnapyrContext.m */; };
+		EADEB8DA1DECD12B005322DA /* SnapyrMiddleware.h in Headers */ = {isa = PBXBuildFile; fileRef = EADEB8A71DECD12B005322DA /* SnapyrMiddleware.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		EADEB8DB1DECD12B005322DA /* SnapyrMiddleware.m in Sources */ = {isa = PBXBuildFile; fileRef = EADEB8A81DECD12B005322DA /* SnapyrMiddleware.m */; };
+		EADEB8DC1DECD12B005322DA /* SnapyrAnalytics.h in Headers */ = {isa = PBXBuildFile; fileRef = EADEB8A91DECD12B005322DA /* SnapyrAnalytics.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		EADEB8DD1DECD12B005322DA /* SnapyrAnalytics.m in Sources */ = {isa = PBXBuildFile; fileRef = EADEB8AA1DECD12B005322DA /* SnapyrAnalytics.m */; };
+		EADEB8DE1DECD12B005322DA /* SnapyrAnalyticsConfiguration.h in Headers */ = {isa = PBXBuildFile; fileRef = EADEB8AB1DECD12B005322DA /* SnapyrAnalyticsConfiguration.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		EADEB8DF1DECD12B005322DA /* SnapyrAnalyticsConfiguration.m in Sources */ = {isa = PBXBuildFile; fileRef = EADEB8AC1DECD12B005322DA /* SnapyrAnalyticsConfiguration.m */; };
 		EADEB8EE1DECD335005322DA /* HTTPClientTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = EADEB8E01DECD335005322DA /* HTTPClientTest.swift */; };
-		EADEB8EF1DECD335005322DA /* NSData+SEGGUNZIPP.m in Sources */ = {isa = PBXBuildFile; fileRef = EADEB8E31DECD335005322DA /* NSData+SEGGUNZIPP.m */; };
+		EADEB8EF1DECD335005322DA /* NSData+SnapyrGUNZIPP.m in Sources */ = {isa = PBXBuildFile; fileRef = EADEB8E31DECD335005322DA /* NSData+SnapyrGUNZIPP.m */; };
 		EADEB8F01DECD335005322DA /* TestUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = EADEB8E41DECD335005322DA /* TestUtils.swift */; };
 		EADEB8F11DECD335005322DA /* FileStorageTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = EADEB8E51DECD335005322DA /* FileStorageTest.swift */; };
 		EADEB8F21DECD335005322DA /* UserDefaultsStorageTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = EADEB8E61DECD335005322DA /* UserDefaultsStorageTest.swift */; };
@@ -99,82 +99,82 @@
 
 /* Begin PBXFileReference section */
 		5AF0E8457CCFC077382BF449 /* AutoScreenReportingTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AutoScreenReportingTest.swift; sourceTree = "<group>"; };
-		5AF0EDFEDC0EE79A0A0EB713 /* SEGScreenReporting.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SEGScreenReporting.h; sourceTree = "<group>"; };
-		63E090D722DD49C300DEC7EC /* UIViewController+SegScreenTest.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UIViewController+SegScreenTest.h"; sourceTree = "<group>"; };
+		5AF0EDFEDC0EE79A0A0EB713 /* SnapyrScreenReporting.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SnapyrScreenReporting.h; sourceTree = "<group>"; };
+		63E090D722DD49C300DEC7EC /* UIViewController+SnapyrScreenTest.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UIViewController+SnapyrScreenTest.h"; sourceTree = "<group>"; };
 		6E265C781FB1178C0030E08E /* IntegrationsManagerTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntegrationsManagerTest.swift; sourceTree = "<group>"; };
 		6EEC1C702017EA370089C478 /* EndToEndTests.swift */ = {isa = PBXFileReference; indentWidth = 4; lastKnownFileType = sourcecode.swift; path = EndToEndTests.swift; sourceTree = "<group>"; tabWidth = 4; };
-		75FD42002524019100BC8970 /* SEGWebhookIntegration.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SEGWebhookIntegration.h; sourceTree = "<group>"; };
-		75FD4201252401B500BC8970 /* SEGWebhookIntegration.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SEGWebhookIntegration.m; sourceTree = "<group>"; };
-		96A12C2624B680DB00949804 /* NSViewController+SEGScreen.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NSViewController+SEGScreen.h"; sourceTree = "<group>"; };
-		96A12C2724B680DB00949804 /* NSViewController+SEGScreen.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "NSViewController+SEGScreen.m"; sourceTree = "<group>"; };
+		75FD42002524019100BC8970 /* SnapyrWebhookIntegration.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SnapyrWebhookIntegration.h; sourceTree = "<group>"; };
+		75FD4201252401B500BC8970 /* SnapyrWebhookIntegration.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SnapyrWebhookIntegration.m; sourceTree = "<group>"; };
+		96A12C2624B680DB00949804 /* NSViewController+SnapyrScreen.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NSViewController+SnapyrScreen.h"; sourceTree = "<group>"; };
+		96A12C2724B680DB00949804 /* NSViewController+SnapyrScreen.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "NSViewController+SnapyrScreen.m"; sourceTree = "<group>"; };
 		A31958EE2385AC3A00A47EFA /* SerializationTests.m */ = {isa = PBXFileReference; indentWidth = 4; lastKnownFileType = sourcecode.c.objc; path = SerializationTests.m; sourceTree = "<group>"; tabWidth = 4; };
-		A34CC6DB249AAEBA00C5E368 /* SEGState.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SEGState.m; sourceTree = "<group>"; };
-		A34CC6DC249AAEBB00C5E368 /* SEGState.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SEGState.h; sourceTree = "<group>"; };
-		A352175F23AD5825005B07F6 /* SEGMacros.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SEGMacros.h; sourceTree = "<group>"; };
+		A34CC6DB249AAEBA00C5E368 /* SnapyrState.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SnapyrState.m; sourceTree = "<group>"; };
+		A34CC6DC249AAEBB00C5E368 /* SnapyrState.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SnapyrState.h; sourceTree = "<group>"; };
+		A352175F23AD5825005B07F6 /* SnapyrMacros.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SnapyrMacros.h; sourceTree = "<group>"; };
 		A3BECDCE24BCE1E3009E2BD3 /* ObjcUtils.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ObjcUtils.h; sourceTree = "<group>"; };
 		A3BECDCF24BCE1E3009E2BD3 /* ObjcUtils.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ObjcUtils.m; sourceTree = "<group>"; };
 		C31674B18CD818C64F8F3935 /* Pods_SegmentTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_SegmentTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		EA88A5971DED7608009FB66A /* SEGSerializableValue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SEGSerializableValue.h; sourceTree = "<group>"; };
+		EA88A5971DED7608009FB66A /* SnapyrSerializableValue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SnapyrSerializableValue.h; sourceTree = "<group>"; };
 		EA8F09731E24C5C600B8B93F /* MiddlewareTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MiddlewareTests.swift; sourceTree = "<group>"; };
 		EAA542761EB4035400945DA7 /* TrackingTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TrackingTests.swift; sourceTree = "<group>"; };
-		EAA5427B1EB42B8C00945DA7 /* SEGReachability.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SEGReachability.h; sourceTree = "<group>"; };
-		EAA5427C1EB42B8C00945DA7 /* SEGReachability.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SEGReachability.m; sourceTree = "<group>"; };
+		EAA5427B1EB42B8C00945DA7 /* SnapyrReachability.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SnapyrReachability.h; sourceTree = "<group>"; };
+		EAA5427C1EB42B8C00945DA7 /* SnapyrReachability.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SnapyrReachability.m; sourceTree = "<group>"; };
 		EAA5427F1EB4382100945DA7 /* StoreKitTrackerTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = StoreKitTrackerTests.swift; path = SegmentTests/StoreKitTrackerTests.swift; sourceTree = SOURCE_ROOT; };
 		EADEB85B1DECD080005322DA /* Segment.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Segment.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		EADEB85E1DECD080005322DA /* Segment.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Segment.h; sourceTree = "<group>"; };
+		EADEB85E1DECD080005322DA /* Snapyr.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Snapyr.h; sourceTree = "<group>"; };
 		EADEB85F1DECD080005322DA /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		EADEB86A1DECD0EF005322DA /* SegmentTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SegmentTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		EADEB8781DECD12B005322DA /* SEGAES256Crypto.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SEGAES256Crypto.h; sourceTree = "<group>"; };
-		EADEB8791DECD12B005322DA /* SEGAES256Crypto.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SEGAES256Crypto.m; sourceTree = "<group>"; };
-		EADEB87A1DECD12B005322DA /* SEGCrypto.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SEGCrypto.h; sourceTree = "<group>"; };
-		EADEB87C1DECD12B005322DA /* SEGAliasPayload.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SEGAliasPayload.h; sourceTree = "<group>"; };
-		EADEB87D1DECD12B005322DA /* SEGAliasPayload.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SEGAliasPayload.m; sourceTree = "<group>"; };
-		EADEB87E1DECD12B005322DA /* SEGGroupPayload.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SEGGroupPayload.h; sourceTree = "<group>"; };
-		EADEB87F1DECD12B005322DA /* SEGGroupPayload.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SEGGroupPayload.m; sourceTree = "<group>"; };
-		EADEB8801DECD12B005322DA /* SEGIdentifyPayload.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SEGIdentifyPayload.h; sourceTree = "<group>"; };
-		EADEB8811DECD12B005322DA /* SEGIdentifyPayload.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SEGIdentifyPayload.m; sourceTree = "<group>"; };
-		EADEB8821DECD12B005322DA /* SEGIntegration.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SEGIntegration.h; sourceTree = "<group>"; };
-		EADEB8831DECD12B005322DA /* SEGIntegrationFactory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SEGIntegrationFactory.h; sourceTree = "<group>"; };
-		EADEB8841DECD12B005322DA /* SEGIntegrationsManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SEGIntegrationsManager.h; sourceTree = "<group>"; };
-		EADEB8851DECD12B005322DA /* SEGIntegrationsManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SEGIntegrationsManager.m; sourceTree = "<group>"; };
-		EADEB8861DECD12B005322DA /* SEGPayload.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SEGPayload.h; sourceTree = "<group>"; };
-		EADEB8871DECD12B005322DA /* SEGPayload.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SEGPayload.m; sourceTree = "<group>"; };
-		EADEB8881DECD12B005322DA /* SEGScreenPayload.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SEGScreenPayload.h; sourceTree = "<group>"; };
-		EADEB8891DECD12B005322DA /* SEGScreenPayload.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SEGScreenPayload.m; sourceTree = "<group>"; };
-		EADEB88A1DECD12B005322DA /* SEGTrackPayload.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SEGTrackPayload.h; sourceTree = "<group>"; };
-		EADEB88B1DECD12B005322DA /* SEGTrackPayload.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SEGTrackPayload.m; sourceTree = "<group>"; };
-		EADEB88D1DECD12B005322DA /* NSData+SEGGZIP.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSData+SEGGZIP.h"; sourceTree = "<group>"; };
-		EADEB88E1DECD12B005322DA /* NSData+SEGGZIP.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSData+SEGGZIP.m"; sourceTree = "<group>"; };
-		EADEB88F1DECD12B005322DA /* SEGAnalyticsUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SEGAnalyticsUtils.h; sourceTree = "<group>"; };
-		EADEB8901DECD12B005322DA /* SEGAnalyticsUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SEGAnalyticsUtils.m; sourceTree = "<group>"; };
-		EADEB8911DECD12B005322DA /* SEGFileStorage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SEGFileStorage.h; sourceTree = "<group>"; };
-		EADEB8921DECD12B005322DA /* SEGFileStorage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SEGFileStorage.m; sourceTree = "<group>"; };
-		EADEB8931DECD12B005322DA /* SEGHTTPClient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SEGHTTPClient.h; sourceTree = "<group>"; };
-		EADEB8941DECD12B005322DA /* SEGHTTPClient.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SEGHTTPClient.m; sourceTree = "<group>"; };
-		EADEB8971DECD12B005322DA /* SEGSegmentIntegration.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SEGSegmentIntegration.h; sourceTree = "<group>"; };
-		EADEB8981DECD12B005322DA /* SEGSegmentIntegration.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SEGSegmentIntegration.m; sourceTree = "<group>"; };
-		EADEB8991DECD12B005322DA /* SEGSegmentIntegrationFactory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SEGSegmentIntegrationFactory.h; sourceTree = "<group>"; };
-		EADEB89A1DECD12B005322DA /* SEGSegmentIntegrationFactory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SEGSegmentIntegrationFactory.m; sourceTree = "<group>"; };
-		EADEB89B1DECD12B005322DA /* SEGStorage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SEGStorage.h; sourceTree = "<group>"; };
-		EADEB89C1DECD12B005322DA /* SEGStoreKitTracker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SEGStoreKitTracker.h; sourceTree = "<group>"; };
-		EADEB89D1DECD12B005322DA /* SEGStoreKitTracker.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SEGStoreKitTracker.m; sourceTree = "<group>"; };
-		EADEB89E1DECD12B005322DA /* SEGUserDefaultsStorage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SEGUserDefaultsStorage.h; sourceTree = "<group>"; };
-		EADEB89F1DECD12B005322DA /* SEGUserDefaultsStorage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SEGUserDefaultsStorage.m; sourceTree = "<group>"; };
-		EADEB8A01DECD12B005322DA /* SEGUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SEGUtils.h; sourceTree = "<group>"; };
-		EADEB8A11DECD12B005322DA /* SEGUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SEGUtils.m; sourceTree = "<group>"; };
-		EADEB8A21DECD12B005322DA /* UIViewController+SEGScreen.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIViewController+SEGScreen.h"; sourceTree = "<group>"; };
-		EADEB8A31DECD12B005322DA /* UIViewController+SEGScreen.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+SEGScreen.m"; sourceTree = "<group>"; };
-		EADEB8A51DECD12B005322DA /* SEGContext.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SEGContext.h; sourceTree = "<group>"; };
-		EADEB8A61DECD12B005322DA /* SEGContext.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SEGContext.m; sourceTree = "<group>"; };
-		EADEB8A71DECD12B005322DA /* SEGMiddleware.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SEGMiddleware.h; sourceTree = "<group>"; };
-		EADEB8A81DECD12B005322DA /* SEGMiddleware.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SEGMiddleware.m; sourceTree = "<group>"; };
-		EADEB8A91DECD12B005322DA /* SEGAnalytics.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SEGAnalytics.h; sourceTree = "<group>"; };
-		EADEB8AA1DECD12B005322DA /* SEGAnalytics.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SEGAnalytics.m; sourceTree = "<group>"; };
-		EADEB8AB1DECD12B005322DA /* SEGAnalyticsConfiguration.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SEGAnalyticsConfiguration.h; sourceTree = "<group>"; };
-		EADEB8AC1DECD12B005322DA /* SEGAnalyticsConfiguration.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SEGAnalyticsConfiguration.m; sourceTree = "<group>"; };
+		EADEB8781DECD12B005322DA /* SnapyrAES256Crypto.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SnapyrAES256Crypto.h; sourceTree = "<group>"; };
+		EADEB8791DECD12B005322DA /* SnapyrAES256Crypto.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SnapyrAES256Crypto.m; sourceTree = "<group>"; };
+		EADEB87A1DECD12B005322DA /* SnapyrCrypto.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SnapyrCrypto.h; sourceTree = "<group>"; };
+		EADEB87C1DECD12B005322DA /* SnapyrAliasPayload.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SnapyrAliasPayload.h; sourceTree = "<group>"; };
+		EADEB87D1DECD12B005322DA /* SnapyrAliasPayload.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SnapyrAliasPayload.m; sourceTree = "<group>"; };
+		EADEB87E1DECD12B005322DA /* SnapyrGroupPayload.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SnapyrGroupPayload.h; sourceTree = "<group>"; };
+		EADEB87F1DECD12B005322DA /* SnapyrGroupPayload.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SnapyrGroupPayload.m; sourceTree = "<group>"; };
+		EADEB8801DECD12B005322DA /* SnapyrIdentifyPayload.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SnapyrIdentifyPayload.h; sourceTree = "<group>"; };
+		EADEB8811DECD12B005322DA /* SnapyrIdentifyPayload.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SnapyrIdentifyPayload.m; sourceTree = "<group>"; };
+		EADEB8821DECD12B005322DA /* SnapyrIntegration.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SnapyrIntegration.h; sourceTree = "<group>"; };
+		EADEB8831DECD12B005322DA /* SnapyrIntegrationFactory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SnapyrIntegrationFactory.h; sourceTree = "<group>"; };
+		EADEB8841DECD12B005322DA /* SnapyrIntegrationsManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SnapyrIntegrationsManager.h; sourceTree = "<group>"; };
+		EADEB8851DECD12B005322DA /* SnapyrIntegrationsManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SnapyrIntegrationsManager.m; sourceTree = "<group>"; };
+		EADEB8861DECD12B005322DA /* SnapyrPayload.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SnapyrPayload.h; sourceTree = "<group>"; };
+		EADEB8871DECD12B005322DA /* SnapyrPayload.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SnapyrPayload.m; sourceTree = "<group>"; };
+		EADEB8881DECD12B005322DA /* SnapyrScreenPayload.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SnapyrScreenPayload.h; sourceTree = "<group>"; };
+		EADEB8891DECD12B005322DA /* SnapyrScreenPayload.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SnapyrScreenPayload.m; sourceTree = "<group>"; };
+		EADEB88A1DECD12B005322DA /* SnapyrTrackPayload.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SnapyrTrackPayload.h; sourceTree = "<group>"; };
+		EADEB88B1DECD12B005322DA /* SnapyrTrackPayload.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SnapyrTrackPayload.m; sourceTree = "<group>"; };
+		EADEB88D1DECD12B005322DA /* NSData+SnapyrGZIP.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSData+SnapyrGZIP.h"; sourceTree = "<group>"; };
+		EADEB88E1DECD12B005322DA /* NSData+SnapyrGZIP.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSData+SnapyrGZIP.m"; sourceTree = "<group>"; };
+		EADEB88F1DECD12B005322DA /* SnapyrAnalyticsUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SnapyrAnalyticsUtils.h; sourceTree = "<group>"; };
+		EADEB8901DECD12B005322DA /* SnapyrAnalyticsUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SnapyrAnalyticsUtils.m; sourceTree = "<group>"; };
+		EADEB8911DECD12B005322DA /* SnapyrFileStorage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SnapyrFileStorage.h; sourceTree = "<group>"; };
+		EADEB8921DECD12B005322DA /* SnapyrFileStorage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SnapyrFileStorage.m; sourceTree = "<group>"; };
+		EADEB8931DECD12B005322DA /* SnapyrHTTPClient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SnapyrHTTPClient.h; sourceTree = "<group>"; };
+		EADEB8941DECD12B005322DA /* SnapyrHTTPClient.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SnapyrHTTPClient.m; sourceTree = "<group>"; };
+		EADEB8971DECD12B005322DA /* SnapyrSegmentIntegration.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SnapyrSegmentIntegration.h; sourceTree = "<group>"; };
+		EADEB8981DECD12B005322DA /* SnapyrSegmentIntegration.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SnapyrSegmentIntegration.m; sourceTree = "<group>"; };
+		EADEB8991DECD12B005322DA /* SnapyrSnapyrIntegrationFactory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SnapyrSnapyrIntegrationFactory.h; sourceTree = "<group>"; };
+		EADEB89A1DECD12B005322DA /* SnapyrSnapyrIntegrationFactory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SnapyrSnapyrIntegrationFactory.m; sourceTree = "<group>"; };
+		EADEB89B1DECD12B005322DA /* SnapyrStorage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SnapyrStorage.h; sourceTree = "<group>"; };
+		EADEB89C1DECD12B005322DA /* SnapyrStoreKitTracker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SnapyrStoreKitTracker.h; sourceTree = "<group>"; };
+		EADEB89D1DECD12B005322DA /* SnapyrStoreKitTracker.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SnapyrStoreKitTracker.m; sourceTree = "<group>"; };
+		EADEB89E1DECD12B005322DA /* SnapyrUserDefaultsStorage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SnapyrUserDefaultsStorage.h; sourceTree = "<group>"; };
+		EADEB89F1DECD12B005322DA /* SnapyrUserDefaultsStorage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SnapyrUserDefaultsStorage.m; sourceTree = "<group>"; };
+		EADEB8A01DECD12B005322DA /* SnapyrUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SnapyrUtils.h; sourceTree = "<group>"; };
+		EADEB8A11DECD12B005322DA /* SnapyrUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SnapyrUtils.m; sourceTree = "<group>"; };
+		EADEB8A21DECD12B005322DA /* UIViewController+SnapyrScreen.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIViewController+SnapyrScreen.h"; sourceTree = "<group>"; };
+		EADEB8A31DECD12B005322DA /* UIViewController+SnapyrScreen.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+SnapyrScreen.m"; sourceTree = "<group>"; };
+		EADEB8A51DECD12B005322DA /* SnapyrContext.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SnapyrContext.h; sourceTree = "<group>"; };
+		EADEB8A61DECD12B005322DA /* SnapyrContext.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SnapyrContext.m; sourceTree = "<group>"; };
+		EADEB8A71DECD12B005322DA /* SnapyrMiddleware.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SnapyrMiddleware.h; sourceTree = "<group>"; };
+		EADEB8A81DECD12B005322DA /* SnapyrMiddleware.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SnapyrMiddleware.m; sourceTree = "<group>"; };
+		EADEB8A91DECD12B005322DA /* SnapyrAnalytics.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SnapyrAnalytics.h; sourceTree = "<group>"; };
+		EADEB8AA1DECD12B005322DA /* SnapyrAnalytics.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SnapyrAnalytics.m; sourceTree = "<group>"; };
+		EADEB8AB1DECD12B005322DA /* SnapyrAnalyticsConfiguration.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SnapyrAnalyticsConfiguration.h; sourceTree = "<group>"; };
+		EADEB8AC1DECD12B005322DA /* SnapyrAnalyticsConfiguration.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SnapyrAnalyticsConfiguration.m; sourceTree = "<group>"; };
 		EADEB8E01DECD335005322DA /* HTTPClientTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HTTPClientTest.swift; sourceTree = "<group>"; };
-		EADEB8E21DECD335005322DA /* NSData+SEGGUNZIPP.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSData+SEGGUNZIPP.h"; sourceTree = "<group>"; };
-		EADEB8E31DECD335005322DA /* NSData+SEGGUNZIPP.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSData+SEGGUNZIPP.m"; sourceTree = "<group>"; };
+		EADEB8E21DECD335005322DA /* NSData+SnapyrGUNZIPP.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSData+SnapyrGUNZIPP.h"; sourceTree = "<group>"; };
+		EADEB8E31DECD335005322DA /* NSData+SnapyrGUNZIPP.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSData+SnapyrGUNZIPP.m"; sourceTree = "<group>"; };
 		EADEB8E41DECD335005322DA /* TestUtils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TestUtils.swift; sourceTree = "<group>"; };
 		EADEB8E51DECD335005322DA /* FileStorageTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FileStorageTest.swift; sourceTree = "<group>"; };
 		EADEB8E61DECD335005322DA /* UserDefaultsStorageTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserDefaultsStorageTest.swift; sourceTree = "<group>"; };
@@ -269,7 +269,7 @@
 				6EEC1C702017EA370089C478 /* EndToEndTests.swift */,
 				A31958EE2385AC3A00A47EFA /* SerializationTests.m */,
 				5AF0E8457CCFC077382BF449 /* AutoScreenReportingTest.swift */,
-				63E090D722DD49C300DEC7EC /* UIViewController+SegScreenTest.h */,
+				63E090D722DD49C300DEC7EC /* UIViewController+SnapyrScreenTest.h */,
 			);
 			indentWidth = 4;
 			name = AnalyticsTests;
@@ -280,45 +280,45 @@
 		EADEB8751DECD12B005322DA /* Classes */ = {
 			isa = PBXGroup;
 			children = (
-				EADEB85E1DECD080005322DA /* Segment.h */,
-				EADEB87C1DECD12B005322DA /* SEGAliasPayload.h */,
-				EADEB87D1DECD12B005322DA /* SEGAliasPayload.m */,
-				EADEB8A91DECD12B005322DA /* SEGAnalytics.h */,
-				EADEB8AA1DECD12B005322DA /* SEGAnalytics.m */,
-				EADEB8AB1DECD12B005322DA /* SEGAnalyticsConfiguration.h */,
-				EADEB8AC1DECD12B005322DA /* SEGAnalyticsConfiguration.m */,
-				EADEB8A51DECD12B005322DA /* SEGContext.h */,
-				EADEB8A61DECD12B005322DA /* SEGContext.m */,
-				EADEB87A1DECD12B005322DA /* SEGCrypto.h */,
-				EADEB87E1DECD12B005322DA /* SEGGroupPayload.h */,
-				EADEB87F1DECD12B005322DA /* SEGGroupPayload.m */,
-				EADEB8931DECD12B005322DA /* SEGHTTPClient.h */,
-				EADEB8941DECD12B005322DA /* SEGHTTPClient.m */,
-				EADEB8801DECD12B005322DA /* SEGIdentifyPayload.h */,
-				EADEB8811DECD12B005322DA /* SEGIdentifyPayload.m */,
-				EADEB8821DECD12B005322DA /* SEGIntegration.h */,
-				EADEB8831DECD12B005322DA /* SEGIntegrationFactory.h */,
-				EADEB8A71DECD12B005322DA /* SEGMiddleware.h */,
-				EADEB8A81DECD12B005322DA /* SEGMiddleware.m */,
-				EADEB8861DECD12B005322DA /* SEGPayload.h */,
-				EADEB8871DECD12B005322DA /* SEGPayload.m */,
-				EAA5427B1EB42B8C00945DA7 /* SEGReachability.h */,
-				EAA5427C1EB42B8C00945DA7 /* SEGReachability.m */,
-				EADEB8881DECD12B005322DA /* SEGScreenPayload.h */,
-				EADEB8891DECD12B005322DA /* SEGScreenPayload.m */,
-				5AF0EDFEDC0EE79A0A0EB713 /* SEGScreenReporting.h */,
-				EADEB8971DECD12B005322DA /* SEGSegmentIntegration.h */,
-				EADEB8981DECD12B005322DA /* SEGSegmentIntegration.m */,
-				EADEB8991DECD12B005322DA /* SEGSegmentIntegrationFactory.h */,
-				EADEB89A1DECD12B005322DA /* SEGSegmentIntegrationFactory.m */,
-				EA88A5971DED7608009FB66A /* SEGSerializableValue.h */,
-				EADEB89B1DECD12B005322DA /* SEGStorage.h */,
-				EADEB88A1DECD12B005322DA /* SEGTrackPayload.h */,
-				EADEB88B1DECD12B005322DA /* SEGTrackPayload.m */,
-				EADEB88F1DECD12B005322DA /* SEGAnalyticsUtils.h */,
-				EADEB8901DECD12B005322DA /* SEGAnalyticsUtils.m */,
-				75FD42002524019100BC8970 /* SEGWebhookIntegration.h */,
-				75FD4201252401B500BC8970 /* SEGWebhookIntegration.m */,
+				EADEB85E1DECD080005322DA /* Snapyr.h */,
+				EADEB87C1DECD12B005322DA /* SnapyrAliasPayload.h */,
+				EADEB87D1DECD12B005322DA /* SnapyrAliasPayload.m */,
+				EADEB8A91DECD12B005322DA /* SnapyrAnalytics.h */,
+				EADEB8AA1DECD12B005322DA /* SnapyrAnalytics.m */,
+				EADEB8AB1DECD12B005322DA /* SnapyrAnalyticsConfiguration.h */,
+				EADEB8AC1DECD12B005322DA /* SnapyrAnalyticsConfiguration.m */,
+				EADEB8A51DECD12B005322DA /* SnapyrContext.h */,
+				EADEB8A61DECD12B005322DA /* SnapyrContext.m */,
+				EADEB87A1DECD12B005322DA /* SnapyrCrypto.h */,
+				EADEB87E1DECD12B005322DA /* SnapyrGroupPayload.h */,
+				EADEB87F1DECD12B005322DA /* SnapyrGroupPayload.m */,
+				EADEB8931DECD12B005322DA /* SnapyrHTTPClient.h */,
+				EADEB8941DECD12B005322DA /* SnapyrHTTPClient.m */,
+				EADEB8801DECD12B005322DA /* SnapyrIdentifyPayload.h */,
+				EADEB8811DECD12B005322DA /* SnapyrIdentifyPayload.m */,
+				EADEB8821DECD12B005322DA /* SnapyrIntegration.h */,
+				EADEB8831DECD12B005322DA /* SnapyrIntegrationFactory.h */,
+				EADEB8A71DECD12B005322DA /* SnapyrMiddleware.h */,
+				EADEB8A81DECD12B005322DA /* SnapyrMiddleware.m */,
+				EADEB8861DECD12B005322DA /* SnapyrPayload.h */,
+				EADEB8871DECD12B005322DA /* SnapyrPayload.m */,
+				EAA5427B1EB42B8C00945DA7 /* SnapyrReachability.h */,
+				EAA5427C1EB42B8C00945DA7 /* SnapyrReachability.m */,
+				EADEB8881DECD12B005322DA /* SnapyrScreenPayload.h */,
+				EADEB8891DECD12B005322DA /* SnapyrScreenPayload.m */,
+				5AF0EDFEDC0EE79A0A0EB713 /* SnapyrScreenReporting.h */,
+				EADEB8971DECD12B005322DA /* SnapyrSegmentIntegration.h */,
+				EADEB8981DECD12B005322DA /* SnapyrSegmentIntegration.m */,
+				EADEB8991DECD12B005322DA /* SnapyrSnapyrIntegrationFactory.h */,
+				EADEB89A1DECD12B005322DA /* SnapyrSnapyrIntegrationFactory.m */,
+				EA88A5971DED7608009FB66A /* SnapyrSerializableValue.h */,
+				EADEB89B1DECD12B005322DA /* SnapyrStorage.h */,
+				EADEB88A1DECD12B005322DA /* SnapyrTrackPayload.h */,
+				EADEB88B1DECD12B005322DA /* SnapyrTrackPayload.m */,
+				EADEB88F1DECD12B005322DA /* SnapyrAnalyticsUtils.h */,
+				EADEB8901DECD12B005322DA /* SnapyrAnalyticsUtils.m */,
+				75FD42002524019100BC8970 /* SnapyrWebhookIntegration.h */,
+				75FD4201252401B500BC8970 /* SnapyrWebhookIntegration.m */,
 			);
 			path = Classes;
 			sourceTree = "<group>";
@@ -326,27 +326,27 @@
 		EADEB88C1DECD12B005322DA /* Internal */ = {
 			isa = PBXGroup;
 			children = (
-				A34CC6DC249AAEBB00C5E368 /* SEGState.h */,
-				A34CC6DB249AAEBA00C5E368 /* SEGState.m */,
-				EADEB88D1DECD12B005322DA /* NSData+SEGGZIP.h */,
-				EADEB88E1DECD12B005322DA /* NSData+SEGGZIP.m */,
-				EADEB8781DECD12B005322DA /* SEGAES256Crypto.h */,
-				EADEB8791DECD12B005322DA /* SEGAES256Crypto.m */,
-				EADEB8911DECD12B005322DA /* SEGFileStorage.h */,
-				EADEB8921DECD12B005322DA /* SEGFileStorage.m */,
-				EADEB8841DECD12B005322DA /* SEGIntegrationsManager.h */,
-				EADEB8851DECD12B005322DA /* SEGIntegrationsManager.m */,
-				A352175F23AD5825005B07F6 /* SEGMacros.h */,
-				EADEB89C1DECD12B005322DA /* SEGStoreKitTracker.h */,
-				EADEB89D1DECD12B005322DA /* SEGStoreKitTracker.m */,
-				EADEB89E1DECD12B005322DA /* SEGUserDefaultsStorage.h */,
-				EADEB89F1DECD12B005322DA /* SEGUserDefaultsStorage.m */,
-				EADEB8A01DECD12B005322DA /* SEGUtils.h */,
-				EADEB8A11DECD12B005322DA /* SEGUtils.m */,
-				EADEB8A21DECD12B005322DA /* UIViewController+SEGScreen.h */,
-				EADEB8A31DECD12B005322DA /* UIViewController+SEGScreen.m */,
-				96A12C2624B680DB00949804 /* NSViewController+SEGScreen.h */,
-				96A12C2724B680DB00949804 /* NSViewController+SEGScreen.m */,
+				A34CC6DC249AAEBB00C5E368 /* SnapyrState.h */,
+				A34CC6DB249AAEBA00C5E368 /* SnapyrState.m */,
+				EADEB88D1DECD12B005322DA /* NSData+SnapyrGZIP.h */,
+				EADEB88E1DECD12B005322DA /* NSData+SnapyrGZIP.m */,
+				EADEB8781DECD12B005322DA /* SnapyrAES256Crypto.h */,
+				EADEB8791DECD12B005322DA /* SnapyrAES256Crypto.m */,
+				EADEB8911DECD12B005322DA /* SnapyrFileStorage.h */,
+				EADEB8921DECD12B005322DA /* SnapyrFileStorage.m */,
+				EADEB8841DECD12B005322DA /* SnapyrIntegrationsManager.h */,
+				EADEB8851DECD12B005322DA /* SnapyrIntegrationsManager.m */,
+				A352175F23AD5825005B07F6 /* SnapyrMacros.h */,
+				EADEB89C1DECD12B005322DA /* SnapyrStoreKitTracker.h */,
+				EADEB89D1DECD12B005322DA /* SnapyrStoreKitTracker.m */,
+				EADEB89E1DECD12B005322DA /* SnapyrUserDefaultsStorage.h */,
+				EADEB89F1DECD12B005322DA /* SnapyrUserDefaultsStorage.m */,
+				EADEB8A01DECD12B005322DA /* SnapyrUtils.h */,
+				EADEB8A11DECD12B005322DA /* SnapyrUtils.m */,
+				EADEB8A21DECD12B005322DA /* UIViewController+SnapyrScreen.h */,
+				EADEB8A31DECD12B005322DA /* UIViewController+SnapyrScreen.m */,
+				96A12C2624B680DB00949804 /* NSViewController+SnapyrScreen.h */,
+				96A12C2724B680DB00949804 /* NSViewController+SnapyrScreen.m */,
 			);
 			path = Internal;
 			sourceTree = "<group>";
@@ -354,8 +354,8 @@
 		EADEB8E11DECD335005322DA /* Utils */ = {
 			isa = PBXGroup;
 			children = (
-				EADEB8E21DECD335005322DA /* NSData+SEGGUNZIPP.h */,
-				EADEB8E31DECD335005322DA /* NSData+SEGGUNZIPP.m */,
+				EADEB8E21DECD335005322DA /* NSData+SnapyrGUNZIPP.h */,
+				EADEB8E31DECD335005322DA /* NSData+SnapyrGUNZIPP.m */,
 				EADEB8E41DECD335005322DA /* TestUtils.swift */,
 				A3BECDCE24BCE1E3009E2BD3 /* ObjcUtils.h */,
 				A3BECDCF24BCE1E3009E2BD3 /* ObjcUtils.m */,
@@ -380,40 +380,40 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				96A12C2824B680DB00949804 /* NSViewController+SEGScreen.h in Headers */,
-				A34CC6DE249AAEBB00C5E368 /* SEGState.h in Headers */,
-				EADEB8DC1DECD12B005322DA /* SEGAnalytics.h in Headers */,
-				EADEB8B81DECD12B005322DA /* SEGIntegrationFactory.h in Headers */,
-				EADEB8CB1DECD12B005322DA /* SEGSegmentIntegration.h in Headers */,
-				EADEB8CD1DECD12B005322DA /* SEGSegmentIntegrationFactory.h in Headers */,
-				EADEB8B71DECD12B005322DA /* SEGIntegration.h in Headers */,
-				EADEB8B51DECD12B005322DA /* SEGIdentifyPayload.h in Headers */,
-				EADEB8BB1DECD12B005322DA /* SEGPayload.h in Headers */,
-				EADEB8B11DECD12B005322DA /* SEGAliasPayload.h in Headers */,
-				EADEB8BD1DECD12B005322DA /* SEGScreenPayload.h in Headers */,
-				EA88A5981DED7608009FB66A /* SEGSerializableValue.h in Headers */,
-				EADEB8D81DECD12B005322DA /* SEGContext.h in Headers */,
-				EADEB8DA1DECD12B005322DA /* SEGMiddleware.h in Headers */,
-				EADEB8BF1DECD12B005322DA /* SEGTrackPayload.h in Headers */,
-				EADEB8C71DECD12B005322DA /* SEGHTTPClient.h in Headers */,
-				EADEB8B31DECD12B005322DA /* SEGGroupPayload.h in Headers */,
-				EADEB8B01DECD12B005322DA /* SEGCrypto.h in Headers */,
-				EADEB8DE1DECD12B005322DA /* SEGAnalyticsConfiguration.h in Headers */,
-				EADEB8D61DECD12B005322DA /* UIViewController+SEGScreen.h in Headers */,
-				EADEB8CF1DECD12B005322DA /* SEGStorage.h in Headers */,
-				75FD42052524F1E000BC8970 /* SEGWebhookIntegration.h in Headers */,
-				A352176023AD5825005B07F6 /* SEGMacros.h in Headers */,
-				EADEB8D21DECD12B005322DA /* SEGUserDefaultsStorage.h in Headers */,
-				EADEB8D01DECD12B005322DA /* SEGStoreKitTracker.h in Headers */,
-				EADEB8D41DECD12B005322DA /* SEGUtils.h in Headers */,
-				EADEB8601DECD080005322DA /* Segment.h in Headers */,
-				EADEB8C31DECD12B005322DA /* SEGAnalyticsUtils.h in Headers */,
-				EADEB8B91DECD12B005322DA /* SEGIntegrationsManager.h in Headers */,
-				630FC8EA2107F2A500A759C5 /* SEGScreenReporting.h in Headers */,
-				EADEB8AE1DECD12B005322DA /* SEGAES256Crypto.h in Headers */,
-				EADEB8C51DECD12B005322DA /* SEGFileStorage.h in Headers */,
-				EAA5427D1EB42B8C00945DA7 /* SEGReachability.h in Headers */,
-				EADEB8C11DECD12B005322DA /* NSData+SEGGZIP.h in Headers */,
+				96A12C2824B680DB00949804 /* NSViewController+SnapyrScreen.h in Headers */,
+				A34CC6DE249AAEBB00C5E368 /* SnapyrState.h in Headers */,
+				EADEB8DC1DECD12B005322DA /* SnapyrAnalytics.h in Headers */,
+				EADEB8B81DECD12B005322DA /* SnapyrIntegrationFactory.h in Headers */,
+				EADEB8CB1DECD12B005322DA /* SnapyrSegmentIntegration.h in Headers */,
+				EADEB8CD1DECD12B005322DA /* SnapyrSnapyrIntegrationFactory.h in Headers */,
+				EADEB8B71DECD12B005322DA /* SnapyrIntegration.h in Headers */,
+				EADEB8B51DECD12B005322DA /* SnapyrIdentifyPayload.h in Headers */,
+				EADEB8BB1DECD12B005322DA /* SnapyrPayload.h in Headers */,
+				EADEB8B11DECD12B005322DA /* SnapyrAliasPayload.h in Headers */,
+				EADEB8BD1DECD12B005322DA /* SnapyrScreenPayload.h in Headers */,
+				EA88A5981DED7608009FB66A /* SnapyrSerializableValue.h in Headers */,
+				EADEB8D81DECD12B005322DA /* SnapyrContext.h in Headers */,
+				EADEB8DA1DECD12B005322DA /* SnapyrMiddleware.h in Headers */,
+				EADEB8BF1DECD12B005322DA /* SnapyrTrackPayload.h in Headers */,
+				EADEB8C71DECD12B005322DA /* SnapyrHTTPClient.h in Headers */,
+				EADEB8B31DECD12B005322DA /* SnapyrGroupPayload.h in Headers */,
+				EADEB8B01DECD12B005322DA /* SnapyrCrypto.h in Headers */,
+				EADEB8DE1DECD12B005322DA /* SnapyrAnalyticsConfiguration.h in Headers */,
+				EADEB8D61DECD12B005322DA /* UIViewController+SnapyrScreen.h in Headers */,
+				EADEB8CF1DECD12B005322DA /* SnapyrStorage.h in Headers */,
+				75FD42052524F1E000BC8970 /* SnapyrWebhookIntegration.h in Headers */,
+				A352176023AD5825005B07F6 /* SnapyrMacros.h in Headers */,
+				EADEB8D21DECD12B005322DA /* SnapyrUserDefaultsStorage.h in Headers */,
+				EADEB8D01DECD12B005322DA /* SnapyrStoreKitTracker.h in Headers */,
+				EADEB8D41DECD12B005322DA /* SnapyrUtils.h in Headers */,
+				EADEB8601DECD080005322DA /* Snapyr.h in Headers */,
+				EADEB8C31DECD12B005322DA /* SnapyrAnalyticsUtils.h in Headers */,
+				EADEB8B91DECD12B005322DA /* SnapyrIntegrationsManager.h in Headers */,
+				630FC8EA2107F2A500A759C5 /* SnapyrScreenReporting.h in Headers */,
+				EADEB8AE1DECD12B005322DA /* SnapyrAES256Crypto.h in Headers */,
+				EADEB8C51DECD12B005322DA /* SnapyrFileStorage.h in Headers */,
+				EAA5427D1EB42B8C00945DA7 /* SnapyrReachability.h in Headers */,
+				EADEB8C11DECD12B005322DA /* NSData+SnapyrGZIP.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -518,32 +518,32 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				EADEB8DD1DECD12B005322DA /* SEGAnalytics.m in Sources */,
-				EADEB8BE1DECD12B005322DA /* SEGScreenPayload.m in Sources */,
-				EADEB8B61DECD12B005322DA /* SEGIdentifyPayload.m in Sources */,
-				EADEB8CE1DECD12B005322DA /* SEGSegmentIntegrationFactory.m in Sources */,
-				96A12C2924B680DB00949804 /* NSViewController+SEGScreen.m in Sources */,
-				EADEB8C01DECD12B005322DA /* SEGTrackPayload.m in Sources */,
-				EADEB8AF1DECD12B005322DA /* SEGAES256Crypto.m in Sources */,
-				EADEB8C81DECD12B005322DA /* SEGHTTPClient.m in Sources */,
-				75FD4202252401B500BC8970 /* SEGWebhookIntegration.m in Sources */,
-				EADEB8CC1DECD12B005322DA /* SEGSegmentIntegration.m in Sources */,
-				EADEB8B21DECD12B005322DA /* SEGAliasPayload.m in Sources */,
-				EADEB8BA1DECD12B005322DA /* SEGIntegrationsManager.m in Sources */,
-				EADEB8C41DECD12B005322DA /* SEGAnalyticsUtils.m in Sources */,
-				EADEB8C61DECD12B005322DA /* SEGFileStorage.m in Sources */,
-				EADEB8D31DECD12B005322DA /* SEGUserDefaultsStorage.m in Sources */,
-				EADEB8BC1DECD12B005322DA /* SEGPayload.m in Sources */,
-				EADEB8C21DECD12B005322DA /* NSData+SEGGZIP.m in Sources */,
-				EADEB8D91DECD12B005322DA /* SEGContext.m in Sources */,
-				EADEB8DB1DECD12B005322DA /* SEGMiddleware.m in Sources */,
-				EADEB8DF1DECD12B005322DA /* SEGAnalyticsConfiguration.m in Sources */,
-				EADEB8D51DECD12B005322DA /* SEGUtils.m in Sources */,
-				EAA5427E1EB42B8C00945DA7 /* SEGReachability.m in Sources */,
-				EADEB8B41DECD12B005322DA /* SEGGroupPayload.m in Sources */,
-				A34CC6DD249AAEBB00C5E368 /* SEGState.m in Sources */,
-				EADEB8D71DECD12B005322DA /* UIViewController+SEGScreen.m in Sources */,
-				EADEB8D11DECD12B005322DA /* SEGStoreKitTracker.m in Sources */,
+				EADEB8DD1DECD12B005322DA /* SnapyrAnalytics.m in Sources */,
+				EADEB8BE1DECD12B005322DA /* SnapyrScreenPayload.m in Sources */,
+				EADEB8B61DECD12B005322DA /* SnapyrIdentifyPayload.m in Sources */,
+				EADEB8CE1DECD12B005322DA /* SnapyrSnapyrIntegrationFactory.m in Sources */,
+				96A12C2924B680DB00949804 /* NSViewController+SnapyrScreen.m in Sources */,
+				EADEB8C01DECD12B005322DA /* SnapyrTrackPayload.m in Sources */,
+				EADEB8AF1DECD12B005322DA /* SnapyrAES256Crypto.m in Sources */,
+				EADEB8C81DECD12B005322DA /* SnapyrHTTPClient.m in Sources */,
+				75FD4202252401B500BC8970 /* SnapyrWebhookIntegration.m in Sources */,
+				EADEB8CC1DECD12B005322DA /* SnapyrSegmentIntegration.m in Sources */,
+				EADEB8B21DECD12B005322DA /* SnapyrAliasPayload.m in Sources */,
+				EADEB8BA1DECD12B005322DA /* SnapyrIntegrationsManager.m in Sources */,
+				EADEB8C41DECD12B005322DA /* SnapyrAnalyticsUtils.m in Sources */,
+				EADEB8C61DECD12B005322DA /* SnapyrFileStorage.m in Sources */,
+				EADEB8D31DECD12B005322DA /* SnapyrUserDefaultsStorage.m in Sources */,
+				EADEB8BC1DECD12B005322DA /* SnapyrPayload.m in Sources */,
+				EADEB8C21DECD12B005322DA /* NSData+SnapyrGZIP.m in Sources */,
+				EADEB8D91DECD12B005322DA /* SnapyrContext.m in Sources */,
+				EADEB8DB1DECD12B005322DA /* SnapyrMiddleware.m in Sources */,
+				EADEB8DF1DECD12B005322DA /* SnapyrAnalyticsConfiguration.m in Sources */,
+				EADEB8D51DECD12B005322DA /* SnapyrUtils.m in Sources */,
+				EAA5427E1EB42B8C00945DA7 /* SnapyrReachability.m in Sources */,
+				EADEB8B41DECD12B005322DA /* SnapyrGroupPayload.m in Sources */,
+				A34CC6DD249AAEBB00C5E368 /* SnapyrState.m in Sources */,
+				EADEB8D71DECD12B005322DA /* UIViewController+SnapyrScreen.m in Sources */,
+				EADEB8D11DECD12B005322DA /* SnapyrStoreKitTracker.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -564,7 +564,7 @@
 				EAA542801EB4382100945DA7 /* StoreKitTrackerTests.swift in Sources */,
 				EA8F09741E24C5C600B8B93F /* MiddlewareTests.swift in Sources */,
 				6E265C791FB1178C0030E08E /* IntegrationsManagerTest.swift in Sources */,
-				EADEB8EF1DECD335005322DA /* NSData+SEGGUNZIPP.m in Sources */,
+				EADEB8EF1DECD335005322DA /* NSData+SnapyrGUNZIPP.m in Sources */,
 				6EEC1C712017EA370089C478 /* EndToEndTests.swift in Sources */,
 				EADEB8F01DECD335005322DA /* TestUtils.swift in Sources */,
 				5AF0E8AE77F57B356DACCFE7 /* AutoScreenReportingTest.swift in Sources */,

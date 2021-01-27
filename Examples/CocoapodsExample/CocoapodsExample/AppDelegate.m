@@ -6,7 +6,7 @@
 //  Copyright © 2016 Segment. All rights reserved.
 //
 
-#import <Segment/SEGAnalytics.h>
+#import <Segment/SnapyrAnalytics.h>
 #import "AppDelegate.h"
 
 

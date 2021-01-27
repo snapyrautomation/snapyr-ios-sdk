@@ -4,7 +4,7 @@
 //
 
 import Foundation
-@testable import Segment
+@testable import Snapyr
 import XCTest
 
 #if os(iOS)

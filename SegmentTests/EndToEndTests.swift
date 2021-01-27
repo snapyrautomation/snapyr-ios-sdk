@@ -1,4 +1,4 @@
-@testable import Segment
+@testable import Snapyr
 import XCTest
 
 class EndToEndTests: XCTestCase {

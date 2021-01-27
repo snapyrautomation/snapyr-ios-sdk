@@ -7,7 +7,7 @@
 //
 
 
-@testable import Segment
+@testable import Snapyr
 import XCTest
 
 class AnalyticsTests: XCTestCase {
