@@ -60,11 +60,11 @@ void snapyr_dispatch_specific_sync(dispatch_queue_t queue, dispatch_block_t bloc
 
 // JSON Utils
 
-JSON_DICT SnapyrCoerceDictionary(NSDictionary *_Nullable dict);
+JSON_DICT snapyrCoerceDictionary(NSDictionary *_Nullable dict);
 
-NSString *_Nullable SEGIDFA(void);
+NSString *_Nullable snapyrIDFA(void);
 
-NSString *SEGEventNameForScreenTitle(NSString *title);
+NSString *snapyrEventNameForScreenTitle(NSString *title);
 
 @interface NSJSONSerialization (Serializable)
 + (BOOL)isOfSerializableType:(id)obj;

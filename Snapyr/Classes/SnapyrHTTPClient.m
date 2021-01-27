@@ -75,7 +75,7 @@ NSString * const kSegmentAPIBaseHost = @"https://dev-engine.snapyr.com/v1";
 
 - (nullable NSURLSessionUploadTask *)upload:(NSDictionary *)batch forWriteKey:(NSString *)writeKey completionHandler:(void (^)(BOOL retry, NSData *_Nullable data))completionHandler
 {
-    //    batch = SnapyrCoerceDictionary(batch);
+    //    batch = snapyrCoerceDictionary(batch);
     NSURLSession *session = [self sessionForWriteKey:writeKey];
 
     NSURL *url = [[SnapyrUtils getAPIHostURL] URLByAppendingPathComponent:@"batch"];

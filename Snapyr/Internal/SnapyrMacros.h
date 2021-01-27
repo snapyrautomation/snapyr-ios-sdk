@@ -6,8 +6,8 @@
 //  Copyright © 2019 Segment. All rights reserved.
 //
 
-#ifndef SEGMacros_h
-#define SEGMacros_h
+#ifndef SnapyrMacros_h
+#define SnapyrMacros_h
 
 #import "TargetConditionals.h"
 
@@ -25,4 +25,4 @@ _Pragma("clang diagnostic pop")
 #define TARGET_UIKIT 1
 #endif
 
-#endif /* SEGMacros_h */
+#endif /* SnapyrMacros_h */

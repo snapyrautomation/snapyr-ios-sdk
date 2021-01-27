@@ -263,7 +263,7 @@ NSDictionary *mobileSpecifications(SnapyrAnalyticsConfiguration *configuration, 
     
     // BKS: This bit below doesn't seem to be effective anymore.  Will investigate later.
     /*#if !(TARGET_IPHONE_SIMULATOR)
-        Class adClient = NSClassFromString(SEGADClientClass);
+        Class adClient = NSClassFromString(SnapyrADClientClass);
         if (adClient) {
     #pragma clang diagnostic push
     #pragma clang diagnostic ignored "-Warc-performSelector-leaks"
@@ -521,7 +521,7 @@ void snapyr_dispatch_specific_sync(dispatch_queue_t queue,
     snapyr_dispatch_specific(queue, block, YES);
 }
 
-NSDictionary *SnapyrCoerceDictionary(NSDictionary *dict)
+NSDictionary *snapyrCoerceDictionary(NSDictionary *dict)
 {
     // make sure that a new dictionary exists even if the input is null
     dict = dict ?: @{};
@@ -530,7 +530,7 @@ NSDictionary *SnapyrCoerceDictionary(NSDictionary *dict)
     return dict;
 }
 
-NSString *SEGEventNameForScreenTitle(NSString *title)
+NSString *snapyrEventNameForScreenTitle(NSString *title)
 {
     return [[NSString alloc] initWithFormat:@"Viewed %@ Screen", title];
 }

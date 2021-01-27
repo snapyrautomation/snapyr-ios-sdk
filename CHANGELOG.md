@@ -153,7 +153,7 @@ Version 3.7.0-beta *(27th August, 2018)*
 * [Fix](https://github.com/segmentio/analytics-ios/pull/763): Retry HTTP 429 status codes
 * [Fix](https://github.com/segmentio/analytics-ios/pull/761): Send RFC 7231 Formatted User Agent
 * [Fix](https://github.com/segmentio/analytics-ios/pull/751): Ensure queue is always < 1000 items
-* [Fix](https://github.com/segmentio/analytics-ios/pull/750): Reset SEGUserIdKey only on tvOS
+* [Fix](https://github.com/segmentio/analytics-ios/pull/750): Reset SnapyrUserIdKey only on tvOS
 * [Fix](https://github.com/segmentio/analytics-ios/pull/749): Renames GZIP category to prevent collisions
 * [Fix](https://github.com/segmentio/analytics-ios/pull/744): sharedAnalytics returns null before setup
 * [Fix](https://github.com/segmentio/analytics-ios/pull/741): Swift 4 support

@@ -17,9 +17,9 @@ NSString *const SnapyrSegmentDidSendRequestNotification = @"SegmentDidSendReques
 NSString *const SnapyrSegmentRequestDidSucceedNotification = @"SegmentRequestDidSucceed";
 NSString *const SnapyrSegmentRequestDidFailNotification = @"SegmentRequestDidFail";
 
-NSString *const SEGUserIdKey = @"SEGUserId";
-NSString *const SEGQueueKey = @"SEGQueue";
-NSString *const SEGTraitsKey = @"SEGTraits";
+NSString *const SnapyrUserIdKey = @"snapyrUserId";
+NSString *const SnapyrQueueKey = @"snapyrQueue";
+NSString *const SnapyrTraitsKey = @"snapyrTraits";
 
 NSString *const kSnapyrUserIdFilename = @"segmentio.userId";
 NSString *const kSnapyrQueueFilename = @"segmentio.queue.plist";
@@ -84,13 +84,13 @@ NSUInteger const kSnapyrBackgroundTaskInvalid = 0;
 
         [self dispatchBackground:^{
             // Check for previous queue data in NSUserDefaults and remove if present.
-            if ([[NSUserDefaults standardUserDefaults] objectForKey:SEGQueueKey]) {
-                [[NSUserDefaults standardUserDefaults] removeObjectForKey:SEGQueueKey];
+            if ([[NSUserDefaults standardUserDefaults] objectForKey:SnapyrQueueKey]) {
+                [[NSUserDefaults standardUserDefaults] removeObjectForKey:SnapyrQueueKey];
             }
 #if !TARGET_OS_TV
             // Check for previous track data in NSUserDefaults and remove if present (Traits still exist in NSUserDefaults on tvOS)
-            if ([[NSUserDefaults standardUserDefaults] objectForKey:SEGTraitsKey]) {
-                [[NSUserDefaults standardUserDefaults] removeObjectForKey:SEGTraitsKey];
+            if ([[NSUserDefaults standardUserDefaults] objectForKey:SnapyrTraitsKey]) {
+                [[NSUserDefaults standardUserDefaults] removeObjectForKey:SnapyrTraitsKey];
             }
 #endif
         }];
@@ -167,7 +167,7 @@ NSUInteger const kSnapyrBackgroundTaskInvalid = 0;
     [self dispatchBackground:^{
         [SnapyrState sharedInstance].userInfo.userId = userId;
 #if TARGET_OS_TV
-        [self.userDefaultsStorage setString:userId forKey:SEGUserIdKey];
+        [self.userDefaultsStorage setString:userId forKey:SnapyrUserIdKey];
 #else
         [self.fileStorage setString:userId forKey:kSnapyrUserIdFilename];
 #endif
@@ -184,7 +184,7 @@ NSUInteger const kSnapyrBackgroundTaskInvalid = 0;
     [self dispatchBackground:^{
         [SnapyrState sharedInstance].userInfo.traits = traits;
 #if TARGET_OS_TV
-        [self.userDefaultsStorage setDictionary:[self.traits copy] forKey:SEGTraitsKey];
+        [self.userDefaultsStorage setDictionary:[self.traits copy] forKey:SnapyrTraitsKey];
 #else
         [self.fileStorage setDictionary:[self.traits copy] forKey:kSnapyrTraitsFilename];
 #endif
@@ -364,8 +364,8 @@ NSUInteger const kSnapyrBackgroundTaskInvalid = 0;
 {
     [self dispatchBackgroundAndWait:^{
 #if TARGET_OS_TV
-        [self.userDefaultsStorage removeKey:SEGUserIdKey];
-        [self.userDefaultsStorage removeKey:SEGTraitsKey];
+        [self.userDefaultsStorage removeKey:SnapyrUserIdKey];
+        [self.userDefaultsStorage removeKey:SnapyrTraitsKey];
 #else
         [self.fileStorage removeKey:kSnapyrUserIdFilename];
         [self.fileStorage removeKey:kSnapyrTraitsFilename];
@@ -494,7 +494,7 @@ NSUInteger const kSnapyrBackgroundTaskInvalid = 0;
     if (![SnapyrState sharedInstance].userInfo.traits) {
         NSDictionary *traits = nil;
 #if TARGET_OS_TV
-        traits = [[self.userDefaultsStorage dictionaryForKey:SEGTraitsKey] ?: @{} mutableCopy];
+        traits = [[self.userDefaultsStorage dictionaryForKey:SnapyrTraitsKey] ?: @{} mutableCopy];
 #else
         traits = [[self.fileStorage dictionaryForKey:kSnapyrTraitsFilename] ?: @{} mutableCopy];
 #endif
@@ -511,7 +511,7 @@ NSUInteger const kSnapyrBackgroundTaskInvalid = 0;
 {
     NSString *result = nil;
 #if TARGET_OS_TV
-    result = [[NSUserDefaults standardUserDefaults] valueForKey:SEGUserIdKey];
+    result = [[NSUserDefaults standardUserDefaults] valueForKey:SnapyrUserIdKey];
 #else
     result = [self.fileStorage stringForKey:kSnapyrUserIdFilename];
 #endif

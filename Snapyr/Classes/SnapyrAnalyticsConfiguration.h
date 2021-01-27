@@ -255,7 +255,7 @@ NS_SWIFT_NAME(AnalyticsConfiguration)
 
 #pragma mark - Experimental
 
-typedef  NSDictionary * _Nonnull (^SEGRawModificationBlock)( NSDictionary * _Nonnull rawPayload);
+typedef  NSDictionary * _Nonnull (^SnapyrRawModificationBlock)( NSDictionary * _Nonnull rawPayload);
 
 NS_SWIFT_NAME(AnalyticsExperimental)
 @interface SnapyrAnalyticsExperimental : NSObject
@@ -275,6 +275,6 @@ NS_SWIFT_NAME(AnalyticsExperimental)
  payload data prior to being received by segment.com.  This property will go away in future versions when context
  object data is made available earlier in the event pipeline.
  */
-@property (nonatomic, strong, nullable) SEGRawModificationBlock rawSegmentModificationBlock;
+@property (nonatomic, strong, nullable) SnapyrRawModificationBlock rawSegmentModificationBlock;
 
 @end

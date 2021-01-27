@@ -44,10 +44,10 @@ class AnalyticsTests: XCTestCase {
         config.application = testApplication
         config.trackApplicationLifecycleEvents = true
         
-        UserDefaults.standard.set("test SEGQueue should be removed", forKey: "SEGQueue")
+        UserDefaults.standard.set("test SEGQueue should be removed", forKey: "snapyrQueue")
         // pump the run loop so we can be sure the value was written.
         RunLoop.current.run(until: Date.distantPast)
-        XCTAssertNotNil(UserDefaults.standard.string(forKey: "SEGQueue"))
+        XCTAssertNotNil(UserDefaults.standard.string(forKey: "snapyrQueue"))
 
         analytics = Analytics(configuration: config)
         analytics.test_integrationsManager()?.test_setCachedSettings(settings: cachedSettings)
@@ -134,7 +134,7 @@ class AnalyticsTests: XCTestCase {
     }
     
     func testClearsSEGQueueFromUserDefaults() {
-        expectUntil(2.0, expression: UserDefaults.standard.string(forKey: "SEGQueue") == nil)
+        expectUntil(2.0, expression: UserDefaults.standard.string(forKey: "snapyrQueue") == nil)
     }
     
     /* TODO: Fix me when the Context object isn't so wild.

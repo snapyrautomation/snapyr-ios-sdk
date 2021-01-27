@@ -11,7 +11,7 @@
 
 #pragma mark - Internal copy-overs for testing
 
-JSON_DICT SnapyrCoerceDictionary(NSDictionary *_Nullable dict);
+JSON_DICT snapyrCoerceDictionary(NSDictionary *_Nullable dict);
 
 @interface NSJSONSerialization (Serializable)
 + (BOOL)isOfSerializableType:(id)obj;
@@ -98,11 +98,11 @@ JSON_DICT SnapyrCoerceDictionary(NSDictionary *_Nullable dict);
     XCTAssertThrows([nonserializable serializableDeepCopy]);
     
     NSDictionary *testCoersion1 = @{@"test1": @[date], @"test2": url, @"test3": @1};
-    NSDictionary *coersionResult = SnapyrCoerceDictionary(testCoersion1);
+    NSDictionary *coersionResult = snapyrCoerceDictionary(testCoersion1);
     XCTAssertNotNil(coersionResult);
     
     NSDictionary *testCoersion2 = @{@"test1": @[date], @"test2": url, @"test3": @1, @"test4": data};
-    XCTAssertThrows(SnapyrCoerceDictionary(testCoersion2));
+    XCTAssertThrows(snapyrCoerceDictionary(testCoersion2));
     
     NSError *error = nil;
     NSData *json = [NSJSONSerialization dataWithJSONObject:coersionResult options:NSJSONWritingPrettyPrinted error:&error];

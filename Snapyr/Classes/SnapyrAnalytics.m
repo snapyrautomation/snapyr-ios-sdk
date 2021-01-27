@@ -270,7 +270,7 @@ NSString *const SnapyrBuildKeyV2 = @"SnapyrBuildKeyV2";
     NSCAssert2(userId.length > 0 || traits.count > 0, @"either userId (%@) or traits (%@) must be provided.", userId, traits);
     
     // this is done here to match functionality on android where these are inserted BEFORE being spread out amongst destinations.
-    // it will be set globally later when it runs through SEGIntegrationManager.identify.
+    // it will be set globally later when it runs through SnapyrIntegrationManager.identify.
     NSString *anonId = [options objectForKey:@"anonymousId"];
     if (anonId == nil) {
         anonId = [self getAnonymousId];
@@ -297,8 +297,8 @@ NSString *const SnapyrBuildKeyV2 = @"SnapyrBuildKeyV2";
     [self run:SnapyrEventTypeIdentify payload:
                                        [[SnapyrIdentifyPayload alloc] initWithUserId:userId
                                                                          anonymousId:anonId
-                                                                              traits:SnapyrCoerceDictionary(existingTraitsCopy)
-                                                                             context:SnapyrCoerceDictionary([options objectForKey:@"context"])
+                                                                              traits:snapyrCoerceDictionary(existingTraitsCopy)
+                                                                             context:snapyrCoerceDictionary([options objectForKey:@"context"])
                                                                         integrations:[options objectForKey:@"integrations"]]];
 }
 
@@ -319,8 +319,8 @@ NSString *const SnapyrBuildKeyV2 = @"SnapyrBuildKeyV2";
     NSCAssert1(event.length > 0, @"event (%@) must not be empty.", event);
     [self run:SnapyrEventTypeTrack payload:
                                     [[SnapyrTrackPayload alloc] initWithEvent:event
-                                                                   properties:SnapyrCoerceDictionary(properties)
-                                                                      context:SnapyrCoerceDictionary([options objectForKey:@"context"])
+                                                                   properties:snapyrCoerceDictionary(properties)
+                                                                      context:snapyrCoerceDictionary([options objectForKey:@"context"])
                                                                  integrations:[options objectForKey:@"integrations"]]];
 }
 
@@ -358,8 +358,8 @@ NSString *const SnapyrBuildKeyV2 = @"SnapyrBuildKeyV2";
     [self run:SnapyrEventTypeScreen payload:
                                      [[SnapyrScreenPayload alloc] initWithName:screenTitle
                                                                       category:category
-                                                                    properties:SnapyrCoerceDictionary(properties)
-                                                                       context:SnapyrCoerceDictionary([options objectForKey:@"context"])
+                                                                    properties:snapyrCoerceDictionary(properties)
+                                                                       context:snapyrCoerceDictionary([options objectForKey:@"context"])
                                                                   integrations:[options objectForKey:@"integrations"]]];
 }
 
@@ -379,8 +379,8 @@ NSString *const SnapyrBuildKeyV2 = @"SnapyrBuildKeyV2";
 {
     [self run:SnapyrEventTypeGroup payload:
                                     [[SnapyrGroupPayload alloc] initWithGroupId:groupId
-                                                                         traits:SnapyrCoerceDictionary(traits)
-                                                                        context:SnapyrCoerceDictionary([options objectForKey:@"context"])
+                                                                         traits:snapyrCoerceDictionary(traits)
+                                                                        context:snapyrCoerceDictionary([options objectForKey:@"context"])
                                                                    integrations:[options objectForKey:@"integrations"]]];
 }
 
@@ -395,7 +395,7 @@ NSString *const SnapyrBuildKeyV2 = @"SnapyrBuildKeyV2";
 {
     [self run:SnapyrEventTypeAlias payload:
                                     [[SnapyrAliasPayload alloc] initWithNewId:newId
-                                                                      context:SnapyrCoerceDictionary([options objectForKey:@"context"])
+                                                                      context:snapyrCoerceDictionary([options objectForKey:@"context"])
                                                                  integrations:[options objectForKey:@"integrations"]]];
 }
 

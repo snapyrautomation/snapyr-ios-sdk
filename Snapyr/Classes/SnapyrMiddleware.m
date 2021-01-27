@@ -54,7 +54,7 @@
     return [self runMiddlewares:self.middlewares context:context callback:callback];
 }
 
-// TODO: Maybe rename SnapyrContext to SEGEvent to be a bit more clear?
+// TODO: Maybe rename SnapyrContext to SnapyrEvent to be a bit more clear?
 // We could also use some sanity check / other types of logging here.
 - (SnapyrContext *)runMiddlewares:(NSArray<id<SnapyrMiddleware>> *_Nonnull)middlewares
                           context:(SnapyrContext *_Nonnull)context
