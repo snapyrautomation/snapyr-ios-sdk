@@ -20,8 +20,8 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    [[SEGAnalytics sharedAnalytics] track:@"Manual Example Main View Loaded"];
-    [[SEGAnalytics sharedAnalytics] flush];
+    [[SnapyrAnalytics sharedAnalytics] track:@"Manual Example Main View Loaded"];
+    [[SnapyrAnalytics sharedAnalytics] flush];
 }
 
 - (void)didReceiveMemoryWarning
@@ -32,8 +32,8 @@
 
 - (IBAction)fireEvent:(id)sender
 {
-    [[SEGAnalytics sharedAnalytics] track:@"Manual Example Fire Event"];
-    [[SEGAnalytics sharedAnalytics] flush];
+    [[SnapyrAnalytics sharedAnalytics] track:@"Manual Example Fire Event"];
+    [[SnapyrAnalytics sharedAnalytics] flush];
 }
 
 @end

@@ -23,17 +23,17 @@ NSString *const SEGMENT_WRITE_KEY = @"zr5x22gUVBDM3hO3uHkbMkVe6Pd6sCna";
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
-    [SEGAnalytics debug:YES];
-    SEGAnalyticsConfiguration *configuration = [SEGAnalyticsConfiguration configurationWithWriteKey:SEGMENT_WRITE_KEY];
+    [SnapyrAnalytics debug:YES];
+    SnapyrAnalyticsConfiguration *configuration = [SnapyrAnalyticsConfiguration configurationWithWriteKey:SEGMENT_WRITE_KEY];
     configuration.trackApplicationLifecycleEvents = YES;
     configuration.flushAt = 1;
-    [SEGAnalytics setupWithConfiguration:configuration];
-    [[SEGAnalytics sharedAnalytics] identify:@"Prateek" traits:nil options: @{
+    [SnapyrAnalytics setupWithConfiguration:configuration];
+    [[SnapyrAnalytics sharedAnalytics] identify:@"Prateek" traits:nil options: @{
                                                                               @"anonymousId":@"test_anonymousId"
                                                                               }];
-    [[SEGAnalytics sharedAnalytics] track:@"Cocoapods Example Launched"];
+    [[SnapyrAnalytics sharedAnalytics] track:@"Cocoapods Example Launched"];
 
-    [[SEGAnalytics sharedAnalytics] flush];
+    [[SnapyrAnalytics sharedAnalytics] flush];
     NSLog(@"application:didFinishLaunchingWithOptions: %@", launchOptions);
     return YES;
 }

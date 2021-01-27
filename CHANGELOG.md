@@ -263,7 +263,7 @@ Version 3.5.0 *(12th September, 2016)*
 * [New](https://github.com/segmentio/analytics-ios/pull/592): Adds a `SEGCrypto` API that can be used to configure the at rest encryption strategy for the client.
 
  ```objc
- SEGAnalyticsConfiguration *configuration = [SEGAnalyticsConfiguration configurationWithWriteKey:@"YOUR_WRITE_KEY"];
+ SnapyrAnalyticsConfiguration *configuration = [SnapyrAnalyticsConfiguration configurationWithWriteKey:@"YOUR_WRITE_KEY"];
 
  // Set a custom crypto implementation. An AES-256 implementation is provided out of the box.
  configuration.crypto = [SEGAES256Crypto initWithPassword:"YOUR_PRIVATE_PASSWORD"];
@@ -272,13 +272,13 @@ Version 3.5.0 *(12th September, 2016)*
  ...
 
  // Initialize the SDK with the configuration.
- [SEGAnalytics setupWithConfiguration:configuration]
+ [SnapyrAnalytics setupWithConfiguration:configuration]
  ```
 
  * [New](https://github.com/segmentio/analytics-ios/commit/0c646e1c44df4134a984f1fcb741f5b1d418ab30): Add the ability for the SDK to natively report attribution information via Segment integrations enabled for your project, without needing to bundle their SDKs. Attribution information is sent as a track call as documented in the [mobile lifecycle spec](https://segment.com/docs/spec/mobile/#install-attributed).
 
  ```objc
- SEGAnalyticsConfiguration *configuration = [SEGAnalyticsConfiguration configurationWithWriteKey:@"YOUR_WRITE_KEY"];
+ SnapyrAnalyticsConfiguration *configuration = [SnapyrAnalyticsConfiguration configurationWithWriteKey:@"YOUR_WRITE_KEY"];
 
  // Enable attribution tracking.
  configuration.trackAttributionData = @YES;
@@ -287,13 +287,13 @@ Version 3.5.0 *(12th September, 2016)*
  ...
 
  // Initialize the SDK with the configuration.
- [SEGAnalytics setupWithConfiguration:configuration]
+ [SnapyrAnalytics setupWithConfiguration:configuration]
  ```
 
  * [New](https://github.com/segmentio/analytics-ios/pull/597): Add the ability for the SDK to disable bluetooth collection. Going forwards, bluetooth information will **not** be collected by default. This is because iOS 10 requires [explicit documentation](https://developer.apple.com/library/prerelease/content/releasenotes/General/WhatsNewIniOS/Articles/iOS10.html) on why the CoreBluetooth APIs are accessed. If you enable this flag, your app's Info.plist must contain an [`NSBluetoothPeripheralUsageDescription` key](https://developer.apple.com/library/ios/documentation/General/Reference/InfoPlistKeyReference/Articles/CocoaKeys.html#//apple_ref/doc/uid/TP40009251-SW20) with a string value explaining to the user how the app uses this data. On this note, you should do the same for [`NSLocationAlwaysUsageDescription`](https://developer.apple.com/library/ios/documentation/General/Reference/InfoPlistKeyReference/Articles/CocoaKeys.html#//apple_ref/doc/uid/TP40009251-SW18) if you have `shouldUseLocationServices` set to `@YES`. If you are linking against iOS 10, you'll want to update to this version to prevent your app submission from being rejected (or provide `NSBluetoothPeripheralUsageDescription` and/or `NSLocationAlwaysUsageDescription` descriptions in your app's Info.plist).
 
  ```objc
- SEGAnalyticsConfiguration *configuration = [SEGAnalyticsConfiguration configurationWithWriteKey:@"YOUR_WRITE_KEY"];
+ SnapyrAnalyticsConfiguration *configuration = [SnapyrAnalyticsConfiguration configurationWithWriteKey:@"YOUR_WRITE_KEY"];
 
  // Enable bluetooth collection.
  configuration.shouldUseBluetooth = @YES;
@@ -302,7 +302,7 @@ Version 3.5.0 *(12th September, 2016)*
  ...
 
  // Initialize the SDK with the configuration.
- [SEGAnalytics setupWithConfiguration:configuration]
+ [SnapyrAnalytics setupWithConfiguration:configuration]
  ```
 
 Version 3.4.0 *(1st September, 2016)*
@@ -311,7 +311,7 @@ Version 3.4.0 *(1st September, 2016)*
  * [New](https://github.com/segmentio/analytics-ios/commit/d5db28ab9d15aa06b4e3a5c91f813d5c12a419a8): Adds a `SEGRequestFactory` API that can be used to configure the HTTP requests made by Segment.
 
  ```objc
- SEGAnalyticsConfiguration *configuration = [SEGAnalyticsConfiguration configurationWithWriteKey:@"YOUR_WRITE_KEY"];
+ SnapyrAnalyticsConfiguration *configuration = [SnapyrAnalyticsConfiguration configurationWithWriteKey:@"YOUR_WRITE_KEY"];
 
  // Set a custom request factory which allows you to modify the way the library creates an HTTP request.
  // In this case, we're transforming the URL to point to our own custom non-Segment host.
@@ -327,14 +327,14 @@ Version 3.4.0 *(1st September, 2016)*
  ...
 
  // Initialize the SDK with the configuration.
- [SEGAnalytics setupWithConfiguration:configuration]
+ [SnapyrAnalytics setupWithConfiguration:configuration]
  ```
 
 
  * [New](https://github.com/segmentio/analytics-ios/commit/b8aed9692e82ad1dbbecfae0ad5fc353a9eb2220): Add method to retrieve anonymous ID.
 
  ```objc
- [[SEGAnalytics sharedAnalytics] getAnonymousId];
+ [[SnapyrAnalytics sharedAnalytics] getAnonymousId];
  ```
 
  * [Improvement](https://github.com/segmentio/analytics-ios/commit/98a467292de62eb6179107b6ebbc59f13caf16a2): Store `context` object with every event. This makes it more accurate collecting the context at the time the event was observed, rather than uploaded.
@@ -360,17 +360,17 @@ Version 3.3.0 *(08-05-2016)*
  * [New](https://github.com/segmentio/analytics-ios/pull/557): Automatically track campaign data.
 
  ```objc
- SEGAnalyticsConfiguration *configuration = [SEGAnalyticsConfiguration configurationWithWriteKey:@"YOUR_WRITE_KEY"];
+ SnapyrAnalyticsConfiguration *configuration = [SnapyrAnalyticsConfiguration configurationWithWriteKey:@"YOUR_WRITE_KEY"];
  configuration.trackPushNotifications = YES;
- [SEGAnalytics setupWithConfiguration:configuration];
+ [SnapyrAnalytics setupWithConfiguration:configuration];
  ```
 
  * [New](https://github.com/segmentio/analytics-ios/pull/573): Automatically track deep links. Please note that you'll still need to call the `continueUserActivity` and `openURL` methods on the analytics client.
 
  ```objc
- SEGAnalyticsConfiguration *configuration = [SEGAnalyticsConfiguration configurationWithWriteKey:@"YOUR_WRITE_KEY"];
+ SnapyrAnalyticsConfiguration *configuration = [SnapyrAnalyticsConfiguration configurationWithWriteKey:@"YOUR_WRITE_KEY"];
  configuration.trackDeepLinks = YES;
- [SEGAnalytics setupWithConfiguration:configuration];
+ [SnapyrAnalytics setupWithConfiguration:configuration];
  ```
 
  * [Improvement](https://github.com/segmentio/analytics-ios/pull/565): Limit queue size to 1000. This will prevent crashes/memory issues from the queue being too large.
@@ -410,9 +410,9 @@ Version 3.2.3 *(06-08-2016)*
  * Instrument automatic in app purchase tracking. Enable this during initialization.
 
  ```objc
- SEGAnalyticsConfiguration *configuration = [SEGAnalyticsConfiguration configurationWithWriteKey:@"YOUR_WRITE_KEY"];
+ SnapyrAnalyticsConfiguration *configuration = [SnapyrAnalyticsConfiguration configurationWithWriteKey:@"YOUR_WRITE_KEY"];
  configuration.trackInAppPurchases = YES;
- [SEGAnalytics setupWithConfiguration:configuration];
+ [SnapyrAnalytics setupWithConfiguration:configuration];
  ```
 
 Version 3.2.2 *(06-06-2016)*
@@ -442,9 +442,9 @@ Version 3.1.1 *(05-24-2016)*
  * Instrument automatic screen view tracking. Enable this during initialization.
 
 ```objc
-SEGAnalyticsConfiguration *configuration = [SEGAnalyticsConfiguration configurationWithWriteKey:@"YOUR_WRITE_KEY"];
+SnapyrAnalyticsConfiguration *configuration = [SnapyrAnalyticsConfiguration configurationWithWriteKey:@"YOUR_WRITE_KEY"];
 configuration.recordScreenViews = YES;
-[SEGAnalytics setupWithConfiguration:configuration];
+[SnapyrAnalytics setupWithConfiguration:configuration];
 ```
 
 Version 3.1.0 *(05-09-2016)*
@@ -453,12 +453,12 @@ Version 3.1.0 *(05-09-2016)*
  * Instrument automatic application lifecycle event tracking. Enable this during initialization.
 
 ```objc
-SEGAnalyticsConfiguration *configuration = [SEGAnalyticsConfiguration configurationWithWriteKey:@"YOUR_WRITE_KEY"];
+SnapyrAnalyticsConfiguration *configuration = [SnapyrAnalyticsConfiguration configurationWithWriteKey:@"YOUR_WRITE_KEY"];
 configuration.trackApplicationLifecycleEvents = YES;
-[SEGAnalytics setupWithConfiguration:configuration];
+[SnapyrAnalytics setupWithConfiguration:configuration];
 ```
 
- * Make `SEGAnalyticsIntegrationDidStart` public (use this to be notified when an integration is initialized).
+ * Make `SnapyrAnalyticsIntegrationDidStart` public (use this to be notified when an integration is initialized).
  * Fixed crashes due to NSNotificationCenter observers not being removed.
 
 Version 3.0.7 *(02-01-2016)*
@@ -516,14 +516,14 @@ pod `Segment-Branch`
 
 Register them in your configuration when you initialize the SDK.
 ```
-SEGAnalyticsConfiguration *config = [SEGAnalyticsConfiguration configurationWithWriteKey:@"YOUR_WRITE_KEY"];
+SnapyrAnalyticsConfiguration *config = [SnapyrAnalyticsConfiguration configurationWithWriteKey:@"YOUR_WRITE_KEY"];
 
 // Add any of your bundled integrations.
 config use:[SEGGoogleAnalyticsIntegrationFactory instance];
 config use:[BNCBranchIntegrationFactory instance];
 ...
 
-[SEGAnalytics setupWithConfiguration:config];
+[SnapyrAnalytics setupWithConfiguration:config];
 ```
 
 Version 3.0.4-alpha *(10-24-2015)*

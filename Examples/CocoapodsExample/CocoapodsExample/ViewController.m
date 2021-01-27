@@ -23,15 +23,15 @@
     // Do any additional setup after loading the view, typically from a nib.
     NSUserActivity *userActivity = [[NSUserActivity alloc] initWithActivityType:NSUserActivityTypeBrowsingWeb];
     userActivity.webpageURL = [NSURL URLWithString:@"http://www.segment.com"];
-    [[SEGAnalytics sharedAnalytics] continueUserActivity:userActivity];
-    [[SEGAnalytics sharedAnalytics] track:@"test"];
-    [[SEGAnalytics sharedAnalytics] flush];
+    [[SnapyrAnalytics sharedAnalytics] continueUserActivity:userActivity];
+    [[SnapyrAnalytics sharedAnalytics] track:@"test"];
+    [[SnapyrAnalytics sharedAnalytics] flush];
 }
 
 - (IBAction)fireEvent:(id)sender
 {
-    [[SEGAnalytics sharedAnalytics] track:@"Cocoapods Example Button"];
-    [[SEGAnalytics sharedAnalytics] flush];
+    [[SnapyrAnalytics sharedAnalytics] track:@"Cocoapods Example Button"];
+    [[SnapyrAnalytics sharedAnalytics] flush];
 }
 
 

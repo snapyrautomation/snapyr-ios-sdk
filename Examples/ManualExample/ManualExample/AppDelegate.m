@@ -21,9 +21,9 @@
 {
     // https://segment.com/segment-mobile/sources/ios_manual_example/overview
     // Use your own writekey people :)
-    [SEGAnalytics setupWithConfiguration:[SEGAnalyticsConfiguration configurationWithWriteKey:@"St5WbSrxW5bzxn2NGwPDVzS9PBPYctOl"]];
-    [[SEGAnalytics sharedAnalytics] track:@"Manual Example Launched"];
-    [[SEGAnalytics sharedAnalytics] flush];
+    [SnapyrAnalytics setupWithConfiguration:[SnapyrAnalyticsConfiguration configurationWithWriteKey:@"St5WbSrxW5bzxn2NGwPDVzS9PBPYctOl"]];
+    [[SnapyrAnalytics sharedAnalytics] track:@"Manual Example Launched"];
+    [[SnapyrAnalytics sharedAnalytics] flush];
     return YES;
 }
 
