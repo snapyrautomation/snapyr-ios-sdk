@@ -30,9 +30,9 @@
 #import "SnapyrState.h"
 
 NSString *SnapyrAnalyticsIntegrationDidStart = @"io.segment.analytics.integration.did.start";
-NSString *const SEGAnonymousIdKey = @"SEGAnonymousId";
-NSString *const kSEGAnonymousIdFilename = @"segment.anonymousId";
-NSString *const kSEGCachedSettingsFilename = @"analytics.settings.v2.plist";
+NSString *const SnapyrAnonymousIdKey = @"SnapyrAnonymousId";
+NSString *const kSnapyrAnonymousIdFilename = @"segment.anonymousId";
+NSString *const kSnapyrCachedSettingsFilename = @"analytics.settings.v2.plist";
 
 
 @interface SnapyrIdentifyPayload (AnonymousId)
@@ -104,7 +104,7 @@ NSString *const kSEGCachedSettingsFilename = @"analytics.settings.v2.plist";
         
         self.userDefaultsStorage = [[SnapyrUserDefaultsStorage alloc] initWithDefaults:[NSUserDefaults standardUserDefaults] namespacePrefix:nil crypto:configuration.crypto];
         #if TARGET_OS_TV
-            self.fileStorage = [[SEGFileStorage alloc] initWithFolder:[SEGFileStorage cachesDirectoryURL] crypto:configuration.crypto];
+            self.fileStorage = [[SnapyrFileStorage alloc] initWithFolder:[SnapyrFileStorage cachesDirectoryURL] crypto:configuration.crypto];
         #else
             self.fileStorage = [[SnapyrFileStorage alloc] initWithFolder:[SnapyrFileStorage applicationSupportDirectoryURL] crypto:configuration.crypto];
         #endif
@@ -121,7 +121,7 @@ NSString *const kSEGCachedSettingsFilename = @"analytics.settings.v2.plist";
         [self refreshSettings];
 
         // Update settings on foreground
-        id<SEGApplicationProtocol> application = configuration.application;
+        id<SnapyrApplicationProtocol> application = configuration.application;
         if (application) {
             // Attach to application state change hooks
             NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
@@ -159,7 +159,7 @@ NSString *const kSEGCachedSettingsFilename = @"analytics.settings.v2.plist";
 
 - (void)handleAppStateNotification:(NSString *)notificationName
 {
-    SEGLog(@"Application state change notification: %@", notificationName);
+    SLog(@"Application state change notification: %@", notificationName);
     static NSDictionary *selectorMapping;
     static dispatch_once_t selectorMappingOnce;
     dispatch_once(&selectorMappingOnce, ^{
@@ -322,9 +322,9 @@ NSString *const kSEGCachedSettingsFilename = @"analytics.settings.v2.plist";
 - (NSString *)loadOrGenerateAnonymousID:(BOOL)reset
 {
 #if TARGET_OS_TV
-    NSString *anonymousId = [self.userDefaultsStorage stringForKey:SEGAnonymousIdKey];
+    NSString *anonymousId = [self.userDefaultsStorage stringForKey:SnapyrAnonymousIdKey];
 #else
-    NSString *anonymousId = [self.fileStorage stringForKey:kSEGAnonymousIdFilename];
+    NSString *anonymousId = [self.fileStorage stringForKey:kSnapyrAnonymousIdFilename];
 #endif
 
     if (!anonymousId || reset) {
@@ -332,11 +332,11 @@ NSString *const kSEGCachedSettingsFilename = @"analytics.settings.v2.plist";
         // identifierForVendor (iOS6 and later, can't be changed on logout),
         // or MAC address (blocked in iOS 7). For more info see https://segment.io/libraries/ios#ids
         anonymousId = GenerateUUIDString();
-        SEGLog(@"New anonymousId: %@", anonymousId);
+        SLog(@"New anonymousId: %@", anonymousId);
 #if TARGET_OS_TV
-        [self.userDefaultsStorage setString:anonymousId forKey:SEGAnonymousIdKey];
+        [self.userDefaultsStorage setString:anonymousId forKey:SnapyrAnonymousIdKey];
 #else
-        [self.fileStorage setString:anonymousId forKey:kSEGAnonymousIdFilename];
+        [self.fileStorage setString:anonymousId forKey:kSnapyrAnonymousIdFilename];
 #endif
     }
     
@@ -347,9 +347,9 @@ NSString *const kSEGCachedSettingsFilename = @"analytics.settings.v2.plist";
 {
     self.cachedAnonymousId = anonymousId;
 #if TARGET_OS_TV
-    [self.userDefaultsStorage setString:anonymousId forKey:SEGAnonymousIdKey];
+    [self.userDefaultsStorage setString:anonymousId forKey:SnapyrAnonymousIdKey];
 #else
-    [self.fileStorage setString:anonymousId forKey:kSEGAnonymousIdFilename];
+    [self.fileStorage setString:anonymousId forKey:kSnapyrAnonymousIdFilename];
 #endif
 }
 
@@ -364,9 +364,9 @@ NSString *const kSEGCachedSettingsFilename = @"analytics.settings.v2.plist";
 {
     if (!_cachedSettings) {
 #if TARGET_OS_TV
-        _cachedSettings = [self.userDefaultsStorage dictionaryForKey:kSEGCachedSettingsFilename] ?: @{};
+        _cachedSettings = [self.userDefaultsStorage dictionaryForKey:kSnapyrCachedSettingsFilename] ?: @{};
 #else
-        _cachedSettings = [self.fileStorage dictionaryForKey:kSEGCachedSettingsFilename] ?: @{};
+        _cachedSettings = [self.fileStorage dictionaryForKey:kSnapyrCachedSettingsFilename] ?: @{};
 #endif
     }
     
@@ -382,9 +382,9 @@ NSString *const kSEGCachedSettingsFilename = @"analytics.settings.v2.plist";
     }
     
 #if TARGET_OS_TV
-    [self.userDefaultsStorage setDictionary:_cachedSettings forKey:kSEGCachedSettingsFilename];
+    [self.userDefaultsStorage setDictionary:_cachedSettings forKey:kSnapyrCachedSettingsFilename];
 #else
-    [self.fileStorage setDictionary:_cachedSettings forKey:kSEGCachedSettingsFilename];
+    [self.fileStorage setDictionary:_cachedSettings forKey:kSnapyrCachedSettingsFilename];
 #endif
 
     [self updateIntegrationsWithSettings:settings[@"integrations"]];
@@ -393,7 +393,7 @@ NSString *const kSEGCachedSettingsFilename = @"analytics.settings.v2.plist";
 - (nonnull NSArray<id<SnapyrMiddleware>> *)middlewareForIntegrationKey:(NSString *)key
 {
     NSMutableArray *result = [[NSMutableArray alloc] init];
-    for (SEGDestinationMiddleware *container in self.configuration.destinationMiddleware) {
+    for (SnapyrDestinationMiddleware *container in self.configuration.destinationMiddleware) {
         if ([container.integrationKey isEqualToString:key]) {
             [result addObjectsFromArray:container.middleware];
         }
@@ -427,11 +427,11 @@ NSString *const kSEGCachedSettingsFilename = @"analytics.settings.v2.plist";
                     
                     // setup integration middleware
                     NSArray<id<SnapyrMiddleware>> *middleware = [self middlewareForIntegrationKey:key];
-                    self.integrationMiddleware[key] = [[SEGMiddlewareRunner alloc] initWithMiddleware:middleware];
+                    self.integrationMiddleware[key] = [[SnapyrMiddlewareRunner alloc] initWithMiddleware:middleware];
                 }
                 [[NSNotificationCenter defaultCenter] postNotificationName:SnapyrAnalyticsIntegrationDidStart object:key userInfo:nil];
             } else {
-                SEGLog(@"No settings for %@. Skipping.", key);
+                SLog(@"No settings for %@. Skipping.", key);
             }
         }
         [self flushMessageQueue];
@@ -534,7 +534,7 @@ NSString *const kSEGCachedSettingsFilename = @"analytics.settings.v2.plist";
         } else {
             NSString *msg = [NSString stringWithFormat: @"Value for `%@` in integration options is supposed to be a boolean or dictionary and it is not!"
                              "This is likely due to a user-added value in `integrations` that overwrites a value received from the server", key];
-            SEGLog(msg);
+            SLog(msg);
             NSAssert(NO, msg);
         }
     } else if (options[@"All"]) {
@@ -577,39 +577,39 @@ NSString *const kSEGCachedSettingsFilename = @"analytics.settings.v2.plist";
  I also opted to not put this as a utility function because we shouldn't be doing this in the first place,
  so consider it a one-off.  If you find yourself needing to do this again, lets talk about a refactor.
  */
-- (SEGEventType)eventTypeFromSelector:(SEL)selector
+- (SnapyrEventType)eventTypeFromSelector:(SEL)selector
 {
     NSString *selectorString = NSStringFromSelector(selector);
-    SEGEventType result = SEGEventTypeUndefined;
+    SnapyrEventType result = SnapyrEventTypeUndefined;
     
     if ([selectorString hasPrefix:@"identify"]) {
-        result = SEGEventTypeIdentify;
+        result = SnapyrEventTypeIdentify;
     } else if ([selectorString hasPrefix:@"track"]) {
-        result = SEGEventTypeTrack;
+        result = SnapyrEventTypeTrack;
     } else if ([selectorString hasPrefix:@"screen"]) {
-        result = SEGEventTypeScreen;
+        result = SnapyrEventTypeScreen;
     } else if ([selectorString hasPrefix:@"group"]) {
-        result = SEGEventTypeGroup;
+        result = SnapyrEventTypeGroup;
     } else if ([selectorString hasPrefix:@"alias"]) {
-        result = SEGEventTypeAlias;
+        result = SnapyrEventTypeAlias;
     } else if ([selectorString hasPrefix:@"reset"]) {
-        result = SEGEventTypeReset;
+        result = SnapyrEventTypeReset;
     } else if ([selectorString hasPrefix:@"flush"]) {
-        result = SEGEventTypeFlush;
+        result = SnapyrEventTypeFlush;
     } else if ([selectorString hasPrefix:@"receivedRemoteNotification"]) {
-        result = SEGEventTypeReceivedRemoteNotification;
+        result = SnapyrEventTypeReceivedRemoteNotification;
     } else if ([selectorString hasPrefix:@"failedToRegisterForRemoteNotificationsWithError"]) {
-        result = SEGEventTypeFailedToRegisterForRemoteNotifications;
+        result = SnapyrEventTypeFailedToRegisterForRemoteNotifications;
     } else if ([selectorString hasPrefix:@"registeredForRemoteNotificationsWithDeviceToken"]) {
-        result = SEGEventTypeRegisteredForRemoteNotifications;
+        result = SnapyrEventTypeRegisteredForRemoteNotifications;
     } else if ([selectorString hasPrefix:@"handleActionWithIdentifier"]) {
-        result = SEGEventTypeHandleActionWithForRemoteNotification;
+        result = SnapyrEventTypeHandleActionWithForRemoteNotification;
     } else if ([selectorString hasPrefix:@"continueUserActivity"]) {
-        result = SEGEventTypeContinueUserActivity;
+        result = SnapyrEventTypeContinueUserActivity;
     } else if ([selectorString hasPrefix:@"openURL"]) {
-        result = SEGEventTypeOpenURL;
+        result = SnapyrEventTypeOpenURL;
     } else if ([selectorString hasPrefix:@"application"]) {
-        result = SEGEventTypeApplicationLifecycle;
+        result = SnapyrEventTypeApplicationLifecycle;
     }
 
     return result;
@@ -618,36 +618,36 @@ NSString *const kSEGCachedSettingsFilename = @"analytics.settings.v2.plist";
 - (void)invokeIntegration:(id<SnapyrIntegration>)integration key:(NSString *)key selector:(SEL)selector arguments:(NSArray *)arguments options:(NSDictionary *)options
 {
     if (![integration respondsToSelector:selector]) {
-        SEGLog(@"Not sending call to %@ because it doesn't respond to %@.", key, NSStringFromSelector(selector));
+        SLog(@"Not sending call to %@ because it doesn't respond to %@.", key, NSStringFromSelector(selector));
         return;
     }
 
     if (![[self class] isIntegration:key enabledInOptions:options[@"integrations"]]) {
-        SEGLog(@"Not sending call to %@ because it is disabled in options.", key);
+        SLog(@"Not sending call to %@ because it is disabled in options.", key);
         return;
     }
     
-    SEGEventType eventType = [self eventTypeFromSelector:selector];
-    if (eventType == SEGEventTypeTrack) {
+    SnapyrEventType eventType = [self eventTypeFromSelector:selector];
+    if (eventType == SnapyrEventTypeTrack) {
         SnapyrTrackPayload *eventPayload = arguments[0];
         BOOL enabled = [[self class] isTrackEvent:eventPayload.event enabledForIntegration:key inPlan:self.cachedSettings[@"plan"]];
         if (!enabled) {
-            SEGLog(@"Not sending call to %@ because it is disabled in plan.", key);
+            SLog(@"Not sending call to %@ because it is disabled in plan.", key);
             return;
         }
     }
 
     NSMutableArray *newArguments = [arguments mutableCopy];
 
-    if (eventType != SEGEventTypeUndefined) {
-        SEGMiddlewareRunner *runner = self.integrationMiddleware[key];
+    if (eventType != SnapyrEventTypeUndefined) {
+        SnapyrMiddlewareRunner *runner = self.integrationMiddleware[key];
         if (runner.middlewares.count > 0) {
             SnapyrPayload *payload = nil;
             // things like flush have no args.
             if (arguments.count > 0) {
                 payload = arguments[0];
             }
-            SnapyrContext *context = [[[SnapyrContext alloc] initWithAnalytics:self.analytics] modify:^(id<SEGMutableContext> _Nonnull ctx) {
+            SnapyrContext *context = [[[SnapyrContext alloc] initWithAnalytics:self.analytics] modify:^(id<SnapyrMutableContext> _Nonnull ctx) {
                 ctx.eventType = eventType;
                 ctx.payload = payload;
             }];
@@ -660,7 +660,7 @@ NSString *const kSEGCachedSettingsFilename = @"analytics.settings.v2.plist";
         }
     }
     
-    SEGLog(@"Running: %@ with arguments %@ on integration: %@", NSStringFromSelector(selector), newArguments, key);
+    SLog(@"Running: %@ with arguments %@ on integration: %@", NSStringFromSelector(selector), newArguments, key);
     NSInvocation *invocation = [self invocationForSelector:selector arguments:newArguments];
     [invocation invokeWithTarget:integration];
 }
@@ -683,7 +683,7 @@ NSString *const kSEGCachedSettingsFilename = @"analytics.settings.v2.plist";
 - (void)queueSelector:(SEL)selector arguments:(NSArray *)arguments options:(NSDictionary *)options
 {
     NSArray *obj = @[ NSStringFromSelector(selector), arguments ?: @[], options ?: @{} ];
-    SEGLog(@"Queueing: %@", obj);
+    SLog(@"Queueing: %@", obj);
     [_messageQueue addObject:obj];
 }
 
@@ -715,77 +715,77 @@ NSString *const kSEGCachedSettingsFilename = @"analytics.settings.v2.plist";
 @end
 
 
-@implementation SnapyrIntegrationsManager (SEGMiddleware)
+@implementation SnapyrIntegrationsManager (SnapyrMiddleware)
 
 - (void)context:(SnapyrContext *)context next:(void (^_Nonnull)(SnapyrContext *_Nullable))next
 {
     switch (context.eventType) {
-        case SEGEventTypeIdentify: {
+        case SnapyrEventTypeIdentify: {
             SnapyrIdentifyPayload *p = (SnapyrIdentifyPayload *)context.payload;
             [self identify:p];
             break;
         }
-        case SEGEventTypeTrack: {
+        case SnapyrEventTypeTrack: {
             SnapyrTrackPayload *p = (SnapyrTrackPayload *)context.payload;
             [self track:p];
             break;
         }
-        case SEGEventTypeScreen: {
+        case SnapyrEventTypeScreen: {
             SnapyrScreenPayload *p = (SnapyrScreenPayload *)context.payload;
             [self screen:p];
             break;
         }
-        case SEGEventTypeGroup: {
+        case SnapyrEventTypeGroup: {
             SnapyrGroupPayload *p = (SnapyrGroupPayload *)context.payload;
             [self group:p];
             break;
         }
-        case SEGEventTypeAlias: {
+        case SnapyrEventTypeAlias: {
             SnapyrAliasPayload *p = (SnapyrAliasPayload *)context.payload;
             [self alias:p];
             break;
         }
-        case SEGEventTypeReset:
+        case SnapyrEventTypeReset:
             [self reset];
             break;
-        case SEGEventTypeFlush:
+        case SnapyrEventTypeFlush:
             [self flush];
             break;
-        case SEGEventTypeReceivedRemoteNotification:
+        case SnapyrEventTypeReceivedRemoteNotification:
             [self receivedRemoteNotification:
-                      [(SEGRemoteNotificationPayload *)context.payload userInfo]];
+                      [(SnapyrRemoteNotificationPayload *)context.payload userInfo]];
             break;
-        case SEGEventTypeFailedToRegisterForRemoteNotifications:
+        case SnapyrEventTypeFailedToRegisterForRemoteNotifications:
             [self failedToRegisterForRemoteNotificationsWithError:
-                      [(SEGRemoteNotificationPayload *)context.payload error]];
+                      [(SnapyrRemoteNotificationPayload *)context.payload error]];
             break;
-        case SEGEventTypeRegisteredForRemoteNotifications:
+        case SnapyrEventTypeRegisteredForRemoteNotifications:
             [self registeredForRemoteNotificationsWithDeviceToken:
-                      [(SEGRemoteNotificationPayload *)context.payload deviceToken]];
+                      [(SnapyrRemoteNotificationPayload *)context.payload deviceToken]];
             break;
-        case SEGEventTypeHandleActionWithForRemoteNotification: {
-            SEGRemoteNotificationPayload *payload = (SEGRemoteNotificationPayload *)context.payload;
+        case SnapyrEventTypeHandleActionWithForRemoteNotification: {
+            SnapyrRemoteNotificationPayload *payload = (SnapyrRemoteNotificationPayload *)context.payload;
             [self handleActionWithIdentifier:payload.actionIdentifier
                        forRemoteNotification:payload.userInfo];
             break;
         }
-        case SEGEventTypeContinueUserActivity:
+        case SnapyrEventTypeContinueUserActivity:
             [self continueUserActivity:
-                      [(SEGContinueUserActivityPayload *)context.payload activity]];
+                      [(SnapyrContinueUserActivityPayload *)context.payload activity]];
             break;
-        case SEGEventTypeOpenURL: {
-            SEGOpenURLPayload *payload = (SEGOpenURLPayload *)context.payload;
+        case SnapyrEventTypeOpenURL: {
+            SnapyrOpenURLPayload *payload = (SnapyrOpenURLPayload *)context.payload;
             [self openURL:payload.url options:payload.options];
             break;
         }
-        case SEGEventTypeApplicationLifecycle:
+        case SnapyrEventTypeApplicationLifecycle:
             [self handleAppStateNotification:
-                      [(SEGApplicationLifecyclePayload *)context.payload notificationName]];
+                      [(SnapyrApplicationLifecyclePayload *)context.payload notificationName]];
             break;
         default:
-        case SEGEventTypeUndefined:
+        case SnapyrEventTypeUndefined:
             NSAssert(NO, @"Received context with undefined event type %@", context);
-            SEGLog(@"[ERROR]: Received context with undefined event type %@", context);
+            SLog(@"[ERROR]: Received context with undefined event type %@", context);
             break;
     }
     next(context);

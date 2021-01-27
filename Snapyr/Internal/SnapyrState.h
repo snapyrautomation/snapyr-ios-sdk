@@ -12,13 +12,13 @@ NS_ASSUME_NONNULL_BEGIN
 
 @class SnapyrAnalyticsConfiguration;
 
-@interface SEGUserInfo: NSObject
+@interface SnapyrUserInfo: NSObject
 @property (nonatomic, strong) NSString *anonymousId;
 @property (nonatomic, strong, nullable) NSString *userId;
 @property (nonatomic, strong, nullable) NSDictionary *traits;
 @end
 
-@interface SEGPayloadContext: NSObject
+@interface SnapyrPayloadContext: NSObject
 @property (nonatomic, readonly) NSDictionary *payload;
 @property (nonatomic, strong, nullable) NSDictionary *referrer;
 @property (nonatomic, strong, nullable) NSString *deviceToken;
@@ -31,8 +31,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface SnapyrState : NSObject
 
-@property (nonatomic, readonly) SEGUserInfo *userInfo;
-@property (nonatomic, readonly) SEGPayloadContext *context;
+@property (nonatomic, readonly) SnapyrUserInfo *userInfo;
+@property (nonatomic, readonly) SnapyrPayloadContext *context;
 
 @property (nonatomic, strong, nullable) SnapyrAnalyticsConfiguration *configuration;
 

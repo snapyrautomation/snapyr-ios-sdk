@@ -28,17 +28,17 @@
 @end
 
 
-@implementation SEGApplicationLifecyclePayload
+@implementation SnapyrApplicationLifecyclePayload
 @end
 
 
-@implementation SEGRemoteNotificationPayload
+@implementation SnapyrRemoteNotificationPayload
 @end
 
 
-@implementation SEGContinueUserActivityPayload
+@implementation SnapyrContinueUserActivityPayload
 @end
 
 
-@implementation SEGOpenURLPayload
+@implementation SnapyrOpenURLPayload
 @end

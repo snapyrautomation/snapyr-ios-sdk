@@ -19,7 +19,7 @@ NS_SWIFT_NAME(Payload)
 
 
 NS_SWIFT_NAME(ApplicationLifecyclePayload)
-@interface SEGApplicationLifecyclePayload : SnapyrPayload
+@interface SnapyrApplicationLifecyclePayload : SnapyrPayload
 
 @property (nonatomic, strong) NSString *notificationName;
 
@@ -30,14 +30,14 @@ NS_SWIFT_NAME(ApplicationLifecyclePayload)
 
 
 NS_SWIFT_NAME(ContinueUserActivityPayload)
-@interface SEGContinueUserActivityPayload : SnapyrPayload
+@interface SnapyrContinueUserActivityPayload : SnapyrPayload
 
 @property (nonatomic, strong) NSUserActivity *activity;
 
 @end
 
 NS_SWIFT_NAME(OpenURLPayload)
-@interface SEGOpenURLPayload : SnapyrPayload
+@interface SnapyrOpenURLPayload : SnapyrPayload
 
 @property (nonatomic, strong) NSURL *url;
 @property (nonatomic, strong) NSDictionary *options;
@@ -48,19 +48,19 @@ NS_ASSUME_NONNULL_END
 
 
 NS_SWIFT_NAME(RemoteNotificationPayload)
-@interface SEGRemoteNotificationPayload : SnapyrPayload
+@interface SnapyrRemoteNotificationPayload : SnapyrPayload
 
-// SEGEventTypeHandleActionWithForRemoteNotification
+// SnapyrEventTypeHandleActionWithForRemoteNotification
 @property (nonatomic, strong, nullable) NSString *actionIdentifier;
 
-// SEGEventTypeHandleActionWithForRemoteNotification
-// SEGEventTypeReceivedRemoteNotification
+// SnapyrEventTypeHandleActionWithForRemoteNotification
+// SnapyrEventTypeReceivedRemoteNotification
 @property (nonatomic, strong, nullable) NSDictionary *userInfo;
 
-// SEGEventTypeFailedToRegisterForRemoteNotifications
+// SnapyrEventTypeFailedToRegisterForRemoteNotifications
 @property (nonatomic, strong, nullable) NSError *error;
 
-// SEGEventTypeRegisteredForRemoteNotifications
+// SnapyrEventTypeRegisteredForRemoteNotifications
 @property (nonatomic, strong, nullable) NSData *deviceToken;
 
 @end

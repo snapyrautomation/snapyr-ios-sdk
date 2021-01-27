@@ -6,7 +6,7 @@
 NS_ASSUME_NONNULL_BEGIN
 
 
-NS_SWIFT_NAME(SegmentIntegrationFactory)
+NS_SWIFT_NAME(SnapyrIntegrationFactory)
 @interface SnapyrSnapyrIntegrationFactory : NSObject <SnapyrIntegrationFactory>
 
 @property (nonatomic, strong) SnapyrHTTPClient *client;

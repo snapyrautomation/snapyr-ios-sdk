@@ -6,7 +6,7 @@
 #import "SnapyrUtils.h"
 
 NS_ASSUME_NONNULL_BEGIN
-@interface SEGWebhookIntegration : NSObject <SnapyrIntegration>
+@interface SnapyrWebhookIntegration : NSObject <SnapyrIntegration>
 
 @property (nonatomic, strong) SnapyrHTTPClient *client;
 @property (nonatomic, strong) NSString *webhookUrl;
@@ -20,7 +20,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 NS_ASSUME_NONNULL_END
 
-@implementation SEGWebhookIntegration
+@implementation SnapyrWebhookIntegration
 
 - (instancetype)initWithAnalytics:(SnapyrAnalytics *)analytics httpClient:(SnapyrHTTPClient *)client webhookUrl:(NSString *)webhookUrl name:(NSString *)name {
     if (self = [super init]) {
@@ -54,14 +54,14 @@ NS_ASSUME_NONNULL_END
         exception = exc;
     }
     if (error || exception) {
-        SEGLog(@"Error serializing JSON for upload to webhook %@", error);
+        SLog(@"Error serializing JSON for upload to webhook %@", error);
         return;
     }
 
     NSURLSessionUploadTask *task = [session uploadTaskWithRequest:request fromData:payload completionHandler:^(NSData *_Nullable data, NSURLResponse *_Nullable response, NSError *_Nullable error) {
         if (error) {
             // Network error. Retry.
-            SEGLog(@"Error uploading request %@.", error);
+            SLog(@"Error uploading request %@.", error);
             return;
         }
 
@@ -72,22 +72,22 @@ NS_ASSUME_NONNULL_END
         }
         if (code < 400) {
             // 3xx response codes. Retry.
-            SEGLog(@"Server responded with unexpected HTTP code %zd.", code);
+            SLog(@"Server responded with unexpected HTTP code %zd.", code);
             return;
         }
         if (code == 429) {
             // 429 response codes. Retry.
-            SEGLog(@"Server limited client with response code %zd.", code);
+            SLog(@"Server limited client with response code %zd.", code);
             return;
         }
         if (code < 500) {
             // non-429 4xx response codes. Don't retry.
-            SEGLog(@"Server rejected payload with HTTP code %zd.", code);
+            SLog(@"Server rejected payload with HTTP code %zd.", code);
             return;
         }
 
         // 5xx response codes. Retry.
-        SEGLog(@"Server error with HTTP code %zd.", code);
+        SLog(@"Server error with HTTP code %zd.", code);
     }];
     [task resume];
 }
@@ -118,7 +118,7 @@ NS_ASSUME_NONNULL_END
     [payload setValue:[context copy] forKey:@"context"];
 
     [self dispatchBackground:^{
-        SEGLog(@"%@ Enqueueing payload %@ through %@", self, type, self.name);
+        SLog(@"%@ Enqueueing payload %@ through %@", self, type, self.name);
         NSDictionary *queuePayload = [payload copy];
         [self sendPayloadToWebhook:queuePayload];
     }];
@@ -190,7 +190,7 @@ NS_ASSUME_NONNULL_END
 
 @end
 
-@implementation SEGWebhookIntegrationFactory
+@implementation SnapyrWebhookIntegrationFactory
 - (instancetype)initWithName:(NSString *)name webhookUrl:(NSString *)webhookUrl {
     if (self = [super init]) {
         _name = name;
@@ -201,7 +201,7 @@ NS_ASSUME_NONNULL_END
 
 - (id <SnapyrIntegration>)createWithSettings:(NSDictionary *)settings forAnalytics:(SnapyrAnalytics *)analytics {
     SnapyrHTTPClient *httpClient = [[SnapyrHTTPClient alloc] initWithRequestFactory:nil];
-    return [[SEGWebhookIntegration alloc] initWithAnalytics:analytics httpClient:httpClient webhookUrl:self.webhookUrl name:self.name];
+    return [[SnapyrWebhookIntegration alloc] initWithAnalytics:analytics httpClient:httpClient webhookUrl:self.webhookUrl name:self.name];
 }
 
 - (NSString *)key {

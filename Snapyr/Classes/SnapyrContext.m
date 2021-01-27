@@ -9,9 +9,9 @@
 #import "SnapyrContext.h"
 
 
-@interface SnapyrContext () <SEGMutableContext>
+@interface SnapyrContext () <SnapyrMutableContext>
 
-@property (nonatomic) SEGEventType eventType;
+@property (nonatomic) SnapyrEventType eventType;
 @property (nonatomic, nullable) NSString *userId;
 @property (nonatomic, nullable) NSString *anonymousId;
 @property (nonatomic, nullable) SnapyrPayload *payload;
@@ -46,7 +46,7 @@
     return self;
 }
 
-- (SnapyrContext *_Nonnull)modify:(void (^_Nonnull)(id<SEGMutableContext> _Nonnull ctx))modify
+- (SnapyrContext *_Nonnull)modify:(void (^_Nonnull)(id<SnapyrMutableContext> _Nonnull ctx))modify
 {
     // We're also being a bit clever here by implementing SnapyrContext actually as a mutable
     // object but hiding that implementation detail from consumer of the API.

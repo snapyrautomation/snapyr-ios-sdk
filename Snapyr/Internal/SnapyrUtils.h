@@ -60,7 +60,7 @@ void snapyr_dispatch_specific_sync(dispatch_queue_t queue, dispatch_block_t bloc
 
 // JSON Utils
 
-JSON_DICT SEGCoerceDictionary(NSDictionary *_Nullable dict);
+JSON_DICT SnapyrCoerceDictionary(NSDictionary *_Nullable dict);
 
 NSString *_Nullable SEGIDFA(void);
 
@@ -71,15 +71,15 @@ NSString *SEGEventNameForScreenTitle(NSString *title);
 @end
 
 // Deep copy and check NSCoding conformance
-@protocol SEGSerializableDeepCopy <NSObject>
+@protocol SnapyrSerializableDeepCopy <NSObject>
 -(id _Nullable) serializableMutableDeepCopy;
 -(id _Nullable) serializableDeepCopy;
 @end
 
-@interface NSDictionary(SerializableDeepCopy) <SEGSerializableDeepCopy>
+@interface NSDictionary(SerializableDeepCopy) <SnapyrSerializableDeepCopy>
 @end
 
-@interface NSArray(SerializableDeepCopy) <SEGSerializableDeepCopy>
+@interface NSArray(SerializableDeepCopy) <SnapyrSerializableDeepCopy>
 @end
 
 

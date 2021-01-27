@@ -15,7 +15,7 @@
 #endif
 
 NS_SWIFT_NAME(ApplicationProtocol)
-@protocol SEGApplicationProtocol <NSObject>
+@protocol SnapyrApplicationProtocol <NSObject>
 
 #if TARGET_OS_IPHONE
 @property (nullable, nonatomic, assign) id<UIApplicationDelegate> delegate;
@@ -27,26 +27,26 @@ NS_SWIFT_NAME(ApplicationProtocol)
 @end
 
 #if TARGET_OS_IOS
-@interface UIApplication (SEGApplicationProtocol) <SEGApplicationProtocol>
+@interface UIApplication (SnapyrApplicationProtocol) <SnapyrApplicationProtocol>
 @end
 #elif TARGET_OS_OSX
-@interface NSApplication (SEGApplicationProtocol) <SEGApplicationProtocol>
+@interface NSApplication (SnapyrApplicationProtocol) <SnapyrApplicationProtocol>
 @end
 #endif
 
 
-typedef NSMutableURLRequest *_Nonnull (^SEGRequestFactory)(NSURL *_Nonnull);
-typedef NSString *_Nonnull (^SEGAdSupportBlock)(void);
+typedef NSMutableURLRequest *_Nonnull (^SnapyrRequestFactory)(NSURL *_Nonnull);
+typedef NSString *_Nonnull (^SnapyrAdSupportBlock)(void);
 
 typedef void(^SnapyrActionHandlerBlock)(NSDictionary*_Nonnull action);
 
 @protocol SnapyrIntegrationFactory;
 @protocol SnapyrCrypto;
 @protocol SnapyrMiddleware;
-@protocol SEGEdgeFunctionMiddleware;
+@protocol SnapyrEdgeFunctionMiddleware;
 
 @class SnapyrAnalyticsExperimental;
-@class SEGDestinationMiddleware;
+@class SnapyrDestinationMiddleware;
 
 /**
  * This object provides a set of properties to control various policies of the analytics client. Other than `writeKey`, these properties can be changed at any time.
@@ -152,7 +152,7 @@ NS_SWIFT_NAME(AnalyticsConfiguration)
 /**
  * Set a custom request factory.
  */
-@property (nonatomic, strong, nullable) SEGRequestFactory requestFactory;
+@property (nonatomic, strong, nullable) SnapyrRequestFactory requestFactory;
 
 /**
  * Set a custom crypto
@@ -180,13 +180,13 @@ NS_SWIFT_NAME(AnalyticsConfiguration)
 /**
  * Set custom destination middleware. Will be run before the associated integration for a destination.
  */
-@property (nonatomic, strong, nullable) NSArray<SEGDestinationMiddleware *> *destinationMiddleware;
+@property (nonatomic, strong, nullable) NSArray<SnapyrDestinationMiddleware *> *destinationMiddleware;
 
 /**
  * Sets edge function middleware.  This takes precendence over native middlewares.  Any middleware set via `sourceMiddleware`
  * or `destinationMiddleware` will be removed.
  */
-@property (nonatomic, strong, nullable) id<SEGEdgeFunctionMiddleware> edgeFunctionMiddleware;
+@property (nonatomic, strong, nullable) id<SnapyrEdgeFunctionMiddleware> edgeFunctionMiddleware;
 
 /**
  * Register a factory that can be used to create an integration.
@@ -196,7 +196,7 @@ NS_SWIFT_NAME(AnalyticsConfiguration)
 /**
  * Leave this nil for iOS extensions, otherwise set to UIApplication.sharedApplication.
  */
-@property (nonatomic, strong, nullable) id<SEGApplicationProtocol> application;
+@property (nonatomic, strong, nullable) id<SnapyrApplicationProtocol> application;
 
 /**
  * A dictionary of filters to redact payloads before they are sent.
@@ -244,7 +244,7 @@ NS_SWIFT_NAME(AnalyticsConfiguration)
  *          return [[ASIdentifierManager sharedManager] advertisingIdentifier];
  *      }
  */
-@property (nonatomic, strong, nullable) SEGAdSupportBlock adSupportBlock;
+@property (nonatomic, strong, nullable) SnapyrAdSupportBlock adSupportBlock;
 
 /**
  Enable experimental features within the Segment Analytics-iOS library.

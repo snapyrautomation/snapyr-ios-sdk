@@ -4,7 +4,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 NS_SWIFT_NAME(WebhookIntegrationFactory)
-@interface SEGWebhookIntegrationFactory : NSObject <SnapyrIntegrationFactory>
+@interface SnapyrWebhookIntegrationFactory : NSObject <SnapyrIntegrationFactory>
 
 @property (nonatomic, copy) NSString *name;
 @property (nonatomic, copy) NSString *webhookUrl;

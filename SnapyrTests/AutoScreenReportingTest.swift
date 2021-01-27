@@ -61,7 +61,7 @@ class AutoScreenReportingTests: XCTestCase {
     }
     
     func testTopViewControllerReturnsCurrentSelectedViewController() {
-        class CustomContainerViewController: UIViewController, SEGScreenReporting {
+        class CustomContainerViewController: UIViewController, SnapyrScreenReporting {
             var selectedIndex: Int = 0
             var snapyr_mainViewController: UIViewController? {
                 return children[selectedIndex]

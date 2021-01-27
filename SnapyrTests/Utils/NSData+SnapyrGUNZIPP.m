@@ -9,7 +9,7 @@
 
 #import <zlib.h>
 #import <dlfcn.h>
-#import <Segment/NSData+SnapyrGZIP.h>
+#import <Snapyr/NSData+SnapyrGZIP.h>
 #import "NSData+SnapyrGUNZIPP.h"
 
 

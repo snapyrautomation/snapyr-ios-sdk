@@ -75,7 +75,7 @@
     }
     NSData *data = [self.defaults objectForKey:key];
     if (!data) {
-        SEGLog(@"WARNING: No data file for key %@", key);
+        SLog(@"WARNING: No data file for key %@", key);
         return nil;
     }
     return [self.crypto decrypt:data];

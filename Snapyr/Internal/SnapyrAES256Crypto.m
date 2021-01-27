@@ -71,7 +71,7 @@ static const NSUInteger kPBKDFRounds = 10000; // ~80ms on an iPhone 4
         NSError *error = [NSError errorWithDomain:kRNCryptManagerErrorDomain
                                              code:result
                                          userInfo:nil];
-        SEGLog(@"Unable to encrypt data", error);
+        SLog(@"Unable to encrypt data", error);
         return nil;
     }
     return cipherData;
@@ -101,7 +101,7 @@ static const NSUInteger kPBKDFRounds = 10000; // ~80ms on an iPhone 4
         NSError *error = [NSError errorWithDomain:kRNCryptManagerErrorDomain
                                              code:result
                                          userInfo:nil];
-        SEGLog(@"Unable to decrypt data", error);
+        SLog(@"Unable to decrypt data", error);
         return nil;
     }
     return decryptedData;
@@ -115,7 +115,7 @@ static const NSUInteger kPBKDFRounds = 10000; // ~80ms on an iPhone 4
                                     length,
                                     data.mutableBytes);
     if (result != kCCSuccess) {
-        SEGLog(@"Unable to generate random bytes: %d", result);
+        SLog(@"Unable to generate random bytes: %d", result);
     }
 
     return data;
@@ -139,7 +139,7 @@ static const NSUInteger kPBKDFRounds = 10000; // ~80ms on an iPhone 4
 
     // Do not log password here
     if (result != kCCSuccess) {
-        SEGLog(@"Unable to create AES key for password: %d", result);
+        SLog(@"Unable to create AES key for password: %d", result);
     }
 
     return derivedKey;

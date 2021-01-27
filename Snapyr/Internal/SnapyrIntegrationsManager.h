@@ -12,8 +12,8 @@
 /**
  * Filenames of "Application Support" files where essential data is stored.
  */
-extern NSString *_Nonnull const kSEGAnonymousIdFilename;
-extern NSString *_Nonnull const kSEGCachedSettingsFilename;
+extern NSString *_Nonnull const kSnapyrAnonymousIdFilename;
+extern NSString *_Nonnull const kSnapyrCachedSettingsFilename;
 
 /**
  * NSNotification name, that is posted after integrations are loaded.
@@ -40,6 +40,6 @@ NS_SWIFT_NAME(IntegrationsManager)
 @end
 
 
-@interface SnapyrIntegrationsManager (SEGMiddleware) <SnapyrMiddleware>
+@interface SnapyrIntegrationsManager (SnapyrMiddleware) <SnapyrMiddleware>
 
 @end

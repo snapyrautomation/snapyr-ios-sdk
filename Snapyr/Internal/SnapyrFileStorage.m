@@ -35,7 +35,7 @@
     NSURL *url = [self urlForKey:key];
     NSError *error = nil;
     if (![[NSFileManager defaultManager] removeItemAtURL:url error:&error]) {
-        SEGLog(@"Unable to remove key %@ - error removing file at path %@", key, url);
+        SLog(@"Unable to remove key %@ - error removing file at path %@", key, url);
     }
 }
 
@@ -43,7 +43,7 @@
 {
     NSError *error = nil;
     if (![[NSFileManager defaultManager] removeItemAtURL:self.folderURL error:&error]) {
-        SEGLog(@"ERROR: Unable to reset file storage. Path cannot be removed - %@", self.folderURL.path);
+        SLog(@"ERROR: Unable to reset file storage. Path cannot be removed - %@", self.folderURL.path);
     }
     [self createDirectoryAtURLIfNeeded:self.folderURL];
 }
@@ -69,7 +69,7 @@
     if (![url setResourceValue:@YES
                         forKey:NSURLIsExcludedFromBackupKey
                          error:&error]) {
-        SEGLog(@"Error excluding %@ from backup %@", [url lastPathComponent], error);
+        SLog(@"Error excluding %@ from backup %@", [url lastPathComponent], error);
     }
 }
 
@@ -78,7 +78,7 @@
     NSURL *url = [self urlForKey:key];
     NSData *data = [NSData dataWithContentsOfURL:url];
     if (!data) {
-        SEGLog(@"WARNING: No data file for key %@", key);
+        SLog(@"WARNING: No data file for key %@", key);
         return nil;
     }
     if (self.crypto) {
@@ -194,7 +194,7 @@
                 data = [self dataForKey:key];
                 result = [self jsonFromData:data needsConversion:&needsConversion];
             } @catch (NSException *e) {
-                SEGLog(@"Unable to convert data from plist object to json; Exception: %@, data: %@", e, data);
+                SLog(@"Unable to convert data from plist object to json; Exception: %@, data: %@", e, data);
 
                 [self removeKey:key];
                 result = nil;
@@ -231,7 +231,7 @@
     NSError *error = nil;
     NSData *data = [NSJSONSerialization dataWithJSONObject:json options:0 error:&error];
     if (error) {
-        SEGLog(@"Unable to serialize data from json object; %@, %@", error, json);
+        SLog(@"Unable to serialize data from json object; %@, %@", error, json);
     }
     return data;
 }
@@ -246,7 +246,7 @@
         if (result != nil) {
             *needsConversion = YES;
         } else {
-            SEGLog(@"Unable to parse json from data %@", error);
+            SLog(@"Unable to parse json from data %@", error);
         }
     }
     return result;
@@ -261,7 +261,7 @@
                                        withIntermediateDirectories:YES
                                                         attributes:nil
                                                              error:&error]) {
-            SEGLog(@"error: %@", error.localizedDescription);
+            SLog(@"error: %@", error.localizedDescription);
         }
     }
 }
@@ -278,10 +278,10 @@
                                                          options:0
                                                            error:&error];
     } @catch (NSException *e) {
-        SEGLog(@"Unable to serialize data from plist object; Exception: %@, plist: %@", e, plist);
+        SLog(@"Unable to serialize data from plist object; Exception: %@, plist: %@", e, plist);
     } @finally {
         if (error) {
-            SEGLog(@"Unable to serialize data from plist object; Error: %@, plist: %@", error, plist);
+            SLog(@"Unable to serialize data from plist object; Error: %@, plist: %@", error, plist);
         }
     }
     return data;
@@ -296,7 +296,7 @@
                                                           format:nil
                                                            error:&error];
     if (error) {
-        SEGLog(@"Unable to parse plist from data %@", error);
+        SLog(@"Unable to parse plist from data %@", error);
     }
     return plist;
 }

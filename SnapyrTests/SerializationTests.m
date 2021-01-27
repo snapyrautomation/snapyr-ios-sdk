@@ -7,27 +7,27 @@
 //
 
 @import XCTest;
-@import Snapyr.h;
+@import Snapyr;
 
 #pragma mark - Internal copy-overs for testing
 
-JSON_DICT SEGCoerceDictionary(NSDictionary *_Nullable dict);
+JSON_DICT SnapyrCoerceDictionary(NSDictionary *_Nullable dict);
 
 @interface NSJSONSerialization (Serializable)
 + (BOOL)isOfSerializableType:(id)obj;
 @end
 
-@protocol SEGSerializableDeepCopy <NSObject>
+@protocol SnapyrSerializableDeepCopy <NSObject>
 -(id _Nullable) serializableDeepCopy;
 @end
 
-@interface NSDictionary(SerializableDeepCopy) <SEGSerializableDeepCopy>
+@interface NSDictionary(SerializableDeepCopy) <SnapyrSerializableDeepCopy>
 @end
 
-@interface NSArray(SerializableDeepCopy) <SEGSerializableDeepCopy>
+@interface NSArray(SerializableDeepCopy) <SnapyrSerializableDeepCopy>
 @end
 
-@interface MyObject: NSObject <SEGSerializable>
+@interface MyObject: NSObject <SnapyrSerializable>
 @end
 
 @implementation MyObject
@@ -98,11 +98,11 @@ JSON_DICT SEGCoerceDictionary(NSDictionary *_Nullable dict);
     XCTAssertThrows([nonserializable serializableDeepCopy]);
     
     NSDictionary *testCoersion1 = @{@"test1": @[date], @"test2": url, @"test3": @1};
-    NSDictionary *coersionResult = SEGCoerceDictionary(testCoersion1);
+    NSDictionary *coersionResult = SnapyrCoerceDictionary(testCoersion1);
     XCTAssertNotNil(coersionResult);
     
     NSDictionary *testCoersion2 = @{@"test1": @[date], @"test2": url, @"test3": @1, @"test4": data};
-    XCTAssertThrows(SEGCoerceDictionary(testCoersion2));
+    XCTAssertThrows(SnapyrCoerceDictionary(testCoersion2));
     
     NSError *error = nil;
     NSData *json = [NSJSONSerialization dataWithJSONObject:coersionResult options:NSJSONWritingPrettyPrinted error:&error];

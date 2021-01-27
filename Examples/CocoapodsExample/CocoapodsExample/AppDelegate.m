@@ -6,7 +6,7 @@
 //  Copyright © 2016 Segment. All rights reserved.
 //
 
-#import <Segment/SnapyrAnalytics.h>
+#import <Snapyr/SnapyrAnalytics.h>
 #import "AppDelegate.h"
 
 
@@ -15,7 +15,7 @@
 @end
 
 // https://segment.com/segment-mobile/sources/ios_cocoapods_example/overview
-NSString *const SEGMENT_WRITE_KEY = @"zr5x22gUVBDM3hO3uHkbMkVe6Pd6sCna";
+NSString *const SNAPYR_WRITE_KEY = @"zr5x22gUVBDM3hO3uHkbMkVe6Pd6sCna";
 
 
 @implementation AppDelegate
@@ -24,7 +24,7 @@ NSString *const SEGMENT_WRITE_KEY = @"zr5x22gUVBDM3hO3uHkbMkVe6Pd6sCna";
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
     [SnapyrAnalytics debug:YES];
-    SnapyrAnalyticsConfiguration *configuration = [SnapyrAnalyticsConfiguration configurationWithWriteKey:SEGMENT_WRITE_KEY];
+    SnapyrAnalyticsConfiguration *configuration = [SnapyrAnalyticsConfiguration configurationWithWriteKey:SNAPYR_WRITE_KEY];
     configuration.trackApplicationLifecycleEvents = YES;
     configuration.flushAt = 1;
     [SnapyrAnalytics setupWithConfiguration:configuration];

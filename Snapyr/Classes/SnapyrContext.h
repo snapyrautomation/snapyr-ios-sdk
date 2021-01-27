@@ -9,43 +9,43 @@
 @import Foundation;
 #import "SnapyrIntegration.h"
 
-typedef NS_ENUM(NSInteger, SEGEventType) {
+typedef NS_ENUM(NSInteger, SnapyrEventType) {
     // Should not happen, but default state
-    SEGEventTypeUndefined,
+    SnapyrEventTypeUndefined,
     // Core Tracking Methods
-    SEGEventTypeIdentify,
-    SEGEventTypeTrack,
-    SEGEventTypeScreen,
-    SEGEventTypeGroup,
-    SEGEventTypeAlias,
+    SnapyrEventTypeIdentify,
+    SnapyrEventTypeTrack,
+    SnapyrEventTypeScreen,
+    SnapyrEventTypeGroup,
+    SnapyrEventTypeAlias,
 
     // General utility
-    SEGEventTypeReset,
-    SEGEventTypeFlush,
+    SnapyrEventTypeReset,
+    SnapyrEventTypeFlush,
 
     // Remote Notification
-    SEGEventTypeReceivedRemoteNotification,
-    SEGEventTypeFailedToRegisterForRemoteNotifications,
-    SEGEventTypeRegisteredForRemoteNotifications,
-    SEGEventTypeHandleActionWithForRemoteNotification,
+    SnapyrEventTypeReceivedRemoteNotification,
+    SnapyrEventTypeFailedToRegisterForRemoteNotifications,
+    SnapyrEventTypeRegisteredForRemoteNotifications,
+    SnapyrEventTypeHandleActionWithForRemoteNotification,
 
     // Application Lifecycle
-    SEGEventTypeApplicationLifecycle,
+    SnapyrEventTypeApplicationLifecycle,
     //    DidFinishLaunching,
-    //    SEGEventTypeApplicationDidEnterBackground,
-    //    SEGEventTypeApplicationWillEnterForeground,
-    //    SEGEventTypeApplicationWillTerminate,
-    //    SEGEventTypeApplicationWillResignActive,
-    //    SEGEventTypeApplicationDidBecomeActive,
+    //    SnapyrEventTypeApplicationDidEnterBackground,
+    //    SnapyrEventTypeApplicationWillEnterForeground,
+    //    SnapyrEventTypeApplicationWillTerminate,
+    //    SnapyrEventTypeApplicationWillResignActive,
+    //    SnapyrEventTypeApplicationDidBecomeActive,
 
     // Misc.
-    SEGEventTypeContinueUserActivity,
-    SEGEventTypeOpenURL,
+    SnapyrEventTypeContinueUserActivity,
+    SnapyrEventTypeOpenURL,
 
 } NS_SWIFT_NAME(EventType);
 
 @class SnapyrAnalytics;
-@protocol SEGMutableContext;
+@protocol SnapyrMutableContext;
 
 
 NS_SWIFT_NAME(Context)
@@ -57,7 +57,7 @@ NS_SWIFT_NAME(Context)
 // reference and logic (Thus prefixing with underscore). But
 // Right now it is required for integrations to work so I guess we'll leave it in.
 @property (nonatomic, readonly, nonnull) SnapyrAnalytics *_analytics;
-@property (nonatomic, readonly) SEGEventType eventType;
+@property (nonatomic, readonly) SnapyrEventType eventType;
 
 @property (nonatomic, readonly, nullable) NSError *error;
 @property (nonatomic, readonly, nullable) SnapyrPayload *payload;
@@ -65,13 +65,13 @@ NS_SWIFT_NAME(Context)
 
 - (instancetype _Nonnull)initWithAnalytics:(SnapyrAnalytics *_Nonnull)analytics;
 
-- (SnapyrContext *_Nonnull)modify:(void (^_Nonnull)(id<SEGMutableContext> _Nonnull ctx))modify;
+- (SnapyrContext *_Nonnull)modify:(void (^_Nonnull)(id<SnapyrMutableContext> _Nonnull ctx))modify;
 
 @end
 
-@protocol SEGMutableContext <NSObject>
+@protocol SnapyrMutableContext <NSObject>
 
-@property (nonatomic) SEGEventType eventType;
+@property (nonatomic) SnapyrEventType eventType;
 @property (nonatomic, nullable) SnapyrPayload *payload;
 @property (nonatomic, nullable) NSError *error;
 @property (nonatomic) BOOL debug;

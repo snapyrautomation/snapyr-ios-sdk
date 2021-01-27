@@ -10,7 +10,7 @@
 #import "SnapyrMiddleware.h"
 
 
-@implementation SEGDestinationMiddleware
+@implementation SnapyrDestinationMiddleware
 - (instancetype)initWithKey:(NSString *)integrationKey middleware:(NSArray<id<SnapyrMiddleware>> *)middleware
 {
     if (self = [super init]) {
@@ -21,9 +21,9 @@
 }
 @end
 
-@implementation SEGBlockMiddleware
+@implementation SnapyrBlockMiddleware
 
-- (instancetype)initWithBlock:(SEGMiddlewareBlock)block
+- (instancetype)initWithBlock:(SnapyrMiddlewareBlock)block
 {
     if (self = [super init]) {
         _block = block;
@@ -31,7 +31,7 @@
     return self;
 }
 
-- (void)context:(SnapyrContext *)context next:(SEGMiddlewareNext)next
+- (void)context:(SnapyrContext *)context next:(SnapyrMiddlewareNext)next
 {
     self.block(context, next);
 }
@@ -39,7 +39,7 @@
 @end
 
 
-@implementation SEGMiddlewareRunner
+@implementation SnapyrMiddlewareRunner
 
 - (instancetype)initWithMiddleware:(NSArray<id<SnapyrMiddleware>> *_Nonnull)middlewares
 {

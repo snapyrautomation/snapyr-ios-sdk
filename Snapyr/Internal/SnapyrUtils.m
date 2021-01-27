@@ -61,7 +61,7 @@ const NSString *snapyr_apiHost = @"snapyr_apihost";
                                                              options:0
                                                                error:&error];
     if (error) {
-        SEGLog(@"Unable to serialize data from plist object", error, plist);
+        SLog(@"Unable to serialize data from plist object", error, plist);
     }
     return data;
 }
@@ -74,7 +74,7 @@ const NSString *snapyr_apiHost = @"snapyr_apihost";
                                                           format:nil
                                                            error:&error];
     if (error) {
-        SEGLog(@"Unable to parse plist from data %@", error);
+        SLog(@"Unable to parse plist from data %@", error);
     }
     return plist;
 }
@@ -123,7 +123,7 @@ const NSString *snapyr_apiHost = @"snapyr_apihost";
                                               withTemplate:patterns[pattern]];
             
             if (matches > 0) {
-                SEGLog(@"%@ Redacted value from action: %@", self, pattern);
+                SLog(@"%@ Redacted value from action: %@", self, pattern);
             }
         }
         
@@ -389,10 +389,10 @@ NSDictionary *getLiveContext(SnapyrReachability *reachability, NSDictionary *ref
 }
 
 
-@interface SEGISO8601NanosecondDateFormatter: NSDateFormatter
+@interface SnapyrISO8601NanosecondDateFormatter: NSDateFormatter
 @end
 
-@implementation SEGISO8601NanosecondDateFormatter
+@implementation SnapyrISO8601NanosecondDateFormatter
 
 - (id)init
 {
@@ -403,7 +403,7 @@ NSDictionary *getLiveContext(SnapyrReachability *reachability, NSDictionary *ref
     return self;
 }
 
-const NSInteger __SEG_NANO_MAX_LENGTH = 9;
+const NSInteger __SNAPYR_NANO_MAX_LENGTH = 9;
 - (NSString * _Nonnull)stringFromDate:(NSDate *)date
 {
     NSCalendar *calendar = [NSCalendar currentCalendar];
@@ -413,10 +413,10 @@ const NSInteger __SEG_NANO_MAX_LENGTH = 9;
     NSMutableArray *stringComponents = [[genericDateString componentsSeparatedByString:@"."] mutableCopy];
     NSString *nanoSeconds = [NSString stringWithFormat:@"%li", (long)dateComponents.nanosecond];
     
-    if (nanoSeconds.length > __SEG_NANO_MAX_LENGTH) {
-        nanoSeconds = [nanoSeconds substringToIndex:__SEG_NANO_MAX_LENGTH];
+    if (nanoSeconds.length > __SNAPYR_NANO_MAX_LENGTH) {
+        nanoSeconds = [nanoSeconds substringToIndex:__SNAPYR_NANO_MAX_LENGTH];
     } else {
-        nanoSeconds = [nanoSeconds stringByPaddingToLength:__SEG_NANO_MAX_LENGTH withString:@"0" startingAtIndex:0];
+        nanoSeconds = [nanoSeconds stringByPaddingToLength:__SNAPYR_NANO_MAX_LENGTH withString:@"0" startingAtIndex:0];
     }
     
     NSString *result = [NSString stringWithFormat:@"%@.%@Z", stringComponents[0], nanoSeconds];
@@ -442,7 +442,7 @@ NSString *iso8601NanoFormattedString(NSDate *date)
     static NSDateFormatter *dateFormatter;
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
-        dateFormatter = [[SEGISO8601NanosecondDateFormatter alloc] init];
+        dateFormatter = [[SnapyrISO8601NanosecondDateFormatter alloc] init];
     });
     return [dateFormatter stringFromDate:date];
 }
@@ -521,7 +521,7 @@ void snapyr_dispatch_specific_sync(dispatch_queue_t queue,
     snapyr_dispatch_specific(queue, block, YES);
 }
 
-NSDictionary *SEGCoerceDictionary(NSDictionary *dict)
+NSDictionary *SnapyrCoerceDictionary(NSDictionary *dict)
 {
     // make sure that a new dictionary exists even if the input is null
     dict = dict ?: @{};
@@ -538,7 +538,7 @@ NSString *SEGEventNameForScreenTitle(NSString *title)
 @implementation NSJSONSerialization(Serializable)
 + (BOOL)isOfSerializableType:(id)obj
 {
-    if ([obj conformsToProtocol:@protocol(SEGSerializable)])
+    if ([obj conformsToProtocol:@protocol(SnapyrSerializable)])
         return YES;
     
     if ([obj isKindOfClass:[NSArray class]] ||
@@ -567,15 +567,15 @@ NSString *SEGEventNameForScreenTitle(NSString *title)
 #ifdef DEBUG
             NSAssert(FALSE, @"key `%@` is a %@ and can't be serialized for delivery.", key, className);
 #else
-            SEGLog(@"key `%@` is a %@ and can't be serializaed for delivery.", key, className);
+            SLog(@"key `%@` is a %@ and can't be serializaed for delivery.", key, className);
             // simply leave it out since we can't encode it anyway.
             continue;
 #endif
         }
         
-        if ([aValue conformsToProtocol:@protocol(SEGSerializableDeepCopy)]) {
+        if ([aValue conformsToProtocol:@protocol(SnapyrSerializableDeepCopy)]) {
             theCopy = [aValue serializableDeepCopy:mutable];
-        } else if ([aValue conformsToProtocol:@protocol(SEGSerializable)]) {
+        } else if ([aValue conformsToProtocol:@protocol(SnapyrSerializable)]) {
             theCopy = [aValue serializeToAppropriateType];
         } else if ([aValue conformsToProtocol:@protocol(NSCopying)]) {
             theCopy = [aValue copy];
@@ -618,15 +618,15 @@ NSString *SEGEventNameForScreenTitle(NSString *title)
 #ifdef DEBUG
             NSAssert(FALSE, @"found a %@ which can't be serialized for delivery.", className);
 #else
-            SEGLog(@"found a %@ which can't be serializaed for delivery.", className);
+            SLog(@"found a %@ which can't be serializaed for delivery.", className);
             // simply leave it out since we can't encode it anyway.
             continue;
 #endif
         }
 
-        if ([aValue conformsToProtocol:@protocol(SEGSerializableDeepCopy)]) {
+        if ([aValue conformsToProtocol:@protocol(SnapyrSerializableDeepCopy)]) {
             theCopy = [aValue serializableDeepCopy:mutable];
-        } else if ([aValue conformsToProtocol:@protocol(SEGSerializable)]) {
+        } else if ([aValue conformsToProtocol:@protocol(SnapyrSerializable)]) {
             theCopy = [aValue serializeToAppropriateType];
         } else if ([aValue conformsToProtocol:@protocol(NSCopying)]) {
             theCopy = [aValue copy];

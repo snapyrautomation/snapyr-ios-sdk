@@ -224,7 +224,7 @@ NS_SWIFT_NAME(Analytics)
 - (NSString *)getDeviceToken;
 
 /** Returns the configured Edge Function value */
-- (nullable id<SEGEdgeFunctionMiddleware>)edgeFunction;
+- (nullable id<SnapyrEdgeFunctionMiddleware>)edgeFunction;
 
 @end
 

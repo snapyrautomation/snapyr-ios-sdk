@@ -30,7 +30,7 @@
 #import "SnapyrReachability.h"
 
 
-NSString *const kSEGReachabilityChangedNotification = @"kSEGReachabilityChangedNotification";
+NSString *const kSnapyrReachabilityChangedNotification = @"kSnapyrReachabilityChangedNotification";
 
 
 @interface SnapyrReachability ()
@@ -421,18 +421,18 @@ static void TMReachabilityCallback(SCNetworkReachabilityRef target, SCNetworkRea
 
 #pragma mark - reachability status stuff
 
-- (SEGNetworkStatus)currentReachabilityStatus
+- (SnapyrNetworkStatus)currentReachabilityStatus
 {
     if ([self isReachable]) {
         if ([self isReachableViaWiFi])
-            return SEGReachableViaWiFi;
+            return SnapyrReachableViaWiFi;
 
 #if TARGET_OS_IPHONE
-        return SEGReachableViaWWAN;
+        return SnapyrReachableViaWWAN;
 #endif
     }
 
-    return SEGNotReachable;
+    return SnapyrNotReachable;
 }
 
 - (SCNetworkReachabilityFlags)reachabilityFlags
@@ -448,13 +448,13 @@ static void TMReachabilityCallback(SCNetworkReachabilityRef target, SCNetworkRea
 
 - (NSString *)currentReachabilityString
 {
-    SEGNetworkStatus temp = [self currentReachabilityStatus];
+    SnapyrNetworkStatus temp = [self currentReachabilityStatus];
 
     if (temp == reachableOnWWAN) {
         // Updated for the fact that we have CDMA phones now!
         return NSLocalizedString(@"Cellular", @"");
     }
-    if (temp == SEGReachableViaWiFi) {
+    if (temp == SnapyrReachableViaWiFi) {
         return NSLocalizedString(@"WiFi", @"");
     }
 
@@ -482,7 +482,7 @@ static void TMReachabilityCallback(SCNetworkReachabilityRef target, SCNetworkRea
 
     // this makes sure the change notification happens on the MAIN THREAD
     dispatch_async(dispatch_get_main_queue(), ^{
-        [[NSNotificationCenter defaultCenter] postNotificationName:kSEGReachabilityChangedNotification
+        [[NSNotificationCenter defaultCenter] postNotificationName:kSnapyrReachabilityChangedNotification
                                                             object:self];
     });
 }

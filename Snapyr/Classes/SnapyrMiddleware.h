@@ -9,7 +9,7 @@
 @import Foundation;
 #import "SnapyrContext.h"
 
-typedef void (^SEGMiddlewareNext)(SnapyrContext *_Nullable newContext);
+typedef void (^SnapyrMiddlewareNext)(SnapyrContext *_Nullable newContext);
 
 NS_SWIFT_NAME(Middleware)
 @protocol SnapyrMiddleware
@@ -27,28 +27,28 @@ NS_SWIFT_NAME(Middleware)
 // It's ok to save next callback until a more convenient time, but it should always always be done.
 // We'll probably actually add tests to sure it is so.
 // TODO: Should we add error as second param to next?
-- (void)context:(SnapyrContext *_Nonnull)context next:(SEGMiddlewareNext _Nonnull)next;
+- (void)context:(SnapyrContext *_Nonnull)context next:(SnapyrMiddlewareNext _Nonnull)next;
 
 @end
 
-typedef void (^SEGMiddlewareBlock)(SnapyrContext *_Nonnull context, SEGMiddlewareNext _Nonnull next);
+typedef void (^SnapyrMiddlewareBlock)(SnapyrContext *_Nonnull context, SnapyrMiddlewareNext _Nonnull next);
 
 
 NS_SWIFT_NAME(BlockMiddleware)
-@interface SEGBlockMiddleware : NSObject <SnapyrMiddleware>
+@interface SnapyrBlockMiddleware : NSObject <SnapyrMiddleware>
 
-@property (nonnull, nonatomic, readonly) SEGMiddlewareBlock block;
+@property (nonnull, nonatomic, readonly) SnapyrMiddlewareBlock block;
 
-- (instancetype _Nonnull)initWithBlock:(SEGMiddlewareBlock _Nonnull)block;
+- (instancetype _Nonnull)initWithBlock:(SnapyrMiddlewareBlock _Nonnull)block;
 
 @end
 
 
 typedef void (^RunMiddlewaresCallback)(BOOL earlyExit, NSArray<id<SnapyrMiddleware>> *_Nonnull remainingMiddlewares);
 
-// XXX TODO: Add some tests for SEGMiddlewareRunner
+// XXX TODO: Add some tests for SnapyrMiddlewareRunner
 NS_SWIFT_NAME(MiddlewareRunner)
-@interface SEGMiddlewareRunner : NSObject
+@interface SnapyrMiddlewareRunner : NSObject
 
 // While it is certainly technically possible to change middlewares dynamically on the fly. we're explicitly NOT
 // gonna support that for now to keep things simple. If there is a real need later we'll see then.
@@ -62,17 +62,17 @@ NS_SWIFT_NAME(MiddlewareRunner)
 
 // Container object for middlewares for a specific destination.
 NS_SWIFT_NAME(DestinationMiddleware)
-@interface SEGDestinationMiddleware : NSObject
+@interface SnapyrDestinationMiddleware : NSObject
 @property (nonatomic, strong, nonnull, readonly) NSString *integrationKey;
 @property (nonatomic, strong, nullable, readonly) NSArray<id<SnapyrMiddleware>> *middleware;
 - (instancetype _Nonnull)initWithKey:(NSString * _Nonnull)integrationKey middleware:(NSArray<id<SnapyrMiddleware>> * _Nonnull)middleware;
 @end
 
 NS_SWIFT_NAME(EdgeFunctionMiddleware)
-@protocol SEGEdgeFunctionMiddleware
+@protocol SnapyrEdgeFunctionMiddleware
 @required
 @property (nonatomic, readonly, nullable) NSArray<id<SnapyrMiddleware>> *sourceMiddleware;
-@property (nonatomic, readonly, nullable) NSArray<SEGDestinationMiddleware *> *destinationMiddleware;
+@property (nonatomic, readonly, nullable) NSArray<SnapyrDestinationMiddleware *> *destinationMiddleware;
 - (void)setEdgeFunctionData:(NSDictionary *_Nullable)data;
 - (void)addToDataBridge:(NSString * _Nonnull)key value:(id _Nonnull)value NS_SWIFT_NAME(addToDataBridge(key:value:));
 - (void)removeFromDataBridge:(NSString * _Nonnull)key NS_SWIFT_NAME(removeFromDataBridge(key:));

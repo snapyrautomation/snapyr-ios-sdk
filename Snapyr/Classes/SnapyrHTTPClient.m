@@ -3,7 +3,7 @@
 #import "SnapyrAnalyticsUtils.h"
 #import "SnapyrUtils.h"
 
-#define SEGMENT_CDN_BASE [NSURL URLWithString:@"https://cdn-settings.segment.com/v1"]
+#define SNAPYR_CDN_BASE [NSURL URLWithString:@"https://cdn-settings.segment.com/v1"]
 
 static const NSUInteger kMaxBatchSize = 475000; // 475KB
 
@@ -26,7 +26,7 @@ NSString * const kSegmentAPIBaseHost = @"https://dev-engine.snapyr.com/v1";
 }
 
 
-- (instancetype)initWithRequestFactory:(SEGRequestFactory)requestFactory
+- (instancetype)initWithRequestFactory:(SnapyrRequestFactory)requestFactory
 {
     if (self = [self init]) {
         if (requestFactory == nil) {
@@ -75,7 +75,7 @@ NSString * const kSegmentAPIBaseHost = @"https://dev-engine.snapyr.com/v1";
 
 - (nullable NSURLSessionUploadTask *)upload:(NSDictionary *)batch forWriteKey:(NSString *)writeKey completionHandler:(void (^)(BOOL retry, NSData *_Nullable data))completionHandler
 {
-    //    batch = SEGCoerceDictionary(batch);
+    //    batch = SnapyrCoerceDictionary(batch);
     NSURLSession *session = [self sessionForWriteKey:writeKey];
 
     NSURL *url = [[SnapyrUtils getAPIHostURL] URLByAppendingPathComponent:@"batch"];
@@ -96,12 +96,12 @@ NSString * const kSegmentAPIBaseHost = @"https://dev-engine.snapyr.com/v1";
         exception = exc;
     }
     if (error || exception) {
-        SEGLog(@"Error serializing JSON for batch upload %@", error);
+        SLog(@"Error serializing JSON for batch upload %@", error);
         completionHandler(NO, nil); // Don't retry this batch.
         return nil;
     }
     if (payload.length >= kMaxBatchSize) {
-        SEGLog(@"Payload exceeded the limit of %luKB per batch", kMaxBatchSize / 1000);
+        SLog(@"Payload exceeded the limit of %luKB per batch", kMaxBatchSize / 1000);
         completionHandler(NO, nil);
         return nil;
     }
@@ -113,7 +113,7 @@ NSString * const kSegmentAPIBaseHost = @"https://dev-engine.snapyr.com/v1";
         
         if (error) {
             // Network error. Retry.
-            SEGLog(@"Error uploading request %@.", error);
+            SLog(@"Error uploading request %@.", error);
             completionHandler(YES, nil);
             return;
         }
@@ -126,25 +126,25 @@ NSString * const kSegmentAPIBaseHost = @"https://dev-engine.snapyr.com/v1";
         }
         if (code < 400) {
             // 3xx response codes. Retry.
-            SEGLog(@"Server responded with unexpected HTTP code %d.", code);
+            SLog(@"Server responded with unexpected HTTP code %d.", code);
             completionHandler(YES, nil);
             return;
         }
         if (code == 429) {
           // 429 response codes. Retry.
-          SEGLog(@"Server limited client with response code %d.", code);
+          SLog(@"Server limited client with response code %d.", code);
           completionHandler(YES, nil);
           return;
         }
         if (code < 500) {
             // non-429 4xx response codes. Don't retry.
-            SEGLog(@"Server rejected payload with HTTP code %d.", code);
+            SLog(@"Server rejected payload with HTTP code %d.", code);
             completionHandler(NO, nil);
             return;
         }
 
         // 5xx response codes. Retry.
-        SEGLog(@"Server error with HTTP code %d.", code);
+        SLog(@"Server error with HTTP code %d.", code);
         completionHandler(YES, nil);
     }];
     [task resume];
@@ -155,20 +155,20 @@ NSString * const kSegmentAPIBaseHost = @"https://dev-engine.snapyr.com/v1";
 {
     NSURLSession *session = self.genericSession;
 
-    NSURL *url = [SEGMENT_CDN_BASE URLByAppendingPathComponent:[NSString stringWithFormat:@"/projects/%@/settings", writeKey]];
+    NSURL *url = [SNAPYR_CDN_BASE URLByAppendingPathComponent:[NSString stringWithFormat:@"/projects/%@/settings", writeKey]];
     NSMutableURLRequest *request = self.requestFactory(url);
     [request setHTTPMethod:@"GET"];
 
     NSURLSessionDataTask *task = [session dataTaskWithRequest:request completionHandler:^(NSData *_Nullable data, NSURLResponse *_Nullable response, NSError *_Nullable error) {
         if (error != nil) {
-            SEGLog(@"Error fetching settings %@.", error);
+            SLog(@"Error fetching settings %@.", error);
             completionHandler(NO, nil);
             return;
         }
 
         NSInteger code = ((NSHTTPURLResponse *)response).statusCode;
         if (code > 300) {
-            SEGLog(@"Server responded with unexpected HTTP code %d.", code);
+            SLog(@"Server responded with unexpected HTTP code %d.", code);
             completionHandler(NO, nil);
             return;
         }
@@ -176,7 +176,7 @@ NSString * const kSegmentAPIBaseHost = @"https://dev-engine.snapyr.com/v1";
         NSError *jsonError = nil;
         id responseJson = [NSJSONSerialization JSONObjectWithData:data options:0 error:&jsonError];
         if (jsonError != nil) {
-            SEGLog(@"Error deserializing response body %@.", jsonError);
+            SLog(@"Error deserializing response body %@.", jsonError);
             completionHandler(NO, nil);
             return;
         }

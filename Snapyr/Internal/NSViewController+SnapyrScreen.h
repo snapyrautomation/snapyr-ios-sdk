@@ -11,7 +11,7 @@
 #if TARGET_OS_OSX
 @import Cocoa;
 
-@interface NSViewController (SEGScreen)
+@interface NSViewController (SnapyrScreen)
 
 + (void)snapyr_swizzleViewDidAppear;
 + (NSViewController *)snapyr_rootViewControllerFromView:(NSView *)view;

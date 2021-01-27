@@ -93,7 +93,7 @@
 {
     UIViewController *top = [[self class] snapyr_rootViewControllerFromView:self.view];
     if (!top) {
-        SEGLog(@"Could not infer screen.");
+        SLog(@"Could not infer screen.");
         return;
     }
 
@@ -104,7 +104,7 @@
         name = [top title];
         // Class name could be just "ViewController".
         if (name.length == 0) {
-            SEGLog(@"Could not infer screen name.");
+            SLog(@"Could not infer screen name.");
             name = @"Unknown";
         }
     }

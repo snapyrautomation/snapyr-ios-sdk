@@ -6,12 +6,12 @@ static BOOL kAnalyticsLoggerShowLogs = NO;
 
 #pragma mark - Logging
 
-void SEGSetShowDebugLogs(BOOL showDebugLogs)
+void SnapyrSetShowDebugLogs(BOOL showDebugLogs)
 {
     kAnalyticsLoggerShowLogs = showDebugLogs;
 }
 
-void SEGLog(NSString *format, ...)
+void SLog(NSString *format, ...)
 {
     if (!kAnalyticsLoggerShowLogs)
         return;
@@ -24,22 +24,22 @@ void SEGLog(NSString *format, ...)
 
 #pragma mark - Serialization Extensions
 
-@interface NSDate(SEGSerializable)<SEGSerializable>
+@interface NSDate(SnapyrSerializable)<SnapyrSerializable>
 - (id)serializeToAppropriateType;
 @end
 
-@implementation NSDate(SEGSerializable)
+@implementation NSDate(SnapyrSerializable)
 - (id)serializeToAppropriateType
 {
     return iso8601FormattedString(self);
 }
 @end
 
-@interface NSURL(SEGSerializable)<SEGSerializable>
+@interface NSURL(SnapyrSerializable)<SnapyrSerializable>
 - (id)serializeToAppropriateType;
 @end
 
-@implementation NSURL(SEGSerializable)
+@implementation NSURL(SnapyrSerializable)
 - (id)serializeToAppropriateType
 {
     return [self absoluteString];

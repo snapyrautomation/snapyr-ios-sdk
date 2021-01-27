@@ -4,14 +4,14 @@ NS_ASSUME_NONNULL_BEGIN
 
 #pragma mark - Logging
 
-void SEGSetShowDebugLogs(BOOL showDebugLogs);
-void SEGLog(NSString *format, ...);
+void SnapyrSetShowDebugLogs(BOOL showDebugLogs);
+void SLog(NSString *format, ...);
 
 
 #pragma mark - Serialization Extensions
 
 NS_SWIFT_NAME(SegmentSerializable)
-@protocol SEGSerializable
+@protocol SnapyrSerializable
 /**
  Serialize objects to a type supported by NSJSONSerializable.  Objects that conform to this protocol should
  return values of type NSArray, NSDictionary, NSString, NSNumber.  Useful for extending objects of your own

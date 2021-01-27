@@ -26,7 +26,7 @@ static SnapyrAnalytics *__sharedInstance = nil;
 @property (nonatomic, strong) SnapyrAnalyticsConfiguration *oneTimeConfiguration;
 @property (nonatomic, strong) SnapyrStoreKitTracker *storeKitTracker;
 @property (nonatomic, strong) SnapyrIntegrationsManager *integrationsManager;
-@property (nonatomic, strong) SEGMiddlewareRunner *runner;
+@property (nonatomic, strong) SnapyrMiddlewareRunner *runner;
 @end
 
 
@@ -52,11 +52,11 @@ static SnapyrAnalytics *__sharedInstance = nil;
         // TODO: Figure out if this is really the best way to do things here.
         self.integrationsManager = [[SnapyrIntegrationsManager alloc] initWithAnalytics:self];
         
-        self.runner = [[SEGMiddlewareRunner alloc] initWithMiddleware:
+        self.runner = [[SnapyrMiddlewareRunner alloc] initWithMiddleware:
                                                        [configuration.sourceMiddleware ?: @[] arrayByAddingObject:self.integrationsManager]];
 
         // Pass through for application state change events
-        id<SEGApplicationProtocol> application = configuration.application;
+        id<SnapyrApplicationProtocol> application = configuration.application;
         if (application) {
 #if TARGET_OS_IPHONE
             // Attach to application state change hooks
@@ -122,16 +122,16 @@ static SnapyrAnalytics *__sharedInstance = nil;
 
 #pragma mark -
 
-NSString *const SEGVersionKey = @"SEGVersionKey";
-NSString *const SEGBuildKeyV1 = @"SEGBuildKey";
-NSString *const SEGBuildKeyV2 = @"SEGBuildKeyV2";
+NSString *const SnapyrVersionKey = @"SnapyrVersionKey";
+NSString *const SnapyrBuildKeyV1 = @"SnapyrBuildKey";
+NSString *const SnapyrBuildKeyV2 = @"SnapyrBuildKeyV2";
 
 #if TARGET_OS_IPHONE
 - (void)handleAppStateNotification:(NSNotification *)note
 {
-    SEGApplicationLifecyclePayload *payload = [[SEGApplicationLifecyclePayload alloc] init];
+    SnapyrApplicationLifecyclePayload *payload = [[SnapyrApplicationLifecyclePayload alloc] init];
     payload.notificationName = note.name;
-    [self run:SEGEventTypeApplicationLifecycle payload:payload];
+    [self run:SnapyrEventTypeApplicationLifecycle payload:payload];
 
     if ([note.name isEqualToString:UIApplicationDidFinishLaunchingNotification]) {
         [self _applicationDidFinishLaunchingWithOptions:note.userInfo];
@@ -144,9 +144,9 @@ NSString *const SEGBuildKeyV2 = @"SEGBuildKeyV2";
 #elif TARGET_OS_OSX
 - (void)handleAppStateNotification:(NSNotification *)note
 {
-    SEGApplicationLifecyclePayload *payload = [[SEGApplicationLifecyclePayload alloc] init];
+    SnapyrApplicationLifecyclePayload *payload = [[SnapyrApplicationLifecyclePayload alloc] init];
     payload.notificationName = note.name;
-    [self run:SEGEventTypeApplicationLifecycle payload:payload];
+    [self run:SnapyrEventTypeApplicationLifecycle payload:payload];
 
     if ([note.name isEqualToString:NSApplicationDidFinishLaunchingNotification]) {
         [self _applicationDidFinishLaunchingWithOptions:note.userInfo];
@@ -163,16 +163,16 @@ NSString *const SEGBuildKeyV2 = @"SEGBuildKeyV2";
     if (!self.oneTimeConfiguration.trackApplicationLifecycleEvents) {
         return;
     }
-    // Previously SEGBuildKey was stored an integer. This was incorrect because the CFBundleVersion
-    // can be a string. This migrates SEGBuildKey to be stored as a string.
-    NSInteger previousBuildV1 = [[NSUserDefaults standardUserDefaults] integerForKey:SEGBuildKeyV1];
+    // Previously SnapyrBuildKey was stored an integer. This was incorrect because the CFBundleVersion
+    // can be a string. This migrates SnapyrBuildKey to be stored as a string.
+    NSInteger previousBuildV1 = [[NSUserDefaults standardUserDefaults] integerForKey:SnapyrBuildKeyV1];
     if (previousBuildV1) {
-        [[NSUserDefaults standardUserDefaults] setObject:[@(previousBuildV1) stringValue] forKey:SEGBuildKeyV2];
-        [[NSUserDefaults standardUserDefaults] removeObjectForKey:SEGBuildKeyV1];
+        [[NSUserDefaults standardUserDefaults] setObject:[@(previousBuildV1) stringValue] forKey:SnapyrBuildKeyV2];
+        [[NSUserDefaults standardUserDefaults] removeObjectForKey:SnapyrBuildKeyV1];
     }
 
-    NSString *previousVersion = [[NSUserDefaults standardUserDefaults] stringForKey:SEGVersionKey];
-    NSString *previousBuildV2 = [[NSUserDefaults standardUserDefaults] stringForKey:SEGBuildKeyV2];
+    NSString *previousVersion = [[NSUserDefaults standardUserDefaults] stringForKey:SnapyrVersionKey];
+    NSString *previousBuildV2 = [[NSUserDefaults standardUserDefaults] stringForKey:SnapyrBuildKeyV2];
 
     NSString *currentVersion = [[NSBundle mainBundle] infoDictionary][@"CFBundleShortVersionString"];
     NSString *currentBuild = [[NSBundle mainBundle] infoDictionary][@"CFBundleVersion"];
@@ -209,8 +209,8 @@ NSString *const SEGBuildKeyV2 = @"SEGBuildKeyV2";
 #endif
 
 
-    [[NSUserDefaults standardUserDefaults] setObject:currentVersion forKey:SEGVersionKey];
-    [[NSUserDefaults standardUserDefaults] setObject:currentBuild forKey:SEGBuildKeyV2];
+    [[NSUserDefaults standardUserDefaults] setObject:currentVersion forKey:SnapyrVersionKey];
+    [[NSUserDefaults standardUserDefaults] setObject:currentBuild forKey:SnapyrBuildKeyV2];
 
     [[NSUserDefaults standardUserDefaults] synchronize];
 }
@@ -294,11 +294,11 @@ NSString *const SEGBuildKeyV2 = @"SEGBuildKeyV2";
     [existingTraitsCopy addEntriesFromDictionary:traitsCopy];
     [SnapyrState sharedInstance].userInfo.traits = existingTraitsCopy;
     
-    [self run:SEGEventTypeIdentify payload:
+    [self run:SnapyrEventTypeIdentify payload:
                                        [[SnapyrIdentifyPayload alloc] initWithUserId:userId
                                                                          anonymousId:anonId
-                                                                              traits:SEGCoerceDictionary(existingTraitsCopy)
-                                                                             context:SEGCoerceDictionary([options objectForKey:@"context"])
+                                                                              traits:SnapyrCoerceDictionary(existingTraitsCopy)
+                                                                             context:SnapyrCoerceDictionary([options objectForKey:@"context"])
                                                                         integrations:[options objectForKey:@"integrations"]]];
 }
 
@@ -317,10 +317,10 @@ NSString *const SEGBuildKeyV2 = @"SEGBuildKeyV2";
 - (void)track:(NSString *)event properties:(NSDictionary *)properties options:(NSDictionary *)options
 {
     NSCAssert1(event.length > 0, @"event (%@) must not be empty.", event);
-    [self run:SEGEventTypeTrack payload:
+    [self run:SnapyrEventTypeTrack payload:
                                     [[SnapyrTrackPayload alloc] initWithEvent:event
-                                                                   properties:SEGCoerceDictionary(properties)
-                                                                      context:SEGCoerceDictionary([options objectForKey:@"context"])
+                                                                   properties:SnapyrCoerceDictionary(properties)
+                                                                      context:SnapyrCoerceDictionary([options objectForKey:@"context"])
                                                                  integrations:[options objectForKey:@"integrations"]]];
 }
 
@@ -355,11 +355,11 @@ NSString *const SEGBuildKeyV2 = @"SEGBuildKeyV2";
 {
     NSCAssert1(screenTitle.length > 0, @"screen name (%@) must not be empty.", screenTitle);
 
-    [self run:SEGEventTypeScreen payload:
+    [self run:SnapyrEventTypeScreen payload:
                                      [[SnapyrScreenPayload alloc] initWithName:screenTitle
                                                                       category:category
-                                                                    properties:SEGCoerceDictionary(properties)
-                                                                       context:SEGCoerceDictionary([options objectForKey:@"context"])
+                                                                    properties:SnapyrCoerceDictionary(properties)
+                                                                       context:SnapyrCoerceDictionary([options objectForKey:@"context"])
                                                                   integrations:[options objectForKey:@"integrations"]]];
 }
 
@@ -377,10 +377,10 @@ NSString *const SEGBuildKeyV2 = @"SEGBuildKeyV2";
 
 - (void)group:(NSString *)groupId traits:(NSDictionary *)traits options:(NSDictionary *)options
 {
-    [self run:SEGEventTypeGroup payload:
+    [self run:SnapyrEventTypeGroup payload:
                                     [[SnapyrGroupPayload alloc] initWithGroupId:groupId
-                                                                         traits:SEGCoerceDictionary(traits)
-                                                                        context:SEGCoerceDictionary([options objectForKey:@"context"])
+                                                                         traits:SnapyrCoerceDictionary(traits)
+                                                                        context:SnapyrCoerceDictionary([options objectForKey:@"context"])
                                                                    integrations:[options objectForKey:@"integrations"]]];
 }
 
@@ -393,9 +393,9 @@ NSString *const SEGBuildKeyV2 = @"SEGBuildKeyV2";
 
 - (void)alias:(NSString *)newId options:(NSDictionary *)options
 {
-    [self run:SEGEventTypeAlias payload:
+    [self run:SnapyrEventTypeAlias payload:
                                     [[SnapyrAliasPayload alloc] initWithNewId:newId
-                                                                      context:SEGCoerceDictionary([options objectForKey:@"context"])
+                                                                      context:SnapyrCoerceDictionary([options objectForKey:@"context"])
                                                                  integrations:[options objectForKey:@"integrations"]]];
 }
 
@@ -413,40 +413,40 @@ NSString *const SEGBuildKeyV2 = @"SEGBuildKeyV2";
     if (self.oneTimeConfiguration.trackPushNotifications) {
         [self trackPushNotification:userInfo fromLaunch:NO];
     }
-    SEGRemoteNotificationPayload *payload = [[SEGRemoteNotificationPayload alloc] init];
+    SnapyrRemoteNotificationPayload *payload = [[SnapyrRemoteNotificationPayload alloc] init];
     payload.userInfo = userInfo;
-    [self run:SEGEventTypeReceivedRemoteNotification payload:payload];
+    [self run:SnapyrEventTypeReceivedRemoteNotification payload:payload];
 }
 
 - (void)failedToRegisterForRemoteNotificationsWithError:(NSError *)error
 {
-    SEGRemoteNotificationPayload *payload = [[SEGRemoteNotificationPayload alloc] init];
+    SnapyrRemoteNotificationPayload *payload = [[SnapyrRemoteNotificationPayload alloc] init];
     payload.error = error;
-    [self run:SEGEventTypeFailedToRegisterForRemoteNotifications payload:payload];
+    [self run:SnapyrEventTypeFailedToRegisterForRemoteNotifications payload:payload];
 }
 
 - (void)registeredForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken
 {
     NSParameterAssert(deviceToken != nil);
-    SEGRemoteNotificationPayload *payload = [[SEGRemoteNotificationPayload alloc] init];
+    SnapyrRemoteNotificationPayload *payload = [[SnapyrRemoteNotificationPayload alloc] init];
     payload.deviceToken = deviceToken;
     [SnapyrState sharedInstance].context.deviceToken = deviceTokenToString(deviceToken);
-    [self run:SEGEventTypeRegisteredForRemoteNotifications payload:payload];
+    [self run:SnapyrEventTypeRegisteredForRemoteNotifications payload:payload];
 }
 
 - (void)handleActionWithIdentifier:(NSString *)identifier forRemoteNotification:(NSDictionary *)userInfo
 {
-    SEGRemoteNotificationPayload *payload = [[SEGRemoteNotificationPayload alloc] init];
+    SnapyrRemoteNotificationPayload *payload = [[SnapyrRemoteNotificationPayload alloc] init];
     payload.actionIdentifier = identifier;
     payload.userInfo = userInfo;
-    [self run:SEGEventTypeHandleActionWithForRemoteNotification payload:payload];
+    [self run:SnapyrEventTypeHandleActionWithForRemoteNotification payload:payload];
 }
 
 - (void)continueUserActivity:(NSUserActivity *)activity
 {
-    SEGContinueUserActivityPayload *payload = [[SEGContinueUserActivityPayload alloc] init];
+    SnapyrContinueUserActivityPayload *payload = [[SnapyrContinueUserActivityPayload alloc] init];
     payload.activity = activity;
-    [self run:SEGEventTypeContinueUserActivity payload:payload];
+    [self run:SnapyrEventTypeContinueUserActivity payload:payload];
 
     if (!self.oneTimeConfiguration.trackDeepLinks) {
         return;
@@ -470,11 +470,11 @@ NSString *const SEGBuildKeyV2 = @"SEGBuildKeyV2";
 
 - (void)openURL:(NSURL *)url options:(NSDictionary *)options
 {
-    SEGOpenURLPayload *payload = [[SEGOpenURLPayload alloc] init];
+    SnapyrOpenURLPayload *payload = [[SnapyrOpenURLPayload alloc] init];
     payload.url = [NSURL URLWithString:[SnapyrUtils traverseJSON:url.absoluteString
                                            andReplaceWithFilters:self.oneTimeConfiguration.payloadFilters]];
     payload.options = options;
-    [self run:SEGEventTypeOpenURL payload:payload];
+    [self run:SnapyrEventTypeOpenURL payload:payload];
 
     if (!self.oneTimeConfiguration.trackDeepLinks) {
         return;
@@ -495,12 +495,12 @@ NSString *const SEGBuildKeyV2 = @"SEGBuildKeyV2";
 
 - (void)reset
 {
-    [self run:SEGEventTypeReset payload:nil];
+    [self run:SnapyrEventTypeReset payload:nil];
 }
 
 - (void)flush
 {
-    [self run:SEGEventTypeFlush payload:nil];
+    [self run:SnapyrEventTypeFlush payload:nil];
 }
 
 - (void)enable
@@ -538,7 +538,7 @@ NSString *const SEGBuildKeyV2 = @"SEGBuildKeyV2";
 
 + (void)debug:(BOOL)showDebugLogs
 {
-    SEGSetShowDebugLogs(showDebugLogs);
+    SnapyrSetShowDebugLogs(showDebugLogs);
 }
 
 + (NSString *)version
@@ -550,7 +550,7 @@ NSString *const SEGBuildKeyV2 = @"SEGBuildKeyV2";
 
 #pragma mark - Helpers
 
-- (void)run:(SEGEventType)eventType payload:(SnapyrPayload *)payload
+- (void)run:(SnapyrEventType)eventType payload:(SnapyrPayload *)payload
 {
     if (!self.enabled) {
         return;
@@ -562,7 +562,7 @@ NSString *const SEGBuildKeyV2 = @"SEGBuildKeyV2";
         payload.timestamp = iso8601FormattedString([NSDate date]);
     }
     
-    SnapyrContext *context = [[[SnapyrContext alloc] initWithAnalytics:self] modify:^(id<SEGMutableContext> _Nonnull ctx) {
+    SnapyrContext *context = [[[SnapyrContext alloc] initWithAnalytics:self] modify:^(id<SnapyrMutableContext> _Nonnull ctx) {
         ctx.eventType = eventType;
         ctx.payload = payload;
         ctx.payload.messageId = GenerateUUIDString();
@@ -578,7 +578,7 @@ NSString *const SEGBuildKeyV2 = @"SEGBuildKeyV2";
     [self.runner run:context callback:nil];
 }
 
-- (id<SEGEdgeFunctionMiddleware>)edgeFunction
+- (id<SnapyrEdgeFunctionMiddleware>)edgeFunction
 {
     return _oneTimeConfiguration.edgeFunctionMiddleware;
 }

@@ -293,7 +293,7 @@ class AnalyticsTests: XCTestCase {
         // In Xcode8/iOS10, UIApplication.h typedefs UIBackgroundTaskIdentifier as NSUInteger,
         // whereas Swift has UIBackgroundTaskIdentifier typealiaed to Int.
         // This is likely due to a custom Swift mapping for UIApplication which got out of sync.
-        // If we extract the exact UIApplication method names in SEGApplicationProtocol,
+        // If we extract the exact UIApplication method names in SnapyrApplicationProtocol,
         // it will cause a type mismatch between the return value from beginBackgroundTask
         // and the argument for endBackgroundTask.
         // This would impact all code in a project that imports the Segment framework.

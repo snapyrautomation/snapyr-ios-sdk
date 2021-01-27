@@ -5,16 +5,16 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-extern NSString *const SEGSegmentDidSendRequestNotification;
-extern NSString *const SEGSegmentRequestDidSucceedNotification;
-extern NSString *const SEGSegmentRequestDidFailNotification;
+extern NSString *const SnapyrSegmentDidSendRequestNotification;
+extern NSString *const SnapyrSegmentRequestDidSucceedNotification;
+extern NSString *const SnapyrSegmentRequestDidFailNotification;
 
 /**
  * Filenames of "Application Support" files where essential data is stored.
  */
-extern NSString *const kSEGUserIdFilename;
-extern NSString *const kSEGQueueFilename;
-extern NSString *const kSEGTraitsFilename;
+extern NSString *const kSnapyrUserIdFilename;
+extern NSString *const kSnapyrQueueFilename;
+extern NSString *const kSnapyrTraitsFilename;
 
 
 NS_SWIFT_NAME(SegmentIntegration)

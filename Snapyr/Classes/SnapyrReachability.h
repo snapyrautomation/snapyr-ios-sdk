@@ -49,26 +49,26 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-extern NSString *const kSEGReachabilityChangedNotification;
+extern NSString *const kSnapyrReachabilityChangedNotification;
 
-typedef NS_ENUM(NSInteger, SEGNetworkStatus) {
+typedef NS_ENUM(NSInteger, SnapyrNetworkStatus) {
     // Apple NetworkStatus Compatible Names.
-    SEGNotReachable = 0,
-    SEGReachableViaWiFi = 2,
-    SEGReachableViaWWAN = 1
+    SnapyrNotReachable = 0,
+    SnapyrReachableViaWiFi = 2,
+    SnapyrReachableViaWWAN = 1
 };
 
 @class SnapyrReachability;
 
-typedef void (^SEGNetworkReachable)(SnapyrReachability *reachability);
-typedef void (^SEGNetworkUnreachable)(SnapyrReachability *reachability);
+typedef void (^SnapyrNetworkReachable)(SnapyrReachability *reachability);
+typedef void (^SnapyrNetworkUnreachable)(SnapyrReachability *reachability);
 
 
 NS_SWIFT_NAME(Reachability)
 @interface SnapyrReachability : NSObject
 
-@property (nonatomic, copy, nullable) SEGNetworkReachable reachableBlock;
-@property (nonatomic, copy, nullable) SEGNetworkUnreachable unreachableBlock;
+@property (nonatomic, copy, nullable) SnapyrNetworkReachable reachableBlock;
+@property (nonatomic, copy, nullable) SnapyrNetworkUnreachable unreachableBlock;
 
 
 @property (nonatomic, assign) BOOL reachableOnWWAN;
@@ -95,7 +95,7 @@ NS_SWIFT_NAME(Reachability)
 // Is user intervention required?
 - (BOOL)isInterventionRequired;
 
-- (SEGNetworkStatus)currentReachabilityStatus;
+- (SnapyrNetworkStatus)currentReachabilityStatus;
 - (SCNetworkReachabilityFlags)reachabilityFlags;
 - (NSString *)currentReachabilityString;
 - (NSString *)currentReachabilityFlags;

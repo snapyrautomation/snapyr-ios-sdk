@@ -13,20 +13,20 @@
 @import UIKit;
 #endif
 
-NSString *const SEGSegmentDidSendRequestNotification = @"SegmentDidSendRequest";
-NSString *const SEGSegmentRequestDidSucceedNotification = @"SegmentRequestDidSucceed";
-NSString *const SEGSegmentRequestDidFailNotification = @"SegmentRequestDidFail";
+NSString *const SnapyrSegmentDidSendRequestNotification = @"SegmentDidSendRequest";
+NSString *const SnapyrSegmentRequestDidSucceedNotification = @"SegmentRequestDidSucceed";
+NSString *const SnapyrSegmentRequestDidFailNotification = @"SegmentRequestDidFail";
 
 NSString *const SEGUserIdKey = @"SEGUserId";
 NSString *const SEGQueueKey = @"SEGQueue";
 NSString *const SEGTraitsKey = @"SEGTraits";
 
-NSString *const kSEGUserIdFilename = @"segmentio.userId";
-NSString *const kSEGQueueFilename = @"segmentio.queue.plist";
-NSString *const kSEGTraitsFilename = @"segmentio.traits.plist";
+NSString *const kSnapyrUserIdFilename = @"segmentio.userId";
+NSString *const kSnapyrQueueFilename = @"segmentio.queue.plist";
+NSString *const kSnapyrTraitsFilename = @"segmentio.traits.plist";
 
 // Equiv to UIBackgroundTaskInvalid.
-NSUInteger const kSEGBackgroundTaskInvalid = 0;
+NSUInteger const kSnapyrBackgroundTaskInvalid = 0;
 
 @interface SnapyrSegmentIntegration ()
 
@@ -123,7 +123,7 @@ NSUInteger const kSEGBackgroundTaskInvalid = 0;
 
     snapyr_dispatch_specific_sync(_backgroundTaskQueue, ^{
         
-        id<SEGApplicationProtocol> application = [self.analytics oneTimeConfiguration].application;
+        id<SnapyrApplicationProtocol> application = [self.analytics oneTimeConfiguration].application;
         if (application && [application respondsToSelector:@selector(snapyr_beginBackgroundTaskWithName:expirationHandler:)]) {
             self.flushTaskID = [application snapyr_beginBackgroundTaskWithName:@"Segmentio.Flush"
                                                           expirationHandler:^{
@@ -141,13 +141,13 @@ NSUInteger const kSEGBackgroundTaskInvalid = 0;
     // attempt to call forwardSelector:arguments:options:
     // See https://github.com/segmentio/analytics-ios/issues/683
     snapyr_dispatch_specific_sync(_backgroundTaskQueue, ^{
-        if (self.flushTaskID != kSEGBackgroundTaskInvalid) {
-            id<SEGApplicationProtocol> application = [self.analytics oneTimeConfiguration].application;
+        if (self.flushTaskID != kSnapyrBackgroundTaskInvalid) {
+            id<SnapyrApplicationProtocol> application = [self.analytics oneTimeConfiguration].application;
             if (application && [application respondsToSelector:@selector(snapyr_endBackgroundTask:)]) {
                 [application snapyr_endBackgroundTask:self.flushTaskID];
             }
 
-            self.flushTaskID = kSEGBackgroundTaskInvalid;
+            self.flushTaskID = kSnapyrBackgroundTaskInvalid;
         }
     });
 }
@@ -169,7 +169,7 @@ NSUInteger const kSEGBackgroundTaskInvalid = 0;
 #if TARGET_OS_TV
         [self.userDefaultsStorage setString:userId forKey:SEGUserIdKey];
 #else
-        [self.fileStorage setString:userId forKey:kSEGUserIdFilename];
+        [self.fileStorage setString:userId forKey:kSnapyrUserIdFilename];
 #endif
     }];
 }
@@ -186,7 +186,7 @@ NSUInteger const kSEGBackgroundTaskInvalid = 0;
 #if TARGET_OS_TV
         [self.userDefaultsStorage setDictionary:[self.traits copy] forKey:SEGTraitsKey];
 #else
-        [self.fileStorage setDictionary:[self.traits copy] forKey:kSEGTraitsFilename];
+        [self.fileStorage setDictionary:[self.traits copy] forKey:kSnapyrTraitsFilename];
 #endif
     }];
 }
@@ -285,14 +285,14 @@ NSUInteger const kSEGBackgroundTaskInvalid = 0;
 
         [payload setValue:[context copy] forKey:@"context"];
 
-        SEGLog(@"%@ Enqueueing action: %@", self, payload);
+        SLog(@"%@ Enqueueing action: %@", self, payload);
         
         NSDictionary *queuePayload = [payload copy];
         
         if (self.configuration.experimental.rawSegmentModificationBlock != nil) {
             NSDictionary *tempPayload = self.configuration.experimental.rawSegmentModificationBlock(queuePayload);
             if (tempPayload == nil) {
-                SEGLog(@"rawSegmentModificationBlock cannot be used to drop events!");
+                SLog(@"rawSegmentModificationBlock cannot be used to drop events!");
             } else {
                 // prevent anything else from modifying it at this point.
                 queuePayload = [tempPayload copy];
@@ -305,7 +305,7 @@ NSUInteger const kSEGBackgroundTaskInvalid = 0;
 - (void)queuePayload:(NSDictionary *)payload
 {
     @try {
-        SEGLog(@"Queue is at max capacity (%tu), removing oldest payload.", self.queue.count);
+        SLog(@"Queue is at max capacity (%tu), removing oldest payload.", self.queue.count);
         // Trim the queue to maxQueueSize - 1 before we add a new element.
         trimQueue(self.queue, self.analytics.oneTimeConfiguration.maxQueueSize - 1);
         [self.queue addObject:payload];
@@ -313,7 +313,7 @@ NSUInteger const kSEGBackgroundTaskInvalid = 0;
         [self flushQueueByLength];
     }
     @catch (NSException *exception) {
-        SEGLog(@"%@ Error writing payload: %@", self, exception);
+        SLog(@"%@ Error writing payload: %@", self, exception);
     }
 }
 
@@ -336,12 +336,12 @@ NSUInteger const kSEGBackgroundTaskInvalid = 0;
     
     [self dispatchBackground:^{
         if ([self.queue count] == 0) {
-            SEGLog(@"%@ No queued API calls to flush.", self);
+            SLog(@"%@ No queued API calls to flush.", self);
             [self endBackgroundTask];
             return;
         }
         if (self.batchRequest != nil) {
-            SEGLog(@"%@ API request already in progress, not flushing again.", self);
+            SLog(@"%@ API request already in progress, not flushing again.", self);
             return;
         }
         // here
@@ -352,7 +352,7 @@ NSUInteger const kSEGBackgroundTaskInvalid = 0;
 - (void)flushQueueByLength
 {
     [self dispatchBackground:^{
-        SEGLog(@"%@ Length is %lu.", self, (unsigned long)self.queue.count);
+        SLog(@"%@ Length is %lu.", self, (unsigned long)self.queue.count);
 
         if (self.batchRequest == nil && [self.queue count] >= self.configuration.flushAt) {
             [self flush];
@@ -367,8 +367,8 @@ NSUInteger const kSEGBackgroundTaskInvalid = 0;
         [self.userDefaultsStorage removeKey:SEGUserIdKey];
         [self.userDefaultsStorage removeKey:SEGTraitsKey];
 #else
-        [self.fileStorage removeKey:kSEGUserIdFilename];
-        [self.fileStorage removeKey:kSEGTraitsFilename];
+        [self.fileStorage removeKey:kSnapyrUserIdFilename];
+        [self.fileStorage removeKey:kSnapyrTraitsFilename];
 #endif
         self.userId = nil;
         self.traits = [NSMutableDictionary dictionary];
@@ -379,7 +379,7 @@ NSUInteger const kSEGBackgroundTaskInvalid = 0;
 {
     dispatch_async(dispatch_get_main_queue(), ^{
         [[NSNotificationCenter defaultCenter] postNotificationName:name object:userInfo];
-        SEGLog(@"sent notification %@", name);
+        SLog(@"sent notification %@", name);
     });
 }
 
@@ -389,14 +389,14 @@ NSUInteger const kSEGBackgroundTaskInvalid = 0;
     [payload setObject:iso8601FormattedString([NSDate date]) forKey:@"sentAt"];
     [payload setObject:batch forKey:@"batch"];
 
-    SEGLog(@"%@ Flushing %lu of %lu queued API calls.", self, (unsigned long)batch.count, (unsigned long)self.queue.count);
-    SEGLog(@"Flushing batch %@.", payload);
+    SLog(@"%@ Flushing %lu of %lu queued API calls.", self, (unsigned long)batch.count, (unsigned long)self.queue.count);
+    SLog(@"Flushing batch %@.", payload);
 
     self.batchRequest = [self.httpClient upload:payload forWriteKey:self.configuration.writeKey
                               completionHandler:^(BOOL retry, NSData *_Nullable data) {
         void (^completion)(void) = ^{
             if (retry) {
-                [self notifyForName:SEGSegmentRequestDidFailNotification userInfo:batch];
+                [self notifyForName:SnapyrSegmentRequestDidFailNotification userInfo:batch];
                 self.batchRequest = nil;
                 [self endBackgroundTask];
                 return;
@@ -404,7 +404,7 @@ NSUInteger const kSEGBackgroundTaskInvalid = 0;
 
             [self.queue removeObjectsInArray:batch];
             [self persistQueue];
-            [self notifyForName:SEGSegmentRequestDidSucceedNotification userInfo:batch];
+            [self notifyForName:SnapyrSegmentRequestDidSucceedNotification userInfo:batch];
             self.batchRequest = nil;
             
             if (data != nil) {
@@ -417,7 +417,7 @@ NSUInteger const kSEGBackgroundTaskInvalid = 0;
         [self dispatchBackground:completion];
     }];
 
-    [self notifyForName:SEGSegmentDidSendRequestNotification userInfo:batch];
+    [self notifyForName:SnapyrSegmentDidSendRequestNotification userInfo:batch];
 }
                          
 - (void)processResponseData:(NSData *)data
@@ -428,16 +428,16 @@ NSUInteger const kSEGBackgroundTaskInvalid = 0;
                   options:NSJSONReadingAllowFragments
                   error:&dataParsingError];
     if (dataParsingError != nil) {
-        SEGLog(@"error parsing response json: %@", dataParsingError);
+        SLog(@"error parsing response json: %@", dataParsingError);
         return;
     }
     if ([dataObj isKindOfClass:[NSDictionary class]]){
         NSDictionary *deserializedDictionary = (NSDictionary *)dataObj;
-        SEGLog(@"response received (dict) = %@", deserializedDictionary);
+        SLog(@"response received (dict) = %@", deserializedDictionary);
         [self handleEventActions:deserializedDictionary];
     } else if ([dataObj isKindOfClass:[NSArray class]]){
         NSArray *deserializedArray = (NSArray *)dataObj;
-        SEGLog(@"response received (array) = %@", deserializedArray);
+        SLog(@"response received (array) = %@", deserializedArray);
         for (int i = 0; i < [deserializedArray count]; i++) {
             NSDictionary *eventData = (NSDictionary*)[deserializedArray objectAtIndex:i];
             [self handleEventActions:eventData];
@@ -456,7 +456,7 @@ NSUInteger const kSEGBackgroundTaskInvalid = 0;
                     self.configuration.actionHandler(actionData);
                 }];
             } else {
-                SEGLog(@"action received, but no handler is configured");
+                SLog(@"action received, but no handler is configured");
             }
         }
     }
@@ -483,7 +483,7 @@ NSUInteger const kSEGBackgroundTaskInvalid = 0;
 - (NSMutableArray *)queue
 {
     if (!_queue) {
-        _queue = [[self.fileStorage arrayForKey:kSEGQueueFilename] ?: @[] mutableCopy];
+        _queue = [[self.fileStorage arrayForKey:kSnapyrQueueFilename] ?: @[] mutableCopy];
     }
 
     return _queue;
@@ -496,7 +496,7 @@ NSUInteger const kSEGBackgroundTaskInvalid = 0;
 #if TARGET_OS_TV
         traits = [[self.userDefaultsStorage dictionaryForKey:SEGTraitsKey] ?: @{} mutableCopy];
 #else
-        traits = [[self.fileStorage dictionaryForKey:kSEGTraitsFilename] ?: @{} mutableCopy];
+        traits = [[self.fileStorage dictionaryForKey:kSnapyrTraitsFilename] ?: @{} mutableCopy];
 #endif
         [SnapyrState sharedInstance].userInfo.traits = traits;
     }
@@ -513,14 +513,14 @@ NSUInteger const kSEGBackgroundTaskInvalid = 0;
 #if TARGET_OS_TV
     result = [[NSUserDefaults standardUserDefaults] valueForKey:SEGUserIdKey];
 #else
-    result = [self.fileStorage stringForKey:kSEGUserIdFilename];
+    result = [self.fileStorage stringForKey:kSnapyrUserIdFilename];
 #endif
     [SnapyrState sharedInstance].userInfo.userId = result;
 }
 
 - (void)persistQueue
 {
-    [self.fileStorage setArray:[self.queue copy] forKey:kSEGQueueFilename];
+    [self.fileStorage setArray:[self.queue copy] forKey:kSnapyrQueueFilename];
 }
 
 @end

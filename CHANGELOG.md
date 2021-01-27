@@ -33,7 +33,7 @@ Version 4.0.5 (pre-release) *(28 August, 2020)*
 Version 4.0.4 (pre-release) *(14 July, 2020)*
 -----------------------------
 * [New](https://github.com/segmentio/analytics-ios/pull/918) Added MacOS support.
-* [Fix](https://github.com/segmentio/analytics-ios/pull/921) Fixed SEGLog permissions.
+* [Fix](https://github.com/segmentio/analytics-ios/pull/921) Fixed SLog permissions.
 * [Fix](https://github.com/segmentio/analytics-ios/pull/920) Adopted Swift 5 syntax in tests. Removed SwiftTryCatch dependency for tests. Fixed deadlock from #916.
 
 Version 4.0.3 (pre-release) *(6 July, 2020)*
@@ -215,7 +215,7 @@ Version 3.6.1 *(24th May, 2017)*
  * Adding from_background, referring_application and url to Application Opened event
 * Add [session finishTasksAndInvalidate] to SEGHTTPClient.m to prevent memory leak #679
 * Use a separate queue for endBackgroundTask to fix deadlock (#684)
-* Exposing SEGMiddleware and SEGContext header publicly
+* Exposing SnapyrMiddleware and SEGContext header publicly
 * Removing deprecated APIs
 * Adding several test suites - reaching 70% coverage
 

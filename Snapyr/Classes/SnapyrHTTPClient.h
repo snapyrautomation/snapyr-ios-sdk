@@ -9,15 +9,15 @@ extern NSString * const kSegmentAPIBaseHost;
 NS_SWIFT_NAME(HTTPClient)
 @interface SnapyrHTTPClient : NSObject
 
-@property (nonatomic, strong) SEGRequestFactory requestFactory;
+@property (nonatomic, strong) SnapyrRequestFactory requestFactory;
 @property (nonatomic, readonly) NSMutableDictionary<NSString *, NSURLSession *> *sessionsByWriteKey;
 @property (nonatomic, readonly) NSURLSession *genericSession;
 @property (nonatomic, weak)  id<NSURLSessionDelegate> httpSessionDelegate;
 
-+ (SEGRequestFactory)defaultRequestFactory;
++ (SnapyrRequestFactory)defaultRequestFactory;
 + (NSString *)authorizationHeader:(NSString *)writeKey;
 
-- (instancetype)initWithRequestFactory:(SEGRequestFactory _Nullable)requestFactory;
+- (instancetype)initWithRequestFactory:(SnapyrRequestFactory _Nullable)requestFactory;
 
 /**
  * Upload dictionary formatted as per https://segment.com/docs/sources/server/http/#batch.

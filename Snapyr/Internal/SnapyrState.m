@@ -12,37 +12,37 @@
 #import "SnapyrReachability.h"
 #import "SnapyrUtils.h"
 
-typedef void (^SEGStateSetBlock)(void);
-typedef _Nullable id (^SEGStateGetBlock)(void);
+typedef void (^SnapyrStateSetBlock)(void);
+typedef _Nullable id (^SnapyrStateGetBlock)(void);
 
 
 @interface SnapyrState()
 // State Objects
-@property (nonatomic, nonnull) SEGUserInfo *userInfo;
-@property (nonatomic, nonnull) SEGPayloadContext *context;
+@property (nonatomic, nonnull) SnapyrUserInfo *userInfo;
+@property (nonatomic, nonnull) SnapyrPayloadContext *context;
 // State Accessors
-- (void)setValueWithBlock:(SEGStateSetBlock)block;
-- (id)valueWithBlock:(SEGStateGetBlock)block;
+- (void)setValueWithBlock:(SnapyrStateSetBlock)block;
+- (id)valueWithBlock:(SnapyrStateGetBlock)block;
 @end
 
 
-@protocol SEGStateObject
+@protocol SnapyrStateObject
 @property (nonatomic, weak) SnapyrState *state;
 - (instancetype)initWithState:(SnapyrState *)aState;
 @end
 
 
-@interface SEGUserInfo () <SEGStateObject>
+@interface SnapyrUserInfo () <SnapyrStateObject>
 @end
 
-@interface SEGPayloadContext () <SEGStateObject>
+@interface SnapyrPayloadContext () <SnapyrStateObject>
 @property (nonatomic, strong) SnapyrReachability *reachability;
 @property (nonatomic, strong) NSDictionary *cachedStaticContext;
 @end
 
-#pragma mark - SEGUserInfo
+#pragma mark - SnapyrUserInfo
 
-@implementation SEGUserInfo
+@implementation SnapyrUserInfo
 
 @synthesize state;
 
@@ -103,9 +103,9 @@ typedef _Nullable id (^SEGStateGetBlock)(void);
 @end
 
 
-#pragma mark - SEGPayloadContext
+#pragma mark - SnapyrPayloadContext
 
-@implementation SEGPayloadContext
+@implementation SnapyrPayloadContext
 
 @synthesize state;
 @synthesize reachability;
@@ -168,7 +168,7 @@ typedef _Nullable id (^SEGStateGetBlock)(void);
 @end
 
 
-#pragma mark - SEGState
+#pragma mark - SnapyrState
 
 @implementation SnapyrState {
     dispatch_queue_t _stateQueue;
@@ -189,18 +189,18 @@ typedef _Nullable id (^SEGStateGetBlock)(void);
 {
     if (self = [super init]) {
         _stateQueue = dispatch_queue_create("com.segment.state.queue", DISPATCH_QUEUE_CONCURRENT);
-        self.userInfo = [[SEGUserInfo alloc] initWithState:self];
-        self.context = [[SEGPayloadContext alloc] initWithState:self];
+        self.userInfo = [[SnapyrUserInfo alloc] initWithState:self];
+        self.context = [[SnapyrPayloadContext alloc] initWithState:self];
     }
     return self;
 }
 
-- (void)setValueWithBlock:(SEGStateSetBlock)block
+- (void)setValueWithBlock:(SnapyrStateSetBlock)block
 {
     dispatch_barrier_async(_stateQueue, block);
 }
 
-- (id)valueWithBlock:(SEGStateGetBlock)block
+- (id)valueWithBlock:(SnapyrStateGetBlock)block
 {
     __block id value = nil;
     dispatch_sync(_stateQueue, ^{

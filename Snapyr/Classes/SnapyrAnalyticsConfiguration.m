@@ -19,7 +19,7 @@
 #endif
 
 #if TARGET_OS_IPHONE
-@implementation UIApplication (SEGApplicationProtocol)
+@implementation UIApplication (SnapyrApplicationProtocol)
 
 - (UIBackgroundTaskIdentifier)snapyr_beginBackgroundTaskWithName:(nullable NSString *)taskName expirationHandler:(void (^__nullable)(void))handler
 {
@@ -134,7 +134,7 @@
     return self.sourceMiddleware;
 }
 
-- (void)setEdgeFunctionMiddleware:(id<SEGEdgeFunctionMiddleware>)edgeFunctionMiddleware
+- (void)setEdgeFunctionMiddleware:(id<SnapyrEdgeFunctionMiddleware>)edgeFunctionMiddleware
 {
     _edgeFunctionMiddleware = edgeFunctionMiddleware;
     self.sourceMiddleware = edgeFunctionMiddleware.sourceMiddleware;

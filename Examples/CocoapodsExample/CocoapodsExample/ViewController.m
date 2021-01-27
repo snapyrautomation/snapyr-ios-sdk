@@ -6,7 +6,7 @@
 //  Copyright © 2016 Segment. All rights reserved.
 //
 
-#import <Segment/SnapyrAnalytics.h>
+#import <Snapyr/SnapyrAnalytics.h>
 #import "ViewController.h"
 
 
