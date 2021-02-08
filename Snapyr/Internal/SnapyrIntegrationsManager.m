@@ -403,7 +403,7 @@ NSString *const kSnapyrCachedSettingsFilename = @"analytics.settings.v2.plist";
 
 - (void)updateIntegrationsWithSettings:(NSDictionary *)projectSettings
 {
-    // see if we have a new segment API host and set it.
+    // see if we have a new snapyr API host and set it.
     NSString *apiHost = projectSettings[@"Snapyr"][@"apiHost"];
     if (apiHost) {
         [SnapyrUtils saveAPIHost:apiHost];

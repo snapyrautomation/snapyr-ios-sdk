@@ -188,7 +188,7 @@ typedef _Nullable id (^SnapyrStateGetBlock)(void);
 - (instancetype)init
 {
     if (self = [super init]) {
-        _stateQueue = dispatch_queue_create("com.segment.state.queue", DISPATCH_QUEUE_CONCURRENT);
+        _stateQueue = dispatch_queue_create("com.snapyr.state.queue", DISPATCH_QUEUE_CONCURRENT);
         self.userInfo = [[SnapyrUserInfo alloc] initWithState:self];
         self.context = [[SnapyrPayloadContext alloc] initWithState:self];
     }

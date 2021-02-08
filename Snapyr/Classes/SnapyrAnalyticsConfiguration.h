@@ -66,7 +66,7 @@ NS_SWIFT_NAME(AnalyticsConfiguration)
  * Creates and returns a configuration with default settings and the given write key.
  *
  * @param writeKey Your project's write key from snapyr.com.
- * @param defaultAPIHost The default API host to be used if none are supplied from Segment.com
+ * @param defaultAPIHost The default API host to be used if none are supplied from Snapyr
  */
 + (_Nonnull instancetype)configurationWithWriteKey:(NSString *_Nonnull)writeKey defaultAPIHost:(NSURL *_Nullable)defaultAPIHost;
 
@@ -79,7 +79,7 @@ NS_SWIFT_NAME(AnalyticsConfiguration)
 
 /**
  * The API host to be used for network requests to Segment.
- * This value can change based on settings obtained from Segment.com.
+ * This value can change based on settings obtained from Snapyr.
  */
 @property (nonatomic, copy, readonly, nullable) NSURL *apiHost;
 
@@ -161,7 +161,7 @@ NS_SWIFT_NAME(AnalyticsConfiguration)
 
 
 /**
- * Set the default settings to use if Segment.com cannot be reached. 
+ * Set the default settings to use if Snapyr.com cannot be reached.
  * An example configuration can be found here, using your write key:  https://cdn-settings.segment.com/v1/projects/YOUR_WRITE_KEY/settings
  */
 @property (nonatomic, strong, nullable) NSDictionary *defaultSettings;
