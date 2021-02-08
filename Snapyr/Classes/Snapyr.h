@@ -9,10 +9,10 @@
 @import Foundation;
 
 //! Project version number for Analytics.
-FOUNDATION_EXPORT double SegmentVersionNumber;
+FOUNDATION_EXPORT double SnapyrVersionNumber;
 
 //! Project version string for Analytics.
-FOUNDATION_EXPORT const unsigned char SegmentVersionString[];
+FOUNDATION_EXPORT const unsigned char SnapyrVersionString[];
 
 #import "SnapyrAnalytics.h"
 #import "SnapyrSnapyrIntegration.h"

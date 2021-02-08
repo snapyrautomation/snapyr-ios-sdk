@@ -12,7 +12,6 @@ Pod::Spec.new do |s|
   s.homepage         = "http://snapyr.com/"
   s.license          =  { :type => 'MIT' }
   s.source           = { :git => "https://github.com/snapyrautomation/snapyr-ios-sdk", :tag => s.version.to_s }
-  s.social_media_url = 'https://twitter.com/segment'
 
   s.ios.deployment_target = '10.0'
   s.tvos.deployment_target = '10.0'

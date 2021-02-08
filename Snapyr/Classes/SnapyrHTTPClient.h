@@ -3,7 +3,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-extern NSString * const kSegmentAPIBaseHost;
+extern NSString * const kSnapyrAPIBaseHost;
 
 
 NS_SWIFT_NAME(HTTPClient)
@@ -20,7 +20,6 @@ NS_SWIFT_NAME(HTTPClient)
 - (instancetype)initWithRequestFactory:(SnapyrRequestFactory _Nullable)requestFactory;
 
 /**
- * Upload dictionary formatted as per https://segment.com/docs/sources/server/http/#batch.
  * This method will convert the dictionary to json, gzip it and upload the data.
  * It will respond with retry = YES if the batch should be reuploaded at a later time.
  * It will ask to retry for json errors and 3xx/5xx codes, and not retry for 2xx/4xx response codes.

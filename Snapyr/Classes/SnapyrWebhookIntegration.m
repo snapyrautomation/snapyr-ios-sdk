@@ -97,7 +97,7 @@ NS_ASSUME_NONNULL_END
 {
     NSMutableDictionary *dict = [integrations ?: @{} mutableCopy];
     for (NSString *integration in self.analytics.bundledIntegrations) {
-        // Don't record Segment.io in the dictionary. It is always enabled.
+        // Don't record Snapyr in the dictionary. It is always enabled.
         if ([integration isEqualToString:@"Snapyr"]) {
             continue;
         }

@@ -92,7 +92,7 @@
 			containerPortal = EADEB8521DECD080005322DA /* Project object */;
 			proxyType = 1;
 			remoteGlobalIDString = EADEB85A1DECD080005322DA;
-			remoteInfo = Segment;
+			remoteInfo = Snapyr;
 		};
 /* End PBXContainerItemProxy section */
 
@@ -112,7 +112,7 @@
 		A352175F23AD5825005B07F6 /* SnapyrMacros.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SnapyrMacros.h; sourceTree = "<group>"; };
 		A3BECDCE24BCE1E3009E2BD3 /* ObjcUtils.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ObjcUtils.h; sourceTree = "<group>"; };
 		A3BECDCF24BCE1E3009E2BD3 /* ObjcUtils.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ObjcUtils.m; sourceTree = "<group>"; };
-		C31674B18CD818C64F8F3935 /* Pods_SegmentTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_SegmentTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		C31674B18CD818C64F8F3935 /* Pods_SnapyrTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_SnapyrTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		EA88A5971DED7608009FB66A /* SnapyrSerializableValue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SnapyrSerializableValue.h; sourceTree = "<group>"; };
 		EA8F09731E24C5C600B8B93F /* MiddlewareTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MiddlewareTests.swift; sourceTree = "<group>"; };
 		EAA542761EB4035400945DA7 /* TrackingTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TrackingTests.swift; sourceTree = "<group>"; };
@@ -185,7 +185,7 @@
 		EADEB9001DED3711005322DA /* Analytics.podspec */ = {isa = PBXFileReference; lastKnownFileType = text; path = Analytics.podspec; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
 		EADEB9011DED3711005322DA /* Podfile.lock */ = {isa = PBXFileReference; lastKnownFileType = text; path = Podfile.lock; sourceTree = "<group>"; };
 		F61EB4AE1F996DEF0038C8C0 /* AnalyticsUtilTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AnalyticsUtilTests.swift; sourceTree = "<group>"; };
-		FCBCA487BBFE32EC6A04989F /* Pods_SegmentTestsTVOS.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_SegmentTestsTVOS.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		FCBCA487BBFE32EC6A04989F /* Pods_SnapyrTestsTVOS.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_SnapyrTestsTVOS.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -210,8 +210,8 @@
 		245A982558D113AD25B2912E /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				C31674B18CD818C64F8F3935 /* Pods_SegmentTests.framework */,
-				FCBCA487BBFE32EC6A04989F /* Pods_SegmentTestsTVOS.framework */,
+				C31674B18CD818C64F8F3935 /* Pods_SnapyrTests.framework */,
+				FCBCA487BBFE32EC6A04989F /* Pods_SnapyrTestsTVOS.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -431,7 +431,7 @@
 			dependencies = (
 			);
 			name = Snapyr;
-			productName = Segment;
+			productName = Snapyr;
 			productReference = EADEB85B1DECD080005322DA /* Snapyr.framework */;
 			productType = "com.apple.product-type.framework";
 		};
@@ -461,7 +461,7 @@
 			attributes = {
 				LastSwiftUpdateCheck = 0810;
 				LastUpgradeCheck = 1220;
-				ORGANIZATIONNAME = Segment;
+				ORGANIZATIONNAME = Snapyr;
 				TargetAttributes = {
 					EADEB85A1DECD080005322DA = {
 						CreatedOnToolsVersion = 8.1;

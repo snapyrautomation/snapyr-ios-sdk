@@ -296,7 +296,7 @@ class AnalyticsTests: XCTestCase {
         // If we extract the exact UIApplication method names in SnapyrApplicationProtocol,
         // it will cause a type mismatch between the return value from beginBackgroundTask
         // and the argument for endBackgroundTask.
-        // This would impact all code in a project that imports the Segment framework.
+        // This would impact all code in a project that imports the Snapyr framework.
         // Note that this doesn't appear to be an issue any longer in Xcode9b3.
         let task = UIApplication.shared.beginBackgroundTask(expirationHandler: nil)
         UIApplication.shared.endBackgroundTask(task)

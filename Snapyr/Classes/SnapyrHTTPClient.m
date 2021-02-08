@@ -7,7 +7,7 @@
 
 static const NSUInteger kMaxBatchSize = 475000; // 475KB
 
-NSString * const kSegmentAPIBaseHost = @"https://dev-engine.snapyr.com/v1";
+NSString * const kSnapyrAPIBaseHost = @"https://dev-engine.snapyr.com/v1";
 
 @implementation SnapyrHTTPClient
 

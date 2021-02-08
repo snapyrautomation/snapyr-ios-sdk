@@ -31,7 +31,7 @@
 
 NSString *SnapyrAnalyticsIntegrationDidStart = @"com.snapyr.analytics.integration.did.start";
 NSString *const SnapyrAnonymousIdKey = @"SnapyrAnonymousId";
-NSString *const kSnapyrAnonymousIdFilename = @"segment.anonymousId";
+NSString *const kSnapyrAnonymousIdFilename = @"snapyr.anonymousId";
 NSString *const kSnapyrCachedSettingsFilename = @"analytics.settings.v2.plist";
 
 

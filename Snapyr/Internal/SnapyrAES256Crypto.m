@@ -13,7 +13,7 @@
 
 // Implementation courtesy of http://robnapier.net/aes-commoncrypto
 
-static NSString *const kRNCryptManagerErrorDomain = @"com.segment.crypto";
+static NSString *const kRNCryptManagerErrorDomain = @"com.snapyr.crypto";
 
 static const CCAlgorithm kAlgorithm = kCCAlgorithmAES;
 static const NSUInteger kAlgorithmKeySize = kCCKeySizeAES256;

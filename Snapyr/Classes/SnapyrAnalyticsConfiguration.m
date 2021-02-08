@@ -67,7 +67,7 @@
         
         // get the host we have stored
         NSString *host = [SnapyrUtils getAPIHost];
-        if ([host isEqualToString:kSegmentAPIBaseHost]) {
+        if ([host isEqualToString:kSnapyrAPIBaseHost]) {
             // we're getting the generic host back.  have they
             // supplied something other than that?
             if (defaultAPIHost && ![host isEqualToString:defaultAPIHost.absoluteString]) {

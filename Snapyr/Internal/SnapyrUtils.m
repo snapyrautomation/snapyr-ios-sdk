@@ -37,14 +37,14 @@ const NSString *snapyr_apiHost = @"snapyr_apihost";
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     NSString *result = [defaults stringForKey:[snapyr_apiHost copy]];
     if (!result) {
-        result = kSegmentAPIBaseHost;
+        result = kSnapyrAPIBaseHost;
     }
     return result;
 }
 
 //+ (nonnull NSString *)getAPIHost
 //{
-//    return kSegmentAPIBaseHost;
+//    return kSnapyrAPIBaseHost;
 //}
 
 + (nullable NSURL *)getAPIHostURL
