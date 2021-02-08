@@ -15,7 +15,7 @@ FOUNDATION_EXPORT double SegmentVersionNumber;
 FOUNDATION_EXPORT const unsigned char SegmentVersionString[];
 
 #import "SnapyrAnalytics.h"
-#import "SnapyrSegmentIntegration.h"
+#import "SnapyrSnapyrIntegration.h"
 #import "SnapyrSnapyrIntegrationFactory.h"
 #import "SnapyrContext.h"
 #import "SnapyrMiddleware.h"

@@ -10,7 +10,7 @@ void SLog(NSString *format, ...);
 
 #pragma mark - Serialization Extensions
 
-NS_SWIFT_NAME(SegmentSerializable)
+NS_SWIFT_NAME(SnapyrSerializable)
 @protocol SnapyrSerializable
 /**
  Serialize objects to a type supported by NSJSONSerializable.  Objects that conform to this protocol should

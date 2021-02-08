@@ -23,14 +23,14 @@ class UserDefaultsStorageTest : XCTestCase {
     }
     
     func testPersistsAndLoadsData() {
-        let dataIn = "segment".data(using: String.Encoding.utf8)!
+        let dataIn = "snapyr".data(using: String.Encoding.utf8)!
         storage.setData(dataIn, forKey: "mydata")
         
         let dataOut = storage.data(forKey: "mydata")
         XCTAssertEqual(dataOut, dataIn)
         
         let strOut = String(data: dataOut!, encoding: .utf8)
-        XCTAssertEqual(strOut, "segment")
+        XCTAssertEqual(strOut, "snapyr")
     }
     
     func testPersistsAndLoadsString() {
@@ -85,7 +85,7 @@ class UserDefaultsStorageTest : XCTestCase {
     
     func testShouldWorkWithNamespace() {
         let crypto = AES256Crypto(password: "thetrees")
-        let s = UserDefaultsStorage(defaults: UserDefaults.standard, namespacePrefix: "segment", crypto: crypto)
+        let s = UserDefaultsStorage(defaults: UserDefaults.standard, namespacePrefix: "snapyr", crypto: crypto)
         let dict = [
             "san francisco": "tech",
             "new york": "finance",

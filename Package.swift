@@ -4,15 +4,15 @@
 import PackageDescription
 
 let package = Package(
-    name: "Segment",
+    name: "Snapyr",
     platforms: [
         .iOS(.v10), .tvOS(.v10), .macOS(.v10_13)
     ],
     products: [
         // Products define the executables and libraries produced by a package, and make them visible to other packages.
         .library(
-            name: "Segment",
-            targets: ["Segment"]),
+            name: "Snapyr",
+            targets: ["Snapyr"]),
     ],
     dependencies: [
         // Dependencies declare other packages that this package depends on.
@@ -22,9 +22,9 @@ let package = Package(
         // Targets are the basic building blocks of a package. A target can define a module or a test suite.
         // Targets can depend on other targets in this package, and on products in packages which this package depends on.
         .target(
-            name: "Segment",
+            name: "Snapyr",
             dependencies: [],
-            path: "Segment/",
+            path: "Snapyr/",
             exclude: ["SwiftSources"],
             sources: ["Classes", "Internal"],
             publicHeadersPath: "Classes",

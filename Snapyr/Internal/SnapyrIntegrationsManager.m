@@ -29,7 +29,7 @@
 #import "SnapyrUtils.h"
 #import "SnapyrState.h"
 
-NSString *SnapyrAnalyticsIntegrationDidStart = @"io.segment.analytics.integration.did.start";
+NSString *SnapyrAnalyticsIntegrationDidStart = @"com.snapyr.analytics.integration.did.start";
 NSString *const SnapyrAnonymousIdKey = @"SnapyrAnonymousId";
 NSString *const kSnapyrAnonymousIdFilename = @"segment.anonymousId";
 NSString *const kSnapyrCachedSettingsFilename = @"analytics.settings.v2.plist";
@@ -98,7 +98,7 @@ NSString *const kSnapyrCachedSettingsFilename = @"analytics.settings.v2.plist";
     if (self = [super init]) {
         self.analytics = analytics;
         self.configuration = configuration;
-        self.serialQueue = snapyr_dispatch_queue_create_specific("io.segment.analytics", DISPATCH_QUEUE_SERIAL);
+        self.serialQueue = snapyr_dispatch_queue_create_specific("com.snapyr.analytics", DISPATCH_QUEUE_SERIAL);
         self.messageQueue = [[NSMutableArray alloc] init];
         self.httpClient = [[SnapyrHTTPClient alloc] initWithRequestFactory:configuration.requestFactory];
         
@@ -404,7 +404,7 @@ NSString *const kSnapyrCachedSettingsFilename = @"analytics.settings.v2.plist";
 - (void)updateIntegrationsWithSettings:(NSDictionary *)projectSettings
 {
     // see if we have a new segment API host and set it.
-    NSString *apiHost = projectSettings[@"Segment.io"][@"apiHost"];
+    NSString *apiHost = projectSettings[@"Snapyr"][@"apiHost"];
     if (apiHost) {
         [SnapyrUtils saveAPIHost:apiHost];
     }
@@ -453,7 +453,7 @@ NSString *const kSnapyrCachedSettingsFilename = @"analytics.settings.v2.plist";
 {
     return @{
         @"integrations" : @{
-            @"Segment.io" : @{
+            @"Snapyr" : @{
                     @"apiKey" : self.configuration.writeKey,
                     @"apiHost" : [SnapyrUtils getAPIHost]
             },
@@ -493,7 +493,7 @@ NSString *const kSnapyrCachedSettingsFilename = @"analytics.settings.v2.plist";
                         NSMutableDictionary *newSettings = [self.configuration.defaultSettings serializableMutableDeepCopy];
                         NSMutableDictionary *integrations = newSettings[@"integrations"];
                         if (integrations != nil) {
-                            integrations[@"Segment.io"] = @{@"apiKey": self.configuration.writeKey, @"apiHost": [SnapyrUtils getAPIHost]};
+                            integrations[@"Snapyr"] = @{@"apiKey": self.configuration.writeKey, @"apiHost": [SnapyrUtils getAPIHost]};
                         } else {
                             newSettings[@"integrations"] = @{@"integrations": @{@"apiKey": self.configuration.writeKey, @"apiHost": [SnapyrUtils getAPIHost]}};
                         }
@@ -518,7 +518,7 @@ NSString *const kSnapyrCachedSettingsFilename = @"analytics.settings.v2.plist";
 + (BOOL)isIntegration:(NSString *)key enabledInOptions:(NSDictionary *)options
 {
     // If the event is in the tracking plan, it should always be sent to api.segment.io.
-    if ([@"Segment.io" isEqualToString:key]) {
+    if ([@"Snapyr" isEqualToString:key]) {
         return YES;
     }
     if (options[key]) {
@@ -548,7 +548,7 @@ NSString *const kSnapyrCachedSettingsFilename = @"analytics.settings.v2.plist";
 + (BOOL)isTrackEvent:(NSString *)event enabledForIntegration:(NSString *)key inPlan:(NSDictionary *)plan
 {
     // Whether the event is enabled or disabled, it should always be sent to api.segment.io.
-    if ([key isEqualToString:@"Segment.io"]) {
+    if ([key isEqualToString:@"Snapyr"]) {
         return YES;
     }
 

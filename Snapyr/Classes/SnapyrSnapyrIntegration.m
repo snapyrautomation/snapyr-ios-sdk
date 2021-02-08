@@ -2,7 +2,7 @@
 
 #import "SnapyrAnalytics.h"
 #import "SnapyrUtils.h"
-#import "SnapyrSegmentIntegration.h"
+#import "SnapyrSnapyrIntegration.h"
 #import "SnapyrReachability.h"
 #import "SnapyrHTTPClient.h"
 #import "SnapyrStorage.h"
@@ -13,22 +13,22 @@
 @import UIKit;
 #endif
 
-NSString *const SnapyrSegmentDidSendRequestNotification = @"SegmentDidSendRequest";
-NSString *const SnapyrSegmentRequestDidSucceedNotification = @"SegmentRequestDidSucceed";
-NSString *const SnapyrSegmentRequestDidFailNotification = @"SegmentRequestDidFail";
+NSString *const SnapyrSnapyrDidSendRequestNotification = @"SnapyrDidSendRequest";
+NSString *const SnapyrSnapyrRequestDidSucceedNotification = @"SnapyrRequestDidSucceed";
+NSString *const SnapyrSnapyrRequestDidFailNotification = @"SnapyrRequestDidFail";
 
 NSString *const SnapyrUserIdKey = @"snapyrUserId";
 NSString *const SnapyrQueueKey = @"snapyrQueue";
 NSString *const SnapyrTraitsKey = @"snapyrTraits";
 
-NSString *const kSnapyrUserIdFilename = @"segmentio.userId";
-NSString *const kSnapyrQueueFilename = @"segmentio.queue.plist";
-NSString *const kSnapyrTraitsFilename = @"segmentio.traits.plist";
+NSString *const kSnapyrUserIdFilename = @"snapyr.userId";
+NSString *const kSnapyrQueueFilename = @"snapyr.queue.plist";
+NSString *const kSnapyrTraitsFilename = @"snapyr.traits.plist";
 
 // Equiv to UIBackgroundTaskInvalid.
 NSUInteger const kSnapyrBackgroundTaskInvalid = 0;
 
-@interface SnapyrSegmentIntegration ()
+@interface SnapyrSnapyrIntegration ()
 
 @property (nonatomic, strong) NSMutableArray *queue;
 @property (nonatomic, strong) NSURLSessionUploadTask *batchRequest;
@@ -57,7 +57,7 @@ NSUInteger const kSnapyrBackgroundTaskInvalid = 0;
 @property (nonatomic, strong, readonly) SnapyrAnalyticsConfiguration *oneTimeConfiguration;
 @end
 
-@implementation SnapyrSegmentIntegration
+@implementation SnapyrSnapyrIntegration
 
 - (id)initWithAnalytics:(SnapyrAnalytics *)analytics httpClient:(SnapyrHTTPClient *)httpClient fileStorage:(id<SnapyrStorage>)fileStorage userDefaultsStorage:(id<SnapyrStorage>)userDefaultsStorage;
 {
@@ -70,8 +70,8 @@ NSUInteger const kSnapyrBackgroundTaskInvalid = 0;
         self.userDefaultsStorage = userDefaultsStorage;
         self.reachability = [SnapyrReachability reachabilityWithHostname:@"google.com"];
         [self.reachability startNotifier];
-        self.serialQueue = snapyr_dispatch_queue_create_specific("io.segment.analytics.segmentio", DISPATCH_QUEUE_SERIAL);
-        self.backgroundTaskQueue = snapyr_dispatch_queue_create_specific("io.segment.analytics.backgroundTask", DISPATCH_QUEUE_SERIAL);
+        self.serialQueue = snapyr_dispatch_queue_create_specific("com.snapyr.analytics.snapyr", DISPATCH_QUEUE_SERIAL);
+        self.backgroundTaskQueue = snapyr_dispatch_queue_create_specific("com.snapyr.analytics.backgroundTask", DISPATCH_QUEUE_SERIAL);
 #if TARGET_OS_IPHONE
         self.flushTaskID = UIBackgroundTaskInvalid;
 #else
@@ -125,7 +125,7 @@ NSUInteger const kSnapyrBackgroundTaskInvalid = 0;
         
         id<SnapyrApplicationProtocol> application = [self.analytics oneTimeConfiguration].application;
         if (application && [application respondsToSelector:@selector(snapyr_beginBackgroundTaskWithName:expirationHandler:)]) {
-            self.flushTaskID = [application snapyr_beginBackgroundTaskWithName:@"Segmentio.Flush"
+            self.flushTaskID = [application snapyr_beginBackgroundTaskWithName:@"Snapyr.Flush"
                                                           expirationHandler:^{
                                                               [self endBackgroundTask];
                                                           }];
@@ -257,8 +257,8 @@ NSUInteger const kSnapyrBackgroundTaskInvalid = 0;
 {
     NSMutableDictionary *dict = [integrations ?: @{} mutableCopy];
     for (NSString *integration in self.analytics.bundledIntegrations) {
-        // Don't record Segment.io in the dictionary. It is always enabled.
-        if ([integration isEqualToString:@"Segment.io"]) {
+        // Don't record Snapyr in the dictionary. It is always enabled.
+        if ([integration isEqualToString:@"Snapyr"]) {
             continue;
         }
         dict[integration] = @NO;
@@ -289,10 +289,10 @@ NSUInteger const kSnapyrBackgroundTaskInvalid = 0;
         
         NSDictionary *queuePayload = [payload copy];
         
-        if (self.configuration.experimental.rawSegmentModificationBlock != nil) {
-            NSDictionary *tempPayload = self.configuration.experimental.rawSegmentModificationBlock(queuePayload);
+        if (self.configuration.experimental.rawSnapyrModificationBlock != nil) {
+            NSDictionary *tempPayload = self.configuration.experimental.rawSnapyrModificationBlock(queuePayload);
             if (tempPayload == nil) {
-                SLog(@"rawSegmentModificationBlock cannot be used to drop events!");
+                SLog(@"rawSnapyrModificationBlock cannot be used to drop events!");
             } else {
                 // prevent anything else from modifying it at this point.
                 queuePayload = [tempPayload copy];
@@ -396,7 +396,7 @@ NSUInteger const kSnapyrBackgroundTaskInvalid = 0;
                               completionHandler:^(BOOL retry, NSData *_Nullable data) {
         void (^completion)(void) = ^{
             if (retry) {
-                [self notifyForName:SnapyrSegmentRequestDidFailNotification userInfo:batch];
+                [self notifyForName:SnapyrSnapyrRequestDidFailNotification userInfo:batch];
                 self.batchRequest = nil;
                 [self endBackgroundTask];
                 return;
@@ -404,7 +404,7 @@ NSUInteger const kSnapyrBackgroundTaskInvalid = 0;
 
             [self.queue removeObjectsInArray:batch];
             [self persistQueue];
-            [self notifyForName:SnapyrSegmentRequestDidSucceedNotification userInfo:batch];
+            [self notifyForName:SnapyrSnapyrRequestDidSucceedNotification userInfo:batch];
             self.batchRequest = nil;
             
             if (data != nil) {
@@ -417,7 +417,7 @@ NSUInteger const kSnapyrBackgroundTaskInvalid = 0;
         [self dispatchBackground:completion];
     }];
 
-    [self notifyForName:SnapyrSegmentDidSendRequestNotification userInfo:batch];
+    [self notifyForName:SnapyrSnapyrDidSendRequestNotification userInfo:batch];
 }
                          
 - (void)processResponseData:(NSData *)data

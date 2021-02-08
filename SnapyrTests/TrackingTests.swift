@@ -7,7 +7,7 @@
 //
 
 
-import Segment
+import Snapyr
 import XCTest
 
 class TrackingTests: XCTestCase {

@@ -16,7 +16,6 @@
 static CTTelephonyNetworkInfo *_telephonyNetworkInfo;
 #endif
 
-const NSString *segment_apiHost = @"segment_apihost";
 const NSString *snapyr_apiHost = @"snapyr_apihost";
 
 @implementation SnapyrUtils
@@ -33,20 +32,20 @@ const NSString *snapyr_apiHost = @"snapyr_apihost";
     [defaults setObject:apiHost forKey:[snapyr_apiHost copy]];
 }
 
-//+ (nonnull NSString *)getAPIHost
-//{
-//    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-//    NSString *result = [defaults stringForKey:[snapyr_apiHost copy]];
-//    if (!result) {
-//        result = kSegmentAPIBaseHost;
-//    }
-//    return result;
-//}
-
 + (nonnull NSString *)getAPIHost
 {
-    return kSegmentAPIBaseHost;
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    NSString *result = [defaults stringForKey:[snapyr_apiHost copy]];
+    if (!result) {
+        result = kSegmentAPIBaseHost;
+    }
+    return result;
 }
+
+//+ (nonnull NSString *)getAPIHost
+//{
+//    return kSegmentAPIBaseHost;
+//}
 
 + (nullable NSURL *)getAPIHostURL
 {

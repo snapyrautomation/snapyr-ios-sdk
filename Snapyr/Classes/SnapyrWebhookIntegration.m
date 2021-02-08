@@ -28,7 +28,7 @@ NS_ASSUME_NONNULL_END
         _analytics = analytics;
         _client = client;
         _webhookUrl = webhookUrl;
-        _serialQueue = snapyr_dispatch_queue_create_specific("io.segment.analytics.webhook", DISPATCH_QUEUE_SERIAL);
+        _serialQueue = snapyr_dispatch_queue_create_specific("com.snapyr.analytics.webhook", DISPATCH_QUEUE_SERIAL);
     }
     return self;
 }
@@ -98,7 +98,7 @@ NS_ASSUME_NONNULL_END
     NSMutableDictionary *dict = [integrations ?: @{} mutableCopy];
     for (NSString *integration in self.analytics.bundledIntegrations) {
         // Don't record Segment.io in the dictionary. It is always enabled.
-        if ([integration isEqualToString:@"Segment.io"]) {
+        if ([integration isEqualToString:@"Snapyr"]) {
             continue;
         }
         dict[integration] = @NO;
@@ -106,7 +106,7 @@ NS_ASSUME_NONNULL_END
     return [dict copy];
 }
 
-// Code borrowed from SnapyrSegmentIntegration.enqueueAction
+// Code borrowed from SnapyrSnapyrIntegration.enqueueAction
 - (void)enqueue:(NSString *) type dictionary:(NSMutableDictionary *) payload context:(NSDictionary *)context integrations:(NSDictionary *)integrations
 {
     payload[@"type"] = type;

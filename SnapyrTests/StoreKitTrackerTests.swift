@@ -6,7 +6,7 @@
 //  Copyright © 2016 Segment. All rights reserved.
 //
 
-import Segment
+import Snapyr
 import XCTest
 
 class mockTransaction: SKPaymentTransaction {

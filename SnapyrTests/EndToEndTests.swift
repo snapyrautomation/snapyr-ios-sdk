@@ -26,9 +26,9 @@ class EndToEndTests: XCTestCase {
     
     func testTrack() {
         let uuid = UUID().uuidString
-        let expectation = XCTestExpectation(description: "SegmentRequestDidSucceed")
+        let expectation = XCTestExpectation(description: "SnapyrRequestDidSucceed")
         
-        configuration.experimental.rawSegmentModificationBlock = { data in
+        configuration.experimental.rawSnapyrModificationBlock = { data in
             if let properties = data["properties"] as? Dictionary<String, Any?>,
                 let tempUUID = properties["id"] as? String, tempUUID == uuid {
                 expectation.fulfill()

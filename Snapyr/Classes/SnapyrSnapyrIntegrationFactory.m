@@ -1,5 +1,5 @@
 #import "SnapyrSnapyrIntegrationFactory.h"
-#import "SnapyrSegmentIntegration.h"
+#import "SnapyrSnapyrIntegration.h"
 
 
 @implementation SnapyrSnapyrIntegrationFactory
@@ -16,12 +16,12 @@
 
 - (id<SnapyrIntegration>)createWithSettings:(NSDictionary *)settings forAnalytics:(SnapyrAnalytics *)analytics
 {
-    return [[SnapyrSegmentIntegration alloc] initWithAnalytics:analytics httpClient:self.client fileStorage:self.fileStorage userDefaultsStorage:self.userDefaultsStorage];
+    return [[SnapyrSnapyrIntegration alloc] initWithAnalytics:analytics httpClient:self.client fileStorage:self.fileStorage userDefaultsStorage:self.userDefaultsStorage];
 }
 
 - (NSString *)key
 {
-    return @"Segment.io";
+    return @"Snapyr";
 }
 
 @end

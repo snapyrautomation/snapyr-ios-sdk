@@ -275,6 +275,6 @@ NS_SWIFT_NAME(AnalyticsExperimental)
  payload data prior to being received by segment.com.  This property will go away in future versions when context
  object data is made available earlier in the event pipeline.
  */
-@property (nonatomic, strong, nullable) SnapyrRawModificationBlock rawSegmentModificationBlock;
+@property (nonatomic, strong, nullable) SnapyrRawModificationBlock rawSnapyrModificationBlock;
 
 @end

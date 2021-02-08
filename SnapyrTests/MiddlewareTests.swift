@@ -7,7 +7,7 @@
 //
 
 
-import Segment
+import Snapyr
 import XCTest
 
 // Changing event names and adding custom attributes
@@ -87,7 +87,7 @@ class IntegrationMiddlewareTests: XCTestCase {
     func testReceivesEvents() {
         let config = AnalyticsConfiguration(writeKey: "TESTKEY")
         let passthrough = PassthroughMiddleware()
-        config.destinationMiddleware = [DestinationMiddleware(key: SegmentIntegrationFactory().key(), middleware: [passthrough])]
+        config.destinationMiddleware = [DestinationMiddleware(key: SnapyrIntegrationFactory().key(), middleware: [passthrough])]
         let analytics = Analytics(configuration: config)
         analytics.identify("testUserId1")
         
@@ -106,7 +106,7 @@ class IntegrationMiddlewareTests: XCTestCase {
     func testModifiesAndPassesEventToNext() {
         let config = AnalyticsConfiguration(writeKey: "TESTKEY")
         let passthrough = PassthroughMiddleware()
-        config.destinationMiddleware = [DestinationMiddleware(key: SegmentIntegrationFactory().key(), middleware: [customizeAllTrackCalls, passthrough])]
+        config.destinationMiddleware = [DestinationMiddleware(key: SnapyrIntegrationFactory().key(), middleware: [customizeAllTrackCalls, passthrough])]
         let analytics = Analytics(configuration: config)
         analytics.track("Purchase Success")
         
@@ -134,7 +134,7 @@ class IntegrationMiddlewareTests: XCTestCase {
         
         let config = AnalyticsConfiguration(writeKey: "TESTKEY")
         let passthrough = PassthroughMiddleware()
-        config.destinationMiddleware = [DestinationMiddleware(key: SegmentIntegrationFactory().key(), middleware: [eatAllCalls, passthrough])]
+        config.destinationMiddleware = [DestinationMiddleware(key: SnapyrIntegrationFactory().key(), middleware: [eatAllCalls, passthrough])]
         let analytics = Analytics(configuration: config)
         analytics.track("Purchase Success")
         

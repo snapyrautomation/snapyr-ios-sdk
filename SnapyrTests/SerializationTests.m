@@ -76,7 +76,7 @@ JSON_DICT snapyrCoerceDictionary(NSDictionary *_Nullable dict);
     MyObject *myObj = [[MyObject alloc] init];
     NSDate *date = [NSDate date];
     NSData *data = [NSData data];
-    NSURL *url = [NSURL URLWithString:@"http://segment.com"];
+    NSURL *url = [NSURL URLWithString:@"http://snapyr.com"];
     NSString *test = @"test";
 
     XCTAssertFalse([NSJSONSerialization isOfSerializableType:data]);

@@ -141,14 +141,14 @@
     NSString *executableName = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleExecutable"];
     // if we can't get an exec name, we're probably running as tests in a library of some kind, so make one up.
     if (executableName == nil) {
-        executableName = @"segment-test";
+        executableName = @"snapyr-test";
     }
     NSString *newStoragePath = [storagePath stringByAppendingPathComponent:executableName];
     BOOL isDirectory = NO;
     BOOL exists = [[NSFileManager defaultManager] fileExistsAtPath:newStoragePath isDirectory:&isDirectory];
-    // if it exists, but isn't a directory... yikes, but make a segment-specific one.
+    // if it exists, but isn't a directory... yikes, but make a snapyr-specific one.
     if (!isDirectory && exists) {
-        newStoragePath = [storagePath stringByAppendingPathComponent:[NSString stringWithFormat:@"%@-%@", executableName, @"segment"]];
+        newStoragePath = [storagePath stringByAppendingPathComponent:[NSString stringWithFormat:@"%@-%@", executableName, @"snapyr"]];
     }
     
     if (!exists) {

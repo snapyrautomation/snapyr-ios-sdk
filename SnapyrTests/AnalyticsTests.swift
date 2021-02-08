@@ -15,7 +15,7 @@ class AnalyticsTests: XCTestCase {
     var config: AnalyticsConfiguration!
     let cachedSettings = [
         "integrations": [
-            "Segment.io": [
+            "Snapyr": [
                 "apiKey": "QUI5ydwIGeFFTa1IvCBUhxL9PyW5B0jE",
             ]
         ],
@@ -23,9 +23,9 @@ class AnalyticsTests: XCTestCase {
         ] as NSDictionary
     let cachedSettingsWithHost = [
         "integrations": [
-            "Segment.io": [
+            "Snapyr": [
                 "apiKey": "QUI5ydwIGeFFTa1IvCBUhxL9PyW5B0jE",
-                "apiHost": "in.eu2.segmentapis.com/v1"
+                "apiHost": "dev-engine.snapyr.com/v1"
             ]
         ],
         "plan": ["track": [:]],
@@ -59,7 +59,7 @@ class AnalyticsTests: XCTestCase {
     }
     
     func testInitializedCorrectly() {
-        UserDefaults.standard.removeObject(forKey: "segment_apihost")
+        UserDefaults.standard.removeObject(forKey: "snapyr_apihost")
         
         XCTAssertEqual(config.flushAt, 20)
         XCTAssertEqual(config.flushInterval, 30)
@@ -75,25 +75,25 @@ class AnalyticsTests: XCTestCase {
     
     func testConfigAPIHost() {
         // gotta remove the key first
-        UserDefaults.standard.removeObject(forKey: "segment_apihost")
+        UserDefaults.standard.removeObject(forKey: "snapyr_apihost")
         
         let dummyHost = URL(string: "https://blah.com/")
         let config2 = AnalyticsConfiguration(writeKey: "TESTKEY", defaultAPIHost: dummyHost)
         
         let currentHost = config2.apiHost?.absoluteString
-        let storedHost = UserDefaults.standard.string(forKey: "segment_apihost")
+        let storedHost = UserDefaults.standard.string(forKey: "snapyr_apihost")
         
         XCTAssertEqual(config2.apiHost, dummyHost)
         XCTAssertEqual(currentHost, storedHost)
     }
     
     func testCachedSettingsAPIHost() {
-        UserDefaults.standard.removeObject(forKey: "segment_apihost")
+        UserDefaults.standard.removeObject(forKey: "snapyr_apihost")
         
         var initialized = false
         NotificationCenter.default.addObserver(forName: NSNotification.Name(rawValue: SnapyrAnalyticsIntegrationDidStart), object: nil, queue: nil) { (notification) in
             let key = notification.object as? String
-            if (key == "Segment.io") {
+            if (key == "Snapyr") {
                 initialized = true
             }
         }
@@ -107,7 +107,7 @@ class AnalyticsTests: XCTestCase {
         }
         
         // see if the value in use is the correct endpoint.
-        XCTAssertEqual(config2.apiHost?.absoluteString, "https://in.eu2.segmentapis.com/v1")
+        XCTAssertEqual(config2.apiHost?.absoluteString, "https://dev-engine.snapyr.com/v1")
         analytics2.test_integrationsManager()?.test_setCachedSettings(settings: cachedSettings)
     }
 
@@ -162,8 +162,8 @@ class AnalyticsTests: XCTestCase {
         let analytics2 = Analytics(configuration: config)
         analytics2.test_integrationsManager()?.test_setCachedSettings(settings: cachedSettings)
         
-        XCTAssertEqual(analytics.test_integrationsManager()?.test_segmentIntegration()?.test_userId(), "testUserId1")
-        XCTAssertEqual(analytics2.test_integrationsManager()?.test_segmentIntegration()?.test_userId(), "testUserId1")
+        XCTAssertEqual(analytics.test_integrationsManager()?.test_snapyrIntegration()?.test_userId(), "testUserId1")
+        XCTAssertEqual(analytics2.test_integrationsManager()?.test_snapyrIntegration()?.test_userId(), "testUserId1")
     }
     
     func testPersistsTraits() {
@@ -172,11 +172,11 @@ class AnalyticsTests: XCTestCase {
         let analytics2 = Analytics(configuration: config)
         analytics2.test_integrationsManager()?.test_setCachedSettings(settings: cachedSettings)
         
-        XCTAssertEqual(analytics.test_integrationsManager()?.test_segmentIntegration()?.test_userId(), "testUserId1")
-        XCTAssertEqual(analytics2.test_integrationsManager()?.test_segmentIntegration()?.test_userId(), "testUserId1")
+        XCTAssertEqual(analytics.test_integrationsManager()?.test_snapyrIntegration()?.test_userId(), "testUserId1")
+        XCTAssertEqual(analytics2.test_integrationsManager()?.test_snapyrIntegration()?.test_userId(), "testUserId1")
         
-        var traits = analytics.test_integrationsManager()?.test_segmentIntegration()?.test_traits()
-        var storedTraits = analytics2.test_integrationsManager()?.test_segmentIntegration()?.test_traits()
+        var traits = analytics.test_integrationsManager()?.test_snapyrIntegration()?.test_traits()
+        var storedTraits = analytics2.test_integrationsManager()?.test_snapyrIntegration()?.test_traits()
         
         if let trait1 = traits?["trait1"] as? String {
             XCTAssertEqual(trait1, "someTrait")
@@ -192,8 +192,8 @@ class AnalyticsTests: XCTestCase {
         
         analytics.identify("testUserId1", traits: ["trait2": "someOtherTrait"])
         
-        traits = analytics.test_integrationsManager()?.test_segmentIntegration()?.test_traits()
-        storedTraits = analytics2.test_integrationsManager()?.test_segmentIntegration()?.test_traits()
+        traits = analytics.test_integrationsManager()?.test_snapyrIntegration()?.test_traits()
+        storedTraits = analytics2.test_integrationsManager()?.test_snapyrIntegration()?.test_traits()
         
         if let trait1 = traits?["trait2"] as? String {
             XCTAssertEqual(trait1, "someOtherTrait")
@@ -214,9 +214,9 @@ class AnalyticsTests: XCTestCase {
         analytics.identify("testUserId1", traits: [ "Test trait key" : "Test trait value"])
         analytics.reset()
         
-        expectUntil(2.0, expression: self.analytics.test_integrationsManager()?.test_segmentIntegration()?.test_userId() == nil)
+        expectUntil(2.0, expression: self.analytics.test_integrationsManager()?.test_snapyrIntegration()?.test_userId() == nil)
         
-        expectUntil(2.0, expression: self.analytics.test_integrationsManager()?.test_segmentIntegration()?.test_traits()?.count == 0)
+        expectUntil(2.0, expression: self.analytics.test_integrationsManager()?.test_snapyrIntegration()?.test_traits()?.count == 0)
     }
     
     #if os(iOS)
@@ -278,7 +278,7 @@ class AnalyticsTests: XCTestCase {
             analytics.track("test #\(i)")
         }
         
-        let integration = analytics.test_integrationsManager()?.test_segmentIntegration()
+        let integration = analytics.test_integrationsManager()?.test_snapyrIntegration()
         XCTAssertNotNil(integration)
         
         analytics.flush()
@@ -304,7 +304,7 @@ class AnalyticsTests: XCTestCase {
     #endif
     
     func testFlushesUsingFlushTimer() {
-        let integration = analytics.test_integrationsManager()?.test_segmentIntegration()
+        let integration = analytics.test_integrationsManager()?.test_snapyrIntegration()
         
         analytics.track("test")
         
@@ -318,7 +318,7 @@ class AnalyticsTests: XCTestCase {
     func testRespectsFlushIntervale() {
         let timer = analytics
             .test_integrationsManager()?
-            .test_segmentIntegration()?
+            .test_snapyrIntegration()?
             .test_flushTimer()
         
         XCTAssertNotNil(timer)
@@ -349,7 +349,7 @@ class AnalyticsTests: XCTestCase {
     }
     
     func testDefaultsSEGQueueToEmptyArray() {
-        let integration = analytics.test_integrationsManager()?.test_segmentIntegration()
+        let integration = analytics.test_integrationsManager()?.test_snapyrIntegration()
         XCTAssertNotNil(integration)
         integration?.test_fileStorage()?.resetAll()
         XCTAssert(integration?.test_queue()?.isEmpty ?? false)
