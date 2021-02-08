@@ -18,8 +18,8 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "9D8CE58B23EE014E00197D0C"
-               BuildableName = "SegmentTestsTVOS.xctest"
-               BlueprintName = "SegmentTestsTVOS"
+               BuildableName = "SnapyrTestsTVOS.xctest"
+               BlueprintName = "SnapyrTestsTVOS"
                ReferencedContainer = "container:Snapyr.xcodeproj">
             </BuildableReference>
          </TestableReference>

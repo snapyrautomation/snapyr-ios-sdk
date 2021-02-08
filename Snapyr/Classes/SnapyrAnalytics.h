@@ -56,7 +56,7 @@ NS_SWIFT_NAME(Analytics)
 
  @param userId        A database ID (or email address) for this user. If you don't have a userId
  but want to record traits, you should pass nil. For more information on how we
- generate the UUID and Apple's policies on IDs, see https://segment.io/libraries/ios#ids
+ generate the UUID and Apple's policies on IDs.
 
  @param traits        A dictionary of traits you know about the user. Things like: email, name, plan, etc.
 

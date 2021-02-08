@@ -58,20 +58,20 @@ NS_SWIFT_NAME(AnalyticsConfiguration)
  * Creates and returns a configuration with default settings and the given write key.
  * This will use the API host `https://engine.snapyr.com/v1` as the default.
  *
- * @param writeKey Your project's write key from segment.io.
+ * @param writeKey Your project's write key from snapyr.com.
  */
 + (_Nonnull instancetype)configurationWithWriteKey:(NSString *_Nonnull)writeKey;
 
 /**
  * Creates and returns a configuration with default settings and the given write key.
  *
- * @param writeKey Your project's write key from segment.io.
+ * @param writeKey Your project's write key from snapyr.com.
  * @param defaultAPIHost The default API host to be used if none are supplied from Segment.com
  */
 + (_Nonnull instancetype)configurationWithWriteKey:(NSString *_Nonnull)writeKey defaultAPIHost:(NSURL *_Nullable)defaultAPIHost;
 
 /**
- * Your project's write key from segment.io.
+ * Your project's write key from snapyr.com.
  *
  * @see +configurationWithWriteKey:
  */

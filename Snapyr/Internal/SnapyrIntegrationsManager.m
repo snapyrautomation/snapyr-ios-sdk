@@ -330,7 +330,7 @@ NSString *const kSnapyrCachedSettingsFilename = @"analytics.settings.v2.plist";
     if (!anonymousId || reset) {
         // We've chosen to generate a UUID rather than use the UDID (deprecated in iOS 5),
         // identifierForVendor (iOS6 and later, can't be changed on logout),
-        // or MAC address (blocked in iOS 7). For more info see https://segment.io/libraries/ios#ids
+        // or MAC address (blocked in iOS 7).
         anonymousId = GenerateUUIDString();
         SLog(@"New anonymousId: %@", anonymousId);
 #if TARGET_OS_TV
