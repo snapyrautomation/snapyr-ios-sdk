@@ -3,7 +3,7 @@
 #import "SnapyrAnalyticsUtils.h"
 #import "SnapyrUtils.h"
 
-#define SNAPYR_CDN_BASE [NSURL URLWithString:@"https://cdn-settings.segment.com/v1"]
+#define SNAPYR_CDN_BASE [NSURL URLWithString:@"https://snapyr.com/sdk"]
 
 static const NSUInteger kMaxBatchSize = 475000; // 475KB
 
@@ -155,7 +155,7 @@ NSString * const kSnapyrAPIBaseHost = @"https://dev-engine.snapyr.com/v1";
 {
     NSURLSession *session = self.genericSession;
 
-    NSURL *url = [SNAPYR_CDN_BASE URLByAppendingPathComponent:[NSString stringWithFormat:@"/projects/%@/settings", writeKey]];
+    NSURL *url = [SNAPYR_CDN_BASE URLByAppendingPathComponent:[NSString stringWithFormat:@"/%@", writeKey]];
     NSMutableURLRequest *request = self.requestFactory(url);
     [request setHTTPMethod:@"GET"];
 
