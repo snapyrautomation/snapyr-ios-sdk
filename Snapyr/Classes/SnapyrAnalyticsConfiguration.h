@@ -162,7 +162,7 @@ NS_SWIFT_NAME(AnalyticsConfiguration)
 
 /**
  * Set the default settings to use if Snapyr.com cannot be reached.
- * An example configuration can be found here, using your write key:  https://snapyr.com/sdk/YOUR_WRITE_KEY
+ * An example configuration can be found here, using your write key:  https://api.snapyr.com/sdk/YOUR_WRITE_KEY
  */
 @property (nonatomic, strong, nullable) NSDictionary *defaultSettings;
 

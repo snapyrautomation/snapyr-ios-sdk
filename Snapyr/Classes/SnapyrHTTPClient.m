@@ -3,7 +3,7 @@
 #import "SnapyrAnalyticsUtils.h"
 #import "SnapyrUtils.h"
 
-#define SNAPYR_CDN_BASE [NSURL URLWithString:@"https://snapyr.com/sdk"]
+#define SNAPYR_CDN_BASE [NSURL URLWithString:@"https://api.snapyr.com/sdk"]
 
 static const NSUInteger kMaxBatchSize = 475000; // 475KB
 
