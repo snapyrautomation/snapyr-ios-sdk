@@ -12,7 +12,7 @@ import XCTest
 
 class AnalyticsTests: XCTestCase {
     
-    var config: AnalyticsConfiguration!
+    var config: SnapyrConfiguration!
     let cachedSettings = [
         "integrations": [
             "Snapyr": [
@@ -30,13 +30,13 @@ class AnalyticsTests: XCTestCase {
         ],
         "plan": ["track": [:]],
         ] as NSDictionary
-    var analytics: Analytics!
+    var analytics: Snapyr!
     var testMiddleware: TestMiddleware!
     var testApplication: TestApplication!
     
     override func setUp() {
         super.setUp()
-        config = AnalyticsConfiguration(writeKey: "QUI5ydwIGeFFTa1IvCBUhxL9PyW5B0jE")
+        config = SnapyrConfiguration(writeKey: "QUI5ydwIGeFFTa1IvCBUhxL9PyW5B0jE")
         
         testMiddleware = TestMiddleware()
         config.sourceMiddleware = [testMiddleware]
@@ -49,7 +49,7 @@ class AnalyticsTests: XCTestCase {
         RunLoop.current.run(until: Date.distantPast)
         XCTAssertNotNil(UserDefaults.standard.string(forKey: "snapyrQueue"))
 
-        analytics = Analytics(configuration: config)
+        analytics = Snapyr(configuration: config)
         analytics.test_integrationsManager()?.test_setCachedSettings(settings: cachedSettings)
     }
     
@@ -78,7 +78,7 @@ class AnalyticsTests: XCTestCase {
         UserDefaults.standard.removeObject(forKey: "snapyr_apihost")
         
         let dummyHost = URL(string: "https://blah.com/")
-        let config2 = AnalyticsConfiguration(writeKey: "TESTKEY", defaultAPIHost: dummyHost)
+        let config2 = SnapyrConfiguration(writeKey: "TESTKEY", defaultAPIHost: dummyHost)
         
         let currentHost = config2.apiHost?.absoluteString
         let storedHost = UserDefaults.standard.string(forKey: "snapyr_apihost")
@@ -98,8 +98,8 @@ class AnalyticsTests: XCTestCase {
             }
         }
 
-        let config2 = AnalyticsConfiguration(writeKey: "TESTKEY")
-        let analytics2 = Analytics(configuration: config2)
+        let config2 = SnapyrConfiguration(writeKey: "TESTKEY")
+        let analytics2 = Snapyr(configuration: config2)
         analytics2.test_integrationsManager()?.test_setCachedSettings(settings: cachedSettingsWithHost)
         
         while (!initialized) { // wait for integrations to get setup
@@ -121,9 +121,9 @@ class AnalyticsTests: XCTestCase {
                 initialized = true
             }
         }
-        let config2 = AnalyticsConfiguration(writeKey: "TESTKEY")
+        let config2 = SnapyrConfiguration(writeKey: "TESTKEY")
         config2.use(webhookIntegration)
-        let analytics2 = Analytics(configuration: config2)
+        let analytics2 = Snapyr(configuration: config2)
         let factoryList = (config2.value(forKey: "factories") as? NSMutableArray)
         XCTAssertEqual(factoryList?.count, 1)
 
@@ -152,14 +152,14 @@ class AnalyticsTests: XCTestCase {
      }*/
     
     func testPersistsAnonymousId() {
-        let analytics2 = Analytics(configuration: config)
+        let analytics2 = Snapyr(configuration: config)
         XCTAssertEqual(analytics.getAnonymousId(), analytics2.getAnonymousId())
     }
     
     func testPersistsUserId() {
         analytics.identify("testUserId1")
         
-        let analytics2 = Analytics(configuration: config)
+        let analytics2 = Snapyr(configuration: config)
         analytics2.test_integrationsManager()?.test_setCachedSettings(settings: cachedSettings)
         
         XCTAssertEqual(analytics.test_integrationsManager()?.test_snapyrIntegration()?.test_userId(), "testUserId1")
@@ -169,7 +169,7 @@ class AnalyticsTests: XCTestCase {
     func testPersistsTraits() {
         analytics.identify("testUserId1", traits: ["trait1": "someTrait"])
         
-        let analytics2 = Analytics(configuration: config)
+        let analytics2 = Snapyr(configuration: config)
         analytics2.test_integrationsManager()?.test_setCachedSettings(settings: cachedSettings)
         
         XCTAssertEqual(analytics.test_integrationsManager()?.test_snapyrIntegration()?.test_userId(), "testUserId1")

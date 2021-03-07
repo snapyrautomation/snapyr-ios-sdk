@@ -11,12 +11,12 @@ import XCTest
 
 class ContextTests: XCTestCase {
     
-    var analytics: Analytics!
+    var analytics: Snapyr!
     
     override func setUp() {
         super.setUp()
-        let config = AnalyticsConfiguration(writeKey: "foobar")
-        analytics = Analytics(configuration: config)
+        let config = SnapyrConfiguration(writeKey: "foobar")
+        analytics = Snapyr(configuration: config)
     }
     
     func testThrowsWhenUsedIncorrectly() {

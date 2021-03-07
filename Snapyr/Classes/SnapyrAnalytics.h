@@ -12,7 +12,7 @@ NS_ASSUME_NONNULL_BEGIN
  */
 @class SnapyrAnalyticsConfiguration;
 
-NS_SWIFT_NAME(Analytics)
+NS_SWIFT_NAME(Snapyr)
 @interface SnapyrAnalytics : NSObject
 
 /**

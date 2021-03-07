@@ -13,16 +13,16 @@ import XCTest
 class TrackingTests: XCTestCase {
     
     var passthrough: PassthroughMiddleware!
-    var analytics: Analytics!
+    var analytics: Snapyr!
     
     override func setUp() {
         super.setUp()
-        let config = AnalyticsConfiguration(writeKey: "QUI5ydwIGeFFTa1IvCBUhxL9PyW5B0jE")
+        let config = SnapyrConfiguration(writeKey: "QUI5ydwIGeFFTa1IvCBUhxL9PyW5B0jE")
         passthrough = PassthroughMiddleware()
         config.sourceMiddleware = [
             passthrough,
         ]
-        analytics = Analytics(configuration: config)
+        analytics = Snapyr(configuration: config)
     }
     
     override func tearDown() {

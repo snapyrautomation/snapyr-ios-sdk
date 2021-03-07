@@ -51,7 +51,7 @@ typedef void(^SnapyrActionHandlerBlock)(NSDictionary*_Nonnull action);
 /**
  * This object provides a set of properties to control various policies of the analytics client. Other than `writeKey`, these properties can be changed at any time.
  */
-NS_SWIFT_NAME(AnalyticsConfiguration)
+NS_SWIFT_NAME(SnapyrConfiguration)
 @interface SnapyrAnalyticsConfiguration : NSObject
 
 /**

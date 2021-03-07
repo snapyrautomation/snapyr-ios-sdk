@@ -42,14 +42,14 @@ class StoreKitTrackerTests: XCTestCase {
 
     var test: TestMiddleware!
     var tracker: StoreKitTracker!
-    var analytics: Analytics!
+    var analytics: Snapyr!
     
     override func setUp() {
         super.setUp()
-        let config = AnalyticsConfiguration(writeKey: "foobar")
+        let config = SnapyrConfiguration(writeKey: "foobar")
         test = TestMiddleware()
         config.sourceMiddleware = [test]
-        analytics = Analytics(configuration: config)
+        analytics = Snapyr(configuration: config)
         tracker = StoreKitTracker.trackTransactions(for: analytics)
     }
     

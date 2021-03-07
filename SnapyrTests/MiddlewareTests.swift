@@ -40,12 +40,12 @@ let eatAllCalls = BlockMiddleware { (context, next) in
 class SourceMiddlewareTests: XCTestCase {
     
     func testReceivesEvents() {
-        let config = AnalyticsConfiguration(writeKey: "TESTKEY")
+        let config = SnapyrConfiguration(writeKey: "TESTKEY")
         let passthrough = PassthroughMiddleware()
         config.sourceMiddleware = [
             passthrough,
         ]
-        let analytics = Analytics(configuration: config)
+        let analytics = Snapyr(configuration: config)
         analytics.identify("testUserId1")
         XCTAssertEqual(passthrough.lastContext?.eventType, EventType.identify)
         let identify = passthrough.lastContext?.payload as? IdentifyPayload
@@ -53,13 +53,13 @@ class SourceMiddlewareTests: XCTestCase {
     }
     
     func testModifiesAndPassesEventToNext() {
-        let config = AnalyticsConfiguration(writeKey: "TESTKEY")
+        let config = SnapyrConfiguration(writeKey: "TESTKEY")
         let passthrough = PassthroughMiddleware()
         config.sourceMiddleware = [
             customizeAllTrackCalls,
             passthrough,
         ]
-        let analytics = Analytics(configuration: config)
+        let analytics = Snapyr(configuration: config)
         analytics.track("Purchase Success")
         XCTAssertEqual(passthrough.lastContext?.eventType, EventType.track)
         let track = passthrough.lastContext?.payload as? TrackPayload
@@ -70,13 +70,13 @@ class SourceMiddlewareTests: XCTestCase {
     }
     
     func testExpectsEventToBeSwallowed() {
-        let config = AnalyticsConfiguration(writeKey: "TESTKEY")
+        let config = SnapyrConfiguration(writeKey: "TESTKEY")
         let passthrough = PassthroughMiddleware()
         config.sourceMiddleware = [
             eatAllCalls,
             passthrough,
         ]
-        let analytics = Analytics(configuration: config)
+        let analytics = Snapyr(configuration: config)
         analytics.track("Purchase Success")
         XCTAssertNil(passthrough.lastContext)
     }
@@ -85,10 +85,10 @@ class SourceMiddlewareTests: XCTestCase {
 class IntegrationMiddlewareTests: XCTestCase {
     
     func testReceivesEvents() {
-        let config = AnalyticsConfiguration(writeKey: "TESTKEY")
+        let config = SnapyrConfiguration(writeKey: "TESTKEY")
         let passthrough = PassthroughMiddleware()
         config.destinationMiddleware = [DestinationMiddleware(key: SnapyrIntegrationFactory().key(), middleware: [passthrough])]
-        let analytics = Analytics(configuration: config)
+        let analytics = Snapyr(configuration: config)
         analytics.identify("testUserId1")
         
         // pump the runloop until we have a last context.
@@ -104,10 +104,10 @@ class IntegrationMiddlewareTests: XCTestCase {
     }
     
     func testModifiesAndPassesEventToNext() {
-        let config = AnalyticsConfiguration(writeKey: "TESTKEY")
+        let config = SnapyrConfiguration(writeKey: "TESTKEY")
         let passthrough = PassthroughMiddleware()
         config.destinationMiddleware = [DestinationMiddleware(key: SnapyrIntegrationFactory().key(), middleware: [customizeAllTrackCalls, passthrough])]
-        let analytics = Analytics(configuration: config)
+        let analytics = Snapyr(configuration: config)
         analytics.track("Purchase Success")
         
         // pump the runloop until we have a last context.
@@ -132,10 +132,10 @@ class IntegrationMiddlewareTests: XCTestCase {
             initialized = true
         }
         
-        let config = AnalyticsConfiguration(writeKey: "TESTKEY")
+        let config = SnapyrConfiguration(writeKey: "TESTKEY")
         let passthrough = PassthroughMiddleware()
         config.destinationMiddleware = [DestinationMiddleware(key: SnapyrIntegrationFactory().key(), middleware: [eatAllCalls, passthrough])]
-        let analytics = Analytics(configuration: config)
+        let analytics = Snapyr(configuration: config)
         analytics.track("Purchase Success")
         
         while (!initialized) {

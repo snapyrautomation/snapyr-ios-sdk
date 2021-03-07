@@ -3,19 +3,19 @@ import XCTest
 
 class EndToEndTests: XCTestCase {
     
-    var analytics: Analytics!
-    var configuration: AnalyticsConfiguration!
+    var analytics: Snapyr!
+    var configuration: SnapyrConfiguration!
     
     override func setUp() {
         super.setUp()
         
         // Write Key for https://app.segment.com/segment-libraries/sources/analytics_ios_e2e_test/overview
-        configuration = AnalyticsConfiguration(writeKey: "3VxTfPsVOoEOSbbzzbFqVNcYMNu2vjnr")
+        configuration = SnapyrConfiguration(writeKey: "3VxTfPsVOoEOSbbzzbFqVNcYMNu2vjnr")
         configuration.flushAt = 1
 
-        Analytics.setup(with: configuration)
+        Snapyr.setup(with: configuration)
 
-        analytics = Analytics.shared()
+        analytics = Snapyr.shared()
     }
     
     override func tearDown() {

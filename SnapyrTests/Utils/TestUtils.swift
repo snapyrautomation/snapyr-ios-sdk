@@ -40,7 +40,7 @@ class TestMiddleware: Middleware {
     }
 }
 
-extension Analytics {
+extension Snapyr {
     func test_integrationsManager() -> IntegrationsManager? {
         return self.value(forKey: "integrationsManager") as? IntegrationsManager
     }
