@@ -324,6 +324,21 @@ NSString *const SnapyrBuildKeyV2 = @"SnapyrBuildKeyV2";
                                                                  integrations:[options objectForKey:@"integrations"]]];
 }
 
+#pragma mark - Push Notifications
+
+- (void)setPushNotificationToken:(NSString*)token
+{
+    NSMutableDictionary *properties = [NSMutableDictionary dictionaryWithCapacity:1];
+    properties[@"token"] = token;
+    [self track:@"snapyr.apnToken" properties:properties];
+}
+
+- (void)pushNotificationReceived:(NSDictionary *)info
+{
+    [self track:@"snapyr.mobilePushReceived" properties:info];
+}
+
+
 #pragma mark - Screen
 
 - (void)screen:(NSString *)screenTitle

@@ -91,6 +91,9 @@ NS_SWIFT_NAME(Snapyr)
 - (void)track:(NSString *)event properties:(SERIALIZABLE_DICT _Nullable)properties;
 - (void)track:(NSString *)event;
 
+- (void)setPushNotificationToken:(NSString*)token;
+- (void)pushNotificationReceived:(SERIALIZABLE_DICT _Nullable)info;
+
 /*!
  @method
 

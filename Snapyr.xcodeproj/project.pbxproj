@@ -182,7 +182,7 @@
 		EADEB8EA1DECD335005322DA /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		EADEB8EC1DECD335005322DA /* AnalyticsTests-Bridging-Header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "AnalyticsTests-Bridging-Header.h"; sourceTree = "<group>"; };
 		EADEB8FF1DED3711005322DA /* circle.yml */ = {isa = PBXFileReference; lastKnownFileType = text; path = circle.yml; sourceTree = "<group>"; };
-		EADEB9001DED3711005322DA /* Analytics.podspec */ = {isa = PBXFileReference; lastKnownFileType = text; path = Analytics.podspec; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
+		EADEB9001DED3711005322DA /* Snapyr.podspec */ = {isa = PBXFileReference; lastKnownFileType = text; path = Snapyr.podspec; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
 		EADEB9011DED3711005322DA /* Podfile.lock */ = {isa = PBXFileReference; lastKnownFileType = text; path = Podfile.lock; sourceTree = "<group>"; };
 		F61EB4AE1F996DEF0038C8C0 /* AnalyticsUtilTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AnalyticsUtilTests.swift; sourceTree = "<group>"; };
 		FCBCA487BBFE32EC6A04989F /* Pods_SnapyrTestsTVOS.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_SnapyrTestsTVOS.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -364,7 +364,7 @@
 			isa = PBXGroup;
 			children = (
 				EADEB8FF1DED3711005322DA /* circle.yml */,
-				EADEB9001DED3711005322DA /* Analytics.podspec */,
+				EADEB9001DED3711005322DA /* Snapyr.podspec */,
 				EADEB9011DED3711005322DA /* Podfile.lock */,
 			);
 			name = "Supporting Files";
