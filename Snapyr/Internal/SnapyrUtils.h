@@ -4,12 +4,12 @@
 //
 
 @import Foundation;
-#import "SnapyrAnalyticsUtils.h"
+#import "SnapyrSDKUtils.h"
 #import "SnapyrSerializableValue.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
-@class SnapyrAnalyticsConfiguration;
+@class SnapyrSDKConfiguration;
 @class SnapyrReachability;
 
 NS_SWIFT_NAME(Utilities)
@@ -30,16 +30,16 @@ BOOL isUnitTesting(void);
 
 NSString * _Nullable deviceTokenToString(NSData * _Nullable deviceToken);
 NSString *getDeviceModel(void);
-BOOL getAdTrackingEnabled(SnapyrAnalyticsConfiguration *configuration);
-NSDictionary *getStaticContext(SnapyrAnalyticsConfiguration *configuration, NSString * _Nullable deviceToken);
+BOOL getAdTrackingEnabled(SnapyrSDKConfiguration *configuration);
+NSDictionary *getStaticContext(SnapyrSDKConfiguration *configuration, NSString * _Nullable deviceToken);
 NSDictionary *getLiveContext(SnapyrReachability *reachability, NSDictionary * _Nullable referrer, NSDictionary * _Nullable traits);
 
 NSString *GenerateUUIDString(void);
 
 #if TARGET_OS_IPHONE
-NSDictionary *mobileSpecifications(SnapyrAnalyticsConfiguration *configuration, NSString * _Nullable deviceToken);
+NSDictionary *mobileSpecifications(SnapyrSDKConfiguration *configuration, NSString * _Nullable deviceToken);
 #elif TARGET_OS_OSX
-NSDictionary *desktopSpecifications(SnapyrAnalyticsConfiguration *configuration, NSString * _Nullable deviceToken);
+NSDictionary *desktopSpecifications(SnapyrSDKConfiguration *configuration, NSString * _Nullable deviceToken);
 #endif
 
 // Date Utils

@@ -1,7 +1,7 @@
 #import "UIViewController+SnapyrScreen.h"
 #import <objc/runtime.h>
 #import "SnapyrAnalytics.h"
-#import "SnapyrAnalyticsUtils.h"
+#import "SnapyrSDKUtils.h"
 #import "SnapyrScreenReporting.h"
 
 

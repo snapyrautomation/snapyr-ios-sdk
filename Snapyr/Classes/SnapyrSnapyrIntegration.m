@@ -38,7 +38,7 @@ NSUInteger const kSnapyrBackgroundTaskInvalid = 0;
 @property (nonatomic, strong) dispatch_queue_t backgroundTaskQueue;
 @property (nonatomic, strong) NSDictionary *traits;
 @property (nonatomic, assign) SnapyrAnalytics *analytics;
-@property (nonatomic, assign) SnapyrAnalyticsConfiguration *configuration;
+@property (nonatomic, assign) SnapyrSDKConfiguration *configuration;
 @property (atomic, copy) NSDictionary *referrer;
 @property (nonatomic, copy) NSString *userId;
 @property (nonatomic, strong) SnapyrHTTPClient *httpClient;
@@ -54,7 +54,7 @@ NSUInteger const kSnapyrBackgroundTaskInvalid = 0;
 @end
 
 @interface SnapyrAnalytics ()
-@property (nonatomic, strong, readonly) SnapyrAnalyticsConfiguration *oneTimeConfiguration;
+@property (nonatomic, strong, readonly) SnapyrSDKConfiguration *oneTimeConfiguration;
 @end
 
 @implementation SnapyrSnapyrIntegration

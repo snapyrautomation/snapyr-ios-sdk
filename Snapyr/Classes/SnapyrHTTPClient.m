@@ -1,6 +1,6 @@
 #import "SnapyrHTTPClient.h"
 #import "NSData+SnapyrGZIP.h"
-#import "SnapyrAnalyticsUtils.h"
+#import "SnapyrSDKUtils.h"
 #import "SnapyrUtils.h"
 
 #define SNAPYR_CDN_BASE [NSURL URLWithString:@"https://api.snapyr.com/sdk"]

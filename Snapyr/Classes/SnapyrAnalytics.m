@@ -1,5 +1,5 @@
 #import <objc/runtime.h>
-#import "SnapyrAnalyticsUtils.h"
+#import "SnapyrSDKUtils.h"
 #import "SnapyrAnalytics.h"
 #import "SnapyrIntegrationFactory.h"
 #import "SnapyrIntegration.h"
@@ -23,7 +23,7 @@ static SnapyrAnalytics *__sharedInstance = nil;
 @interface SnapyrAnalytics ()
 
 @property (nonatomic, assign) BOOL enabled;
-@property (nonatomic, strong) SnapyrAnalyticsConfiguration *oneTimeConfiguration;
+@property (nonatomic, strong) SnapyrSDKConfiguration *oneTimeConfiguration;
 @property (nonatomic, strong) SnapyrStoreKitTracker *storeKitTracker;
 @property (nonatomic, strong) SnapyrIntegrationsManager *integrationsManager;
 @property (nonatomic, strong) SnapyrMiddlewareRunner *runner;
@@ -32,7 +32,7 @@ static SnapyrAnalytics *__sharedInstance = nil;
 
 @implementation SnapyrAnalytics
 
-+ (void)setupWithConfiguration:(SnapyrAnalyticsConfiguration *)configuration
++ (void)setupWithConfiguration:(SnapyrSDKConfiguration *)configuration
 {
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
@@ -40,7 +40,7 @@ static SnapyrAnalytics *__sharedInstance = nil;
     });
 }
 
-- (instancetype)initWithConfiguration:(SnapyrAnalyticsConfiguration *)configuration
+- (instancetype)initWithConfiguration:(SnapyrSDKConfiguration *)configuration
 {
     NSCParameterAssert(configuration != nil);
 
@@ -247,7 +247,7 @@ NSString *const SnapyrBuildKeyV2 = @"SnapyrBuildKeyV2";
     return [NSString stringWithFormat:@"<%p:%@, %@>", self, [self class], [self dictionaryWithValuesForKeys:@[ @"configuration" ]]];
 }
 
-- (nullable SnapyrAnalyticsConfiguration *)configuration
+- (nullable SnapyrSDKConfiguration *)configuration
 {
     // Remove deprecated configuration on 4.2+
     return nil;

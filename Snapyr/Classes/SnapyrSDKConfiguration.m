@@ -6,7 +6,7 @@
 //  Copyright © 2016 Segment. All rights reserved.
 //
 
-#import "SnapyrAnalyticsConfiguration.h"
+#import "SnapyrSDKConfiguration.h"
 #import "SnapyrAnalytics.h"
 #import "SnapyrMiddleware.h"
 #import "SnapyrCrypto.h"
@@ -37,7 +37,7 @@
 @implementation SnapyrAnalyticsExperimental
 @end
 
-@interface SnapyrAnalyticsConfiguration ()
+@interface SnapyrSDKConfiguration ()
 
 @property (nonatomic, copy, readwrite) NSString *writeKey;
 @property (nonatomic, strong, readonly) NSMutableArray *factories;
@@ -48,16 +48,16 @@
 @end
 
 
-@implementation SnapyrAnalyticsConfiguration
+@implementation SnapyrSDKConfiguration
 
 + (instancetype)configurationWithWriteKey:(NSString *)writeKey
 {
-    return [[SnapyrAnalyticsConfiguration alloc] initWithWriteKey:writeKey defaultAPIHost:nil];
+    return [[SnapyrSDKConfiguration alloc] initWithWriteKey:writeKey defaultAPIHost:nil];
 }
 
 + (instancetype)configurationWithWriteKey:(NSString *)writeKey defaultAPIHost:(NSURL * _Nullable)defaultAPIHost
 {
-    return [[SnapyrAnalyticsConfiguration alloc] initWithWriteKey:writeKey defaultAPIHost:defaultAPIHost];
+    return [[SnapyrSDKConfiguration alloc] initWithWriteKey:writeKey defaultAPIHost:defaultAPIHost];
 }
 
 - (instancetype)initWithWriteKey:(NSString *)writeKey defaultAPIHost:(NSURL * _Nullable)defaultAPIHost

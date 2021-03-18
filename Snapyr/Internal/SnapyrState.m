@@ -8,7 +8,7 @@
 
 #import "SnapyrState.h"
 #import "SnapyrAnalytics.h"
-#import "SnapyrAnalyticsUtils.h"
+#import "SnapyrSDKUtils.h"
 #import "SnapyrReachability.h"
 #import "SnapyrUtils.h"
 

@@ -13,7 +13,7 @@
 @interface UIViewController (SnapyrScreenTest)
 /// We need to expose this normally private method to tests, as the public facing
 /// `+ (UIViewController *)snapyr_topViewController` relies on the `application` property
-/// of `SnapyrAnalyticsConfiguration`, which won't be set in these tests.
+/// of `SnapyrSDKConfiguration`, which won't be set in these tests.
 + (UIViewController *)snapyr_topViewController:(UIViewController *)rootViewController;
 @end
 #endif

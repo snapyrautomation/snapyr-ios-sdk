@@ -1,4 +1,4 @@
-#import "SnapyrAnalyticsUtils.h"
+#import "SnapyrSDKUtils.h"
 #import "SnapyrAnalytics.h"
 #import "SnapyrUtils.h"
 

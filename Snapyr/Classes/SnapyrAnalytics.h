@@ -1,7 +1,7 @@
 @import Foundation;
 #import "SnapyrIntegrationFactory.h"
 #import "SnapyrCrypto.h"
-#import "SnapyrAnalyticsConfiguration.h"
+#import "SnapyrSDKConfiguration.h"
 #import "SnapyrSerializableValue.h"
 #import "SnapyrMiddleware.h"
 
@@ -10,7 +10,7 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  * This object provides an API for recording analytics.
  */
-@class SnapyrAnalyticsConfiguration;
+@class SnapyrSDKConfiguration;
 
 NS_SWIFT_NAME(Snapyr)
 @interface SnapyrAnalytics : NSObject
@@ -18,21 +18,21 @@ NS_SWIFT_NAME(Snapyr)
 /**
  * Used by the analytics client to configure various options.
  */
-@property (nullable, nonatomic, strong, readonly) SnapyrAnalyticsConfiguration *configuration DEPRECATED_MSG_ATTRIBUTE("One time use object");
+@property (nullable, nonatomic, strong, readonly) SnapyrSDKConfiguration *configuration DEPRECATED_MSG_ATTRIBUTE("One time use object");
 
 /**
  * Setup this analytics client instance.
  *
  * @param configuration The configuration used to setup the client.
  */
-- (instancetype)initWithConfiguration:(SnapyrAnalyticsConfiguration *)configuration;
+- (instancetype)initWithConfiguration:(SnapyrSDKConfiguration *)configuration;
 
 /**
  * Setup the analytics client.
  *
  * @param configuration The configuration used to setup the client.
  */
-+ (void)setupWithConfiguration:(SnapyrAnalyticsConfiguration *)configuration;
++ (void)setupWithConfiguration:(SnapyrSDKConfiguration *)configuration;
 
 /**
  * Enabled/disables debug logging to trace your data going through the SDK.

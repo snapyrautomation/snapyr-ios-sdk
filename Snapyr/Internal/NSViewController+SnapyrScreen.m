@@ -9,7 +9,7 @@
 #import "NSViewController+SnapyrScreen.h"
 #import <objc/runtime.h>
 #import "SnapyrAnalytics.h"
-#import "SnapyrAnalyticsUtils.h"
+#import "SnapyrSDKUtils.h"
 #import "SnapyrScreenReporting.h"
 
 #if TARGET_OS_OSX

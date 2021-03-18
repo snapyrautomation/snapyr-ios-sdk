@@ -10,7 +10,7 @@
 @import UIKit;
 #endif
 #import <objc/runtime.h>
-#import "SnapyrAnalyticsUtils.h"
+#import "SnapyrSDKUtils.h"
 #import "SnapyrAnalytics.h"
 #import "SnapyrIntegrationFactory.h"
 #import "SnapyrIntegration.h"
@@ -55,7 +55,7 @@ NSString *const kSnapyrCachedSettingsFilename = @"analytics.settings.v2.plist";
 @end
 
 
-@interface SnapyrAnalyticsConfiguration (Private)
+@interface SnapyrSDKConfiguration (Private)
 @property (nonatomic, strong) NSArray *factories;
 @end
 
@@ -64,7 +64,7 @@ NSString *const kSnapyrCachedSettingsFilename = @"analytics.settings.v2.plist";
 
 @property (nonatomic, strong) SnapyrAnalytics *analytics;
 @property (nonatomic, strong) NSDictionary *cachedSettings;
-@property (nonatomic, strong) SnapyrAnalyticsConfiguration *configuration;
+@property (nonatomic, strong) SnapyrSDKConfiguration *configuration;
 @property (nonatomic, strong) dispatch_queue_t serialQueue;
 @property (nonatomic, strong) NSMutableArray *messageQueue;
 @property (nonatomic, strong) NSArray *factories;
@@ -81,7 +81,7 @@ NSString *const kSnapyrCachedSettingsFilename = @"analytics.settings.v2.plist";
 @end
 
 @interface SnapyrAnalytics ()
-@property (nullable, nonatomic, strong, readonly) SnapyrAnalyticsConfiguration *oneTimeConfiguration;
+@property (nullable, nonatomic, strong, readonly) SnapyrSDKConfiguration *oneTimeConfiguration;
 @end
 
 
@@ -92,7 +92,7 @@ NSString *const kSnapyrCachedSettingsFilename = @"analytics.settings.v2.plist";
 
 - (instancetype _Nonnull)initWithAnalytics:(SnapyrAnalytics *_Nonnull)analytics
 {
-    SnapyrAnalyticsConfiguration *configuration = analytics.oneTimeConfiguration;
+    SnapyrSDKConfiguration *configuration = analytics.oneTimeConfiguration;
     NSCParameterAssert(configuration != nil);
 
     if (self = [super init]) {

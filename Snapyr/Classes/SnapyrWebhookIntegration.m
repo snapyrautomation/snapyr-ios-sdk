@@ -2,7 +2,7 @@
 #import "SnapyrWebhookIntegration.h"
 #import "SnapyrHTTPClient.h"
 #import "SnapyrState.h"
-#import "SnapyrAnalyticsUtils.h"
+#import "SnapyrSDKUtils.h"
 #import "SnapyrUtils.h"
 
 NS_ASSUME_NONNULL_BEGIN
