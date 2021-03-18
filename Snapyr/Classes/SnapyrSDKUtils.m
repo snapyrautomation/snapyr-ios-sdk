@@ -2,18 +2,18 @@
 #import "SnapyrSDK.h"
 #import "SnapyrUtils.h"
 
-static BOOL kAnalyticsLoggerShowLogs = NO;
+static BOOL kSDKLoggerShowLogs = NO;
 
 #pragma mark - Logging
 
 void SnapyrSetShowDebugLogs(BOOL showDebugLogs)
 {
-    kAnalyticsLoggerShowLogs = showDebugLogs;
+    kSDKLoggerShowLogs = showDebugLogs;
 }
 
 void SLog(NSString *format, ...)
 {
-    if (!kAnalyticsLoggerShowLogs)
+    if (!kSDKLoggerShowLogs)
         return;
 
     va_list args;

@@ -49,7 +49,7 @@ typedef void(^SnapyrActionHandlerBlock)(NSDictionary*_Nonnull action);
 @class SnapyrDestinationMiddleware;
 
 /**
- * This object provides a set of properties to control various policies of the analytics client. Other than `writeKey`, these properties can be changed at any time.
+ * This object provides a set of properties to control various policies of the sdk. Other than `writeKey`, these properties can be changed at any time.
  */
 NS_SWIFT_NAME(SnapyrConfiguration)
 @interface SnapyrSDKConfiguration : NSObject
@@ -84,19 +84,19 @@ NS_SWIFT_NAME(SnapyrConfiguration)
 @property (nonatomic, copy, readonly, nullable) NSURL *apiHost;
 
 /**
- * Whether the analytics client should use location services.
+ * Whether the sdk should use location services.
  * If `YES` and the host app hasn't asked for permission to use location services then the user will be presented with an alert view asking to do so. `NO` by default.
  * If `YES`, please make sure to add a description for `NSLocationAlwaysUsageDescription` in your `Info.plist` explaining why your app is accessing Location APIs.
  */
 @property (nonatomic, assign) BOOL shouldUseLocationServices;
 
 /**
- * Whether the analytics client should track advertisting info. `YES` by default.
+ * Whether the sdk should track advertisting info. `YES` by default.
  */
 @property (nonatomic, assign) BOOL enableAdvertisingTracking;
 
 /**
- * The number of queued events that the analytics client should flush at. Setting this to `1` will not queue any events and will use more battery. `20` by default.
+ * The number of queued events that the sdk should flush at. Setting this to `1` will not queue any events and will use more battery. `20` by default.
  */
 @property (nonatomic, assign) NSUInteger flushAt;
 
@@ -114,33 +114,33 @@ NS_SWIFT_NAME(SnapyrConfiguration)
 @property (nonatomic, assign) NSUInteger maxQueueSize;
 
 /**
- * Whether the analytics client should automatically make a track call for application lifecycle events, such as "Application Installed", "Application Updated" and "Application Opened".
+ * Whether the sdk should automatically make a track call for application lifecycle events, such as "Application Installed", "Application Updated" and "Application Opened".
  */
 @property (nonatomic, assign) BOOL trackApplicationLifecycleEvents;
 
 
 /**
- * Whether the analytics client should record bluetooth information. If `YES`, please make sure to add a description for `NSBluetoothPeripheralUsageDescription` in your `Info.plist` explaining explaining why your app is accessing Bluetooth APIs. `NO` by default.
+ * Whether the sdk should record bluetooth information. If `YES`, please make sure to add a description for `NSBluetoothPeripheralUsageDescription` in your `Info.plist` explaining explaining why your app is accessing Bluetooth APIs. `NO` by default.
  */
 @property (nonatomic, assign) BOOL shouldUseBluetooth;
 
 /**
- * Whether the analytics client should automatically make a screen call when a view controller is added to a view hierarchy. Because the underlying implementation uses method swizzling, we recommend initializing the analytics client as early as possible (before any screens are displayed), ideally during the Application delegate's applicationDidFinishLaunching method.
+ * Whether the sdk should automatically make a screen call when a view controller is added to a view hierarchy. Because the underlying implementation uses method swizzling, we recommend initializing the sdk as early as possible (before any screens are displayed), ideally during the Application delegate's applicationDidFinishLaunching method.
  */
 @property (nonatomic, assign) BOOL recordScreenViews;
 
 /**
- * Whether the analytics client should automatically track in-app purchases from the App Store.
+ * Whether the sdk should automatically track in-app purchases from the App Store.
  */
 @property (nonatomic, assign) BOOL trackInAppPurchases;
 
 /**
- * Whether the analytics client should automatically track push notifications.
+ * Whether the sdk should automatically track push notifications.
  */
 @property (nonatomic, assign) BOOL trackPushNotifications;
 
 /**
- * Whether the analytics client should automatically track deep links. You'll still need to call the continueUserActivity and openURL methods on the analytics client.
+ * Whether the sdk should automatically track deep links. You'll still need to call the continueUserActivity and openURL methods on the sdk.
  */
 @property (nonatomic, assign) BOOL trackDeepLinks;
 
@@ -247,7 +247,7 @@ NS_SWIFT_NAME(SnapyrConfiguration)
 @property (nonatomic, strong, nullable) SnapyrAdSupportBlock adSupportBlock;
 
 /**
- Enable experimental features within the Segment Analytics-iOS library.
+ Enable experimental features.
  */
 @property (nonatomic, readonly, nonnull) SnapyrSDKExperimental *experimental;
 
@@ -257,7 +257,7 @@ NS_SWIFT_NAME(SnapyrConfiguration)
 
 typedef  NSDictionary * _Nonnull (^SnapyrRawModificationBlock)( NSDictionary * _Nonnull rawPayload);
 
-NS_SWIFT_NAME(AnalyticsExperimental)
+NS_SWIFT_NAME(SnapyrExperimental)
 @interface SnapyrSDKExperimental : NSObject
 /**
  Experimental support for nanosecond timestamps.  While the segment pipeline doesn't support this yet

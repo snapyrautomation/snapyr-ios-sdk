@@ -90,7 +90,7 @@
         return;
     }
 
-    [[SnapyrSDK sharedAnalytics] screen:name properties:nil options:nil];
+    [[SnapyrSDK sharedSDK] screen:name properties:nil options:nil];
 
     [self snapyr_viewDidAppear:animated];
 }

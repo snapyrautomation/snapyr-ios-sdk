@@ -10,7 +10,7 @@
 import Snapyr
 import XCTest
 
-class AnalyticsUtilTests: XCTestCase {
+class SDKUtilTests: XCTestCase {
     
     let filters = [
         "(foo)": "$1-bar"

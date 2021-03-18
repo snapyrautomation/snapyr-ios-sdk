@@ -1,12 +1,11 @@
 Pod::Spec.new do |s|
-  s.name             = "Analytics"
+  s.name             = "Snapyr"
   s.module_name      = "Snapyr"
   s.version          = "4.1.2"
   s.summary          = "The hassle-free way to add sdk to your iOS app."
 
   s.description      = <<-DESC
-                       Analytics for iOS provides a single API that lets you
-                       integrate with over 100s of tools.
+                       Snapyr SDK.
                        DESC
 
   s.homepage         = "http://snapyr.com/"

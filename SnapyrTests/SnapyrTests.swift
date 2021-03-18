@@ -1,5 +1,5 @@
 //
-//  AnalyticsTests.swift
+//  SDKTests.swift
 //  Analytics
 //
 //  Created by Tony Xiao on 9/16/16.
