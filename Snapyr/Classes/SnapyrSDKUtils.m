@@ -1,5 +1,5 @@
 #import "SnapyrSDKUtils.h"
-#import "SnapyrAnalytics.h"
+#import "SnapyrSDK.h"
 #import "SnapyrUtils.h"
 
 static BOOL kAnalyticsLoggerShowLogs = NO;

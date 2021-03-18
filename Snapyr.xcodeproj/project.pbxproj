@@ -72,15 +72,15 @@
 		EADEB8D91DECD12B005322DA /* SnapyrContext.m in Sources */ = {isa = PBXBuildFile; fileRef = EADEB8A61DECD12B005322DA /* SnapyrContext.m */; };
 		EADEB8DA1DECD12B005322DA /* SnapyrMiddleware.h in Headers */ = {isa = PBXBuildFile; fileRef = EADEB8A71DECD12B005322DA /* SnapyrMiddleware.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		EADEB8DB1DECD12B005322DA /* SnapyrMiddleware.m in Sources */ = {isa = PBXBuildFile; fileRef = EADEB8A81DECD12B005322DA /* SnapyrMiddleware.m */; };
-		EADEB8DC1DECD12B005322DA /* SnapyrAnalytics.h in Headers */ = {isa = PBXBuildFile; fileRef = EADEB8A91DECD12B005322DA /* SnapyrAnalytics.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		EADEB8DD1DECD12B005322DA /* SnapyrAnalytics.m in Sources */ = {isa = PBXBuildFile; fileRef = EADEB8AA1DECD12B005322DA /* SnapyrAnalytics.m */; };
+		EADEB8DC1DECD12B005322DA /* SnapyrSDK.h in Headers */ = {isa = PBXBuildFile; fileRef = EADEB8A91DECD12B005322DA /* SnapyrSDK.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		EADEB8DD1DECD12B005322DA /* SnapyrSDK.m in Sources */ = {isa = PBXBuildFile; fileRef = EADEB8AA1DECD12B005322DA /* SnapyrSDK.m */; };
 		EADEB8DE1DECD12B005322DA /* SnapyrSDKConfiguration.h in Headers */ = {isa = PBXBuildFile; fileRef = EADEB8AB1DECD12B005322DA /* SnapyrSDKConfiguration.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		EADEB8DF1DECD12B005322DA /* SnapyrSDKConfiguration.m in Sources */ = {isa = PBXBuildFile; fileRef = EADEB8AC1DECD12B005322DA /* SnapyrSDKConfiguration.m */; };
 		EADEB8EF1DECD335005322DA /* NSData+SnapyrGUNZIPP.m in Sources */ = {isa = PBXBuildFile; fileRef = EADEB8E31DECD335005322DA /* NSData+SnapyrGUNZIPP.m */; };
 		EADEB8F01DECD335005322DA /* TestUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = EADEB8E41DECD335005322DA /* TestUtils.swift */; };
 		EADEB8F11DECD335005322DA /* FileStorageTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = EADEB8E51DECD335005322DA /* FileStorageTest.swift */; };
 		EADEB8F21DECD335005322DA /* UserDefaultsStorageTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = EADEB8E61DECD335005322DA /* UserDefaultsStorageTest.swift */; };
-		EADEB8F31DECD335005322DA /* AnalyticsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = EADEB8E71DECD335005322DA /* AnalyticsTests.swift */; };
+		EADEB8F31DECD335005322DA /* SnapyrTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = EADEB8E71DECD335005322DA /* SnapyrTests.swift */; };
 		EADEB8F41DECD335005322DA /* ContextTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = EADEB8E81DECD335005322DA /* ContextTest.swift */; };
 		EADEB8F51DECD335005322DA /* CryptoTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = EADEB8E91DECD335005322DA /* CryptoTest.swift */; };
 		F61EB4AF1F996DEF0038C8C0 /* AnalyticsUtilTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F61EB4AE1F996DEF0038C8C0 /* AnalyticsUtilTests.swift */; };
@@ -167,8 +167,8 @@
 		EADEB8A61DECD12B005322DA /* SnapyrContext.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SnapyrContext.m; sourceTree = "<group>"; };
 		EADEB8A71DECD12B005322DA /* SnapyrMiddleware.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SnapyrMiddleware.h; sourceTree = "<group>"; };
 		EADEB8A81DECD12B005322DA /* SnapyrMiddleware.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SnapyrMiddleware.m; sourceTree = "<group>"; };
-		EADEB8A91DECD12B005322DA /* SnapyrAnalytics.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SnapyrAnalytics.h; sourceTree = "<group>"; };
-		EADEB8AA1DECD12B005322DA /* SnapyrAnalytics.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SnapyrAnalytics.m; sourceTree = "<group>"; };
+		EADEB8A91DECD12B005322DA /* SnapyrSDK.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SnapyrSDK.h; sourceTree = "<group>"; };
+		EADEB8AA1DECD12B005322DA /* SnapyrSDK.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SnapyrSDK.m; sourceTree = "<group>"; };
 		EADEB8AB1DECD12B005322DA /* SnapyrSDKConfiguration.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SnapyrSDKConfiguration.h; sourceTree = "<group>"; };
 		EADEB8AC1DECD12B005322DA /* SnapyrSDKConfiguration.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SnapyrSDKConfiguration.m; sourceTree = "<group>"; };
 		EADEB8E21DECD335005322DA /* NSData+SnapyrGUNZIPP.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSData+SnapyrGUNZIPP.h"; sourceTree = "<group>"; };
@@ -176,7 +176,7 @@
 		EADEB8E41DECD335005322DA /* TestUtils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TestUtils.swift; sourceTree = "<group>"; };
 		EADEB8E51DECD335005322DA /* FileStorageTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FileStorageTest.swift; sourceTree = "<group>"; };
 		EADEB8E61DECD335005322DA /* UserDefaultsStorageTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserDefaultsStorageTest.swift; sourceTree = "<group>"; };
-		EADEB8E71DECD335005322DA /* AnalyticsTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AnalyticsTests.swift; sourceTree = "<group>"; };
+		EADEB8E71DECD335005322DA /* SnapyrTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SnapyrTests.swift; sourceTree = "<group>"; };
 		EADEB8E81DECD335005322DA /* ContextTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContextTest.swift; sourceTree = "<group>"; };
 		EADEB8E91DECD335005322DA /* CryptoTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CryptoTest.swift; sourceTree = "<group>"; };
 		EADEB8EA1DECD335005322DA /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -255,7 +255,7 @@
 				EADEB8E51DECD335005322DA /* FileStorageTest.swift */,
 				EADEB8E61DECD335005322DA /* UserDefaultsStorageTest.swift */,
 				EA8F09731E24C5C600B8B93F /* MiddlewareTests.swift */,
-				EADEB8E71DECD335005322DA /* AnalyticsTests.swift */,
+				EADEB8E71DECD335005322DA /* SnapyrTests.swift */,
 				F61EB4AE1F996DEF0038C8C0 /* AnalyticsUtilTests.swift */,
 				EAA542761EB4035400945DA7 /* TrackingTests.swift */,
 				EADEB8E81DECD335005322DA /* ContextTest.swift */,
@@ -280,8 +280,8 @@
 				EADEB85E1DECD080005322DA /* Snapyr.h */,
 				EADEB87C1DECD12B005322DA /* SnapyrAliasPayload.h */,
 				EADEB87D1DECD12B005322DA /* SnapyrAliasPayload.m */,
-				EADEB8A91DECD12B005322DA /* SnapyrAnalytics.h */,
-				EADEB8AA1DECD12B005322DA /* SnapyrAnalytics.m */,
+				EADEB8A91DECD12B005322DA /* SnapyrSDK.h */,
+				EADEB8AA1DECD12B005322DA /* SnapyrSDK.m */,
 				EADEB8AB1DECD12B005322DA /* SnapyrSDKConfiguration.h */,
 				EADEB8AC1DECD12B005322DA /* SnapyrSDKConfiguration.m */,
 				EADEB8A51DECD12B005322DA /* SnapyrContext.h */,
@@ -379,7 +379,7 @@
 			files = (
 				96A12C2824B680DB00949804 /* NSViewController+SnapyrScreen.h in Headers */,
 				A34CC6DE249AAEBB00C5E368 /* SnapyrState.h in Headers */,
-				EADEB8DC1DECD12B005322DA /* SnapyrAnalytics.h in Headers */,
+				EADEB8DC1DECD12B005322DA /* SnapyrSDK.h in Headers */,
 				EADEB8B81DECD12B005322DA /* SnapyrIntegrationFactory.h in Headers */,
 				EADEB8CB1DECD12B005322DA /* SnapyrSnapyrIntegration.h in Headers */,
 				EADEB8CD1DECD12B005322DA /* SnapyrSnapyrIntegrationFactory.h in Headers */,
@@ -515,7 +515,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				EADEB8DD1DECD12B005322DA /* SnapyrAnalytics.m in Sources */,
+				EADEB8DD1DECD12B005322DA /* SnapyrSDK.m in Sources */,
 				EADEB8BE1DECD12B005322DA /* SnapyrScreenPayload.m in Sources */,
 				EADEB8B61DECD12B005322DA /* SnapyrIdentifyPayload.m in Sources */,
 				EADEB8CE1DECD12B005322DA /* SnapyrSnapyrIntegrationFactory.m in Sources */,
@@ -553,7 +553,7 @@
 				EAA542771EB4035400945DA7 /* TrackingTests.swift in Sources */,
 				EADEB8F41DECD335005322DA /* ContextTest.swift in Sources */,
 				A31958EF2385AC3A00A47EFA /* SerializationTests.m in Sources */,
-				EADEB8F31DECD335005322DA /* AnalyticsTests.swift in Sources */,
+				EADEB8F31DECD335005322DA /* SnapyrTests.swift in Sources */,
 				A3BECDD024BCE1E3009E2BD3 /* ObjcUtils.m in Sources */,
 				EADEB8F11DECD335005322DA /* FileStorageTest.swift in Sources */,
 				F61EB4AF1F996DEF0038C8C0 /* AnalyticsUtilTests.swift in Sources */,

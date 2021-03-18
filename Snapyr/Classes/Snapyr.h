@@ -14,7 +14,7 @@ FOUNDATION_EXPORT double SnapyrVersionNumber;
 //! Project version string for Analytics.
 FOUNDATION_EXPORT const unsigned char SnapyrVersionString[];
 
-#import "SnapyrAnalytics.h"
+#import "SnapyrSDK.h"
 #import "SnapyrSnapyrIntegration.h"
 #import "SnapyrSnapyrIntegrationFactory.h"
 #import "SnapyrContext.h"

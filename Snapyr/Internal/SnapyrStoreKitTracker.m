@@ -3,7 +3,7 @@
 
 @interface SnapyrStoreKitTracker ()
 
-@property (nonatomic, readonly) SnapyrAnalytics *analytics;
+@property (nonatomic, readonly) SnapyrSDK *sdk;
 @property (nonatomic, readonly) NSMutableDictionary *transactions;
 @property (nonatomic, readonly) NSMutableDictionary *productRequests;
 
@@ -12,15 +12,15 @@
 
 @implementation SnapyrStoreKitTracker
 
-+ (instancetype)trackTransactionsForAnalytics:(SnapyrAnalytics *)analytics
++ (instancetype)trackTransactionsForSDK:(SnapyrSDK *)sdk
 {
-    return [[SnapyrStoreKitTracker alloc] initWithAnalytics:analytics];
+    return [[SnapyrStoreKitTracker alloc] initWithSDK:sdk];
 }
 
-- (instancetype)initWithAnalytics:(SnapyrAnalytics *)analytics
+- (instancetype)initWithSDK:(SnapyrSDK *)sdk
 {
     if (self = [self init]) {
-        _analytics = analytics;
+        _sdk = sdk;
         _productRequests = [NSMutableDictionary dictionaryWithCapacity:1];
         _transactions = [NSMutableDictionary dictionaryWithCapacity:1];
 
@@ -79,7 +79,7 @@
 
     NSString *currency = [product.priceLocale objectForKey:NSLocaleCurrencyCode];
 
-    [self.analytics track:@"Order Completed" properties:@{
+    [self.sdk track:@"Order Completed" properties:@{
         @"orderId" : transaction.transactionIdentifier,
         @"affiliation" : @"App Store",
         @"currency" : currency ?: @"",

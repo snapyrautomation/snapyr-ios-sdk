@@ -6,7 +6,7 @@
 #import "SnapyrUtils.h"
 #import "SnapyrSDKConfiguration.h"
 #import "SnapyrReachability.h"
-#import "SnapyrAnalytics.h"
+#import "SnapyrSDK.h"
 #import "SnapyrHTTPClient.h"
 
 #include <sys/sysctl.h>
@@ -184,8 +184,8 @@ NSDictionary *getStaticContext(SnapyrSDKConfiguration *configuration, NSString *
     NSMutableDictionary *dict = [[NSMutableDictionary alloc] init];
 
     dict[@"library"] = @{
-        @"name" : @"analytics-ios",
-        @"version" : [SnapyrAnalytics version]
+        @"name" : @"sdk-ios",
+        @"version" : [SnapyrSDK version]
     };
 
     NSMutableDictionary *infoDictionary = [[[NSBundle mainBundle] infoDictionary] mutableCopy];

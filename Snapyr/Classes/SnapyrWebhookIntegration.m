@@ -11,10 +11,10 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, strong) SnapyrHTTPClient *client;
 @property (nonatomic, strong) NSString *webhookUrl;
 @property (nonatomic, strong) NSString *name;
-@property (nonatomic, strong) SnapyrAnalytics *analytics;
+@property (nonatomic, strong) SnapyrSDK *sdk;
 @property (nonatomic, strong) dispatch_queue_t serialQueue;
 
-- (instancetype)initWithAnalytics:(SnapyrAnalytics *)analytics httpClient:(SnapyrHTTPClient *)client webhookUrl:(NSString *)webhookUrl name:(NSString *)name;
+- (instancetype)initWithSDK:(SnapyrSDK *)sdk httpClient:(SnapyrHTTPClient *)client webhookUrl:(NSString *)webhookUrl name:(NSString *)name;
 
 @end
 
@@ -22,13 +22,13 @@ NS_ASSUME_NONNULL_END
 
 @implementation SnapyrWebhookIntegration
 
-- (instancetype)initWithAnalytics:(SnapyrAnalytics *)analytics httpClient:(SnapyrHTTPClient *)client webhookUrl:(NSString *)webhookUrl name:(NSString *)name {
+- (instancetype)initWithSDK:(SnapyrSDK *)sdk httpClient:(SnapyrHTTPClient *)client webhookUrl:(NSString *)webhookUrl name:(NSString *)name {
     if (self = [super init]) {
         _name = name;
-        _analytics = analytics;
+        _sdk = sdk;
         _client = client;
         _webhookUrl = webhookUrl;
-        _serialQueue = snapyr_dispatch_queue_create_specific("com.snapyr.analytics.webhook", DISPATCH_QUEUE_SERIAL);
+        _serialQueue = snapyr_dispatch_queue_create_specific("com.snapyr.sdk.webhook", DISPATCH_QUEUE_SERIAL);
     }
     return self;
 }
@@ -96,7 +96,7 @@ NS_ASSUME_NONNULL_END
 - (NSDictionary *)integrationsDictionary:(NSDictionary *)integrations
 {
     NSMutableDictionary *dict = [integrations ?: @{} mutableCopy];
-    for (NSString *integration in self.analytics.bundledIntegrations) {
+    for (NSString *integration in self.sdk.bundledIntegrations) {
         // Don't record Snapyr in the dictionary. It is always enabled.
         if ([integration isEqualToString:@"Snapyr"]) {
             continue;
@@ -113,7 +113,7 @@ NS_ASSUME_NONNULL_END
     if (![type isEqualToString:@"alias"]) {
         [payload setValue:[SnapyrState sharedInstance].userInfo.userId forKey:@"userId"];
     }
-    [payload setValue:[self.analytics getAnonymousId] forKey:@"anonymousId"];
+    [payload setValue:[self.sdk getAnonymousId] forKey:@"anonymousId"];
     [payload setValue:[self integrationsDictionary:integrations] forKey:@"integrations"];
     [payload setValue:[context copy] forKey:@"context"];
 
@@ -181,7 +181,7 @@ NS_ASSUME_NONNULL_END
 {
     NSMutableDictionary *dictionary = [NSMutableDictionary dictionary];
     [dictionary setValue:payload.theNewId forKey:@"userId"];
-    [dictionary setValue:self.userId ?: [self.analytics getAnonymousId] forKey:@"previousId"];
+    [dictionary setValue:self.userId ?: [self.sdk getAnonymousId] forKey:@"previousId"];
     [dictionary setValue:payload.timestamp forKey:@"timestamp"];
     [dictionary setValue:payload.messageId forKey:@"messageId"];
 
@@ -199,9 +199,9 @@ NS_ASSUME_NONNULL_END
     return self;
 }
 
-- (id <SnapyrIntegration>)createWithSettings:(NSDictionary *)settings forAnalytics:(SnapyrAnalytics *)analytics {
+- (id <SnapyrIntegration>)createWithSettings:(NSDictionary *)settings forSDK:(SnapyrSDK *)sdk {
     SnapyrHTTPClient *httpClient = [[SnapyrHTTPClient alloc] initWithRequestFactory:nil];
-    return [[SnapyrWebhookIntegration alloc] initWithAnalytics:analytics httpClient:httpClient webhookUrl:self.webhookUrl name:self.name];
+    return [[SnapyrWebhookIntegration alloc] initWithSDK:sdk httpClient:httpClient webhookUrl:self.webhookUrl name:self.name];
 }
 
 - (NSString *)key {

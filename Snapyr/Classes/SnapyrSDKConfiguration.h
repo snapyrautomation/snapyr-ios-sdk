@@ -45,7 +45,7 @@ typedef void(^SnapyrActionHandlerBlock)(NSDictionary*_Nonnull action);
 @protocol SnapyrMiddleware;
 @protocol SnapyrEdgeFunctionMiddleware;
 
-@class SnapyrAnalyticsExperimental;
+@class SnapyrSDKExperimental;
 @class SnapyrDestinationMiddleware;
 
 /**
@@ -249,7 +249,7 @@ NS_SWIFT_NAME(SnapyrConfiguration)
 /**
  Enable experimental features within the Segment Analytics-iOS library.
  */
-@property (nonatomic, readonly, nonnull) SnapyrAnalyticsExperimental *experimental;
+@property (nonatomic, readonly, nonnull) SnapyrSDKExperimental *experimental;
 
 @end
 
@@ -258,7 +258,7 @@ NS_SWIFT_NAME(SnapyrConfiguration)
 typedef  NSDictionary * _Nonnull (^SnapyrRawModificationBlock)( NSDictionary * _Nonnull rawPayload);
 
 NS_SWIFT_NAME(AnalyticsExperimental)
-@interface SnapyrAnalyticsExperimental : NSObject
+@interface SnapyrSDKExperimental : NSObject
 /**
  Experimental support for nanosecond timestamps.  While the segment pipeline doesn't support this yet
  it can be useful where sub-milisecond precision is needed.  An example of this is at startup, when many events

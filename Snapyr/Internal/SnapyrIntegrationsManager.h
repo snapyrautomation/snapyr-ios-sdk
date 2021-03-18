@@ -18,9 +18,9 @@ extern NSString *_Nonnull const kSnapyrCachedSettingsFilename;
 /**
  * NSNotification name, that is posted after integrations are loaded.
  */
-extern NSString *_Nonnull SnapyrAnalyticsIntegrationDidStart;
+extern NSString *_Nonnull SnapyrSDKIntegrationDidStart;
 
-@class SnapyrAnalytics;
+@class SnapyrSDK;
 
 NS_SWIFT_NAME(IntegrationsManager)
 @interface SnapyrIntegrationsManager : NSObject
@@ -32,7 +32,7 @@ NS_SWIFT_NAME(IntegrationsManager)
 // @Deprecated - Exposing for backward API compat reasons only
 @property (nonatomic, readonly) NSMutableDictionary *_Nonnull registeredIntegrations;
 
-- (instancetype _Nonnull)initWithAnalytics:(SnapyrAnalytics *_Nonnull)analytics;
+- (instancetype _Nonnull)initWithSDK:(SnapyrSDK *_Nonnull)sdk;
 
 // @Deprecated - Exposing for backward API compat reasons only
 - (NSString *_Nonnull)getAnonymousId;

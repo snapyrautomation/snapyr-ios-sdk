@@ -1,6 +1,6 @@
 #include <sys/sysctl.h>
 
-#import "SnapyrAnalytics.h"
+#import "SnapyrSDK.h"
 #import "SnapyrUtils.h"
 #import "SnapyrSnapyrIntegration.h"
 #import "SnapyrReachability.h"
@@ -37,7 +37,7 @@ NSUInteger const kSnapyrBackgroundTaskInvalid = 0;
 @property (nonatomic, strong) dispatch_queue_t serialQueue;
 @property (nonatomic, strong) dispatch_queue_t backgroundTaskQueue;
 @property (nonatomic, strong) NSDictionary *traits;
-@property (nonatomic, assign) SnapyrAnalytics *analytics;
+@property (nonatomic, assign) SnapyrSDK *sdk;
 @property (nonatomic, assign) SnapyrSDKConfiguration *configuration;
 @property (atomic, copy) NSDictionary *referrer;
 @property (nonatomic, copy) NSString *userId;
@@ -53,25 +53,25 @@ NSUInteger const kSnapyrBackgroundTaskInvalid = 0;
 
 @end
 
-@interface SnapyrAnalytics ()
+@interface SnapyrSDK ()
 @property (nonatomic, strong, readonly) SnapyrSDKConfiguration *oneTimeConfiguration;
 @end
 
 @implementation SnapyrSnapyrIntegration
 
-- (id)initWithAnalytics:(SnapyrAnalytics *)analytics httpClient:(SnapyrHTTPClient *)httpClient fileStorage:(id<SnapyrStorage>)fileStorage userDefaultsStorage:(id<SnapyrStorage>)userDefaultsStorage;
+- (id)initWithSDK:(SnapyrSDK *)sdk httpClient:(SnapyrHTTPClient *)httpClient fileStorage:(id <SnapyrStorage>)fileStorage userDefaultsStorage:(id<SnapyrStorage>)userDefaultsStorage;
 {
     if (self = [super init]) {
-        self.analytics = analytics;
-        self.configuration = analytics.oneTimeConfiguration;
+        self.sdk = sdk;
+        self.configuration = sdk.oneTimeConfiguration;
         self.httpClient = httpClient;
-        self.httpClient.httpSessionDelegate = analytics.oneTimeConfiguration.httpSessionDelegate;
+        self.httpClient.httpSessionDelegate = sdk.oneTimeConfiguration.httpSessionDelegate;
         self.fileStorage = fileStorage;
         self.userDefaultsStorage = userDefaultsStorage;
         self.reachability = [SnapyrReachability reachabilityWithHostname:@"google.com"];
         [self.reachability startNotifier];
-        self.serialQueue = snapyr_dispatch_queue_create_specific("com.snapyr.analytics.snapyr", DISPATCH_QUEUE_SERIAL);
-        self.backgroundTaskQueue = snapyr_dispatch_queue_create_specific("com.snapyr.analytics.backgroundTask", DISPATCH_QUEUE_SERIAL);
+        self.serialQueue = snapyr_dispatch_queue_create_specific("com.snapyr.sdk.snapyr", DISPATCH_QUEUE_SERIAL);
+        self.backgroundTaskQueue = snapyr_dispatch_queue_create_specific("com.snapyr.sdk.backgroundTask", DISPATCH_QUEUE_SERIAL);
 #if TARGET_OS_IPHONE
         self.flushTaskID = UIBackgroundTaskInvalid;
 #else
@@ -123,7 +123,7 @@ NSUInteger const kSnapyrBackgroundTaskInvalid = 0;
 
     snapyr_dispatch_specific_sync(_backgroundTaskQueue, ^{
         
-        id<SnapyrApplicationProtocol> application = [self.analytics oneTimeConfiguration].application;
+        id<SnapyrApplicationProtocol> application = [self.sdk oneTimeConfiguration].application;
         if (application && [application respondsToSelector:@selector(snapyr_beginBackgroundTaskWithName:expirationHandler:)]) {
             self.flushTaskID = [application snapyr_beginBackgroundTaskWithName:@"Snapyr.Flush"
                                                           expirationHandler:^{
@@ -142,7 +142,7 @@ NSUInteger const kSnapyrBackgroundTaskInvalid = 0;
     // See https://github.com/segmentio/analytics-ios/issues/683
     snapyr_dispatch_specific_sync(_backgroundTaskQueue, ^{
         if (self.flushTaskID != kSnapyrBackgroundTaskInvalid) {
-            id<SnapyrApplicationProtocol> application = [self.analytics oneTimeConfiguration].application;
+            id<SnapyrApplicationProtocol> application = [self.sdk oneTimeConfiguration].application;
             if (application && [application respondsToSelector:@selector(snapyr_endBackgroundTask:)]) {
                 [application snapyr_endBackgroundTask:self.flushTaskID];
             }
@@ -191,7 +191,7 @@ NSUInteger const kSnapyrBackgroundTaskInvalid = 0;
     }];
 }
 
-#pragma mark - Analytics API
+#pragma mark - API
 
 - (void)identify:(SnapyrIdentifyPayload *)payload
 {
@@ -243,7 +243,7 @@ NSUInteger const kSnapyrBackgroundTaskInvalid = 0;
 {
     NSMutableDictionary *dictionary = [NSMutableDictionary dictionary];
     [dictionary setValue:payload.theNewId forKey:@"userId"];
-    [dictionary setValue:self.userId ?: [self.analytics getAnonymousId] forKey:@"previousId"];
+    [dictionary setValue:self.userId ?: [self.sdk getAnonymousId] forKey:@"previousId"];
     [dictionary setValue:payload.timestamp forKey:@"timestamp"];
     [dictionary setValue:payload.messageId forKey:@"messageId"];
 
@@ -256,7 +256,7 @@ NSUInteger const kSnapyrBackgroundTaskInvalid = 0;
 - (NSDictionary *)integrationsDictionary:(NSDictionary *)integrations
 {
     NSMutableDictionary *dict = [integrations ?: @{} mutableCopy];
-    for (NSString *integration in self.analytics.bundledIntegrations) {
+    for (NSString *integration in self.sdk.bundledIntegrations) {
         // Don't record Snapyr in the dictionary. It is always enabled.
         if ([integration isEqualToString:@"Snapyr"]) {
             continue;
@@ -279,7 +279,7 @@ NSUInteger const kSnapyrBackgroundTaskInvalid = 0;
         if (![action isEqualToString:@"alias"]) {
             [payload setValue:[SnapyrState sharedInstance].userInfo.userId forKey:@"userId"];
         }
-        [payload setValue:[self.analytics getAnonymousId] forKey:@"anonymousId"];
+        [payload setValue:[self.sdk getAnonymousId] forKey:@"anonymousId"];
 
         [payload setValue:[self integrationsDictionary:integrations] forKey:@"integrations"];
 
@@ -307,7 +307,7 @@ NSUInteger const kSnapyrBackgroundTaskInvalid = 0;
     @try {
         SLog(@"Queue is at max capacity (%tu), removing oldest payload.", self.queue.count);
         // Trim the queue to maxQueueSize - 1 before we add a new element.
-        trimQueue(self.queue, self.analytics.oneTimeConfiguration.maxQueueSize - 1);
+        trimQueue(self.queue, self.sdk.oneTimeConfiguration.maxQueueSize - 1);
         [self.queue addObject:payload];
         [self persistQueue];
         [self flushQueueByLength];

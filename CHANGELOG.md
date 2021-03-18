@@ -2,116 +2,116 @@ Change Log
 ==========
 Version 4.1.2 *(12 November, 2020)*
 -----------------------------
-* [Fix](https://github.com/segmentio/analytics-ios/pull/966) Standarized all SDK versions between dependency managers. Migrated to importing modules vs headers. Removed all linked frameworks.
-* [Fix](https://github.com/segmentio/analytics-ios/pull/963) Fixed missing userId in traits.
-* [Fix](https://github.com/segmentio/analytics-ios/pull/962) Fixed an issue with NSCopying preceding SEGSerialization.
-* [Fix](https://github.com/segmentio/analytics-ios/pull/957) Output log messages when events are trimmed from the queue.
-* [Fix](https://github.com/segmentio/analytics-ios/pull/956) Added category option to screen calls.
+* [Fix](https://github.com/segmentio/sdk-ios/pull/966) Standarized all SDK versions between dependency managers. Migrated to importing modules vs headers. Removed all linked frameworks.
+* [Fix](https://github.com/segmentio/sdk-ios/pull/963) Fixed missing userId in traits.
+* [Fix](https://github.com/segmentio/sdk-ios/pull/962) Fixed an issue with NSCopying preceding SEGSerialization.
+* [Fix](https://github.com/segmentio/sdk-ios/pull/957) Output log messages when events are trimmed from the queue.
+* [Fix](https://github.com/segmentio/sdk-ios/pull/956) Added category option to screen calls.
 
 Version 4.1.1 *(27 October, 2020)*
 -----------------------------
-* [Fix](https://github.com/segmentio/analytics-ios/pull/955) Fixed example projects using old branch for SPM.
-* [Fix](https://github.com/segmentio/analytics-ios/pull/953) Repaired mac example project.
+* [Fix](https://github.com/segmentio/sdk-ios/pull/955) Fixed example projects using old branch for SPM.
+* [Fix](https://github.com/segmentio/sdk-ios/pull/953) Repaired mac example project.
 * [Fix] Fixed carthage support for main library and destinations.
 
 Version 4.1.0 *(19 October, 2020)*
 -----------------------------
-* [New](https://github.com/segmentio/analytics-ios/pull/945) Added Webhook Integration.
-* [New](https://github.com/segmentio/analytics-ios/pull/942) Renamed module from `Analytics` to `Segment`.
-* [Fix](https://github.com/segmentio/analytics-ios/pull/941) Removed unused mobile attribution.
-* [New](https://github.com/segmentio/analytics-ios/pull/940) Added ability for customer to make their types serializable.
-* [New](https://github.com/segmentio/analytics-ios/pull/950) Added necessary changes for Edge Functions.
+* [New](https://github.com/segmentio/sdk-ios/pull/945) Added Webhook Integration.
+* [New](https://github.com/segmentio/sdk-ios/pull/942) Renamed module from `Analytics` to `Segment`.
+* [Fix](https://github.com/segmentio/sdk-ios/pull/941) Removed unused mobile attribution.
+* [New](https://github.com/segmentio/sdk-ios/pull/940) Added ability for customer to make their types serializable.
+* [New](https://github.com/segmentio/sdk-ios/pull/950) Added necessary changes for Edge Functions.
 
 Version 4.0.5 (pre-release) *(28 August, 2020)*
 -----------------------------
-* [Fix](https://github.com/segmentio/analytics-ios/pull/937) Fixed issue where non-serializable types would get into payload.
-* [Fix](https://github.com/segmentio/analytics-ios/pull/931) Fixed double device payload.
-* [New](https://github.com/segmentio/analytics-ios/pull/930) Deprecated configuration access and updated associated tests.
-* [Fix](https://github.com/segmentio/analytics-ios/pull/925) Disregard payloads that fail conversion from plist to json.
-* [New](https://github.com/segmentio/analytics-ios/pull/922) Added Swift and Carthage badging.
+* [Fix](https://github.com/segmentio/sdk-ios/pull/937) Fixed issue where non-serializable types would get into payload.
+* [Fix](https://github.com/segmentio/sdk-ios/pull/931) Fixed double device payload.
+* [New](https://github.com/segmentio/sdk-ios/pull/930) Deprecated configuration access and updated associated tests.
+* [Fix](https://github.com/segmentio/sdk-ios/pull/925) Disregard payloads that fail conversion from plist to json.
+* [New](https://github.com/segmentio/sdk-ios/pull/922) Added Swift and Carthage badging.
 
 Version 4.0.4 (pre-release) *(14 July, 2020)*
 -----------------------------
-* [New](https://github.com/segmentio/analytics-ios/pull/918) Added MacOS support.
-* [Fix](https://github.com/segmentio/analytics-ios/pull/921) Fixed SLog permissions.
-* [Fix](https://github.com/segmentio/analytics-ios/pull/920) Adopted Swift 5 syntax in tests. Removed SwiftTryCatch dependency for tests. Fixed deadlock from #916.
+* [New](https://github.com/segmentio/sdk-ios/pull/918) Added MacOS support.
+* [Fix](https://github.com/segmentio/sdk-ios/pull/921) Fixed SLog permissions.
+* [Fix](https://github.com/segmentio/sdk-ios/pull/920) Adopted Swift 5 syntax in tests. Removed SwiftTryCatch dependency for tests. Fixed deadlock from #916.
 
 Version 4.0.3 (pre-release) *(6 July, 2020)*
 -----------------------------
-* [Fix](https://github.com/segmentio/analytics-ios/pull/917) Fixed an issue with old traits overwriting new traits.
-* [New](https://github.com/segmentio/analytics-ios/pull/915) Added full example flow with Swift Package Manager compatibility.
-* [Fix](https://github.com/segmentio/analytics-ios/pull/914) Fix SwiftUI previews in macOS Catalyst builds.
+* [Fix](https://github.com/segmentio/sdk-ios/pull/917) Fixed an issue with old traits overwriting new traits.
+* [New](https://github.com/segmentio/sdk-ios/pull/915) Added full example flow with Swift Package Manager compatibility.
+* [Fix](https://github.com/segmentio/sdk-ios/pull/914) Fix SwiftUI previews in macOS Catalyst builds.
 
 Version 4.0.2 (pre-release) *(25 June, 2020)*
 -----------------------------
-* [New](https://github.com/segmentio/analytics-ios/pull/913) Separate public utils from private utils appropriately.
-* [New](https://github.com/segmentio/analytics-ios/pull/912) Payload Info & Traits Fixes.
-* [New](https://github.com/segmentio/analytics-ios/pull/911) Updated SPM for code coverage compatibility.
-* [New](https://github.com/segmentio/analytics-ios/pull/909) Removed Quick and Nimble, updated unit tests.
+* [New](https://github.com/segmentio/sdk-ios/pull/913) Separate public utils from private utils appropriately.
+* [New](https://github.com/segmentio/sdk-ios/pull/912) Payload Info & Traits Fixes.
+* [New](https://github.com/segmentio/sdk-ios/pull/911) Updated SPM for code coverage compatibility.
+* [New](https://github.com/segmentio/sdk-ios/pull/909) Removed Quick and Nimble, updated unit tests.
 
 Version 4.0.1 (pre-release) *(18 June, 2020)*
 -----------------------------
- * [New](https://github.com/segmentio/analytics-ios/pull/905) Added global state management; Middleware now receive all context data.
- * [New](https://github.com/segmentio/analytics-ios/pull/885) change logic for screen naming conventions.
- * [New](https://github.com/segmentio/analytics-ios/pull/899) Fixed crash on UISceneDelegate applications.
- * [New](https://github.com/segmentio/analytics-ios/pull/896) Renamed middleware methods to match a.js naming.
- * [New](https://github.com/segmentio/analytics-ios/pull/904) Added Swift Package Manager support.
- * [New](https://github.com/segmentio/analytics-ios/pull/902) Updated class names for Swift.
+ * [New](https://github.com/segmentio/sdk-ios/pull/905) Added global state management; Middleware now receive all context data.
+ * [New](https://github.com/segmentio/sdk-ios/pull/885) change logic for screen naming conventions.
+ * [New](https://github.com/segmentio/sdk-ios/pull/899) Fixed crash on UISceneDelegate applications.
+ * [New](https://github.com/segmentio/sdk-ios/pull/896) Renamed middleware methods to match a.js naming.
+ * [New](https://github.com/segmentio/sdk-ios/pull/904) Added Swift Package Manager support.
+ * [New](https://github.com/segmentio/sdk-ios/pull/902) Updated class names for Swift.
 
 Version 4.0.0-beta.1 *(21st May, 2020)*
 ---------------------------------------
- * [New](https://github.com/segmentio/analytics-ios/pull/892) Makes IDFA support externally/customer driven.
+ * [New](https://github.com/segmentio/sdk-ios/pull/892) Makes IDFA support externally/customer driven.
 
 Version 4.0.0-beta.0 *(22nd April, 2020)*
 -----------------------------------------
- * [New](https://github.com/segmentio/analytics-ios/pull/879) Added integration middleware functionality.
+ * [New](https://github.com/segmentio/sdk-ios/pull/879) Added integration middleware functionality.
  
 Version 3.9.0 *(5th June, 2020)*
 --------------------------------
- * [New](https://github.com/segmentio/analytics-ios/pull/897) Backport defaultSettings feature from 4.x to 3.x.
- * [Fix](https://github.com/segmentio/analytics-ios/pull/885) Automatic Screen Tracking with consistent naming conventions
+ * [New](https://github.com/segmentio/sdk-ios/pull/897) Backport defaultSettings feature from 4.x to 3.x.
+ * [Fix](https://github.com/segmentio/sdk-ios/pull/885) Automatic Screen Tracking with consistent naming conventions
 
 Version 3.8.2 *(21st May, 2020)*
 --------------------------------
- * [Fix](https://github.com/segmentio/analytics-ios/pull/880) Adds check to make sure cached settings aren't empty before being used.
+ * [Fix](https://github.com/segmentio/sdk-ios/pull/880) Adds check to make sure cached settings aren't empty before being used.
 
 Version 3.8.1 *(12th May, 2020)*
 --------------------------------
- * [Fix](https://github.com/segmentio/analytics-ios/pull/880) Fixed a crash in the file storage.
- * [Fix](https://github.com/segmentio/analytics-ios/pull/884) Adds back erroneously removed build/version data from App Opened event.
- * [Fix](https://github.com/segmentio/analytics-ios/pull/865) Pushlishes filenames use for storage.
- * [Fix](https://github.com/segmentio/analytics-ios/pull/771) Fixes incorrect naming in screen reporting.
+ * [Fix](https://github.com/segmentio/sdk-ios/pull/880) Fixed a crash in the file storage.
+ * [Fix](https://github.com/segmentio/sdk-ios/pull/884) Adds back erroneously removed build/version data from App Opened event.
+ * [Fix](https://github.com/segmentio/sdk-ios/pull/865) Pushlishes filenames use for storage.
+ * [Fix](https://github.com/segmentio/sdk-ios/pull/771) Fixes incorrect naming in screen reporting.
 
 Version 3.8.0 *(22nd April, 2020)*
 ----------------------------------
  * Promoting 3.8.x series to stable release.  This includes all changes since 3.7.
- * [Fix](https://github.com/segmentio/analytics-ios/pull/874) Implement maximum batch request size.
+ * [Fix](https://github.com/segmentio/sdk-ios/pull/874) Implement maximum batch request size.
  
 Version 3.8.0-beta.2 *(15th April, 2020)*
 -----------------------------------------
- * [Fix](https://github.com/segmentio/analytics-ios/pull/861) Move SEGQueue from UserDefaults to caches directory.
- * [Fix](https://github.com/segmentio/analytics-ios/pull/862) Fix issues around plist->json conversion and nil values.
- * [Fix](https://github.com/segmentio/analytics-ios/pull/851) Expect dictionary as well as bool for integration enablement.
- * [Fix](https://github.com/segmentio/analytics-ios/pull/864) Differences observed in how iOS/android pass userId/anonId; Corrected.
- * [Fix](https://github.com/segmentio/analytics-ios/pull/866) Look at previously cached settings before blowing them away.
- * [Fix](https://github.com/segmentio/analytics-ios/pull/876) Added experimental feature to enable nanosecond granularity on timestamps.
+ * [Fix](https://github.com/segmentio/sdk-ios/pull/861) Move SEGQueue from UserDefaults to caches directory.
+ * [Fix](https://github.com/segmentio/sdk-ios/pull/862) Fix issues around plist->json conversion and nil values.
+ * [Fix](https://github.com/segmentio/sdk-ios/pull/851) Expect dictionary as well as bool for integration enablement.
+ * [Fix](https://github.com/segmentio/sdk-ios/pull/864) Differences observed in how iOS/android pass userId/anonId; Corrected.
+ * [Fix](https://github.com/segmentio/sdk-ios/pull/866) Look at previously cached settings before blowing them away.
+ * [Fix](https://github.com/segmentio/sdk-ios/pull/876) Added experimental feature to enable nanosecond granularity on timestamps.
 
 Version 3.8.0-beta.1 *(7th January, 2020)*
 ------------------------------------------
 
- * [Fix](https://github.com/segmentio/analytics-ios/pull/856) Reload static context data when the app returns from background.
- * [Fix](https://github.com/segmentio/analytics-ios/pull/855) Fixes issue where customers can overwrite information regarding integration enablement.
- * [Fix](https://github.com/segmentio/analytics-ios/pull/854) Swapped JSON in for the storage format instead of plists.
- * [Fix](https://github.com/segmentio/analytics-ios/pull/853) Hardened handling of user-supplied data in event properties.
- * [New](https://github.com/segmentio/analytics-ios/pull/839) Added support for SSL pinning.
- * [Fix](https://github.com/segmentio/analytics-ios/pull/842) CoreTelephony library is now only included on iOS targets.
+ * [Fix](https://github.com/segmentio/sdk-ios/pull/856) Reload static context data when the app returns from background.
+ * [Fix](https://github.com/segmentio/sdk-ios/pull/855) Fixes issue where customers can overwrite information regarding integration enablement.
+ * [Fix](https://github.com/segmentio/sdk-ios/pull/854) Swapped JSON in for the storage format instead of plists.
+ * [Fix](https://github.com/segmentio/sdk-ios/pull/853) Hardened handling of user-supplied data in event properties.
+ * [New](https://github.com/segmentio/sdk-ios/pull/839) Added support for SSL pinning.
+ * [Fix](https://github.com/segmentio/sdk-ios/pull/842) CoreTelephony library is now only included on iOS targets.
 
 Version 3.8.0-beta.0 *(25th July, 2019)*
 ----------------------------------------
 
- * [New](https://github.com/segmentio/analytics-ios/pull/831): Add iOS Backgrounded Event.
- * [Fix](https://github.com/segmentio/analytics-ios/pull/785): Fix GCD mutual dependency
- * [Fix](https://github.com/segmentio/analytics-ios/pull/): adding “name” field to payload; updated nimble to version 7.3.4
+ * [New](https://github.com/segmentio/sdk-ios/pull/831): Add iOS Backgrounded Event.
+ * [Fix](https://github.com/segmentio/sdk-ios/pull/785): Fix GCD mutual dependency
+ * [Fix](https://github.com/segmentio/sdk-ios/pull/): adding “name” field to payload; updated nimble to version 7.3.4
 
 Version 3.7.0 *(22nd July, 2019)*
 ---------------------------------
@@ -120,62 +120,62 @@ This release promotes 3.7.0-beta.4 to stable.
 
 Version 3.7.0-beta.4 *(19th June, 2019)*
 -----------------------------------------
- * [Fix](https://github.com/segmentio/analytics-ios/pull/812): Remove invalid `.clang-format` symlink which can cause issues with manual builds.
- * [Fix](https://github.com/segmentio/analytics-ios/pull/806): Collect `context.device.type` as `ios`.
- * [Fix](https://github.com/segmentio/analytics-ios/pull/815): Fix Xcode warning.
+ * [Fix](https://github.com/segmentio/sdk-ios/pull/812): Remove invalid `.clang-format` symlink which can cause issues with manual builds.
+ * [Fix](https://github.com/segmentio/sdk-ios/pull/806): Collect `context.device.type` as `ios`.
+ * [Fix](https://github.com/segmentio/sdk-ios/pull/815): Fix Xcode warning.
 
 Version 3.7.0-beta.3 *(10th January, 2018)*
 --------------------------------------------
- * [Fix](https://github.com/segmentio/analytics-ios/pull/799): Allow setting anonymousId
- * [Fix](https://github.com/segmentio/analytics-ios/pull/800): Remove stray log
+ * [Fix](https://github.com/segmentio/sdk-ios/pull/799): Allow setting anonymousId
+ * [Fix](https://github.com/segmentio/sdk-ios/pull/800): Remove stray log
 
 Version 3.6.10 *(19th November, 2018)*
 --------------------------------------------
- * [Fix](https://github.com/segmentio/analytics-ios/pull/798): Add deep links redaction
+ * [Fix](https://github.com/segmentio/sdk-ios/pull/798): Add deep links redaction
 
 Version 3.7.0-beta.2 *(15th November, 2018)*
 --------------------------------------------
 
-* [Fix](https://github.com/segmentio/analytics-ios/pull/798): Add deep links redaction
+* [Fix](https://github.com/segmentio/sdk-ios/pull/798): Add deep links redaction
 
 Version 3.7.0-beta.1 *(23rd October, 2018)*
 -------------------------------------------
 
-* [Fix](https://github.com/segmentio/analytics-ios/pull/795): Remove -beta suffix from CFBundleShortVersionString
+* [Fix](https://github.com/segmentio/sdk-ios/pull/795): Remove -beta suffix from CFBundleShortVersionString
 
 Version 3.7.0-beta *(27th August, 2018)*
 ----------------------------------------
 
-* [Improvement](https://github.com/segmentio/analytics-ios/pull/765): Make the maximum queue size configurable
-* [Improvement](https://github.com/segmentio/analytics-ios/pull/767): Make the flush interval configurable
+* [Improvement](https://github.com/segmentio/sdk-ios/pull/765): Make the maximum queue size configurable
+* [Improvement](https://github.com/segmentio/sdk-ios/pull/767): Make the flush interval configurable
 
-* [Fix](https://github.com/segmentio/analytics-ios/pull/773): Fix linking issues when automatic framework linking is disabled
-* [Fix](https://github.com/segmentio/analytics-ios/pull/763): Retry HTTP 429 status codes
-* [Fix](https://github.com/segmentio/analytics-ios/pull/761): Send RFC 7231 Formatted User Agent
-* [Fix](https://github.com/segmentio/analytics-ios/pull/751): Ensure queue is always < 1000 items
-* [Fix](https://github.com/segmentio/analytics-ios/pull/750): Reset SnapyrUserIdKey only on tvOS
-* [Fix](https://github.com/segmentio/analytics-ios/pull/749): Renames GZIP category to prevent collisions
-* [Fix](https://github.com/segmentio/analytics-ios/pull/744): sharedAnalytics returns null before setup
-* [Fix](https://github.com/segmentio/analytics-ios/pull/741): Swift 4 support
+* [Fix](https://github.com/segmentio/sdk-ios/pull/773): Fix linking issues when automatic framework linking is disabled
+* [Fix](https://github.com/segmentio/sdk-ios/pull/763): Retry HTTP 429 status codes
+* [Fix](https://github.com/segmentio/sdk-ios/pull/761): Send RFC 7231 Formatted User Agent
+* [Fix](https://github.com/segmentio/sdk-ios/pull/751): Ensure queue is always < 1000 items
+* [Fix](https://github.com/segmentio/sdk-ios/pull/750): Reset SnapyrUserIdKey only on tvOS
+* [Fix](https://github.com/segmentio/sdk-ios/pull/749): Renames GZIP category to prevent collisions
+* [Fix](https://github.com/segmentio/sdk-ios/pull/744): sharedSDK returns null before setup
+* [Fix](https://github.com/segmentio/sdk-ios/pull/741): Swift 4 support
 
 Version 3.6.9 *(3rd December, 2017)*
 -------------------------------------
 
-* [Fix](https://github.com/segmentio/analytics-ios/pull/736): Reverts [ability to run connection factories asynchronously](https://github.com/segmentio/analytics-ios/pull/720). This fixes a bug in 3.6.9 that caused the library to not send events to the Segment API.
+* [Fix](https://github.com/segmentio/sdk-ios/pull/736): Reverts [ability to run connection factories asynchronously](https://github.com/segmentio/sdk-ios/pull/720). This fixes a bug in 3.6.9 that caused the library to not send events to the Segment API.
 
 Version 3.6.8 *(28th October, 2017)*
 -------------------------------------
 
 This version included a bug that caused the library to not send events to the Segment API. We recommend using version `3.6.9` which fixes this bug and includes all the other improvements available in this release.
 
-* [Fix](https://github.com/segmentio/analytics-ios/pull/700): Fixes some compiler warnings seen when importing analytics-ios via Swift in a Carthage project.
-* [Fix](https://github.com/segmentio/analytics-ios/pull/730): Fix crash when trying to get screen name in some cases.
-* [New](https://github.com/segmentio/analytics-ios/pull/727): Support schema defaults.
-* [New](https://github.com/segmentio/analytics-ios/pull/724): Send disabled events to Segment so they can be surfaced in the debugger. This won't be sent to any destinations.
-* [Fix](https://github.com/segmentio/analytics-ios/pull/723): Fix date formatting to be RFC 3339 compliant.
-* [Fix](https://github.com/segmentio/analytics-ios/pull/715): Always deliver events asynchronously to integrations.
+* [Fix](https://github.com/segmentio/sdk-ios/pull/700): Fixes some compiler warnings seen when importing sdk-ios via Swift in a Carthage project.
+* [Fix](https://github.com/segmentio/sdk-ios/pull/730): Fix crash when trying to get screen name in some cases.
+* [New](https://github.com/segmentio/sdk-ios/pull/727): Support schema defaults.
+* [New](https://github.com/segmentio/sdk-ios/pull/724): Send disabled events to Segment so they can be surfaced in the debugger. This won't be sent to any destinations.
+* [Fix](https://github.com/segmentio/sdk-ios/pull/723): Fix date formatting to be RFC 3339 compliant.
+* [Fix](https://github.com/segmentio/sdk-ios/pull/715): Always deliver events asynchronously to integrations.
 
-~~* [Improvement](https://github.com/segmentio/analytics-ios/pull/720): Run connection factory asynchronously so it doesn't block queuing events.~~
+~~* [Improvement](https://github.com/segmentio/sdk-ios/pull/720): Run connection factory asynchronously so it doesn't block queuing events.~~
 
 Version 3.6.7 *(24th August, 2017)*
 -------------------------------------
@@ -230,15 +230,15 @@ Version 3.6.0-rc *(10th January, 2017)*
 
 Version 3.6.0-beta *(1st December, 2016)*
 -------------------------------------
-* Major refactor laying the groundwork for a new middleware based architecture that will enable a whole new class of capabilities for analytics-ios
+* Major refactor laying the groundwork for a new middleware based architecture that will enable a whole new class of capabilities for sdk-ios
 
 Version 3.5.5 *(30th November, 2016)*
 -------------------------------------
-* [Fix](1eeafe261887877b24b7197c991457b72379fc7e): Fix issue where calling `[analytics continueUserActivity:activity]` would cause events in the application session to be dropped. Events from prior and future sessions will be unaffected.
+* [Fix](1eeafe261887877b24b7197c991457b72379fc7e): Fix issue where calling `[sdk continueUserActivity:activity]` would cause events in the application session to be dropped. Events from prior and future sessions will be unaffected.
 
 Version 3.5.4 *(28th November, 2016)*
 -------------------------------------
-* [Fix](https://github.com/segmentio/analytics-ios/commit/7d4cecbd723b6086f7d7a1df8cb0f4a1951539f3): Fall back to using Segment integration when we cannot get settings.
+* [Fix](https://github.com/segmentio/sdk-ios/commit/7d4cecbd723b6086f7d7a1df8cb0f4a1951539f3): Fall back to using Segment integration when we cannot get settings.
 
 Version 3.5.3 *(7th November, 2016)*
 -------------------------------------
@@ -247,20 +247,20 @@ Version 3.5.3 *(7th November, 2016)*
 Version 3.5.2 *(10th October, 2016)*
 -------------------------------------
 
-* [Fix](https://github.com/segmentio/analytics-ios/pull/615): Fixed regression introduced in 3.5.0 that would generate a new anonymousId on every app launch.
+* [Fix](https://github.com/segmentio/sdk-ios/pull/615): Fixed regression introduced in 3.5.0 that would generate a new anonymousId on every app launch.
 
 
 Version 3.5.1 *(5th October, 2016)*
 -------------------------------------
 * Not a recommended version.  Regression introduced in 3.5.0 will generate a new anonymousId on every app launch.
 
-* [Fix](https://github.com/segmentio/analytics-ios/pull/613): Removed automatic bluetooth and location info collection to workaround app submission issues.
+* [Fix](https://github.com/segmentio/sdk-ios/pull/613): Removed automatic bluetooth and location info collection to workaround app submission issues.
 
 Version 3.5.0 *(12th September, 2016)*
 -------------------------------------
 * Not a recommended version.  Regression introduced in 3.5.0 will generate a new anonymousId on every app launch.
 
-* [New](https://github.com/segmentio/analytics-ios/pull/592): Adds a `SEGCrypto` API that can be used to configure the at rest encryption strategy for the client.
+* [New](https://github.com/segmentio/sdk-ios/pull/592): Adds a `SEGCrypto` API that can be used to configure the at rest encryption strategy for the client.
 
  ```objc
  SnapyrSDKConfiguration *configuration = [SnapyrSDKConfiguration configurationWithWriteKey:@"YOUR_WRITE_KEY"];
@@ -272,10 +272,10 @@ Version 3.5.0 *(12th September, 2016)*
  ...
 
  // Initialize the SDK with the configuration.
- [SnapyrAnalytics setupWithConfiguration:configuration]
+ [SnapyrSDK setupWithConfiguration:configuration]
  ```
 
- * [New](https://github.com/segmentio/analytics-ios/commit/0c646e1c44df4134a984f1fcb741f5b1d418ab30): Add the ability for the SDK to natively report attribution information via Segment integrations enabled for your project, without needing to bundle their SDKs. Attribution information is sent as a track call as documented in the [mobile lifecycle spec](https://segment.com/docs/spec/mobile/#install-attributed).
+ * [New](https://github.com/segmentio/sdk-ios/commit/0c646e1c44df4134a984f1fcb741f5b1d418ab30): Add the ability for the SDK to natively report attribution information via Segment integrations enabled for your project, without needing to bundle their SDKs. Attribution information is sent as a track call as documented in the [mobile lifecycle spec](https://segment.com/docs/spec/mobile/#install-attributed).
 
  ```objc
  SnapyrSDKConfiguration *configuration = [SnapyrSDKConfiguration configurationWithWriteKey:@"YOUR_WRITE_KEY"];
@@ -287,10 +287,10 @@ Version 3.5.0 *(12th September, 2016)*
  ...
 
  // Initialize the SDK with the configuration.
- [SnapyrAnalytics setupWithConfiguration:configuration]
+ [SnapyrSDK setupWithConfiguration:configuration]
  ```
 
- * [New](https://github.com/segmentio/analytics-ios/pull/597): Add the ability for the SDK to disable bluetooth collection. Going forwards, bluetooth information will **not** be collected by default. This is because iOS 10 requires [explicit documentation](https://developer.apple.com/library/prerelease/content/releasenotes/General/WhatsNewIniOS/Articles/iOS10.html) on why the CoreBluetooth APIs are accessed. If you enable this flag, your app's Info.plist must contain an [`NSBluetoothPeripheralUsageDescription` key](https://developer.apple.com/library/ios/documentation/General/Reference/InfoPlistKeyReference/Articles/CocoaKeys.html#//apple_ref/doc/uid/TP40009251-SW20) with a string value explaining to the user how the app uses this data. On this note, you should do the same for [`NSLocationAlwaysUsageDescription`](https://developer.apple.com/library/ios/documentation/General/Reference/InfoPlistKeyReference/Articles/CocoaKeys.html#//apple_ref/doc/uid/TP40009251-SW18) if you have `shouldUseLocationServices` set to `@YES`. If you are linking against iOS 10, you'll want to update to this version to prevent your app submission from being rejected (or provide `NSBluetoothPeripheralUsageDescription` and/or `NSLocationAlwaysUsageDescription` descriptions in your app's Info.plist).
+ * [New](https://github.com/segmentio/sdk-ios/pull/597): Add the ability for the SDK to disable bluetooth collection. Going forwards, bluetooth information will **not** be collected by default. This is because iOS 10 requires [explicit documentation](https://developer.apple.com/library/prerelease/content/releasenotes/General/WhatsNewIniOS/Articles/iOS10.html) on why the CoreBluetooth APIs are accessed. If you enable this flag, your app's Info.plist must contain an [`NSBluetoothPeripheralUsageDescription` key](https://developer.apple.com/library/ios/documentation/General/Reference/InfoPlistKeyReference/Articles/CocoaKeys.html#//apple_ref/doc/uid/TP40009251-SW20) with a string value explaining to the user how the app uses this data. On this note, you should do the same for [`NSLocationAlwaysUsageDescription`](https://developer.apple.com/library/ios/documentation/General/Reference/InfoPlistKeyReference/Articles/CocoaKeys.html#//apple_ref/doc/uid/TP40009251-SW18) if you have `shouldUseLocationServices` set to `@YES`. If you are linking against iOS 10, you'll want to update to this version to prevent your app submission from being rejected (or provide `NSBluetoothPeripheralUsageDescription` and/or `NSLocationAlwaysUsageDescription` descriptions in your app's Info.plist).
 
  ```objc
  SnapyrSDKConfiguration *configuration = [SnapyrSDKConfiguration configurationWithWriteKey:@"YOUR_WRITE_KEY"];
@@ -302,13 +302,13 @@ Version 3.5.0 *(12th September, 2016)*
  ...
 
  // Initialize the SDK with the configuration.
- [SnapyrAnalytics setupWithConfiguration:configuration]
+ [SnapyrSDK setupWithConfiguration:configuration]
  ```
 
 Version 3.4.0 *(1st September, 2016)*
 -------------------------------------
 
- * [New](https://github.com/segmentio/analytics-ios/commit/d5db28ab9d15aa06b4e3a5c91f813d5c12a419a8): Adds a `SEGRequestFactory` API that can be used to configure the HTTP requests made by Segment.
+ * [New](https://github.com/segmentio/sdk-ios/commit/d5db28ab9d15aa06b4e3a5c91f813d5c12a419a8): Adds a `SEGRequestFactory` API that can be used to configure the HTTP requests made by Segment.
 
  ```objc
  SnapyrSDKConfiguration *configuration = [SnapyrSDKConfiguration configurationWithWriteKey:@"YOUR_WRITE_KEY"];
@@ -327,57 +327,57 @@ Version 3.4.0 *(1st September, 2016)*
  ...
 
  // Initialize the SDK with the configuration.
- [SnapyrAnalytics setupWithConfiguration:configuration]
+ [SnapyrSDK setupWithConfiguration:configuration]
  ```
 
 
- * [New](https://github.com/segmentio/analytics-ios/commit/b8aed9692e82ad1dbbecfae0ad5fc353a9eb2220): Add method to retrieve anonymous ID.
+ * [New](https://github.com/segmentio/sdk-ios/commit/b8aed9692e82ad1dbbecfae0ad5fc353a9eb2220): Add method to retrieve anonymous ID.
 
  ```objc
- [[SnapyrAnalytics sharedAnalytics] getAnonymousId];
+ [[SnapyrSDK sharedSDK] getAnonymousId];
  ```
 
- * [Improvement](https://github.com/segmentio/analytics-ios/commit/98a467292de62eb6179107b6ebbc59f13caf16a2): Store `context` object with every event. This makes it more accurate collecting the context at the time the event was observed, rather than uploaded.
+ * [Improvement](https://github.com/segmentio/sdk-ios/commit/98a467292de62eb6179107b6ebbc59f13caf16a2): Store `context` object with every event. This makes it more accurate collecting the context at the time the event was observed, rather than uploaded.
 
- * [Improvement](https://github.com/segmentio/analytics-ios/commit/66fdd8c25fbd28311cc99c0d6ccf8884e065d8b3): Automatic screen tracking improvements, specifically in the case when the root view is a `UINavigationController`.
+ * [Improvement](https://github.com/segmentio/sdk-ios/commit/66fdd8c25fbd28311cc99c0d6ccf8884e065d8b3): Automatic screen tracking improvements, specifically in the case when the root view is a `UINavigationController`.
 
- * [Improvement](https://github.com/segmentio/analytics-ios/commit/1ddcf615942125ecf791a8001794a27f7cb0385c): Don't send `Segment.io: false` in integration dictionary.
+ * [Improvement](https://github.com/segmentio/sdk-ios/commit/1ddcf615942125ecf791a8001794a27f7cb0385c): Don't send `Segment.io: false` in integration dictionary.
 
- * [Improvement](https://github.com/segmentio/analytics-ios/commit/0125804698f5e7087ca49f79f4ad99cc78aa2437): Friendly assert messages.
+ * [Improvement](https://github.com/segmentio/sdk-ios/commit/0125804698f5e7087ca49f79f4ad99cc78aa2437): Friendly assert messages.
 
- * [Fix](https://github.com/segmentio/analytics-ios/pull/585): Namespace GZIP extension to avoid conflicts.
+ * [Fix](https://github.com/segmentio/sdk-ios/pull/585): Namespace GZIP extension to avoid conflicts.
 
- * [Fix](https://github.com/segmentio/analytics-ios/pull/583/files): Fix assertion in `identify` method.
+ * [Fix](https://github.com/segmentio/sdk-ios/pull/583/files): Fix assertion in `identify` method.
 
- * [Fix](https://github.com/segmentio/analytics-ios/commit/bad7259ed649f48629fda5373c0f4100b52537ed): Static analyzer warnings for reachability implementation.
+ * [Fix](https://github.com/segmentio/sdk-ios/commit/bad7259ed649f48629fda5373c0f4100b52537ed): Static analyzer warnings for reachability implementation.
 
- * [Fix](https://github.com/segmentio/analytics-ios/commit/3ac7115dde4fe0fc97fde61ac548111ddf76f694): Handle case where screen name is empty.
+ * [Fix](https://github.com/segmentio/sdk-ios/commit/3ac7115dde4fe0fc97fde61ac548111ddf76f694): Handle case where screen name is empty.
 
 Version 3.3.0 *(08-05-2016)*
 -----------------------------
  * New: Add Carthage support.
  * Fix: Flush timer behaviour. Previously it was not being invoked periodically as expected.
- * [New](https://github.com/segmentio/analytics-ios/pull/557): Automatically track campaign data.
+ * [New](https://github.com/segmentio/sdk-ios/pull/557): Automatically track campaign data.
 
  ```objc
  SnapyrSDKConfiguration *configuration = [SnapyrSDKConfiguration configurationWithWriteKey:@"YOUR_WRITE_KEY"];
  configuration.trackPushNotifications = YES;
- [SnapyrAnalytics setupWithConfiguration:configuration];
+ [SnapyrSDK setupWithConfiguration:configuration];
  ```
 
- * [New](https://github.com/segmentio/analytics-ios/pull/573): Automatically track deep links. Please note that you'll still need to call the `continueUserActivity` and `openURL` methods on the analytics client.
+ * [New](https://github.com/segmentio/sdk-ios/pull/573): Automatically track deep links. Please note that you'll still need to call the `continueUserActivity` and `openURL` methods on the sdk client.
 
  ```objc
  SnapyrSDKConfiguration *configuration = [SnapyrSDKConfiguration configurationWithWriteKey:@"YOUR_WRITE_KEY"];
  configuration.trackDeepLinks = YES;
- [SnapyrAnalytics setupWithConfiguration:configuration];
+ [SnapyrSDK setupWithConfiguration:configuration];
  ```
 
- * [Improvement](https://github.com/segmentio/analytics-ios/pull/565): Limit queue size to 1000. This will prevent crashes/memory issues from the queue being too large.
- * [Fix](https://github.com/segmentio/analytics-ios/pull/563): Replace Foundation import with UIKit import.
- * [Improvement](https://github.com/segmentio/analytics-ios/pull/567): Exclude cache files from backup.
- * [New](https://github.com/segmentio/analytics-ios/pull/572): Add tvOS support.
- * [New](https://github.com/segmentio/analytics-ios/pull/575): Update context object with referrer information.
+ * [Improvement](https://github.com/segmentio/sdk-ios/pull/565): Limit queue size to 1000. This will prevent crashes/memory issues from the queue being too large.
+ * [Fix](https://github.com/segmentio/sdk-ios/pull/563): Replace Foundation import with UIKit import.
+ * [Improvement](https://github.com/segmentio/sdk-ios/pull/567): Exclude cache files from backup.
+ * [New](https://github.com/segmentio/sdk-ios/pull/572): Add tvOS support.
+ * [New](https://github.com/segmentio/sdk-ios/pull/575): Update context object with referrer information.
 
 Version 3.2.6 *(07-10-2016)*
 -----------------------------
@@ -412,7 +412,7 @@ Version 3.2.3 *(06-08-2016)*
  ```objc
  SnapyrSDKConfiguration *configuration = [SnapyrSDKConfiguration configurationWithWriteKey:@"YOUR_WRITE_KEY"];
  configuration.trackInAppPurchases = YES;
- [SnapyrAnalytics setupWithConfiguration:configuration];
+ [SnapyrSDK setupWithConfiguration:configuration];
  ```
 
 Version 3.2.2 *(06-06-2016)*
@@ -444,7 +444,7 @@ Version 3.1.1 *(05-24-2016)*
 ```objc
 SnapyrSDKConfiguration *configuration = [SnapyrSDKConfiguration configurationWithWriteKey:@"YOUR_WRITE_KEY"];
 configuration.recordScreenViews = YES;
-[SnapyrAnalytics setupWithConfiguration:configuration];
+[SnapyrSDK setupWithConfiguration:configuration];
 ```
 
 Version 3.1.0 *(05-09-2016)*
@@ -455,10 +455,10 @@ Version 3.1.0 *(05-09-2016)*
 ```objc
 SnapyrSDKConfiguration *configuration = [SnapyrSDKConfiguration configurationWithWriteKey:@"YOUR_WRITE_KEY"];
 configuration.trackApplicationLifecycleEvents = YES;
-[SnapyrAnalytics setupWithConfiguration:configuration];
+[SnapyrSDK setupWithConfiguration:configuration];
 ```
 
- * Make `SnapyrAnalyticsIntegrationDidStart` public (use this to be notified when an integration is initialized).
+ * Make `SnapyrSDKIntegrationDidStart` public (use this to be notified when an integration is initialized).
  * Fixed crashes due to NSNotificationCenter observers not being removed.
 
 Version 3.0.7 *(02-01-2016)*
@@ -523,7 +523,7 @@ config use:[SEGGoogleAnalyticsIntegrationFactory instance];
 config use:[BNCBranchIntegrationFactory instance];
 ...
 
-[SnapyrAnalytics setupWithConfiguration:config];
+[SnapyrSDK setupWithConfiguration:config];
 ```
 
 Version 3.0.4-alpha *(10-24-2015)*

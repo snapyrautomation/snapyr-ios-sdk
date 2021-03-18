@@ -14,32 +14,32 @@ NS_SWIFT_NAME(Integration)
 
 @optional
 // Identify will be called when the user calls either of the following:
-// 1. [[SnapyrAnalytics sharedInstance] identify:someUserId];
-// 2. [[SnapyrAnalytics sharedInstance] identify:someUserId traits:someTraits];
-// 3. [[SnapyrAnalytics sharedInstance] identify:someUserId traits:someTraits options:someOptions];
+// 1. [[SnapyrSDK sharedInstance] identify:someUserId];
+// 2. [[SnapyrSDK sharedInstance] identify:someUserId traits:someTraits];
+// 3. [[SnapyrSDK sharedInstance] identify:someUserId traits:someTraits options:someOptions];
 - (void)identify:(SnapyrIdentifyPayload *)payload;
 
 // Track will be called when the user calls either of the following:
-// 1. [[SnapyrAnalytics sharedInstance] track:someEvent];
-// 2. [[SnapyrAnalytics sharedInstance] track:someEvent properties:someProperties];
-// 3. [[SnapyrAnalytics sharedInstance] track:someEvent properties:someProperties options:someOptions];
+// 1. [[SnapyrSDK sharedInstance] track:someEvent];
+// 2. [[SnapyrSDK sharedInstance] track:someEvent properties:someProperties];
+// 3. [[SnapyrSDK sharedInstance] track:someEvent properties:someProperties options:someOptions];
 - (void)track:(SnapyrTrackPayload *)payload;
 
 // Screen will be called when the user calls either of the following:
-// 1. [[SnapyrAnalytics sharedInstance] screen:someEvent];
-// 2. [[SnapyrAnalytics sharedInstance] screen:someEvent properties:someProperties];
-// 3. [[SnapyrAnalytics sharedInstance] screen:someEvent properties:someProperties options:someOptions];
+// 1. [[SnapyrSDK sharedInstance] screen:someEvent];
+// 2. [[SnapyrSDK sharedInstance] screen:someEvent properties:someProperties];
+// 3. [[SnapyrSDK sharedInstance] screen:someEvent properties:someProperties options:someOptions];
 - (void)screen:(SnapyrScreenPayload *)payload;
 
 // Group will be called when the user calls either of the following:
-// 1. [[SnapyrAnalytics sharedInstance] group:someGroupId];
-// 2. [[SnapyrAnalytics sharedInstance] group:someGroupId traits:];
-// 3. [[SnapyrAnalytics sharedInstance] group:someGroupId traits:someGroupTraits options:someOptions];
+// 1. [[SnapyrSDK sharedInstance] group:someGroupId];
+// 2. [[SnapyrSDK sharedInstance] group:someGroupId traits:];
+// 3. [[SnapyrSDK sharedInstance] group:someGroupId traits:someGroupTraits options:someOptions];
 - (void)group:(SnapyrGroupPayload *)payload;
 
 // Alias will be called when the user calls either of the following:
-// 1. [[SnapyrAnalytics sharedInstance] alias:someNewId];
-// 2. [[SnapyrAnalytics sharedInstance] alias:someNewId options:someOptions];
+// 1. [[SnapyrSDK sharedInstance] alias:someNewId];
+// 2. [[SnapyrSDK sharedInstance] alias:someNewId options:someOptions];
 - (void)alias:(SnapyrAliasPayload *)payload;
 
 // Reset is invoked when the user logs out, and any data saved about the user should be cleared.

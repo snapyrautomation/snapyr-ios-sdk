@@ -1,7 +1,7 @@
 Contributing
 ============
 
-If you would like to contribute code to `analytics-ios` you can do so through
+If you would like to contribute code to `sdk-ios` you can do so through
 GitHub by forking the repository and sending a pull request.
 
 Development occurs on the `dev` branch, and pull requests must be opened against

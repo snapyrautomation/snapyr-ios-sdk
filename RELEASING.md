@@ -1,7 +1,7 @@
 Releasing
 =========
 
- 1. Update the version in `SnapyrAnalytics.m`, `Analytics.podspec`, `Segment/Info.plist` and `Examples/CarthageExample/Cartfile` to the next release version.
+ 1. Update the version in `SnapyrSDK.m`, `Analytics.podspec`, `Segment/Info.plist` and `Examples/CarthageExample/Cartfile` to the next release version.
  2. Update the `CHANGELOG.md` for the impending release.
  3. `git commit -am "Prepare for release X.Y.Z."` (where X.Y.Z is the new version).
  4. `git tag -a X.Y.Z -m "Version X.Y.Z"` (where X.Y.Z is the new version).
@@ -12,7 +12,7 @@ Releasing
      * `make clean` to be safe then `make build`.
      * Zip `Carthage/Builds/iOS/Analytics.framework` and `Carthage/Builds/iOS/Analytics.dSYM` into `Archive.zip`.
  8. Next, we'll create a Carthage build by running `make archive`.
- 9. Create a new Github release at https://github.com/segmentio/analytics-ios/releases
+ 9. Create a new Github release at https://github.com/segmentio/sdk-ios/releases
      * Add latest version information from `CHANGELOG.md`
      * Upload `Archive.zip` from step 7 and `Analytics.zip` from step 8 into binaries section to make available for users to download.
  10. `git push`.

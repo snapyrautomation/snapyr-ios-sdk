@@ -7,7 +7,7 @@
 //
 
 #import "SnapyrSDKConfiguration.h"
-#import "SnapyrAnalytics.h"
+#import "SnapyrSDK.h"
 #import "SnapyrMiddleware.h"
 #import "SnapyrCrypto.h"
 #import "SnapyrHTTPClient.h"
@@ -34,14 +34,14 @@
 @end
 #endif
 
-@implementation SnapyrAnalyticsExperimental
+@implementation SnapyrSDKExperimental
 @end
 
 @interface SnapyrSDKConfiguration ()
 
 @property (nonatomic, copy, readwrite) NSString *writeKey;
 @property (nonatomic, strong, readonly) NSMutableArray *factories;
-@property (nonatomic, strong) SnapyrAnalyticsExperimental *experimental;
+@property (nonatomic, strong) SnapyrSDKExperimental *experimental;
 
 - (instancetype)initWithWriteKey:(NSString *)writeKey defaultAPIHost:(NSURL * _Nullable)defaultAPIHost;
 
@@ -83,7 +83,7 @@
 - (instancetype)init
 {
     if (self = [super init]) {
-        self.experimental = [[SnapyrAnalyticsExperimental alloc] init];
+        self.experimental = [[SnapyrSDKExperimental alloc] init];
         self.shouldUseLocationServices = NO;
         self.enableAdvertisingTracking = YES;
         self.shouldUseBluetooth = NO;

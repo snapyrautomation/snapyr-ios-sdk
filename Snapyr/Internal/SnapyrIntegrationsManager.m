@@ -11,7 +11,7 @@
 #endif
 #import <objc/runtime.h>
 #import "SnapyrSDKUtils.h"
-#import "SnapyrAnalytics.h"
+#import "SnapyrSDK.h"
 #import "SnapyrIntegrationFactory.h"
 #import "SnapyrIntegration.h"
 #import "SnapyrHTTPClient.h"
@@ -29,10 +29,10 @@
 #import "SnapyrUtils.h"
 #import "SnapyrState.h"
 
-NSString *SnapyrAnalyticsIntegrationDidStart = @"com.snapyr.analytics.integration.did.start";
+NSString *SnapyrSDKIntegrationDidStart = @"com.snapyr.sdk.integration.did.start";
 NSString *const SnapyrAnonymousIdKey = @"SnapyrAnonymousId";
 NSString *const kSnapyrAnonymousIdFilename = @"snapyr.anonymousId";
-NSString *const kSnapyrCachedSettingsFilename = @"analytics.settings.v2.plist";
+NSString *const kSnapyrCachedSettingsFilename = @"sdk.settings.v2.plist";
 
 
 @interface SnapyrIdentifyPayload (AnonymousId)
@@ -62,7 +62,7 @@ NSString *const kSnapyrCachedSettingsFilename = @"analytics.settings.v2.plist";
 
 @interface SnapyrIntegrationsManager ()
 
-@property (nonatomic, strong) SnapyrAnalytics *analytics;
+@property (nonatomic, strong) SnapyrSDK *sdk;
 @property (nonatomic, strong) NSDictionary *cachedSettings;
 @property (nonatomic, strong) SnapyrSDKConfiguration *configuration;
 @property (nonatomic, strong) dispatch_queue_t serialQueue;
@@ -80,7 +80,7 @@ NSString *const kSnapyrCachedSettingsFilename = @"analytics.settings.v2.plist";
 
 @end
 
-@interface SnapyrAnalytics ()
+@interface SnapyrSDK ()
 @property (nullable, nonatomic, strong, readonly) SnapyrSDKConfiguration *oneTimeConfiguration;
 @end
 
@@ -90,15 +90,15 @@ NSString *const kSnapyrCachedSettingsFilename = @"analytics.settings.v2.plist";
 @dynamic cachedAnonymousId;
 @synthesize cachedSettings = _cachedSettings;
 
-- (instancetype _Nonnull)initWithAnalytics:(SnapyrAnalytics *_Nonnull)analytics
+- (instancetype _Nonnull)initWithSDK:(SnapyrSDK *_Nonnull)sdk
 {
-    SnapyrSDKConfiguration *configuration = analytics.oneTimeConfiguration;
+    SnapyrSDKConfiguration *configuration = sdk.oneTimeConfiguration;
     NSCParameterAssert(configuration != nil);
 
     if (self = [super init]) {
-        self.analytics = analytics;
+        self.sdk = sdk;
         self.configuration = configuration;
-        self.serialQueue = snapyr_dispatch_queue_create_specific("com.snapyr.analytics", DISPATCH_QUEUE_SERIAL);
+        self.serialQueue = snapyr_dispatch_queue_create_specific("com.snapyr.sdk", DISPATCH_QUEUE_SERIAL);
         self.messageQueue = [[NSMutableArray alloc] init];
         self.httpClient = [[SnapyrHTTPClient alloc] initWithRequestFactory:configuration.requestFactory];
         
@@ -206,7 +206,7 @@ NSString *const kSnapyrCachedSettingsFilename = @"analytics.settings.v2.plist";
     return [NSString stringWithFormat:@"<%p:%@, %@>", self, [self class], [self dictionaryWithValuesForKeys:@[ @"configuration" ]]];
 }
 
-#pragma mark - Analytics API
+#pragma mark - API
 
 - (void)identify:(SnapyrIdentifyPayload *)payload
 {
@@ -358,7 +358,7 @@ NSString *const kSnapyrCachedSettingsFilename = @"analytics.settings.v2.plist";
     [self callIntegrationsWithSelector:_cmd arguments:nil options:nil sync:false];
 }
 
-#pragma mark - Analytics Settings
+#pragma mark - Settings
 
 - (NSDictionary *)cachedSettings
 {
@@ -420,7 +420,7 @@ NSString *const kSnapyrCachedSettingsFilename = @"analytics.settings.v2.plist";
                 integrationSettings = @{};
             }
             if (integrationSettings || [key hasPrefix:@"webhook_"]) {
-                id<SnapyrIntegration> integration = [factory createWithSettings:integrationSettings forAnalytics:self.analytics];
+                id<SnapyrIntegration> integration = [factory createWithSettings:integrationSettings forSDK:self.sdk];
                 if (integration != nil) {
                     self.integrations[key] = integration;
                     self.registeredIntegrations[key] = @NO;
@@ -429,7 +429,7 @@ NSString *const kSnapyrCachedSettingsFilename = @"analytics.settings.v2.plist";
                     NSArray<id<SnapyrMiddleware>> *middleware = [self middlewareForIntegrationKey:key];
                     self.integrationMiddleware[key] = [[SnapyrMiddlewareRunner alloc] initWithMiddleware:middleware];
                 }
-                [[NSNotificationCenter defaultCenter] postNotificationName:SnapyrAnalyticsIntegrationDidStart object:key userInfo:nil];
+                [[NSNotificationCenter defaultCenter] postNotificationName:SnapyrSDKIntegrationDidStart object:key userInfo:nil];
             } else {
                 SLog(@"No settings for %@. Skipping.", key);
             }
@@ -647,7 +647,7 @@ NSString *const kSnapyrCachedSettingsFilename = @"analytics.settings.v2.plist";
             if (arguments.count > 0) {
                 payload = arguments[0];
             }
-            SnapyrContext *context = [[[SnapyrContext alloc] initWithAnalytics:self.analytics] modify:^(id<SnapyrMutableContext> _Nonnull ctx) {
+            SnapyrContext *context = [[[SnapyrContext alloc] initWithSDK:self.sdk] modify:^(id<SnapyrMutableContext> _Nonnull ctx) {
                 ctx.eventType = eventType;
                 ctx.payload = payload;
             }];
@@ -701,7 +701,7 @@ NSString *const kSnapyrCachedSettingsFilename = @"analytics.settings.v2.plist";
     // TODO: Currently we ignore the `sync` argument and queue the event asynchronously.
     // For integrations that need events to be on the main thread, they'll have to do so
     // manually and hop back on to the main thread.
-    // Eventually we should figure out a way to handle this in analytics-ios itself.
+    // Eventually we should figure out a way to handle this in sdk itself.
     snapyr_dispatch_specific_async(_serialQueue, ^{
         if (self.initialized) {
             [self flushMessageQueue];

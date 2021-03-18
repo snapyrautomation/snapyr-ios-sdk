@@ -10,7 +10,7 @@
 @testable import Snapyr
 import XCTest
 
-class AnalyticsTests: XCTestCase {
+class SnapyrTests: XCTestCase {
     
     var config: SnapyrConfiguration!
     let cachedSettings = [
@@ -30,7 +30,7 @@ class AnalyticsTests: XCTestCase {
         ],
         "plan": ["track": [:]],
         ] as NSDictionary
-    var analytics: Snapyr!
+    var snapyr: Snapyr!
     var testMiddleware: TestMiddleware!
     var testApplication: TestApplication!
     
@@ -49,13 +49,13 @@ class AnalyticsTests: XCTestCase {
         RunLoop.current.run(until: Date.distantPast)
         XCTAssertNotNil(UserDefaults.standard.string(forKey: "snapyrQueue"))
 
-        analytics = Snapyr(configuration: config)
-        analytics.test_integrationsManager()?.test_setCachedSettings(settings: cachedSettings)
+        snapyr = Snapyr(configuration: config)
+        snapyr.test_integrationsManager()?.test_setCachedSettings(settings: cachedSettings)
     }
     
     override func tearDown() {
         super.tearDown()
-        analytics.reset()
+        snapyr.reset()
     }
     
     func testInitializedCorrectly() {
@@ -70,7 +70,7 @@ class AnalyticsTests: XCTestCase {
         XCTAssertEqual(config.enableAdvertisingTracking, true)
         XCTAssertEqual(config.shouldUseBluetooth,  false)
         XCTAssertNil(config.httpSessionDelegate)
-        XCTAssertNotNil(analytics.getAnonymousId())
+        XCTAssertNotNil(snapyr.getAnonymousId())
     }
     
     func testConfigAPIHost() {
@@ -91,7 +91,7 @@ class AnalyticsTests: XCTestCase {
         UserDefaults.standard.removeObject(forKey: "snapyr_apihost")
         
         var initialized = false
-        NotificationCenter.default.addObserver(forName: NSNotification.Name(rawValue: SnapyrAnalyticsIntegrationDidStart), object: nil, queue: nil) { (notification) in
+        NotificationCenter.default.addObserver(forName: NSNotification.Name(rawValue: SnapyrSDKIntegrationDidStart), object: nil, queue: nil) { (notification) in
             let key = notification.object as? String
             if (key == "Snapyr") {
                 initialized = true
@@ -99,8 +99,8 @@ class AnalyticsTests: XCTestCase {
         }
 
         let config2 = SnapyrConfiguration(writeKey: "TESTKEY")
-        let analytics2 = Snapyr(configuration: config2)
-        analytics2.test_integrationsManager()?.test_setCachedSettings(settings: cachedSettingsWithHost)
+        let snapyr2 = Snapyr(configuration: config2)
+        snapyr2.test_integrationsManager()?.test_setCachedSettings(settings: cachedSettingsWithHost)
         
         while (!initialized) { // wait for integrations to get setup
             sleep(1)
@@ -108,14 +108,14 @@ class AnalyticsTests: XCTestCase {
         
         // see if the value in use is the correct endpoint.
         XCTAssertEqual(config2.apiHost?.absoluteString, "https://dev-engine.snapyr.com/v1")
-        analytics2.test_integrationsManager()?.test_setCachedSettings(settings: cachedSettings)
+        snapyr2.test_integrationsManager()?.test_setCachedSettings(settings: cachedSettings)
     }
 
     func testWebhookIntegrationInitializedCorrectly() {
         let webhookIntegration = WebhookIntegrationFactory.init(name: "dest1", webhookUrl: "blah")
         let webhookIntegrationKey = webhookIntegration.key()
         var initialized = false
-        NotificationCenter.default.addObserver(forName: NSNotification.Name(rawValue: SnapyrAnalyticsIntegrationDidStart), object: nil, queue: nil) { (notification) in
+        NotificationCenter.default.addObserver(forName: NSNotification.Name(rawValue: SnapyrSDKIntegrationDidStart), object: nil, queue: nil) { (notification) in
             let key = notification.object as? String
             if (key == webhookIntegrationKey) {
                 initialized = true
@@ -123,14 +123,14 @@ class AnalyticsTests: XCTestCase {
         }
         let config2 = SnapyrConfiguration(writeKey: "TESTKEY")
         config2.use(webhookIntegration)
-        let analytics2 = Snapyr(configuration: config2)
+        let snapyr2 = Snapyr(configuration: config2)
         let factoryList = (config2.value(forKey: "factories") as? NSMutableArray)
         XCTAssertEqual(factoryList?.count, 1)
 
         while (!initialized) { // wait for WebhookIntegration to get setup
             sleep(1)
         }
-        XCTAssertNotNil(analytics2.test_integrationsManager()?.test_integrations()?[webhookIntegrationKey])
+        XCTAssertNotNil(snapyr2.test_integrationsManager()?.test_integrations()?[webhookIntegrationKey])
     }
     
     func testClearsSEGQueueFromUserDefaults() {
@@ -140,43 +140,43 @@ class AnalyticsTests: XCTestCase {
     /* TODO: Fix me when the Context object isn't so wild.
      func testCollectsIDFA() {
      testMiddleware.swallowEvent = true
-     analytics.configuration.enableAdvertisingTracking = true
-     analytics.configuration.adSupportBlock = { () -> String in
+     snapyr.configuration.enableAdvertisingTracking = true
+     snapyr.configuration.adSupportBlock = { () -> String in
      return "1234AdsNoMore!"
      }
      
-     analytics.track("test");
+     snapyr.track("test");
      
      let event = testMiddleware.lastContext?.payload as? TrackPayload
      XCTAssertEqual(event?.properties?["url"] as? String, "myapp://auth?token=((redacted/my-auth))&other=stuff")
      }*/
     
     func testPersistsAnonymousId() {
-        let analytics2 = Snapyr(configuration: config)
-        XCTAssertEqual(analytics.getAnonymousId(), analytics2.getAnonymousId())
+        let snapyr2 = Snapyr(configuration: config)
+        XCTAssertEqual(snapyr.getAnonymousId(), snapyr2.getAnonymousId())
     }
     
     func testPersistsUserId() {
-        analytics.identify("testUserId1")
+        snapyr.identify("testUserId1")
         
-        let analytics2 = Snapyr(configuration: config)
-        analytics2.test_integrationsManager()?.test_setCachedSettings(settings: cachedSettings)
+        let snapyr2 = Snapyr(configuration: config)
+        snapyr2.test_integrationsManager()?.test_setCachedSettings(settings: cachedSettings)
         
-        XCTAssertEqual(analytics.test_integrationsManager()?.test_snapyrIntegration()?.test_userId(), "testUserId1")
-        XCTAssertEqual(analytics2.test_integrationsManager()?.test_snapyrIntegration()?.test_userId(), "testUserId1")
+        XCTAssertEqual(snapyr.test_integrationsManager()?.test_snapyrIntegration()?.test_userId(), "testUserId1")
+        XCTAssertEqual(snapyr2.test_integrationsManager()?.test_snapyrIntegration()?.test_userId(), "testUserId1")
     }
     
     func testPersistsTraits() {
-        analytics.identify("testUserId1", traits: ["trait1": "someTrait"])
+        snapyr.identify("testUserId1", traits: ["trait1": "someTrait"])
         
-        let analytics2 = Snapyr(configuration: config)
-        analytics2.test_integrationsManager()?.test_setCachedSettings(settings: cachedSettings)
+        let snapyr2 = Snapyr(configuration: config)
+        snapyr2.test_integrationsManager()?.test_setCachedSettings(settings: cachedSettings)
         
-        XCTAssertEqual(analytics.test_integrationsManager()?.test_snapyrIntegration()?.test_userId(), "testUserId1")
-        XCTAssertEqual(analytics2.test_integrationsManager()?.test_snapyrIntegration()?.test_userId(), "testUserId1")
+        XCTAssertEqual(snapyr.test_integrationsManager()?.test_snapyrIntegration()?.test_userId(), "testUserId1")
+        XCTAssertEqual(snapyr2.test_integrationsManager()?.test_snapyrIntegration()?.test_userId(), "testUserId1")
         
-        var traits = analytics.test_integrationsManager()?.test_snapyrIntegration()?.test_traits()
-        var storedTraits = analytics2.test_integrationsManager()?.test_snapyrIntegration()?.test_traits()
+        var traits = snapyr.test_integrationsManager()?.test_snapyrIntegration()?.test_traits()
+        var storedTraits = snapyr2.test_integrationsManager()?.test_snapyrIntegration()?.test_traits()
         
         if let trait1 = traits?["trait1"] as? String {
             XCTAssertEqual(trait1, "someTrait")
@@ -190,10 +190,10 @@ class AnalyticsTests: XCTestCase {
             XCTAssert(false, "Traits were not stored!")
         }
         
-        analytics.identify("testUserId1", traits: ["trait2": "someOtherTrait"])
+        snapyr.identify("testUserId1", traits: ["trait2": "someOtherTrait"])
         
-        traits = analytics.test_integrationsManager()?.test_snapyrIntegration()?.test_traits()
-        storedTraits = analytics2.test_integrationsManager()?.test_snapyrIntegration()?.test_traits()
+        traits = snapyr.test_integrationsManager()?.test_snapyrIntegration()?.test_traits()
+        storedTraits = snapyr2.test_integrationsManager()?.test_snapyrIntegration()?.test_traits()
         
         if let trait1 = traits?["trait2"] as? String {
             XCTAssertEqual(trait1, "someOtherTrait")
@@ -211,12 +211,12 @@ class AnalyticsTests: XCTestCase {
     }
     
     func testClearsUserData() {
-        analytics.identify("testUserId1", traits: [ "Test trait key" : "Test trait value"])
-        analytics.reset()
+        snapyr.identify("testUserId1", traits: [ "Test trait key" : "Test trait value"])
+        snapyr.reset()
         
-        expectUntil(2.0, expression: self.analytics.test_integrationsManager()?.test_snapyrIntegration()?.test_userId() == nil)
+        expectUntil(2.0, expression: self.snapyr.test_integrationsManager()?.test_snapyrIntegration()?.test_userId() == nil)
         
-        expectUntil(2.0, expression: self.analytics.test_integrationsManager()?.test_snapyrIntegration()?.test_traits()?.count == 0)
+        expectUntil(2.0, expression: self.snapyr.test_integrationsManager()?.test_snapyrIntegration()?.test_traits()?.count == 0)
     }
     
     #if os(iOS)
@@ -259,7 +259,7 @@ class AnalyticsTests: XCTestCase {
     }
     
     func testFlushesWhenApplicationBackgroundIsFired() {
-        analytics.track("test")
+        snapyr.track("test")
         #if os(macOS)
         NotificationCenter.default.post(name: NSApplication.didResignActiveNotification, object: testApplication)
         #else
@@ -275,13 +275,13 @@ class AnalyticsTests: XCTestCase {
         config.maxQueueSize = UInt(max)
         
         for i in 1...max * 2 {
-            analytics.track("test #\(i)")
+            snapyr.track("test #\(i)")
         }
         
-        let integration = analytics.test_integrationsManager()?.test_snapyrIntegration()
+        let integration = snapyr.test_integrationsManager()?.test_snapyrIntegration()
         XCTAssertNotNil(integration)
         
-        analytics.flush()
+        snapyr.flush()
         let currentTime = Date()
         while(integration?.test_queue()?.count != max && currentTime < currentTime + 60) {
             sleep(1)
@@ -304,9 +304,9 @@ class AnalyticsTests: XCTestCase {
     #endif
     
     func testFlushesUsingFlushTimer() {
-        let integration = analytics.test_integrationsManager()?.test_snapyrIntegration()
+        let integration = snapyr.test_integrationsManager()?.test_snapyrIntegration()
         
-        analytics.track("test")
+        snapyr.track("test")
         
         expectUntil(2.0, expression: integration?.test_flushTimer() != nil)
         XCTAssertNil(integration?.test_batchRequest())
@@ -316,7 +316,7 @@ class AnalyticsTests: XCTestCase {
     }
     
     func testRespectsFlushIntervale() {
-        let timer = analytics
+        let timer = snapyr
             .test_integrationsManager()?
             .test_snapyrIntegration()?
             .test_flushTimer()
@@ -328,7 +328,7 @@ class AnalyticsTests: XCTestCase {
     func testRedactsSensibleURLsFromDeepLinksTracking() {
         testMiddleware.swallowEvent = true
         config.trackDeepLinks = true
-        analytics.open(URL(string: "fb123456789://authorize#access_token=hastoberedacted")!, options: [:])
+        snapyr.open(URL(string: "fb123456789://authorize#access_token=hastoberedacted")!, options: [:])
         
         
         let event = testMiddleware.lastContext?.payload as? TrackPayload
@@ -340,7 +340,7 @@ class AnalyticsTests: XCTestCase {
         testMiddleware.swallowEvent = true
         config.payloadFilters["(myapp://auth\\?token=)([^&]+)"] = "$1((redacted/my-auth))"
         config.trackDeepLinks = true
-        analytics.open(URL(string: "myapp://auth?token=hastoberedacted&other=stuff")!, options: [:])
+        snapyr.open(URL(string: "myapp://auth?token=hastoberedacted&other=stuff")!, options: [:])
         
         
         let event = testMiddleware.lastContext?.payload as? TrackPayload
@@ -349,7 +349,7 @@ class AnalyticsTests: XCTestCase {
     }
     
     func testDefaultsSEGQueueToEmptyArray() {
-        let integration = analytics.test_integrationsManager()?.test_snapyrIntegration()
+        let integration = snapyr.test_integrationsManager()?.test_snapyrIntegration()
         XCTAssertNotNil(integration)
         integration?.test_fileStorage()?.resetAll()
         XCTAssert(integration?.test_queue()?.isEmpty ?? false)
@@ -363,9 +363,9 @@ class AnalyticsTests: XCTestCase {
         let deviceToken = GenerateUUIDString()
         let data = deviceToken.data(using: .utf8)
         if let data = data {
-            analytics.registeredForRemoteNotifications(withDeviceToken: data)
+            snapyr.registeredForRemoteNotifications(withDeviceToken: data)
             let deviceTokenString = getStringFrom(token: data)
-            XCTAssertTrue(deviceTokenString == analytics.getDeviceToken())
+            XCTAssertTrue(deviceTokenString == snapyr.getDeviceToken())
 
         } else {
             XCTAssertNotNil(data)
