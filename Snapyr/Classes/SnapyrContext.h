@@ -63,7 +63,7 @@ NS_SWIFT_NAME(Context)
 @property (nonatomic, readonly, nullable) SnapyrPayload *payload;
 @property (nonatomic, readonly) BOOL debug;
 
-- (instancetype _Nonnull)initWithSDK:(SnapyrSDK *)sdk;
+- (instancetype _Nonnull)initWithSDK:(SnapyrSDK *_Nonnull)sdk;
 
 - (SnapyrContext *_Nonnull)modify:(void (^_Nonnull)(id<SnapyrMutableContext> _Nonnull ctx))modify;
 

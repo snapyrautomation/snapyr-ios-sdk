@@ -5,12 +5,13 @@ Pod::Spec.new do |s|
   s.summary          = "The hassle-free way to add Snapyr sdk to your iOS app."
 
   s.description      = <<-DESC
-                       Snapyr SDK.
+                       The hassle-free way to add Snapyr iOS sdk to your iOS app.
                        DESC
 
   s.homepage         = "http://snapyr.com/"
   s.license          =  { :type => 'MIT' }
-  s.source           = { :git => "https://github.com/snapyrautomation/snapyr-ios-sdk", :tag => s.version.to_s }
+  s.author           = { "Snapyr" => "support@snapyr.com" }
+  s.source           = { :git => "https://github.com/snapyrautomation/snapyr-ios-sdk.git", :tag => s.version.to_s }
 
   s.ios.deployment_target = '10.0'
   s.tvos.deployment_target = '10.0'
