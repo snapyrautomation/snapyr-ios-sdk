@@ -22,8 +22,12 @@ jobs:
       - run: make lint
       - run: make carthage
       - run: make archive
-      - uses: actions/upload-artifact@v2
+      - name: Release
+        uses: softprops/action-gh-release@v1
         with:
+          files: Snapyr.framework.zip 
           name: Snapyr.framework.${{ github.event.inputs.version }}.zip
-          path: Snapyr.framework.zip
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
 
