@@ -1,5 +1,5 @@
 @import Foundation;
-#import "SnapyrAnalytics.h"
+#import "SnapyrSDK.h"
 
 NS_ASSUME_NONNULL_BEGIN
 

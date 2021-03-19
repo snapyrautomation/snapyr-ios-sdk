@@ -6,8 +6,8 @@
 //  Copyright © 2016 Segment. All rights reserved.
 //
 
-#import "SnapyrAnalyticsConfiguration.h"
-#import "SnapyrAnalytics.h"
+#import "SnapyrSDKConfiguration.h"
+#import "SnapyrSDK.h"
 #import "SnapyrMiddleware.h"
 #import "SnapyrCrypto.h"
 #import "SnapyrHTTPClient.h"
@@ -34,30 +34,30 @@
 @end
 #endif
 
-@implementation SnapyrAnalyticsExperimental
+@implementation SnapyrSDKExperimental
 @end
 
-@interface SnapyrAnalyticsConfiguration ()
+@interface SnapyrSDKConfiguration ()
 
 @property (nonatomic, copy, readwrite) NSString *writeKey;
 @property (nonatomic, strong, readonly) NSMutableArray *factories;
-@property (nonatomic, strong) SnapyrAnalyticsExperimental *experimental;
+@property (nonatomic, strong) SnapyrSDKExperimental *experimental;
 
 - (instancetype)initWithWriteKey:(NSString *)writeKey defaultAPIHost:(NSURL * _Nullable)defaultAPIHost;
 
 @end
 
 
-@implementation SnapyrAnalyticsConfiguration
+@implementation SnapyrSDKConfiguration
 
 + (instancetype)configurationWithWriteKey:(NSString *)writeKey
 {
-    return [[SnapyrAnalyticsConfiguration alloc] initWithWriteKey:writeKey defaultAPIHost:nil];
+    return [[SnapyrSDKConfiguration alloc] initWithWriteKey:writeKey defaultAPIHost:nil];
 }
 
 + (instancetype)configurationWithWriteKey:(NSString *)writeKey defaultAPIHost:(NSURL * _Nullable)defaultAPIHost
 {
-    return [[SnapyrAnalyticsConfiguration alloc] initWithWriteKey:writeKey defaultAPIHost:defaultAPIHost];
+    return [[SnapyrSDKConfiguration alloc] initWithWriteKey:writeKey defaultAPIHost:defaultAPIHost];
 }
 
 - (instancetype)initWithWriteKey:(NSString *)writeKey defaultAPIHost:(NSURL * _Nullable)defaultAPIHost
@@ -83,7 +83,7 @@
 - (instancetype)init
 {
     if (self = [super init]) {
-        self.experimental = [[SnapyrAnalyticsExperimental alloc] init];
+        self.experimental = [[SnapyrSDKExperimental alloc] init];
         self.shouldUseLocationServices = NO;
         self.enableAdvertisingTracking = YES;
         self.shouldUseBluetooth = NO;

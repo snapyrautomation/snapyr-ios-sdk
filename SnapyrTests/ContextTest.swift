@@ -11,12 +11,12 @@ import XCTest
 
 class ContextTests: XCTestCase {
     
-    var analytics: Snapyr!
+    var snapyr: Snapyr!
     
     override func setUp() {
         super.setUp()
         let config = SnapyrConfiguration(writeKey: "foobar")
-        analytics = Snapyr(configuration: config)
+        snapyr = Snapyr(configuration: config)
     }
     
     func testThrowsWhenUsedIncorrectly() {
@@ -32,13 +32,13 @@ class ContextTests: XCTestCase {
     }
     
     func testInitializedCorrectly() {
-        let context = Context(analytics: analytics)
-        XCTAssertEqual(context._analytics, analytics)
+        let context = Context(sdk: snapyr)
+        XCTAssertEqual(context.sdk, snapyr)
         XCTAssertEqual(context.eventType, EventType.undefined)
     }
     
     func testAcceptsModifications() {
-        let context = Context(analytics: analytics)
+        let context = Context(sdk: snapyr)
         
         let newContext = context.modify { context in
             context.payload = TrackPayload()
@@ -50,7 +50,7 @@ class ContextTests: XCTestCase {
     }
     
     func testModifiesCopyInDebugMode() {
-        let context = Context(analytics: analytics).modify { context in
+        let context = Context(sdk: snapyr).modify { context in
             context.debug = true
             context.eventType = .track
         }
@@ -65,7 +65,7 @@ class ContextTests: XCTestCase {
     }
     
     func testModifiesSelfInNonDebug() {
-        let context = Context(analytics: analytics).modify { context in
+        let context = Context(sdk: snapyr).modify { context in
             context.debug = false
             context.eventType = .track
         }

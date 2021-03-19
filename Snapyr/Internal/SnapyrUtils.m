@@ -4,9 +4,9 @@
 //
 
 #import "SnapyrUtils.h"
-#import "SnapyrAnalyticsConfiguration.h"
+#import "SnapyrSDKConfiguration.h"
 #import "SnapyrReachability.h"
-#import "SnapyrAnalytics.h"
+#import "SnapyrSDK.h"
 #import "SnapyrHTTPClient.h"
 
 #include <sys/sysctl.h>
@@ -170,7 +170,7 @@ NSString *getDeviceModel()
     return results;
 }
 
-BOOL getAdTrackingEnabled(SnapyrAnalyticsConfiguration *configuration)
+BOOL getAdTrackingEnabled(SnapyrSDKConfiguration *configuration)
 {
     BOOL result = NO;
     if ((configuration.adSupportBlock != nil) && (configuration.enableAdvertisingTracking)) {
@@ -179,13 +179,13 @@ BOOL getAdTrackingEnabled(SnapyrAnalyticsConfiguration *configuration)
     return result;
 }
 
-NSDictionary *getStaticContext(SnapyrAnalyticsConfiguration *configuration, NSString *deviceToken)
+NSDictionary *getStaticContext(SnapyrSDKConfiguration *configuration, NSString *deviceToken)
 {
     NSMutableDictionary *dict = [[NSMutableDictionary alloc] init];
 
     dict[@"library"] = @{
-        @"name" : @"analytics-ios",
-        @"version" : [SnapyrAnalytics version]
+        @"name" : @"sdk-ios",
+        @"version" : [SnapyrSDK version]
     };
 
     NSMutableDictionary *infoDictionary = [[[NSBundle mainBundle] infoDictionary] mutableCopy];
@@ -216,7 +216,7 @@ NSDictionary *getStaticContext(SnapyrAnalyticsConfiguration *configuration, NSSt
 }
 
 #if TARGET_OS_IPHONE
-NSDictionary *mobileSpecifications(SnapyrAnalyticsConfiguration *configuration, NSString *deviceToken)
+NSDictionary *mobileSpecifications(SnapyrSDKConfiguration *configuration, NSString *deviceToken)
 {
     NSMutableDictionary *dict = [[NSMutableDictionary alloc] init];
     UIDevice *device = [UIDevice currentDevice];
@@ -298,7 +298,7 @@ NSString *getMacUUID()
     return [NSString stringWithUTF8String:buf];
 }
 
-NSDictionary *desktopSpecifications(SnapyrAnalyticsConfiguration *configuration, NSString *deviceToken)
+NSDictionary *desktopSpecifications(SnapyrSDKConfiguration *configuration, NSString *deviceToken)
 {
     NSProcessInfo *deviceInfo = [NSProcessInfo processInfo];
     NSMutableDictionary *dict = [[NSMutableDictionary alloc] init];

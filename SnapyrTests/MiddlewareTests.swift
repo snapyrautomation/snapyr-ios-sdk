@@ -45,8 +45,8 @@ class SourceMiddlewareTests: XCTestCase {
         config.sourceMiddleware = [
             passthrough,
         ]
-        let analytics = Snapyr(configuration: config)
-        analytics.identify("testUserId1")
+        let snapyr = Snapyr(configuration: config)
+        snapyr.identify("testUserId1")
         XCTAssertEqual(passthrough.lastContext?.eventType, EventType.identify)
         let identify = passthrough.lastContext?.payload as? IdentifyPayload
         XCTAssertEqual(identify?.userId, "testUserId1")
@@ -59,8 +59,8 @@ class SourceMiddlewareTests: XCTestCase {
             customizeAllTrackCalls,
             passthrough,
         ]
-        let analytics = Snapyr(configuration: config)
-        analytics.track("Purchase Success")
+        let snapyr = Snapyr(configuration: config)
+        snapyr.track("Purchase Success")
         XCTAssertEqual(passthrough.lastContext?.eventType, EventType.track)
         let track = passthrough.lastContext?.payload as? TrackPayload
         XCTAssertEqual(track?.event, "[New] Purchase Success")
@@ -76,8 +76,8 @@ class SourceMiddlewareTests: XCTestCase {
             eatAllCalls,
             passthrough,
         ]
-        let analytics = Snapyr(configuration: config)
-        analytics.track("Purchase Success")
+        let snapyr = Snapyr(configuration: config)
+        snapyr.track("Purchase Success")
         XCTAssertNil(passthrough.lastContext)
     }
 }
@@ -88,8 +88,8 @@ class IntegrationMiddlewareTests: XCTestCase {
         let config = SnapyrConfiguration(writeKey: "TESTKEY")
         let passthrough = PassthroughMiddleware()
         config.destinationMiddleware = [DestinationMiddleware(key: SnapyrIntegrationFactory().key(), middleware: [passthrough])]
-        let analytics = Snapyr(configuration: config)
-        analytics.identify("testUserId1")
+        let snapyr = Snapyr(configuration: config)
+        snapyr.identify("testUserId1")
         
         // pump the runloop until we have a last context.
         // integration middleware is held up until initialization is completed.
@@ -107,8 +107,8 @@ class IntegrationMiddlewareTests: XCTestCase {
         let config = SnapyrConfiguration(writeKey: "TESTKEY")
         let passthrough = PassthroughMiddleware()
         config.destinationMiddleware = [DestinationMiddleware(key: SnapyrIntegrationFactory().key(), middleware: [customizeAllTrackCalls, passthrough])]
-        let analytics = Snapyr(configuration: config)
-        analytics.track("Purchase Success")
+        let snapyr = Snapyr(configuration: config)
+        snapyr.track("Purchase Success")
         
         // pump the runloop until we have a last context.
         // integration middleware is held up until initialization is completed.
@@ -128,15 +128,15 @@ class IntegrationMiddlewareTests: XCTestCase {
     func testExpectsEventToBeSwallowedIfOtherIsNotCalled() {
         // Since we're testing that an event is dropped, the previously used run loop pump won't work here.
         var initialized = false
-        NotificationCenter.default.addObserver(forName: NSNotification.Name(rawValue: SnapyrAnalyticsIntegrationDidStart), object: nil, queue: nil) { (notification) in
+        NotificationCenter.default.addObserver(forName: NSNotification.Name(rawValue: SnapyrSDKIntegrationDidStart), object: nil, queue: nil) { (notification) in
             initialized = true
         }
         
         let config = SnapyrConfiguration(writeKey: "TESTKEY")
         let passthrough = PassthroughMiddleware()
         config.destinationMiddleware = [DestinationMiddleware(key: SnapyrIntegrationFactory().key(), middleware: [eatAllCalls, passthrough])]
-        let analytics = Snapyr(configuration: config)
-        analytics.track("Purchase Success")
+        let snapyr = Snapyr(configuration: config)
+        snapyr.track("Purchase Success")
         
         while (!initialized) {
             sleep(1)

@@ -1,6 +1,6 @@
 #import <objc/runtime.h>
-#import "SnapyrAnalyticsUtils.h"
-#import "SnapyrAnalytics.h"
+#import "SnapyrSDKUtils.h"
+#import "SnapyrSDK.h"
 #import "SnapyrIntegrationFactory.h"
 #import "SnapyrIntegration.h"
 #import "SnapyrSnapyrIntegrationFactory.h"
@@ -17,22 +17,22 @@
 #import "SnapyrState.h"
 #import "SnapyrUtils.h"
 
-static SnapyrAnalytics *__sharedInstance = nil;
+static SnapyrSDK *__sharedInstance = nil;
 
 
-@interface SnapyrAnalytics ()
+@interface SnapyrSDK ()
 
 @property (nonatomic, assign) BOOL enabled;
-@property (nonatomic, strong) SnapyrAnalyticsConfiguration *oneTimeConfiguration;
+@property (nonatomic, strong) SnapyrSDKConfiguration *oneTimeConfiguration;
 @property (nonatomic, strong) SnapyrStoreKitTracker *storeKitTracker;
 @property (nonatomic, strong) SnapyrIntegrationsManager *integrationsManager;
 @property (nonatomic, strong) SnapyrMiddlewareRunner *runner;
 @end
 
 
-@implementation SnapyrAnalytics
+@implementation SnapyrSDK
 
-+ (void)setupWithConfiguration:(SnapyrAnalyticsConfiguration *)configuration
++ (void)setupWithConfiguration:(SnapyrSDKConfiguration *)configuration
 {
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
@@ -40,7 +40,7 @@ static SnapyrAnalytics *__sharedInstance = nil;
     });
 }
 
-- (instancetype)initWithConfiguration:(SnapyrAnalyticsConfiguration *)configuration
+- (instancetype)initWithConfiguration:(SnapyrSDKConfiguration *)configuration
 {
     NSCParameterAssert(configuration != nil);
 
@@ -50,7 +50,7 @@ static SnapyrAnalytics *__sharedInstance = nil;
 
         // In swift this would not have been OK... But hey.. It's objc
         // TODO: Figure out if this is really the best way to do things here.
-        self.integrationsManager = [[SnapyrIntegrationsManager alloc] initWithAnalytics:self];
+        self.integrationsManager = [[SnapyrIntegrationsManager alloc] initWithSDK:self];
         
         self.runner = [[SnapyrMiddlewareRunner alloc] initWithMiddleware:
                                                        [configuration.sourceMiddleware ?: @[] arrayByAddingObject:self.integrationsManager]];
@@ -93,7 +93,7 @@ static SnapyrAnalytics *__sharedInstance = nil;
         }
 #endif
         if (configuration.trackInAppPurchases) {
-            _storeKitTracker = [SnapyrStoreKitTracker trackTransactionsForAnalytics:self];
+            _storeKitTracker = [SnapyrStoreKitTracker trackTransactionsForSDK:self];
         }
 
 #if !TARGET_OS_TV
@@ -247,7 +247,7 @@ NSString *const SnapyrBuildKeyV2 = @"SnapyrBuildKeyV2";
     return [NSString stringWithFormat:@"<%p:%@, %@>", self, [self class], [self dictionaryWithValuesForKeys:@[ @"configuration" ]]];
 }
 
-- (nullable SnapyrAnalyticsConfiguration *)configuration
+- (nullable SnapyrSDKConfiguration *)configuration
 {
     // Remove deprecated configuration on 4.2+
     return nil;
@@ -545,7 +545,7 @@ NSString *const SnapyrBuildKeyV2 = @"SnapyrBuildKeyV2";
 
 #pragma mark - Class Methods
 
-+ (instancetype)sharedAnalytics
++ (instancetype)sharedSDK
 {
     NSCAssert(__sharedInstance != nil, @"library must be initialized before calling this method.");
     return __sharedInstance;
@@ -560,7 +560,7 @@ NSString *const SnapyrBuildKeyV2 = @"SnapyrBuildKeyV2";
 {
     // this has to match the actual version, NOT what's in info.plist
     // because Apple only accepts X.X.X as versions in the review process.
-    return @"4.1.2";
+    return @"0.9.0";
 }
 
 #pragma mark - Helpers
@@ -577,7 +577,7 @@ NSString *const SnapyrBuildKeyV2 = @"SnapyrBuildKeyV2";
         payload.timestamp = iso8601FormattedString([NSDate date]);
     }
     
-    SnapyrContext *context = [[[SnapyrContext alloc] initWithAnalytics:self] modify:^(id<SnapyrMutableContext> _Nonnull ctx) {
+    SnapyrContext *context = [[[SnapyrContext alloc] initWithSDK:self] modify:^(id<SnapyrMutableContext> _Nonnull ctx) {
         ctx.eventType = eventType;
         ctx.payload = payload;
         ctx.payload.messageId = GenerateUUIDString();

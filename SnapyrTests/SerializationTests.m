@@ -1,6 +1,6 @@
 //
 //  PropSerializationTests.m
-//  AnalyticsTests
+//  SDKTests
 //
 //  Created by Brandon Sneed on 11/20/19.
 //  Copyright © 2019 Segment. All rights reserved.

@@ -1,6 +1,6 @@
 #import "SnapyrHTTPClient.h"
 #import "NSData+SnapyrGZIP.h"
-#import "SnapyrAnalyticsUtils.h"
+#import "SnapyrSDKUtils.h"
 #import "SnapyrUtils.h"
 
 #define SNAPYR_CDN_BASE [NSURL URLWithString:@"https://api.snapyr.com/sdk"]
@@ -38,7 +38,7 @@ NSString * const kSnapyrAPIBaseHost = @"https://dev-engine.snapyr.com/v1";
         NSURLSessionConfiguration *config = [NSURLSessionConfiguration defaultSessionConfiguration];
         config.HTTPAdditionalHeaders = @{
             @"Accept-Encoding" : @"gzip",
-            @"User-Agent" : [NSString stringWithFormat:@"analytics-ios/%@", [SnapyrAnalytics version]],
+            @"User-Agent" : [NSString stringWithFormat:@"sdk-ios/%@", [SnapyrSDK version]],
         };
         _genericSession = [NSURLSession sessionWithConfiguration:config];
     }
@@ -56,7 +56,7 @@ NSString * const kSnapyrAPIBaseHost = @"https://dev-engine.snapyr.com/v1";
             //@"Content-Encoding" : @"gzip",
             @"Content-Type" : @"application/json",
             @"Authorization" : [@"Basic " stringByAppendingString:[[self class] authorizationHeader:writeKey]],
-            @"User-Agent" : [NSString stringWithFormat:@"analytics-ios/%@", [SnapyrAnalytics version]],
+            @"User-Agent" : [NSString stringWithFormat:@"sdk-ios/%@", [SnapyrSDK version]],
         };
         session = [NSURLSession sessionWithConfiguration:config delegate:self.httpSessionDelegate delegateQueue:NULL];
         self.sessionsByWriteKey[writeKey] = session;

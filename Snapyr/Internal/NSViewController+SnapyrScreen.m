@@ -8,8 +8,8 @@
 
 #import "NSViewController+SnapyrScreen.h"
 #import <objc/runtime.h>
-#import "SnapyrAnalytics.h"
-#import "SnapyrAnalyticsUtils.h"
+#import "SnapyrSDK.h"
+#import "SnapyrSDKUtils.h"
 #import "SnapyrScreenReporting.h"
 
 #if TARGET_OS_OSX
@@ -90,7 +90,7 @@
         return;
     }
 
-    [[SnapyrAnalytics sharedAnalytics] screen:name properties:nil options:nil];
+    [[SnapyrSDK sharedSDK] screen:name properties:nil options:nil];
 
     [self snapyr_viewDidAppear:animated];
 }

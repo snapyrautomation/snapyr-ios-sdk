@@ -14,9 +14,9 @@
     return self;
 }
 
-- (id<SnapyrIntegration>)createWithSettings:(NSDictionary *)settings forAnalytics:(SnapyrAnalytics *)analytics
+- (id<SnapyrIntegration>)createWithSettings:(NSDictionary *)settings forSDK:(SnapyrSDK *)sdk
 {
-    return [[SnapyrSnapyrIntegration alloc] initWithAnalytics:analytics httpClient:self.client fileStorage:self.fileStorage userDefaultsStorage:self.userDefaultsStorage];
+    return [[SnapyrSnapyrIntegration alloc] initWithSDK:sdk httpClient:self.client fileStorage:self.fileStorage userDefaultsStorage:self.userDefaultsStorage];
 }
 
 - (NSString *)key

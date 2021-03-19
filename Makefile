@@ -12,7 +12,7 @@ lint:
 	pod lib lint --allow-warnings
 
 carthage:
-	carthage build --platform ios --no-skip-current
+	export XCODE_XCCONFIG_FILE=$(PWD)/tmp.xcconfig && carthage build --platform ios --no-skip-current
 
 archive: carthage
 	carthage archive Snapyr

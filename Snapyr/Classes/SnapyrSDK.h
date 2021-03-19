@@ -1,38 +1,38 @@
 @import Foundation;
 #import "SnapyrIntegrationFactory.h"
 #import "SnapyrCrypto.h"
-#import "SnapyrAnalyticsConfiguration.h"
+#import "SnapyrSDKConfiguration.h"
 #import "SnapyrSerializableValue.h"
 #import "SnapyrMiddleware.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
 /**
- * This object provides an API for recording analytics.
+ * This object provides an API for recording events.
  */
-@class SnapyrAnalyticsConfiguration;
+@class SnapyrSDKConfiguration;
 
 NS_SWIFT_NAME(Snapyr)
-@interface SnapyrAnalytics : NSObject
+@interface SnapyrSDK : NSObject
 
 /**
- * Used by the analytics client to configure various options.
+ * Used by the sdk to configure various options.
  */
-@property (nullable, nonatomic, strong, readonly) SnapyrAnalyticsConfiguration *configuration DEPRECATED_MSG_ATTRIBUTE("One time use object");
+@property (nullable, nonatomic, strong, readonly) SnapyrSDKConfiguration *configuration DEPRECATED_MSG_ATTRIBUTE("One time use object");
 
 /**
- * Setup this analytics client instance.
+ * Setup this sdk instance.
  *
  * @param configuration The configuration used to setup the client.
  */
-- (instancetype)initWithConfiguration:(SnapyrAnalyticsConfiguration *)configuration;
+- (instancetype)initWithConfiguration:(SnapyrSDKConfiguration *)configuration;
 
 /**
- * Setup the analytics client.
+ * Setup the sdk.
  *
  * @param configuration The configuration used to setup the client.
  */
-+ (void)setupWithConfiguration:(SnapyrAnalyticsConfiguration *)configuration;
++ (void)setupWithConfiguration:(SnapyrSDKConfiguration *)configuration;
 
 /**
  * Enabled/disables debug logging to trace your data going through the SDK.
@@ -42,11 +42,11 @@ NS_SWIFT_NAME(Snapyr)
 + (void)debug:(BOOL)showDebugLogs;
 
 /**
- * Returns the shared analytics client.
+ * Returns the shared sdk.
  *
  * @see -setupWithConfiguration:
  */
-+ (instancetype)sharedAnalytics;
++ (instancetype)sharedSDK;
 
 /*!
  @method
@@ -188,7 +188,7 @@ NS_SWIFT_NAME(Snapyr)
  @method
 
  @abstract
- Enable the sending of analytics data. Enabled by default.
+ Enable the sending of data. Enabled by default.
 
  @discussion
  Occasionally used in conjunction with disable user opt-out handling.
@@ -200,11 +200,11 @@ NS_SWIFT_NAME(Snapyr)
  @method
 
  @abstract
- Completely disable the sending of any analytics data.
+ Completely disable the sending of any data.
 
  @discussion
  If have a way for users to actively or passively (sometimes based on location) opt-out of
- analytics data collection, you can use this method to turn off all data collection.
+ data collection, you can use this method to turn off all data collection.
  */
 - (void)disable;
 

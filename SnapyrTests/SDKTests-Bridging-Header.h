@@ -9,7 +9,7 @@
 #import <Snapyr/NSData+SnapyrGZIP.h>
 #import <Snapyr/SnapyrStoreKitTracker.h>
 #import <Snapyr/UIViewController+SnapyrScreen.h>
-#import <Snapyr/SnapyrAnalyticsUtils.h>
+#import <Snapyr/SnapyrSDKUtils.h>
 #import <Snapyr/SnapyrIntegrationsManager.h>
 #import <Snapyr/SnapyrUtils.h>
 #import <Snapyr/SnapyrScreenReporting.h>

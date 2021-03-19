@@ -20,7 +20,7 @@ extern NSString *const kSnapyrTraitsFilename;
 NS_SWIFT_NAME(SnapyrIntegration)
 @interface SnapyrSnapyrIntegration : NSObject <SnapyrIntegration>
 
-- (id)initWithAnalytics:(SnapyrAnalytics *)analytics httpClient:(SnapyrHTTPClient *)httpClient fileStorage:(id<SnapyrStorage>)fileStorage userDefaultsStorage:(id<SnapyrStorage>)userDefaultsStorage;
+- (id)initWithSDK:(SnapyrSDK *)sdk httpClient:(SnapyrHTTPClient *)httpClient fileStorage:(id <SnapyrStorage>)fileStorage userDefaultsStorage:(id<SnapyrStorage>)userDefaultsStorage;
 
 @end
 

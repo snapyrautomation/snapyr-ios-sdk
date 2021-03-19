@@ -26,19 +26,19 @@
 - (instancetype)init
 {
     @throw [NSException exceptionWithName:@"Bad Initialization"
-                                   reason:@"Please use initWithAnalytics:"
+                                   reason:@"Please use initWithSDK:"
                                  userInfo:nil];
 }
 
-- (instancetype)initWithAnalytics:(SnapyrAnalytics *)analytics
+- (instancetype)initWithSDK:(SnapyrSDK *)sdk
 {
     if (self = [super init]) {
-        __analytics = analytics;
+        _sdk = sdk;
 // TODO: Have some other way of indicating the debug flag is on too.
 // Also, for logging it'd be damn nice to implement a logging protocol
 // such as CocoalumberJack and allow developers to pipe logs to wherever they want
 // Of course we wouldn't us depend on it. it'd be like a soft dependency where
-// analytics-ios would totally work without it but works even better with it!
+// sdk would totally work without it but works even better with it!
 #ifdef DEBUG
         _debug = YES;
 #endif
@@ -71,7 +71,7 @@
 
 - (id)copyWithZone:(NSZone *)zone
 {
-    SnapyrContext *ctx = [[SnapyrContext allocWithZone:zone] initWithAnalytics:self._analytics];
+    SnapyrContext *ctx = [[SnapyrContext allocWithZone:zone] initWithSDK:self.sdk];
     ctx.eventType = self.eventType;
     ctx.payload = self.payload;
     ctx.error = self.error;

@@ -3,7 +3,7 @@ import XCTest
 
 class EndToEndTests: XCTestCase {
     
-    var analytics: Snapyr!
+    var snapyr: Snapyr!
     var configuration: SnapyrConfiguration!
     
     override func setUp() {
@@ -15,13 +15,13 @@ class EndToEndTests: XCTestCase {
 
         Snapyr.setup(with: configuration)
 
-        analytics = Snapyr.shared()
+        snapyr = Snapyr.shared()
     }
     
     override func tearDown() {
         super.tearDown()
         
-        analytics.reset()
+        snapyr.reset()
     }
     
     func testTrack() {
@@ -36,7 +36,7 @@ class EndToEndTests: XCTestCase {
             return data
         }
 
-        analytics.track("E2E Test", properties: ["id": uuid])
+        snapyr.track("E2E Test", properties: ["id": uuid])
         
         wait(for: [expectation], timeout: 2.0)
     }

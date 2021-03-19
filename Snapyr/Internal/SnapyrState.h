@@ -10,7 +10,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@class SnapyrAnalyticsConfiguration;
+@class SnapyrSDKConfiguration;
 
 @interface SnapyrUserInfo: NSObject
 @property (nonatomic, strong) NSString *anonymousId;
@@ -34,7 +34,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, readonly) SnapyrUserInfo *userInfo;
 @property (nonatomic, readonly) SnapyrPayloadContext *context;
 
-@property (nonatomic, strong, nullable) SnapyrAnalyticsConfiguration *configuration;
+@property (nonatomic, strong, nullable) SnapyrSDKConfiguration *configuration;
 
 + (instancetype)sharedInstance;
 - (instancetype)init __unavailable;
