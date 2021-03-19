@@ -13,7 +13,8 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2
-      - env:
+      - run: echo "configuring to use Xcode 11.5"
+        env:
           DEVELOPER_DIR: /Applications/Xcode_11.5.app/Contents/Developer
       - run: make build-ios
       - run: make test-ios
