@@ -12,3 +12,4 @@ Releasing
      * Add latest version information from `CHANGELOG.md`
      * Upload `Snapyr.zip` from step 8 into binaries section to make available for users to download.
  9. `git push`.
+ 10. Run github workflow from Actions page manually setting Version to X.Y.Z
