@@ -51,6 +51,8 @@
 
 - (SnapyrContext *)run:(SnapyrContext *_Nonnull)context callback:(RunMiddlewaresCallback _Nullable)callback
 {
+    NSLog(@"Actually running the middleware [%@]", self.middlewares);
+
     return [self runMiddlewares:self.middlewares context:context callback:callback];
 }
 
@@ -61,6 +63,7 @@
                          callback:(RunMiddlewaresCallback _Nullable)callback
 {
     __block SnapyrContext * _Nonnull result = context;
+    NSLog(@"SnapyrMiddleware.runMiddlwares");
 
     BOOL earlyExit = context == nil;
     if (middlewares.count == 0 || earlyExit) {
@@ -70,6 +73,9 @@
         return context;
     }
     
+    // OK -- this is the magic line, it calls the middleware, pasing it the next thing to call, which
+    // includes a recursive call back to this function with the remaining middlewares
+    // (holy crap - clear as mud)
     [middlewares[0] context:result next:^(SnapyrContext *_Nullable newContext) {
         NSArray *remainingMiddlewares = [middlewares subarrayWithRange:NSMakeRange(1, middlewares.count - 1)];
         result = [self runMiddlewares:remainingMiddlewares context:newContext callback:callback];

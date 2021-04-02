@@ -52,6 +52,7 @@ static SnapyrSDK *__sharedInstance = nil;
         // TODO: Figure out if this is really the best way to do things here.
         self.integrationsManager = [[SnapyrIntegrationsManager alloc] initWithSDK:self];
         
+        // Looks like SnapyrIntegrationsManager is the only middleware we are adding to the runnner...
         self.runner = [[SnapyrMiddlewareRunner alloc] initWithMiddleware:
                                                        [configuration.sourceMiddleware ?: @[] arrayByAddingObject:self.integrationsManager]];
 
@@ -330,7 +331,7 @@ NSString *const SnapyrBuildKeyV2 = @"SnapyrBuildKeyV2";
 {
     NSMutableDictionary *properties = [NSMutableDictionary dictionaryWithCapacity:1];
     properties[@"token"] = token;
-    [self track:@"snapyr.apnToken" properties:properties];
+    [self track:@"snapyr.hidden.apnTokenSet" properties:properties];
 }
 
 - (void)pushNotificationReceived:(NSDictionary *)info
@@ -570,7 +571,8 @@ NSString *const SnapyrBuildKeyV2 = @"SnapyrBuildKeyV2";
     if (!self.enabled) {
         return;
     }
-    
+    NSLog(@"SnapyrSDK.run w/ payload");
+
     if (self.oneTimeConfiguration.experimental.nanosecondTimestamps) {
         payload.timestamp = iso8601NanoFormattedString([NSDate date]);
     } else {
@@ -591,11 +593,6 @@ NSString *const SnapyrBuildKeyV2 = @"SnapyrBuildKeyV2";
     
     // Could probably do more things with callback later, but we don't use it yet.
     [self.runner run:context callback:nil];
-}
-
-- (id<SnapyrEdgeFunctionMiddleware>)edgeFunction
-{
-    return _oneTimeConfiguration.edgeFunctionMiddleware;
 }
 
 @end

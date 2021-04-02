@@ -226,9 +226,6 @@ NS_SWIFT_NAME(Snapyr)
 /** Returns the registered device token of this device */
 - (NSString *)getDeviceToken;
 
-/** Returns the configured Edge Function value */
-- (nullable id<SnapyrEdgeFunctionMiddleware>)edgeFunction;
-
 @end
 
 NS_ASSUME_NONNULL_END

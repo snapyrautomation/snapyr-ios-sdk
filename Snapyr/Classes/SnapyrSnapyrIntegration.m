@@ -13,9 +13,9 @@
 @import UIKit;
 #endif
 
-NSString *const SnapyrSnapyrDidSendRequestNotification = @"SnapyrDidSendRequest";
-NSString *const SnapyrSnapyrRequestDidSucceedNotification = @"SnapyrRequestDidSucceed";
-NSString *const SnapyrSnapyrRequestDidFailNotification = @"SnapyrRequestDidFail";
+NSString *const SnapyrDidSendRequestNotification = @"SnapyrDidSendRequest";
+NSString *const SnapyrRequestDidSucceedNotification = @"SnapyrRequestDidSucceed";
+NSString *const SnapyrRequestDidFailNotification = @"SnapyrRequestDidFail";
 
 NSString *const SnapyrUserIdKey = @"snapyrUserId";
 NSString *const SnapyrQueueKey = @"snapyrQueue";
@@ -39,6 +39,7 @@ NSUInteger const kSnapyrBackgroundTaskInvalid = 0;
 @property (nonatomic, strong) NSDictionary *traits;
 @property (nonatomic, assign) SnapyrSDK *sdk;
 @property (nonatomic, assign) SnapyrSDKConfiguration *configuration;
+@property (nonatomic, assign) NSDictionary *meta;
 @property (atomic, copy) NSDictionary *referrer;
 @property (nonatomic, copy) NSString *userId;
 @property (nonatomic, strong) SnapyrHTTPClient *httpClient;
@@ -59,11 +60,14 @@ NSUInteger const kSnapyrBackgroundTaskInvalid = 0;
 
 @implementation SnapyrSnapyrIntegration
 
-- (id)initWithSDK:(SnapyrSDK *)sdk httpClient:(SnapyrHTTPClient *)httpClient fileStorage:(id <SnapyrStorage>)fileStorage userDefaultsStorage:(id<SnapyrStorage>)userDefaultsStorage;
+- (id)initWithSDK:(SnapyrSDK *)sdk httpClient:(SnapyrHTTPClient *)httpClient fileStorage:(id <SnapyrStorage>)fileStorage userDefaultsStorage:(id<SnapyrStorage>)userDefaultsStorage settings:(NSDictionary *)settings;
 {
     if (self = [super init]) {
         self.sdk = sdk;
         self.configuration = sdk.oneTimeConfiguration;
+        self.meta = settings[@"metadata"];
+//        NSLog(@"%@",[NSThread callStackSymbols]);
+        NSLog(@"meta = [%@]", self.meta);
         self.httpClient = httpClient;
         self.httpClient.httpSessionDelegate = sdk.oneTimeConfiguration.httpSessionDelegate;
         self.fileStorage = fileStorage;
@@ -214,7 +218,12 @@ NSUInteger const kSnapyrBackgroundTaskInvalid = 0;
     [dictionary setValue:payload.properties forKey:@"properties"];
     [dictionary setValue:payload.timestamp forKey:@"timestamp"];
     [dictionary setValue:payload.messageId forKey:@"messageId"];
-    [self enqueueAction:@"track" dictionary:dictionary context:payload.context integrations:payload.integrations];
+    
+    // Add in the meta for this channel
+    NSDictionary *mutableContext = [[NSMutableDictionary alloc] initWithDictionary:payload.context copyItems:YES];
+    [mutableContext setValue:self.meta forKey:@"sdkMeta"];
+    
+    [self enqueueAction:@"track" dictionary:dictionary context:mutableContext integrations:payload.integrations];
 }
 
 - (void)screen:(SnapyrScreenPayload *)payload
@@ -286,6 +295,7 @@ NSUInteger const kSnapyrBackgroundTaskInvalid = 0;
         [payload setValue:[context copy] forKey:@"context"];
 
         SLog(@"%@ Enqueueing action: %@", self, payload);
+        NSLog(@"%@ [SNAP] enqueueing action: %@", self, payload);
         
         NSDictionary *queuePayload = [payload copy];
         
@@ -391,12 +401,25 @@ NSUInteger const kSnapyrBackgroundTaskInvalid = 0;
 
     SLog(@"%@ Flushing %lu of %lu queued API calls.", self, (unsigned long)batch.count, (unsigned long)self.queue.count);
     SLog(@"Flushing batch %@.", payload);
+    NSLog(@"%@",[NSThread callStackSymbols]);
 
+    NSError *error;
+    NSData *jsonData = [NSJSONSerialization dataWithJSONObject:payload
+                                                       options:NSJSONWritingPrettyPrinted  error:&error];
+
+    if (! jsonData) {
+        NSLog(@"Got an error: %@", error);
+    } else {
+        NSString *jsonString = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
+        NSLog(@"[SNAP] Flushing batch %@.", jsonString);
+    }
+    
+    
     self.batchRequest = [self.httpClient upload:payload forWriteKey:self.configuration.writeKey
                               completionHandler:^(BOOL retry, NSData *_Nullable data) {
         void (^completion)(void) = ^{
             if (retry) {
-                [self notifyForName:SnapyrSnapyrRequestDidFailNotification userInfo:batch];
+                [self notifyForName:SnapyrRequestDidFailNotification userInfo:batch];
                 self.batchRequest = nil;
                 [self endBackgroundTask];
                 return;
@@ -404,7 +427,7 @@ NSUInteger const kSnapyrBackgroundTaskInvalid = 0;
 
             [self.queue removeObjectsInArray:batch];
             [self persistQueue];
-            [self notifyForName:SnapyrSnapyrRequestDidSucceedNotification userInfo:batch];
+            [self notifyForName:SnapyrRequestDidSucceedNotification userInfo:batch];
             self.batchRequest = nil;
             
             if (data != nil) {
@@ -417,7 +440,7 @@ NSUInteger const kSnapyrBackgroundTaskInvalid = 0;
         [self dispatchBackground:completion];
     }];
 
-    [self notifyForName:SnapyrSnapyrDidSendRequestNotification userInfo:batch];
+    [self notifyForName:SnapyrDidSendRequestNotification userInfo:batch];
 }
                          
 - (void)processResponseData:(NSData *)data
