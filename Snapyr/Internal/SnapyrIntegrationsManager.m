@@ -675,7 +675,6 @@ NSString *const kSnapyrCachedSettingsFilename = @"sdk.settings.v2.plist";
 
 - (void)context:(SnapyrContext *)context next:(void (^_Nonnull)(SnapyrContext *_Nullable))next
 {
-    NSLog(@"[SNAP] Processing event... [%@]\n", context.className);
     switch (context.eventType) {
         case SnapyrEventTypeIdentify: {
             SnapyrIdentifyPayload *p = (SnapyrIdentifyPayload *)context.payload;
