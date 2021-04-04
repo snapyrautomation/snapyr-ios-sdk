@@ -156,16 +156,6 @@ class SnapyrTests: XCTestCase {
         XCTAssertEqual(snapyr.getAnonymousId(), snapyr2.getAnonymousId())
     }
     
-    func testPersistsUserId() {
-        snapyr.identify("testUserId1")
-        
-        let snapyr2 = Snapyr(configuration: config)
-        snapyr2.test_integrationsManager()?.test_setCachedSettings(settings: cachedSettings)
-        
-        XCTAssertEqual(snapyr.test_integrationsManager()?.test_snapyrIntegration()?.test_userId(), "testUserId1")
-        XCTAssertEqual(snapyr2.test_integrationsManager()?.test_snapyrIntegration()?.test_userId(), "testUserId1")
-    }
-    
     func testPersistsTraits() {
         snapyr.identify("testUserId1", traits: ["trait1": "someTrait"])
         
