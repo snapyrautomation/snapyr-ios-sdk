@@ -2,9 +2,8 @@ Pod::Spec.new do |s|
   s.name             = "Snapyr"
   s.module_name      = "Snapyr"
   s.authors          = "Snapyr"
-  s.version          = "0.9.0"
-  s.summary          = "Adding Snapyr tracking to an iOS app."
-
+  s.version          = "0.9.1"
+  s.summary          = "The hassle-free way to add Snapyr sdk to your iOS app."
   s.description      = <<-DESC
                        Snapyr for iOS lets you track everything you need to
                        run complex marketing campaigns using the Snapyr
