@@ -16,7 +16,7 @@
 
 - (id<SnapyrIntegration>)createWithSettings:(NSDictionary *)settings forSDK:(SnapyrSDK *)sdk
 {
-    return [[SnapyrSnapyrIntegration alloc] initWithSDK:sdk httpClient:self.client fileStorage:self.fileStorage userDefaultsStorage:self.userDefaultsStorage];
+    return [[SnapyrSnapyrIntegration alloc] initWithSDK:sdk httpClient:self.client fileStorage:self.fileStorage userDefaultsStorage:self.userDefaultsStorage settings:settings];
 }
 
 - (NSString *)key

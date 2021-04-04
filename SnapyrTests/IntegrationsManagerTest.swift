@@ -84,4 +84,5 @@ class IntegrationsManagerTest: XCTestCase {
         let enabled = IntegrationsManager.isTrackEvent("hello world", enabledForIntegration: "Mixpanel", inPlan:["track":["__default":["enabled":false],"hello world":["enabled":true]]])
         XCTAssert(enabled)
     }
+
 }

@@ -372,3 +372,4 @@ class SnapyrTests: XCTestCase {
         }
     }
 }
+

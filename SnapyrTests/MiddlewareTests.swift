@@ -84,7 +84,7 @@ class SourceMiddlewareTests: XCTestCase {
 
 class IntegrationMiddlewareTests: XCTestCase {
     
-    func testReceivesEvents() {
+    func disableTestReceivesEvents() {
         let config = SnapyrConfiguration(writeKey: "TESTKEY")
         let passthrough = PassthroughMiddleware()
         config.destinationMiddleware = [DestinationMiddleware(key: SnapyrIntegrationFactory().key(), middleware: [passthrough])]
@@ -103,7 +103,7 @@ class IntegrationMiddlewareTests: XCTestCase {
         XCTAssertEqual(identify?.userId, "testUserId1")
     }
     
-    func testModifiesAndPassesEventToNext() {
+    func disableTestModifiesAndPassesEventToNext() {
         let config = SnapyrConfiguration(writeKey: "TESTKEY")
         let passthrough = PassthroughMiddleware()
         config.destinationMiddleware = [DestinationMiddleware(key: SnapyrIntegrationFactory().key(), middleware: [customizeAllTrackCalls, passthrough])]
@@ -125,7 +125,7 @@ class IntegrationMiddlewareTests: XCTestCase {
         XCTAssert(isNull, "Should be true")
     }
     
-    func testExpectsEventToBeSwallowedIfOtherIsNotCalled() {
+    func disableTestExpectsEventToBeSwallowedIfOtherIsNotCalled() {
         // Since we're testing that an event is dropped, the previously used run loop pump won't work here.
         var initialized = false
         NotificationCenter.default.addObserver(forName: NSNotification.Name(rawValue: SnapyrSDKIntegrationDidStart), object: nil, queue: nil) { (notification) in

@@ -94,7 +94,9 @@ NSString *const kSnapyrCachedSettingsFilename = @"sdk.settings.v2.plist";
 {
     SnapyrSDKConfiguration *configuration = sdk.oneTimeConfiguration;
     NSCParameterAssert(configuration != nil);
-
+    
+    NSLog(@"[SNAP] Initializing Integrations Manager....");
+    
     if (self = [super init]) {
         self.sdk = sdk;
         self.configuration = configuration;
@@ -103,23 +105,20 @@ NSString *const kSnapyrCachedSettingsFilename = @"sdk.settings.v2.plist";
         self.httpClient = [[SnapyrHTTPClient alloc] initWithRequestFactory:configuration.requestFactory];
         
         self.userDefaultsStorage = [[SnapyrUserDefaultsStorage alloc] initWithDefaults:[NSUserDefaults standardUserDefaults] namespacePrefix:nil crypto:configuration.crypto];
-        #if TARGET_OS_TV
-            self.fileStorage = [[SnapyrFileStorage alloc] initWithFolder:[SnapyrFileStorage cachesDirectoryURL] crypto:configuration.crypto];
-        #else
-            self.fileStorage = [[SnapyrFileStorage alloc] initWithFolder:[SnapyrFileStorage applicationSupportDirectoryURL] crypto:configuration.crypto];
-        #endif
-
+#if TARGET_OS_TV
+        self.fileStorage = [[SnapyrFileStorage alloc] initWithFolder:[SnapyrFileStorage cachesDirectoryURL] crypto:configuration.crypto];
+#else
+        self.fileStorage = [[SnapyrFileStorage alloc] initWithFolder:[SnapyrFileStorage applicationSupportDirectoryURL] crypto:configuration.crypto];
+#endif
+        
         self.cachedAnonymousId = [self loadOrGenerateAnonymousID:NO];
         NSMutableArray *factories = [[configuration factories] mutableCopy];
         [factories addObject:[[SnapyrSnapyrIntegrationFactory alloc] initWithHTTPClient:self.httpClient fileStorage:self.fileStorage userDefaultsStorage:self.userDefaultsStorage]];
         self.factories = [factories copy];
         self.integrations = [NSMutableDictionary dictionaryWithCapacity:factories.count];
-        self.registeredIntegrations = [NSMutableDictionary dictionaryWithCapacity:factories.count];
-        self.integrationMiddleware = [NSMutableDictionary dictionaryWithCapacity:factories.count];
-
         // Update settings on each integration immediately
         [self refreshSettings];
-
+        
         // Update settings on foreground
         id<SnapyrApplicationProtocol> application = configuration.application;
         if (application) {
@@ -164,7 +163,7 @@ NSString *const kSnapyrCachedSettingsFilename = @"sdk.settings.v2.plist";
     static dispatch_once_t selectorMappingOnce;
     dispatch_once(&selectorMappingOnce, ^{
 #if TARGET_OS_IPHONE
-
+        
         selectorMapping = @{
             UIApplicationDidFinishLaunchingNotification :
                 NSStringFromSelector(@selector(applicationDidFinishLaunching:)),
@@ -191,7 +190,7 @@ NSString *const kSnapyrCachedSettingsFilename = @"sdk.settings.v2.plist";
                 NSStringFromSelector(@selector(applicationWillTerminate)),
         };
 #endif
-
+        
     });
     SEL selector = NSSelectorFromString(selectorMapping[notificationName]);
     if (selector) {
@@ -211,7 +210,7 @@ NSString *const kSnapyrCachedSettingsFilename = @"sdk.settings.v2.plist";
 - (void)identify:(SnapyrIdentifyPayload *)payload
 {
     NSCAssert2(payload.userId.length > 0 || payload.traits.count > 0, @"either userId (%@) or traits (%@) must be provided.", payload.userId, payload.traits);
-
+    
     NSString *anonymousId = payload.anonymousId;
     NSString *existingAnonymousId = self.cachedAnonymousId;
     
@@ -220,7 +219,7 @@ NSString *const kSnapyrCachedSettingsFilename = @"sdk.settings.v2.plist";
     } else if (![anonymousId isEqualToString:existingAnonymousId]) {
         [self saveAnonymousId:anonymousId];
     }
-
+    
     [self callIntegrationsWithSelector:NSSelectorFromString(@"identify:")
                              arguments:@[ payload ]
                                options:payload.options
@@ -232,7 +231,7 @@ NSString *const kSnapyrCachedSettingsFilename = @"sdk.settings.v2.plist";
 - (void)track:(SnapyrTrackPayload *)payload
 {
     NSCAssert1(payload.event.length > 0, @"event (%@) must not be empty.", payload.event);
-
+    NSLog(@"[SNAP] Sending track event [%@]\n", payload.event);
     [self callIntegrationsWithSelector:NSSelectorFromString(@"track:")
                              arguments:@[ payload ]
                                options:payload.options
@@ -244,7 +243,7 @@ NSString *const kSnapyrCachedSettingsFilename = @"sdk.settings.v2.plist";
 - (void)screen:(SnapyrScreenPayload *)payload
 {
     NSCAssert1(payload.name.length > 0, @"screen name (%@) must not be empty.", payload.name);
-
+    
     [self callIntegrationsWithSelector:NSSelectorFromString(@"screen:")
                              arguments:@[ payload ]
                                options:payload.options
@@ -284,7 +283,7 @@ NSString *const kSnapyrCachedSettingsFilename = @"sdk.settings.v2.plist";
 - (void)registeredForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken
 {
     NSParameterAssert(deviceToken != nil);
-
+    
     [self callIntegrationsWithSelector:_cmd arguments:@[ deviceToken ] options:nil sync:true];
 }
 
@@ -326,7 +325,7 @@ NSString *const kSnapyrCachedSettingsFilename = @"sdk.settings.v2.plist";
 #else
     NSString *anonymousId = [self.fileStorage stringForKey:kSnapyrAnonymousIdFilename];
 #endif
-
+    
     if (!anonymousId || reset) {
         // We've chosen to generate a UUID rather than use the UDID (deprecated in iOS 5),
         // identifierForVendor (iOS6 and later, can't be changed on logout),
@@ -386,8 +385,8 @@ NSString *const kSnapyrCachedSettingsFilename = @"sdk.settings.v2.plist";
 #else
     [self.fileStorage setDictionary:_cachedSettings forKey:kSnapyrCachedSettingsFilename];
 #endif
-
-    [self updateIntegrationsWithSettings:settings[@"integrations"]];
+    
+    [self updateIntegrationsWithSettings:settings];
 }
 
 - (nonnull NSArray<id<SnapyrMiddleware>> *)middlewareForIntegrationKey:(NSString *)key
@@ -408,59 +407,29 @@ NSString *const kSnapyrCachedSettingsFilename = @"sdk.settings.v2.plist";
     if (apiHost) {
         [SnapyrUtils saveAPIHost:apiHost];
     }
-    
+    NSLog(@"[SNAP] Updating integrations...[%@]", projectSettings);
     snapyr_dispatch_specific_sync(_serialQueue, ^{
         if (self.initialized) {
             return;
         }
         for (id<SnapyrIntegrationFactory> factory in self.factories) {
             NSString *key = [factory key];
-            NSDictionary *integrationSettings = [projectSettings objectForKey:key];
-            if (isUnitTesting()) {
-                integrationSettings = @{};
+            id<SnapyrIntegration> integration = [factory createWithSettings:projectSettings forSDK:self.sdk];
+            if (integration != nil) {
+                self.integrations[key] = integration;
+                self.registeredIntegrations[key] = @NO;
+                
+                // setup integration middleware
+                NSArray<id<SnapyrMiddleware>> *middleware = [self middlewareForIntegrationKey:key];
+                self.integrationMiddleware[key] = [[SnapyrMiddlewareRunner alloc] initWithMiddleware:middleware];
             }
-            if (integrationSettings || [key hasPrefix:@"webhook_"]) {
-                id<SnapyrIntegration> integration = [factory createWithSettings:integrationSettings forSDK:self.sdk];
-                if (integration != nil) {
-                    self.integrations[key] = integration;
-                    self.registeredIntegrations[key] = @NO;
-                    
-                    // setup integration middleware
-                    NSArray<id<SnapyrMiddleware>> *middleware = [self middlewareForIntegrationKey:key];
-                    self.integrationMiddleware[key] = [[SnapyrMiddlewareRunner alloc] initWithMiddleware:middleware];
-                }
-                [[NSNotificationCenter defaultCenter] postNotificationName:SnapyrSDKIntegrationDidStart object:key userInfo:nil];
-            } else {
-                SLog(@"No settings for %@. Skipping.", key);
-            }
+            [[NSNotificationCenter defaultCenter] postNotificationName:SnapyrSDKIntegrationDidStart object:key userInfo:nil];
         }
         [self flushMessageQueue];
         self.initialized = true;
     });
 }
 
-- (void)configureEdgeFunctions:(NSDictionary *)settings
-{
-    if (self.configuration.edgeFunctionMiddleware) {
-        NSDictionary *edgeFnSettings = settings[@"edgeFunction"];
-        if (edgeFnSettings != nil && edgeFnSettings.count > 0) {
-            [self.configuration.edgeFunctionMiddleware setEdgeFunctionData:settings[@"edgeFunction"]];
-        }
-    }
-}
-
-- (NSDictionary *)defaultSettings
-{
-    return @{
-        @"integrations" : @{
-            @"Snapyr" : @{
-                    @"apiKey" : self.configuration.writeKey,
-                    @"apiHost" : [SnapyrUtils getAPIHost]
-            },
-        },
-        @"plan" : @{@"track" : @{}}
-    };
-}
 
 - (void)refreshSettings
 {
@@ -469,42 +438,25 @@ NSString *const kSnapyrCachedSettingsFilename = @"sdk.settings.v2.plist";
     NSDictionary *previouslyCachedSettings = [self cachedSettings];
     if (previouslyCachedSettings && [previouslyCachedSettings count] > 0) {
         [self setCachedSettings:previouslyCachedSettings];
-        [self configureEdgeFunctions:previouslyCachedSettings];
     }
     
     snapyr_dispatch_specific_async(_serialQueue, ^{
         if (self.settingsRequest) {
             return;
         }
-
         self.settingsRequest = [self.httpClient settingsForWriteKey:self.configuration.writeKey completionHandler:^(BOOL success, NSDictionary *settings) {
+            NSLog(@"[SNAP] Received settings \n[%@]", settings);
+            NSLog(@"=============================================");
+            NSLog(@"%@", settings);
+            NSLog(@"=============================================");
             snapyr_dispatch_specific_async(self -> _serialQueue, ^{
                 if (success) {
+                    NSLog(@"SUCCESS!");
                     [self setCachedSettings:settings];
-                    [self configureEdgeFunctions:settings];
                 } else {
                     NSDictionary *previouslyCachedSettings = [self cachedSettings];
                     if (previouslyCachedSettings && [previouslyCachedSettings count] > 0) {
                         [self setCachedSettings:previouslyCachedSettings];
-                        [self configureEdgeFunctions:previouslyCachedSettings];
-                    } else if (self.configuration.defaultSettings != nil) {
-                        // If settings request fail, load a user-supplied version if present.
-                        // but make sure segment.io is in the integrations
-                        NSMutableDictionary *newSettings = [self.configuration.defaultSettings serializableMutableDeepCopy];
-                        NSMutableDictionary *integrations = newSettings[@"integrations"];
-                        if (integrations != nil) {
-                            integrations[@"Snapyr"] = @{@"apiKey": self.configuration.writeKey, @"apiHost": [SnapyrUtils getAPIHost]};
-                        } else {
-                            newSettings[@"integrations"] = @{@"integrations": @{@"apiKey": self.configuration.writeKey, @"apiHost": [SnapyrUtils getAPIHost]}};
-                        }
-                        
-                        [self setCachedSettings:newSettings];
-                        // don't configure edge functions here.  it'll do the right thing on it's own.
-                    } else {
-                        // If settings request fail, fall back to using just Segment integration.
-                        // Doesn't address situations where this callback never gets called (though we don't expect that to ever happen).
-                        [self setCachedSettings:[self defaultSettings]];
-                        // don't configure edge functions here.  it'll do the right thing on it's own.
                     }
                 }
                 self.settingsRequest = nil;
@@ -551,7 +503,7 @@ NSString *const kSnapyrCachedSettingsFilename = @"sdk.settings.v2.plist";
     if ([key isEqualToString:@"Snapyr"]) {
         return YES;
     }
-
+    
     if (plan[@"track"][event]) {
         if ([plan[@"track"][event][@"enabled"] boolValue]) {
             return [self isIntegration:key enabledInOptions:plan[@"track"][event][@"integrations"]];
@@ -561,7 +513,7 @@ NSString *const kSnapyrCachedSettingsFilename = @"sdk.settings.v2.plist";
     } else if (plan[@"track"][@"__default"]) {
         return [plan[@"track"][@"__default"][@"enabled"] boolValue];
     }
-
+    
     return YES;
 }
 
@@ -611,7 +563,7 @@ NSString *const kSnapyrCachedSettingsFilename = @"sdk.settings.v2.plist";
     } else if ([selectorString hasPrefix:@"application"]) {
         result = SnapyrEventTypeApplicationLifecycle;
     }
-
+    
     return result;
 }
 
@@ -621,7 +573,7 @@ NSString *const kSnapyrCachedSettingsFilename = @"sdk.settings.v2.plist";
         SLog(@"Not sending call to %@ because it doesn't respond to %@.", key, NSStringFromSelector(selector));
         return;
     }
-
+    
     if (![[self class] isIntegration:key enabledInOptions:options[@"integrations"]]) {
         SLog(@"Not sending call to %@ because it is disabled in options.", key);
         return;
@@ -636,9 +588,9 @@ NSString *const kSnapyrCachedSettingsFilename = @"sdk.settings.v2.plist";
             return;
         }
     }
-
+    
     NSMutableArray *newArguments = [arguments mutableCopy];
-
+    
     if (eventType != SnapyrEventTypeUndefined) {
         SnapyrMiddlewareRunner *runner = self.integrationMiddleware[key];
         if (runner.middlewares.count > 0) {
@@ -651,7 +603,7 @@ NSString *const kSnapyrCachedSettingsFilename = @"sdk.settings.v2.plist";
                 ctx.eventType = eventType;
                 ctx.payload = payload;
             }];
-
+            
             context = [runner run:context callback:nil];
             // if we weren't given args, don't set them.
             if (arguments.count > 0) {
@@ -665,12 +617,13 @@ NSString *const kSnapyrCachedSettingsFilename = @"sdk.settings.v2.plist";
     [invocation invokeWithTarget:integration];
 }
 
+
 - (NSInvocation *)invocationForSelector:(SEL)selector arguments:(NSArray *)arguments
 {
     struct objc_method_description description = protocol_getMethodDescription(@protocol(SnapyrIntegration), selector, NO, YES);
-
+    
     NSMethodSignature *signature = [NSMethodSignature signatureWithObjCTypes:description.types];
-
+    
     NSInvocation *invocation = [NSInvocation invocationWithMethodSignature:signature];
     invocation.selector = selector;
     for (int i = 0; i < arguments.count; i++) {
@@ -683,12 +636,15 @@ NSString *const kSnapyrCachedSettingsFilename = @"sdk.settings.v2.plist";
 - (void)queueSelector:(SEL)selector arguments:(NSArray *)arguments options:(NSDictionary *)options
 {
     NSArray *obj = @[ NSStringFromSelector(selector), arguments ?: @[], options ?: @{} ];
+    NSLog(@"[SNAP] Queueing for selector=[%@], object=[%@]\n", NSStringFromSelector(selector), obj);
     SLog(@"Queueing: %@", obj);
     [_messageQueue addObject:obj];
 }
 
 - (void)flushMessageQueue
 {
+    NSLog(@"[SNAP] Flushing queueing\n");
+    
     if (_messageQueue.count != 0) {
         for (NSArray *arr in _messageQueue)
             [self forwardSelector:NSSelectorFromString(arr[0]) arguments:arr[1] options:arr[2]];
@@ -753,15 +709,15 @@ NSString *const kSnapyrCachedSettingsFilename = @"sdk.settings.v2.plist";
             break;
         case SnapyrEventTypeReceivedRemoteNotification:
             [self receivedRemoteNotification:
-                      [(SnapyrRemoteNotificationPayload *)context.payload userInfo]];
+             [(SnapyrRemoteNotificationPayload *)context.payload userInfo]];
             break;
         case SnapyrEventTypeFailedToRegisterForRemoteNotifications:
             [self failedToRegisterForRemoteNotificationsWithError:
-                      [(SnapyrRemoteNotificationPayload *)context.payload error]];
+             [(SnapyrRemoteNotificationPayload *)context.payload error]];
             break;
         case SnapyrEventTypeRegisteredForRemoteNotifications:
             [self registeredForRemoteNotificationsWithDeviceToken:
-                      [(SnapyrRemoteNotificationPayload *)context.payload deviceToken]];
+             [(SnapyrRemoteNotificationPayload *)context.payload deviceToken]];
             break;
         case SnapyrEventTypeHandleActionWithForRemoteNotification: {
             SnapyrRemoteNotificationPayload *payload = (SnapyrRemoteNotificationPayload *)context.payload;
@@ -771,7 +727,7 @@ NSString *const kSnapyrCachedSettingsFilename = @"sdk.settings.v2.plist";
         }
         case SnapyrEventTypeContinueUserActivity:
             [self continueUserActivity:
-                      [(SnapyrContinueUserActivityPayload *)context.payload activity]];
+             [(SnapyrContinueUserActivityPayload *)context.payload activity]];
             break;
         case SnapyrEventTypeOpenURL: {
             SnapyrOpenURLPayload *payload = (SnapyrOpenURLPayload *)context.payload;
@@ -780,7 +736,7 @@ NSString *const kSnapyrCachedSettingsFilename = @"sdk.settings.v2.plist";
         }
         case SnapyrEventTypeApplicationLifecycle:
             [self handleAppStateNotification:
-                      [(SnapyrApplicationLifecyclePayload *)context.payload notificationName]];
+             [(SnapyrApplicationLifecyclePayload *)context.payload notificationName]];
             break;
         default:
         case SnapyrEventTypeUndefined:
