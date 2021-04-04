@@ -336,7 +336,7 @@ NSString *const SnapyrBuildKeyV2 = @"SnapyrBuildKeyV2";
 
 - (void)pushNotificationReceived:(NSDictionary *)info
 {
-    [self track:@"snapyr.mobilePushReceived" properties:info];
+    [self track:@"snapyr.hidden.pushNotificationReceived" properties:info];
 }
 
 
