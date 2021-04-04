@@ -1,7 +1,7 @@
 Pod::Spec.new do |s|
   s.name             = "Snapyr"
   s.module_name      = "Snapyr"
-  s.version          = "0.9.0"
+  s.version          = "0.9.1"
   s.summary          = "The hassle-free way to add Snapyr sdk to your iOS app."
 
   s.description      = <<-DESC
