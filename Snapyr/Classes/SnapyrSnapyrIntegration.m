@@ -401,7 +401,7 @@ NSUInteger const kSnapyrBackgroundTaskInvalid = 0;
 
     SLog(@"%@ Flushing %lu of %lu queued API calls.", self, (unsigned long)batch.count, (unsigned long)self.queue.count);
     SLog(@"Flushing batch %@.", payload);
-    NSLog(@"%@",[NSThread callStackSymbols]);
+    // NSLog(@"%@",[NSThread callStackSymbols]);
 
     NSError *error;
     NSData *jsonData = [NSJSONSerialization dataWithJSONObject:payload
