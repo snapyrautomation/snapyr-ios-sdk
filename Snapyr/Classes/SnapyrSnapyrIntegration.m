@@ -66,7 +66,7 @@ NSUInteger const kSnapyrBackgroundTaskInvalid = 0;
         self.sdk = sdk;
         self.configuration = sdk.oneTimeConfiguration;
         self.meta = settings[@"metadata"];
-//        NSLog(@"%@",[NSThread callStackSymbols]);
+        NSLog(@"%@",[NSThread callStackSymbols]);
         NSLog(@"meta = [%@]", self.meta);
         self.httpClient = httpClient;
         self.httpClient.httpSessionDelegate = sdk.oneTimeConfiguration.httpSessionDelegate;
@@ -218,9 +218,10 @@ NSUInteger const kSnapyrBackgroundTaskInvalid = 0;
     [dictionary setValue:payload.properties forKey:@"properties"];
     [dictionary setValue:payload.timestamp forKey:@"timestamp"];
     [dictionary setValue:payload.messageId forKey:@"messageId"];
-    
+        
     // Add in the meta for this channel
     NSDictionary *mutableContext = [[NSMutableDictionary alloc] initWithDictionary:payload.context copyItems:YES];
+    
     [mutableContext setValue:self.meta forKey:@"sdkMeta"];
     
     [self enqueueAction:@"track" dictionary:dictionary context:mutableContext integrations:payload.integrations];

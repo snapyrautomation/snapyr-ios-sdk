@@ -339,6 +339,11 @@ NSString *const SnapyrBuildKeyV2 = @"SnapyrBuildKeyV2";
     [self track:@"snapyr.internal.pushNotificationReceived" properties:info];
 }
 
+- (void)pushNotificationTapped:(NSDictionary *)info
+{
+    [self track:@"snapyr.internal.pushNotificationTapped" properties:info];
+}
+
 
 #pragma mark - Screen
 
