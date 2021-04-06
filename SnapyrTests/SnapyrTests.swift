@@ -25,7 +25,7 @@ class SnapyrTests: XCTestCase {
         "integrations": [
             "Snapyr": [
                 "apiKey": "QUI5ydwIGeFFTa1IvCBUhxL9PyW5B0jE",
-                "apiHost": "dev-engine.snapyr.com/v1"
+                "apiHost": "engine.snapyr.com/v1"
             ]
         ],
         "plan": ["track": [:]],
@@ -65,7 +65,7 @@ class SnapyrTests: XCTestCase {
         XCTAssertEqual(config.flushInterval, 30)
         XCTAssertEqual(config.maxQueueSize, 1000)
         XCTAssertEqual(config.writeKey, "QUI5ydwIGeFFTa1IvCBUhxL9PyW5B0jE")
-        XCTAssertEqual(config.apiHost?.absoluteString, "https://dev-engine.snapyr.com/v1")
+        XCTAssertEqual(config.apiHost?.absoluteString, "https://engine.snapyr.com/v1")
         XCTAssertEqual(config.shouldUseLocationServices, false)
         XCTAssertEqual(config.enableAdvertisingTracking, true)
         XCTAssertEqual(config.shouldUseBluetooth,  false)
@@ -107,7 +107,7 @@ class SnapyrTests: XCTestCase {
         }
         
         // see if the value in use is the correct endpoint.
-        XCTAssertEqual(config2.apiHost?.absoluteString, "https://dev-engine.snapyr.com/v1")
+        XCTAssertEqual(config2.apiHost?.absoluteString, "https://engine.snapyr.com/v1")
         snapyr2.test_integrationsManager()?.test_setCachedSettings(settings: cachedSettings)
     }
 

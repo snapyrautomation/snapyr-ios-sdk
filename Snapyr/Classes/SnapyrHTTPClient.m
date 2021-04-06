@@ -3,11 +3,11 @@
 #import "SnapyrSDKUtils.h"
 #import "SnapyrUtils.h"
 
-#define SNAPYR_CDN_BASE [NSURL URLWithString:@"https://dev-api.snapyr.com/sdk"]
+#define SNAPYR_CDN_BASE [NSURL URLWithString:@"https://api.snapyr.com/sdk"]
 
 static const NSUInteger kMaxBatchSize = 475000; // 475KB
 
-NSString * const kSnapyrAPIBaseHost = @"https://dev-engine.snapyr.com/v1";
+NSString * const kSnapyrAPIBaseHost = @"https://engine.snapyr.com/v1";
 
 @implementation SnapyrHTTPClient
 
