@@ -331,7 +331,7 @@ NSString *const SnapyrBuildKeyV2 = @"SnapyrBuildKeyV2";
 {
     NSMutableDictionary *properties = [NSMutableDictionary dictionaryWithCapacity:1];
     properties[@"token"] = token;
-    [self track:@"snapyr.hidden.apnTokenSet" properties:properties];
+    [self track:@"snapyr.hidden.apnsTokenSet" properties:properties];
 }
 
 - (void)pushNotificationReceived:(NSDictionary *)info
