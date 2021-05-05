@@ -10,7 +10,6 @@
 		5AF0E8AE77F57B356DACCFE7 /* AutoScreenReportingTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AF0E8457CCFC077382BF449 /* AutoScreenReportingTest.swift */; };
 		630FC8EA2107F2A500A759C5 /* SnapyrScreenReporting.h in Headers */ = {isa = PBXBuildFile; fileRef = 5AF0EDFEDC0EE79A0A0EB713 /* SnapyrScreenReporting.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		6E265C791FB1178C0030E08E /* IntegrationsManagerTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E265C781FB1178C0030E08E /* IntegrationsManagerTest.swift */; };
-		6EEC1C712017EA370089C478 /* EndToEndTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EEC1C702017EA370089C478 /* EndToEndTests.swift */; };
 		75FD4202252401B500BC8970 /* SnapyrWebhookIntegration.m in Sources */ = {isa = PBXBuildFile; fileRef = 75FD4201252401B500BC8970 /* SnapyrWebhookIntegration.m */; };
 		75FD42052524F1E000BC8970 /* SnapyrWebhookIntegration.h in Headers */ = {isa = PBXBuildFile; fileRef = 75FD42002524019100BC8970 /* SnapyrWebhookIntegration.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		96A12C2824B680DB00949804 /* NSViewController+SnapyrScreen.h in Headers */ = {isa = PBXBuildFile; fileRef = 96A12C2624B680DB00949804 /* NSViewController+SnapyrScreen.h */; };
@@ -561,7 +560,6 @@
 				EA8F09741E24C5C600B8B93F /* MiddlewareTests.swift in Sources */,
 				6E265C791FB1178C0030E08E /* IntegrationsManagerTest.swift in Sources */,
 				EADEB8EF1DECD335005322DA /* NSData+SnapyrGUNZIPP.m in Sources */,
-				6EEC1C712017EA370089C478 /* EndToEndTests.swift in Sources */,
 				EADEB8F01DECD335005322DA /* TestUtils.swift in Sources */,
 				5AF0E8AE77F57B356DACCFE7 /* AutoScreenReportingTest.swift in Sources */,
 			);
