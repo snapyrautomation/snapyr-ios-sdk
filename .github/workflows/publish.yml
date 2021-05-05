@@ -10,13 +10,13 @@ on:
 jobs:
   build:
 
-    runs-on: macos-10.15
+    runs-on: macos-11.3
 
     steps:
       - uses: actions/checkout@v2
-      - run: echo "configuring to use Xcode 11.5"
+      - run: echo "configuring to use Xcode 12.5"
         env:
-          DEVELOPER_DIR: /Applications/Xcode_11.5.app/Contents/Developer
+          DEVELOPER_DIR: /Applications/Xcode_12.5.app/Contents/Developer
       - run: make build-ios
       - run: make test-ios
       - run: make lint
