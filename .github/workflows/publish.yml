@@ -27,6 +27,9 @@ jobs:
         with:
           files: Snapyr.framework.zip 
           name: Snapyr.framework.${{ github.event.inputs.version }}.zip
+          fail_on_unmatched_files: true
+          target_commitish: main
+          tag_name: ${{ github.event.inputs.version }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
