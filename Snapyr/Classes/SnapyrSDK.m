@@ -34,6 +34,7 @@ static SnapyrSDK *__sharedInstance = nil;
 
 + (void)setupWithConfiguration:(SnapyrSDKConfiguration *)configuration
 {
+    NSLog(@"setupWithConfiguration");
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
         __sharedInstance = [[self alloc] initWithConfiguration:configuration];
@@ -42,6 +43,7 @@ static SnapyrSDK *__sharedInstance = nil;
 
 - (instancetype)initWithConfiguration:(SnapyrSDKConfiguration *)configuration
 {
+    NSLog(@"initWithConfiguration");
     NSCParameterAssert(configuration != nil);
 
     if (self = [self init]) {
@@ -548,7 +550,9 @@ NSString *const SnapyrBuildKeyV2 = @"SnapyrBuildKeyV2";
 {
     return [self.integrationsManager.registeredIntegrations copy];
 }
-
+- (void) refresh {
+    [self.integrationsManager refreshSettings];
+}
 #pragma mark - Class Methods
 
 + (instancetype)sharedSDK

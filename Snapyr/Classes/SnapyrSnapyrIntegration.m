@@ -8,10 +8,14 @@
 #import "SnapyrStorage.h"
 #import "SnapyrMacros.h"
 #import "SnapyrState.h"
+#import <pthread.h>
 
 #if TARGET_OS_IPHONE
 @import UIKit;
 #endif
+
+dispatch_once_t onlyOnce;
+pthread_mutex_t mutex;
 
 NSString *const SnapyrDidSendRequestNotification = @"SnapyrDidSendRequest";
 NSString *const SnapyrRequestDidSucceedNotification = @"SnapyrRequestDidSucceed";
@@ -63,11 +67,14 @@ NSUInteger const kSnapyrBackgroundTaskInvalid = 0;
 - (id)initWithSDK:(SnapyrSDK *)sdk httpClient:(SnapyrHTTPClient *)httpClient fileStorage:(id <SnapyrStorage>)fileStorage userDefaultsStorage:(id<SnapyrStorage>)userDefaultsStorage settings:(NSDictionary *)settings;
 {
     if (self = [super init]) {
+        dispatch_once(&onlyOnce, ^{
+            pthread_mutex_init(&mutex, NULL);
+        });
         self.sdk = sdk;
         self.configuration = sdk.oneTimeConfiguration;
         self.meta = settings[@"metadata"];
-        NSLog(@"%@",[NSThread callStackSymbols]);
-        NSLog(@"meta = [%@]", self.meta);
+        // NSLog(@"init stack %@",[NSThread callStackSymbols]);
+        NSLog(@"initwithsdk meta = [%@]", self.meta);
         self.httpClient = httpClient;
         self.httpClient.httpSessionDelegate = sdk.oneTimeConfiguration.httpSessionDelegate;
         self.fileStorage = fileStorage;
@@ -221,8 +228,12 @@ NSUInteger const kSnapyrBackgroundTaskInvalid = 0;
         
     // Add in the meta for this channel
     NSDictionary *mutableContext = [[NSMutableDictionary alloc] initWithDictionary:payload.context copyItems:YES];
-    
+
+    // pthread_mutex_lock(&mutex);
+    // NSLog(@"%@",[NSThread callStackSymbols]);
+    NSLog(@"track.sdkmeta %@", self.meta);
     [mutableContext setValue:self.meta forKey:@"sdkMeta"];
+    // pthread_mutex_unlock(&mutex);
     
     [self enqueueAction:@"track" dictionary:dictionary context:mutableContext integrations:payload.integrations];
 }
@@ -276,6 +287,11 @@ NSUInteger const kSnapyrBackgroundTaskInvalid = 0;
     return [dict copy];
 }
 
+//- (void) registerExperimentalCallback:(SnapyrRawModificationBlock *)block
+//{
+//    self.configuration.experimental.rawSnapyrModificationBlock = block;
+//}
+
 - (void)enqueueAction:(NSString *)action dictionary:(NSMutableDictionary *)payload context:(NSDictionary *)context integrations:(NSDictionary *)integrations
 {
     // attach these parts of the payload outside since they are all synchronous
@@ -296,7 +312,6 @@ NSUInteger const kSnapyrBackgroundTaskInvalid = 0;
         [payload setValue:[context copy] forKey:@"context"];
 
         SLog(@"%@ Enqueueing action: %@", self, payload);
-        NSLog(@"%@ [SNAP] enqueueing action: %@", self, payload);
         
         NSDictionary *queuePayload = [payload copy];
         

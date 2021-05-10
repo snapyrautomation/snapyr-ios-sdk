@@ -12,6 +12,7 @@
 		6E265C791FB1178C0030E08E /* IntegrationsManagerTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E265C781FB1178C0030E08E /* IntegrationsManagerTest.swift */; };
 		75FD4202252401B500BC8970 /* SnapyrWebhookIntegration.m in Sources */ = {isa = PBXBuildFile; fileRef = 75FD4201252401B500BC8970 /* SnapyrWebhookIntegration.m */; };
 		75FD42052524F1E000BC8970 /* SnapyrWebhookIntegration.h in Headers */ = {isa = PBXBuildFile; fileRef = 75FD42002524019100BC8970 /* SnapyrWebhookIntegration.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		8D84EE3826448D7300B982F8 /* EndToEndTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EEC1C702017EA370089C478 /* EndToEndTests.swift */; };
 		96A12C2824B680DB00949804 /* NSViewController+SnapyrScreen.h in Headers */ = {isa = PBXBuildFile; fileRef = 96A12C2624B680DB00949804 /* NSViewController+SnapyrScreen.h */; };
 		96A12C2924B680DB00949804 /* NSViewController+SnapyrScreen.m in Sources */ = {isa = PBXBuildFile; fileRef = 96A12C2724B680DB00949804 /* NSViewController+SnapyrScreen.m */; };
 		A31958EF2385AC3A00A47EFA /* SerializationTests.m in Sources */ = {isa = PBXBuildFile; fileRef = A31958EE2385AC3A00A47EFA /* SerializationTests.m */; };
@@ -549,6 +550,7 @@
 			files = (
 				EADEB8F51DECD335005322DA /* CryptoTest.swift in Sources */,
 				EADEB8F21DECD335005322DA /* UserDefaultsStorageTest.swift in Sources */,
+				8D84EE3826448D7300B982F8 /* EndToEndTests.swift in Sources */,
 				EAA542771EB4035400945DA7 /* TrackingTests.swift in Sources */,
 				EADEB8F41DECD335005322DA /* ContextTest.swift in Sources */,
 				A31958EF2385AC3A00A47EFA /* SerializationTests.m in Sources */,

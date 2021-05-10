@@ -14,7 +14,6 @@ NS_ASSUME_NONNULL_BEGIN
 
 NS_SWIFT_NAME(Snapyr)
 @interface SnapyrSDK : NSObject
-
 /**
  * Used by the sdk to configure various options.
  */
@@ -26,6 +25,7 @@ NS_SWIFT_NAME(Snapyr)
  * @param configuration The configuration used to setup the client.
  */
 - (instancetype)initWithConfiguration:(SnapyrSDKConfiguration *)configuration;
+- (void) refresh;
 
 /**
  * Setup the sdk.
