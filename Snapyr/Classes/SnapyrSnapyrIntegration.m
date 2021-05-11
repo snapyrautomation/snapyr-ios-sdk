@@ -43,7 +43,7 @@ NSUInteger const kSnapyrBackgroundTaskInvalid = 0;
 @property (nonatomic, strong) NSDictionary *traits;
 @property (nonatomic, assign) SnapyrSDK *sdk;
 @property (nonatomic, assign) SnapyrSDKConfiguration *configuration;
-@property (nonatomic, assign) NSDictionary *meta;
+@property (nonatomic, strong) NSDictionary *meta;
 @property (atomic, copy) NSDictionary *referrer;
 @property (nonatomic, copy) NSString *userId;
 @property (nonatomic, strong) SnapyrHTTPClient *httpClient;

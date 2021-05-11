@@ -440,7 +440,7 @@ NSString *const kSnapyrCachedSettingsFilename = @"sdk.settings.v2.plist";
     // with the last values while we wait to see about any updates.
     NSDictionary *previouslyCachedSettings = [self cachedSettings];
     if (previouslyCachedSettings && [previouslyCachedSettings count] > 0) {
-        NSLog(@"using previously cached settings", previouslyCachedSettings);
+        NSLog(@"using previously cached settings");
         [self setCachedSettings:previouslyCachedSettings];
     }
     
@@ -659,7 +659,6 @@ NSString *const kSnapyrCachedSettingsFilename = @"sdk.settings.v2.plist";
 
 - (void)callIntegrationsWithSelector:(SEL)selector arguments:(NSArray *)arguments options:(NSDictionary *)options sync:(BOOL)sync
 {
-    NSArray * allKeys = [self.integrations allKeys];
     // TODO: Currently we ignore the `sync` argument and queue the event asynchronously.
     // For integrations that need events to be on the main thread, they'll have to do so
     // manually and hop back on to the main thread.
