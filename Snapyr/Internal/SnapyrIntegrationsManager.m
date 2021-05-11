@@ -366,7 +366,6 @@ NSString *const kSnapyrCachedSettingsFilename = @"sdk.settings.v2.plist";
         _cachedSettings = [self.userDefaultsStorage dictionaryForKey:kSnapyrCachedSettingsFilename] ?: @{};
 #else
         _cachedSettings = [self.fileStorage dictionaryForKey:kSnapyrCachedSettingsFilename] ?: @{};
-        NSLog(@"_cachedSettings: %@ at %@", _cachedSettings, kSnapyrCachedSettingsFilename);
 #endif
     }
     
@@ -408,18 +407,19 @@ NSString *const kSnapyrCachedSettingsFilename = @"sdk.settings.v2.plist";
     if (apiHost) {
         [SnapyrUtils saveAPIHost:apiHost];
     }
-    NSLog(@"[SNAP] Updating integrations...[%@]", projectSettings);
     snapyr_dispatch_specific_sync(_serialQueue, ^{
         if (self.initialized) {
+            NSLog(@"already initialied, returning from updating integrations");
             return;
         }
+        NSLog(@"not initialized, using factories to create integrations");
         for (id<SnapyrIntegrationFactory> factory in self.factories) {
             NSString *key = [factory key];
             id<SnapyrIntegration> integration = [factory createWithSettings:projectSettings forSDK:self.sdk];
             if (integration != nil) {
+                NSLog(@"created integration [%@]", key);
                 self.integrations[key] = integration;
-                self.registeredIntegrations[key] = @NO;
-                
+                self.registeredIntegrations[key] = @NO;                
                 // setup integration middleware
                 NSArray<id<SnapyrMiddleware>> *middleware = [self middlewareForIntegrationKey:key];
                 self.integrationMiddleware[key] = [[SnapyrMiddlewareRunner alloc] initWithMiddleware:middleware];
@@ -435,12 +435,12 @@ NSString *const kSnapyrCachedSettingsFilename = @"sdk.settings.v2.plist";
 - (void)refreshSettings
 {
     // look at our cache immediately, lets try to get things running
-    NSLog(@"top of settings");
+    NSLog(@"refreshingSettings");
     
     // with the last values while we wait to see about any updates.
     NSDictionary *previouslyCachedSettings = [self cachedSettings];
     if (previouslyCachedSettings && [previouslyCachedSettings count] > 0) {
-        NSLog(@"previous settings \n[%@]", previouslyCachedSettings);
+        NSLog(@"using previously cached settings", previouslyCachedSettings);
         [self setCachedSettings:previouslyCachedSettings];
     }
     
@@ -450,20 +450,20 @@ NSString *const kSnapyrCachedSettingsFilename = @"sdk.settings.v2.plist";
             return;
         }
         self.settingsRequest = [self.httpClient settingsForWriteKey:self.configuration.writeKey completionHandler:^(BOOL success, NSDictionary *settings) {
-            NSLog(@"[SNAP] Received settings \n[%@]", settings);
-            NSLog(@"=============================================");
-            NSLog(@"%@", settings);
-            NSLog(@"=============================================");
+//            NSLog(@"=============================================");
+//            NSLog(@"%@", settings);
+//            NSLog(@"=============================================");
             snapyr_dispatch_specific_async(self -> _serialQueue, ^{
                 if (success) {
-                    NSLog(@"SUCCESS!");
+                    NSLog(@"successfully received settings");
                     [self setCachedSettings:settings];
                 } else {
-                    NSLog(@"FAILED!");
-                    
+                    NSLog(@"failed attempting to fetch settings, falling back to previously cached settings");
                     NSDictionary *previouslyCachedSettings = [self cachedSettings];
                     if (previouslyCachedSettings && [previouslyCachedSettings count] > 0) {
                         [self setCachedSettings:previouslyCachedSettings];
+                    } else {
+                        NSLog(@"ERROR: failed to fetch settings and no previously cached settings");
                     }
                 }
                 self.settingsRequest = nil;
@@ -643,15 +643,13 @@ NSString *const kSnapyrCachedSettingsFilename = @"sdk.settings.v2.plist";
 - (void)queueSelector:(SEL)selector arguments:(NSArray *)arguments options:(NSDictionary *)options
 {
     NSArray *obj = @[ NSStringFromSelector(selector), arguments ?: @[], options ?: @{} ];
-    NSLog(@"[SNAP] Queueing for selector=[%@], object=[%@]\n", NSStringFromSelector(selector), obj);
-    SLog(@"Queueing: %@", obj);
+    NSLog(@"queueing object=[%@] for selector=[%@]", obj, NSStringFromSelector(selector));
     [_messageQueue addObject:obj];
 }
 
 - (void)flushMessageQueue
 {
-    NSLog(@"[SNAP] Flushing queueing\n");
-    
+    NSLog(@"flushing message queue");
     if (_messageQueue.count != 0) {
         for (NSArray *arr in _messageQueue)
             [self forwardSelector:NSSelectorFromString(arr[0]) arguments:arr[1] options:arr[2]];
@@ -662,7 +660,6 @@ NSString *const kSnapyrCachedSettingsFilename = @"sdk.settings.v2.plist";
 - (void)callIntegrationsWithSelector:(SEL)selector arguments:(NSArray *)arguments options:(NSDictionary *)options sync:(BOOL)sync
 {
     NSArray * allKeys = [self.integrations allKeys];
-    NSLog(@"Count : %d", [allKeys count]);
     // TODO: Currently we ignore the `sync` argument and queue the event asynchronously.
     // For integrations that need events to be on the main thread, they'll have to do so
     // manually and hop back on to the main thread.

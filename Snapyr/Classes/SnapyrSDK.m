@@ -548,11 +548,14 @@ NSString *const SnapyrBuildKeyV2 = @"SnapyrBuildKeyV2";
 
 - (NSDictionary *)bundledIntegrations
 {
-    return [self.integrationsManager.registeredIntegrations copy];
+    return [self.integrationsManager.integrations copy];
 }
-- (void) refresh {
-    [self.integrationsManager refreshSettings];
+
+- (void)refreshSettings
+{
+    return [self.integrationsManager refreshSettings];
 }
+
 #pragma mark - Class Methods
 
 + (instancetype)sharedSDK

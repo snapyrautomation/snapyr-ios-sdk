@@ -76,7 +76,6 @@
 - (NSData *)dataForKey:(NSString *)key
 {
     NSURL *url = [self urlForKey:key];
-    NSLog(@"url: %@", url);
     NSData *data = [NSData dataWithContentsOfURL:url];
     if (!data) {
         SLog(@"WARNING: No data file for key %@", key);

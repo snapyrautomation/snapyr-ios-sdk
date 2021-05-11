@@ -72,7 +72,7 @@ NSUInteger const kSnapyrBackgroundTaskInvalid = 0;
         });
         self.sdk = sdk;
         self.configuration = sdk.oneTimeConfiguration;
-        self.meta = settings[@"metadata"];
+        self.meta = [settings[@"metadata"] copy];
         // NSLog(@"init stack %@",[NSThread callStackSymbols]);
         NSLog(@"initwithsdk meta = [%@]", self.meta);
         self.httpClient = httpClient;
@@ -287,11 +287,6 @@ NSUInteger const kSnapyrBackgroundTaskInvalid = 0;
     return [dict copy];
 }
 
-//- (void) registerExperimentalCallback:(SnapyrRawModificationBlock *)block
-//{
-//    self.configuration.experimental.rawSnapyrModificationBlock = block;
-//}
-
 - (void)enqueueAction:(NSString *)action dictionary:(NSMutableDictionary *)payload context:(NSDictionary *)context integrations:(NSDictionary *)integrations
 {
     // attach these parts of the payload outside since they are all synchronous
@@ -311,7 +306,7 @@ NSUInteger const kSnapyrBackgroundTaskInvalid = 0;
 
         [payload setValue:[context copy] forKey:@"context"];
 
-        SLog(@"%@ Enqueueing action: %@", self, payload);
+        // SLog(@"%@ Enqueueing action: %@", self, payload);
         
         NSDictionary *queuePayload = [payload copy];
         
@@ -415,8 +410,8 @@ NSUInteger const kSnapyrBackgroundTaskInvalid = 0;
     [payload setObject:iso8601FormattedString([NSDate date]) forKey:@"sentAt"];
     [payload setObject:batch forKey:@"batch"];
 
-    SLog(@"%@ Flushing %lu of %lu queued API calls.", self, (unsigned long)batch.count, (unsigned long)self.queue.count);
-    SLog(@"Flushing batch %@.", payload);
+    NSLog(@"%@ Flushing %lu of %lu queued API calls.", self, (unsigned long)batch.count, (unsigned long)self.queue.count);
+    // SLog(@"Flushing batch %@.", payload);
     // NSLog(@"%@",[NSThread callStackSymbols]);
 
     NSError *error;
@@ -427,7 +422,8 @@ NSUInteger const kSnapyrBackgroundTaskInvalid = 0;
         NSLog(@"Got an error: %@", error);
     } else {
         NSString *jsonString = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
-        NSLog(@"[SNAP] Flushing batch %@.", jsonString);
+        // NSLog(@"[SNAP] Flushing batch %@.", jsonString);
+        NSLog(@"Got an error: %@", error);
     }
     
     

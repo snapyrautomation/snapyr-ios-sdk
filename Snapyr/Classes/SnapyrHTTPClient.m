@@ -159,9 +159,8 @@ NSString * const kSnapyrAPIBaseHost = @"https://dev-engine.snapyr.com/v1";
     NSMutableURLRequest *request = self.requestFactory(url);
 
     NSLog(@"[SNAP] HttpClient: Fetching settings from [%@]", url);
-    sleep(5);
-    NSLog(@"[SNAP] HttpClient: done Fetching from [%@]", url);
     [request setHTTPMethod:@"GET"];
+    NSLog(@"[SNAP] HttpClient: done Fetching from [%@]", url);
 
     NSURLSessionDataTask *task = [session dataTaskWithRequest:request completionHandler:^(NSData *_Nullable data, NSURLResponse *_Nullable response, NSError *_Nullable error) {
         if (error != nil) {

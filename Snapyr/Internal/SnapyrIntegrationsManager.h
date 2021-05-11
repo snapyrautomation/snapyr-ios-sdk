@@ -30,7 +30,7 @@ NS_SWIFT_NAME(IntegrationsManager)
 + (BOOL)isTrackEvent:(NSString *_Nonnull)event enabledForIntegration:(NSString *_Nonnull)key inPlan:(NSDictionary *_Nonnull)plan;
 
 // @Deprecated - Exposing for backward API compat reasons only
-@property (nonatomic, readonly) NSMutableDictionary *_Nonnull registeredIntegrations;
+@property (nonatomic, readonly) NSMutableDictionary *_Nonnull integrations;
 
 - (instancetype _Nonnull)initWithSDK:(SnapyrSDK *_Nonnull)sdk;
 
