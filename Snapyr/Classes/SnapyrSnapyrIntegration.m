@@ -421,7 +421,7 @@ NSUInteger const kSnapyrBackgroundTaskInvalid = 0;
     if (! jsonData) {
         NSLog(@"Got an error: %@", error);
     } else {
-        NSString *jsonString = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
+        // NSString *jsonString = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
         // NSLog(@"[SNAP] Flushing batch %@.", jsonString);
         NSLog(@"Got an error: %@", error);
     }

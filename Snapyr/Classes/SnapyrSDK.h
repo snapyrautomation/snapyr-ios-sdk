@@ -25,7 +25,6 @@ NS_SWIFT_NAME(Snapyr)
  * @param configuration The configuration used to setup the client.
  */
 - (instancetype)initWithConfiguration:(SnapyrSDKConfiguration *)configuration;
-- (void) refresh;
 
 /**
  * Setup the sdk.
