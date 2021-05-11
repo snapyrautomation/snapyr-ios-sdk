@@ -3,11 +3,11 @@
 #import "SnapyrSDKUtils.h"
 #import "SnapyrUtils.h"
 
-#define SNAPYR_CDN_BASE [NSURL URLWithString:@"https://dev-api.snapyr.com/sdk"]
+#define SNAPYR_CDN_BASE [NSURL URLWithString:@"https://api.snapyr.com/sdk"]
 
 static const NSUInteger kMaxBatchSize = 475000; // 475KB
 
-NSString * const kSnapyrAPIBaseHost = @"https://dev-engine.snapyr.com/v1";
+NSString * const kSnapyrAPIBaseHost = @"https://engine.snapyr.com/v1";
 
 @implementation SnapyrHTTPClient
 
@@ -158,19 +158,17 @@ NSString * const kSnapyrAPIBaseHost = @"https://dev-engine.snapyr.com/v1";
     NSURL *url = [SNAPYR_CDN_BASE URLByAppendingPathComponent:[NSString stringWithFormat:@"/%@", writeKey]];
     NSMutableURLRequest *request = self.requestFactory(url);
 
-    NSLog(@"[SNAP] HttpClient: Fetching settings from [%@]", url);
+    DLog(@"SnapyrHTTPClient.settingsForWriteKey: fetching settings from [%@]", url);
     [request setHTTPMethod:@"GET"];
-    NSLog(@"[SNAP] HttpClient: done Fetching from [%@]", url);
-
     NSURLSessionDataTask *task = [session dataTaskWithRequest:request completionHandler:^(NSData *_Nullable data, NSURLResponse *_Nullable response, NSError *_Nullable error) {
         if (error != nil) {
-            NSLog(@"Error fetching settings %@.", error);
+            DLog(@"error fetching settings %@.", error);
             completionHandler(NO, nil);
             return;
         }
         NSInteger code = ((NSHTTPURLResponse *)response).statusCode;
         if (code > 300) {
-            NSLog(@"Server responded with unexpected HTTP code %li.", code);
+            DLog(@"SnapyrHTTPClient.settingsForWriteKey: server responded with unexpected HTTP code [%li]", code);
             completionHandler(NO, nil);
             return;
         }
@@ -178,12 +176,11 @@ NSString * const kSnapyrAPIBaseHost = @"https://dev-engine.snapyr.com/v1";
         NSError *jsonError = nil;
         id responseJson = [NSJSONSerialization JSONObjectWithData:data options:0 error:&jsonError];
         if (jsonError != nil) {
-            NSLog(@"Error deserializing response body %@.", jsonError);
+            DLog(@"SnapyrHTTPClient.settingsForWriteKey: error deserializing response body [%@]", jsonError);
             completionHandler(NO, nil);
             return;
         }
-
-        NSLog(@"[SNAP] Calling completion handler...");
+        DLog(@"SnapyrHTTPClient.settingsForWriteKey: successfully fetched settings");
         completionHandler(YES, responseJson);
     }];
     [task resume];

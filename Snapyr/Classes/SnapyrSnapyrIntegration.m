@@ -73,8 +73,7 @@ NSUInteger const kSnapyrBackgroundTaskInvalid = 0;
         self.sdk = sdk;
         self.configuration = sdk.oneTimeConfiguration;
         self.meta = [settings[@"metadata"] copy];
-        // NSLog(@"init stack %@",[NSThread callStackSymbols]);
-        NSLog(@"initwithsdk meta = [%@]", self.meta);
+        DLog(@"SnapyrSnapyrIntegration.initwithsdk: meta is [%@]", self.meta);
         self.httpClient = httpClient;
         self.httpClient.httpSessionDelegate = sdk.oneTimeConfiguration.httpSessionDelegate;
         self.fileStorage = fileStorage;
@@ -229,12 +228,8 @@ NSUInteger const kSnapyrBackgroundTaskInvalid = 0;
     // Add in the meta for this channel
     NSDictionary *mutableContext = [[NSMutableDictionary alloc] initWithDictionary:payload.context copyItems:YES];
 
-    // pthread_mutex_lock(&mutex);
-    // NSLog(@"%@",[NSThread callStackSymbols]);
-    NSLog(@"track.sdkmeta %@", self.meta);
+    DLog(@"SnapyrSnapyrIntegration.track : sdkmeta is %@", self.meta);
     [mutableContext setValue:self.meta forKey:@"sdkMeta"];
-    // pthread_mutex_unlock(&mutex);
-    
     [self enqueueAction:@"track" dictionary:dictionary context:mutableContext integrations:payload.integrations];
 }
 
@@ -410,22 +405,20 @@ NSUInteger const kSnapyrBackgroundTaskInvalid = 0;
     [payload setObject:iso8601FormattedString([NSDate date]) forKey:@"sentAt"];
     [payload setObject:batch forKey:@"batch"];
 
-    NSLog(@"%@ Flushing %lu of %lu queued API calls.", self, (unsigned long)batch.count, (unsigned long)self.queue.count);
-    // SLog(@"Flushing batch %@.", payload);
-    // NSLog(@"%@",[NSThread callStackSymbols]);
+    DLog(@"SnapyrSnapyrIntegration.batch: flushing batch, %lu of %lu queued API calls.",
+          (unsigned long)batch.count, (unsigned long)self.queue.count);
 
     NSError *error;
     NSData *jsonData = [NSJSONSerialization dataWithJSONObject:payload
                                                        options:NSJSONWritingPrettyPrinted  error:&error];
-
     if (! jsonData) {
-        NSLog(@"Got an error: %@", error);
+        DLog(@"SnapyrSnapyrIntegration.batch: error serializing to json: %@", error);
     } else {
-        // NSString *jsonString = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
-        // NSLog(@"[SNAP] Flushing batch %@.", jsonString);
-        NSLog(@"Got an error: %@", error);
+#ifdef DEBUG
+        NSString *jsonString = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
+        DLog(@"SnapyrSnapyrIntegration.batch: body is [%@]", jsonString);
+#endif
     }
-    
     
     self.batchRequest = [self.httpClient upload:payload forWriteKey:self.configuration.writeKey
                               completionHandler:^(BOOL retry, NSData *_Nullable data) {

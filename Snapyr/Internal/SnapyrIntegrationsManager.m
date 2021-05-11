@@ -95,8 +95,7 @@ NSString *const kSnapyrCachedSettingsFilename = @"sdk.settings.v2.plist";
     SnapyrSDKConfiguration *configuration = sdk.oneTimeConfiguration;
     NSCParameterAssert(configuration != nil);
     
-    NSLog(@"[SNAP] Initializing Integrations Manager....");
-    
+    DLog(@"SnapyrIntegrationsManager.initWithSDK");
     if (self = [super init]) {
         self.sdk = sdk;
         self.configuration = configuration;
@@ -231,7 +230,7 @@ NSString *const kSnapyrCachedSettingsFilename = @"sdk.settings.v2.plist";
 - (void)track:(SnapyrTrackPayload *)payload
 {
     NSCAssert1(payload.event.length > 0, @"event (%@) must not be empty.", payload.event);
-    NSLog(@"[SNAP] Sending track event [%@]\n", payload.event);
+    DLog(@"SnapyrIntegrationsManager.payload: [%@]\n", payload.event);
     [self callIntegrationsWithSelector:NSSelectorFromString(@"track:")
                              arguments:@[ payload ]
                                options:payload.options
@@ -409,15 +408,15 @@ NSString *const kSnapyrCachedSettingsFilename = @"sdk.settings.v2.plist";
     }
     snapyr_dispatch_specific_sync(_serialQueue, ^{
         if (self.initialized) {
-            NSLog(@"already initialied, returning from updating integrations");
+            DLog(@"SnapyrIntegrationsManager.updateIntegrationsWithSettings: already initialized, returning");
             return;
         }
-        NSLog(@"not initialized, using factories to create integrations");
+        DLog(@"SnapyrIntegrationsManager.updateIntegrationsWithSettings: not initialized, using factories to create integrations");
         for (id<SnapyrIntegrationFactory> factory in self.factories) {
             NSString *key = [factory key];
             id<SnapyrIntegration> integration = [factory createWithSettings:projectSettings forSDK:self.sdk];
             if (integration != nil) {
-                NSLog(@"created integration [%@]", key);
+                DLog(@"SnapyrIntegrationsManager.updateIntegrationsWithSettings: created integration [%@]", key);
                 self.integrations[key] = integration;
                 self.registeredIntegrations[key] = @NO;                
                 // setup integration middleware
@@ -435,35 +434,32 @@ NSString *const kSnapyrCachedSettingsFilename = @"sdk.settings.v2.plist";
 - (void)refreshSettings
 {
     // look at our cache immediately, lets try to get things running
-    NSLog(@"refreshingSettings");
+    DLog(@"SnapyrIntegrationsManager.refreshingSettings");
     
     // with the last values while we wait to see about any updates.
     NSDictionary *previouslyCachedSettings = [self cachedSettings];
     if (previouslyCachedSettings && [previouslyCachedSettings count] > 0) {
-        NSLog(@"using previously cached settings");
+        DLog(@"SnapyrIntegrationsManager.refreshingSettings: using previously cached settings");
         [self setCachedSettings:previouslyCachedSettings];
     }
     
     snapyr_dispatch_specific_async(_serialQueue, ^{
-        NSLog(@"fetching new setttings");
+        DLog(@"SnapyrIntegrationsManager.refreshingSettings: fetching new setttings");
         if (self.settingsRequest) {
             return;
         }
         self.settingsRequest = [self.httpClient settingsForWriteKey:self.configuration.writeKey completionHandler:^(BOOL success, NSDictionary *settings) {
-//            NSLog(@"=============================================");
-//            NSLog(@"%@", settings);
-//            NSLog(@"=============================================");
             snapyr_dispatch_specific_async(self -> _serialQueue, ^{
                 if (success) {
-                    NSLog(@"successfully received settings");
+                    DLog(@"SnapyrIntegrationsManager.refreshingSettings: successfully received settings");
                     [self setCachedSettings:settings];
                 } else {
-                    NSLog(@"failed attempting to fetch settings, falling back to previously cached settings");
+                    DLog(@"SnapyrIntegrationsManager.refreshingSettings: failed attempting to fetch settings, falling back to previously cached settings");
                     NSDictionary *previouslyCachedSettings = [self cachedSettings];
                     if (previouslyCachedSettings && [previouslyCachedSettings count] > 0) {
                         [self setCachedSettings:previouslyCachedSettings];
                     } else {
-                        NSLog(@"ERROR: failed to fetch settings and no previously cached settings");
+                        DLog(@"ERROR: SnapyrIntegrationsManager.refreshingSettings: failed to fetch settings and no previously cached settings");
                     }
                 }
                 self.settingsRequest = nil;
@@ -619,7 +615,8 @@ NSString *const kSnapyrCachedSettingsFilename = @"sdk.settings.v2.plist";
         }
     }
     
-    NSLog(@"Running: %@ with arguments %@ on integration: %@", NSStringFromSelector(selector), newArguments, key);
+    DLog(@"SnapyrIntegrationsManager.invokeIntegration: running [%@] with arguments [%@] on integration [%@]",
+         NSStringFromSelector(selector), newArguments, key);
     NSInvocation *invocation = [self invocationForSelector:selector arguments:newArguments];
     [invocation invokeWithTarget:integration];
 }
@@ -643,13 +640,13 @@ NSString *const kSnapyrCachedSettingsFilename = @"sdk.settings.v2.plist";
 - (void)queueSelector:(SEL)selector arguments:(NSArray *)arguments options:(NSDictionary *)options
 {
     NSArray *obj = @[ NSStringFromSelector(selector), arguments ?: @[], options ?: @{} ];
-    NSLog(@"queueing object=[%@] for selector=[%@]", obj, NSStringFromSelector(selector));
+    DLog(@"SnapyrIntegrationsManager.queueSelector: queueing object [%@] for selector [%@]", obj, NSStringFromSelector(selector));
     [_messageQueue addObject:obj];
 }
 
 - (void)flushMessageQueue
 {
-    NSLog(@"flushing message queue");
+    DLog(@"SnapyrIntegrationsManager.flushMessageQueue");
     if (_messageQueue.count != 0) {
         for (NSArray *arr in _messageQueue)
             [self forwardSelector:NSSelectorFromString(arr[0]) arguments:arr[1] options:arr[2]];

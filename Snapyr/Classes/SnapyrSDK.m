@@ -34,7 +34,7 @@ static SnapyrSDK *__sharedInstance = nil;
 
 + (void)setupWithConfiguration:(SnapyrSDKConfiguration *)configuration
 {
-    NSLog(@"setupWithConfiguration");
+    DLog(@"SnapyrSDK.setupWithConfiguration");
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
         __sharedInstance = [[self alloc] initWithConfiguration:configuration];
@@ -43,7 +43,7 @@ static SnapyrSDK *__sharedInstance = nil;
 
 - (instancetype)initWithConfiguration:(SnapyrSDKConfiguration *)configuration
 {
-    NSLog(@"initWithConfiguration");
+    DLog(@"SnapyrSDK.initWithConfiguration");
     NSCParameterAssert(configuration != nil);
 
     if (self = [self init]) {
@@ -583,8 +583,7 @@ NSString *const SnapyrBuildKeyV2 = @"SnapyrBuildKeyV2";
     if (!self.enabled) {
         return;
     }
-    NSLog(@"SnapyrSDK.run w/ payload");
-
+    DLog(@"SnapyrSDK.payload");
     if (self.oneTimeConfiguration.experimental.nanosecondTimestamps) {
         payload.timestamp = iso8601NanoFormattedString([NSDate date]);
     } else {
