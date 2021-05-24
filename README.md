@@ -1,7 +1,7 @@
 snapyr-ios-sdk
 =================
 
-snapyr-android-sdk is an iOS client for [Snapyr](https://snapyr.com)
+snapyr-ios-sdk is an iOS client for [Snapyr](https://snapyr.com)
 
 # Using the SDK
 
