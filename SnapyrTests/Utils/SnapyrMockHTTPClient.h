@@ -10,6 +10,7 @@
 #ifndef SnapyrMockHTTPClient_h
 #define SnapyrMockHTTPClient_h
 
+NS_SWIFT_NAME(MockHTTPClient)
 @interface SnapyrMockHTTPClient : SnapyrHTTPClient
 @end
 

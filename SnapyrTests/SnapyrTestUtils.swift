@@ -24,12 +24,19 @@ func failOnError (code: Int, message: String, data: Optional<Data>) {
 }
 
 
-func getUnitTestConfiguration () -> SnapyrConfiguration {
+func getUnitTestSDK (sourceMiddleware: [Middleware],
+                               destinationMiddleware: [DestinationMiddleware]) -> Snapyr {
     let configuration = SnapyrConfiguration(writeKey: "RSLG3AdcWnHBvqxdGvZJ6FtkNAmudjtX")
     configuration.useMocks = true
     configuration.flushAt = 1
     configuration.errorHandler = failOnError
-    return configuration
+    configuration.sourceMiddleware = sourceMiddleware
+    configuration.destinationMiddleware = destinationMiddleware
+    let sdk = Snapyr(configuration: configuration)
+    let integrationManager = sdk.test_integrationsManager()
+    let mockHttpClient = MockHTTPClient()
+    integrationManager?.test_setHttpClient(httpClient:mockHttpClient)
+    return sdk
 }
 
 

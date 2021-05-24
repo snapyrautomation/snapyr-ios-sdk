@@ -17,3 +17,4 @@
 #import "NSData+SnapyrGUNZIPP.h"
 #import "UIViewController+SnapyrScreenTest.h"
 #import "ObjcUtils.h"
+#import "SnapyrMockHTTPClient.h"

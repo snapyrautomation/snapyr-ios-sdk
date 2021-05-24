@@ -40,27 +40,22 @@ let eatAllCalls = BlockMiddleware { (context, next) in
 class SourceMiddlewareTests: XCTestCase {
     
     func testReceivesEvents() {
-        let config = getUnitTestConfiguration ()
         let passthrough = PassthroughMiddleware()
-        config.sourceMiddleware = [
-            passthrough,
-        ]
-        let snapyr = Snapyr(configuration: config)
-        snapyr.identify("testUserId1")
+        let sdk = getUnitTestSDK(sourceMiddleware: [passthrough], destinationMiddleware: [])
+        sdk.identify("testUserId1")
         XCTAssertEqual(passthrough.lastContext?.eventType, EventType.identify)
         let identify = passthrough.lastContext?.payload as? IdentifyPayload
         XCTAssertEqual(identify?.userId, "testUserId1")
     }
     
     func testModifiesAndPassesEventToNext() {
-        let config = getUnitTestConfiguration ()
         let passthrough = PassthroughMiddleware()
-        config.sourceMiddleware = [
+        let sourceMiddleware:[Middleware] = [
             customizeAllTrackCalls,
             passthrough,
         ]
-        let snapyr = Snapyr(configuration: config)
-        snapyr.track("Purchase Success")
+        let sdk = getUnitTestSDK(sourceMiddleware: sourceMiddleware, destinationMiddleware: [])
+        sdk.track("Purchase Success")
         XCTAssertEqual(passthrough.lastContext?.eventType, EventType.track)
         let track = passthrough.lastContext?.payload as? TrackPayload
         XCTAssertEqual(track?.event, "[New] Purchase Success")
@@ -70,13 +65,12 @@ class SourceMiddlewareTests: XCTestCase {
     }
     
     func testExpectsEventToBeSwallowed() {
-        let config = getUnitTestConfiguration ()
         let passthrough = PassthroughMiddleware()
-        config.sourceMiddleware = [
+        let sourceMiddleware:[Middleware] = [
             eatAllCalls,
             passthrough,
         ]
-        let snapyr = Snapyr(configuration: config)
+        let snapyr = getUnitTestSDK(sourceMiddleware: sourceMiddleware, destinationMiddleware: [])
         snapyr.track("Purchase Success")
         XCTAssertNil(passthrough.lastContext)
     }
@@ -85,11 +79,11 @@ class SourceMiddlewareTests: XCTestCase {
 class IntegrationMiddlewareTests: XCTestCase {
     
     func disableTestReceivesEvents() {
-        let config = getUnitTestConfiguration ()
         let passthrough = PassthroughMiddleware()
-        config.destinationMiddleware = [DestinationMiddleware(key: SnapyrIntegrationFactory().key(), middleware: [passthrough])]
-        let snapyr = Snapyr(configuration: config)
-        snapyr.identify("testUserId1")
+        let destinationMiddleware = [DestinationMiddleware(key: SnapyrIntegrationFactory().key(),
+                                                           middleware: [passthrough])]
+        let sdk = getUnitTestSDK(sourceMiddleware: [], destinationMiddleware: destinationMiddleware)
+        sdk.identify("testUserId1")
         
         // pump the runloop until we have a last context.
         // integration middleware is held up until initialization is completed.
@@ -104,11 +98,11 @@ class IntegrationMiddlewareTests: XCTestCase {
     }
     
     func disableTestModifiesAndPassesEventToNext() {
-        let config = getUnitTestConfiguration ()
         let passthrough = PassthroughMiddleware()
-        config.destinationMiddleware = [DestinationMiddleware(key: SnapyrIntegrationFactory().key(), middleware: [customizeAllTrackCalls, passthrough])]
-        let snapyr = Snapyr(configuration: config)
-        snapyr.track("Purchase Success")
+        let destinationMiddleware = [DestinationMiddleware(key: SnapyrIntegrationFactory().key(),
+                                                           middleware: [customizeAllTrackCalls, passthrough])]
+        let sdk = getUnitTestSDK(sourceMiddleware: [], destinationMiddleware: destinationMiddleware)
+        sdk.track("Purchase Success")
         
         // pump the runloop until we have a last context.
         // integration middleware is held up until initialization is completed.
@@ -131,12 +125,11 @@ class IntegrationMiddlewareTests: XCTestCase {
         NotificationCenter.default.addObserver(forName: NSNotification.Name(rawValue: SnapyrSDKIntegrationDidStart), object: nil, queue: nil) { (notification) in
             initialized = true
         }
-        
-        let config = getUnitTestConfiguration ()
         let passthrough = PassthroughMiddleware()
-        config.destinationMiddleware = [DestinationMiddleware(key: SnapyrIntegrationFactory().key(), middleware: [eatAllCalls, passthrough])]
-        let snapyr = Snapyr(configuration: config)
-        snapyr.track("Purchase Success")
+        let destinationMiddleware = [DestinationMiddleware(key: SnapyrIntegrationFactory().key(),
+                                                           middleware: [eatAllCalls, passthrough])]
+        let sdk = getUnitTestSDK(sourceMiddleware: [], destinationMiddleware: destinationMiddleware)
+        sdk.track("Purchase Success")
         
         while (!initialized) {
             sleep(1)

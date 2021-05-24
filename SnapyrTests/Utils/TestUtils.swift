@@ -56,6 +56,10 @@ extension IntegrationsManager {
     func test_setCachedSettings(settings: NSDictionary) {
         self.perform(Selector(("setCachedSettings:")), with: settings)
     }
+    func test_setHttpClient(httpClient: HTTPClient) -> Void {
+        self.setValue(httpClient, forKey:"httpClient")
+    }
+
 }
 
 extension SnapyrIntegration {

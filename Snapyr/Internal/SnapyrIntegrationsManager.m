@@ -102,11 +102,8 @@ NSString *const kSnapyrCachedSettingsFilename = @"sdk.settings.v2.plist";
         self.configuration = configuration;
         self.serialQueue = snapyr_dispatch_queue_create_specific("com.snapyr.sdk", DISPATCH_QUEUE_SERIAL);
         self.messageQueue = [[NSMutableArray alloc] init];
-        if (self.configuration.actionHandler) {
-            self.httpClient = [[SnapyrMockHTTPClient alloc] initWithRequestFactory:configuration.requestFactory configuration:configuration];
-        } else {
-            self.httpClient = [[SnapyrHTTPClient alloc] initWithRequestFactory:configuration.requestFactory configuration:configuration];
-        }
+        
+        self.httpClient = [[SnapyrHTTPClient alloc] initWithRequestFactory:configuration.requestFactory configuration:configuration];
         
         
         self.userDefaultsStorage = [[SnapyrUserDefaultsStorage alloc] initWithDefaults:[NSUserDefaults standardUserDefaults] namespacePrefix:nil crypto:configuration.crypto];
