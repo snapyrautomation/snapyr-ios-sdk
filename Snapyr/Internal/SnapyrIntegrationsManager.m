@@ -15,7 +15,6 @@
 #import "SnapyrIntegrationFactory.h"
 #import "SnapyrIntegration.h"
 #import "SnapyrHTTPClient.h"
-#import "SnapyrMockHTTPClient.h"
 #import "SnapyrStorage.h"
 #import "SnapyrFileStorage.h"
 #import "SnapyrUserDefaultsStorage.h"
