@@ -24,14 +24,20 @@ func failOnError (code: Int, message: String, data: Optional<Data>) {
 }
 
 
-func getUnitTestSDK (sourceMiddleware: [Middleware],
-                               destinationMiddleware: [DestinationMiddleware]) -> Snapyr {
+func getUnitTestSDK (
+    application: TestApplication?,
+    sourceMiddleware: [Middleware],
+    destinationMiddleware: [DestinationMiddleware]) -> Snapyr {
+    
     let configuration = SnapyrConfiguration(writeKey: "RSLG3AdcWnHBvqxdGvZJ6FtkNAmudjtX")
-    configuration.useMocks = true
+    configuration.trackApplicationLifecycleEvents = true
     configuration.flushAt = 1
     configuration.errorHandler = failOnError
     configuration.sourceMiddleware = sourceMiddleware
     configuration.destinationMiddleware = destinationMiddleware
+    configuration.application = application
+    configuration.trackDeepLinks = true
+    configuration.payloadFilters["(myapp://auth\\?token=)([^&]+)"] = "$1((redacted/my-auth))"
     let sdk = Snapyr(configuration: configuration)
     let integrationManager = sdk.test_integrationsManager()
     let mockHttpClient = MockHTTPClient()

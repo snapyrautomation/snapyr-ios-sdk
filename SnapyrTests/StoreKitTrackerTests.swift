@@ -47,7 +47,7 @@ class StoreKitTrackerTests: XCTestCase {
     override func setUp() {
         super.setUp()        
         test = TestMiddleware()
-        sdk = getUnitTestSDK(sourceMiddleware: [test], destinationMiddleware: [])
+        sdk = getUnitTestSDK(application:nil, sourceMiddleware: [test], destinationMiddleware: [])
         tracker = StoreKitTracker.trackTransactions(for: sdk)
     }
     

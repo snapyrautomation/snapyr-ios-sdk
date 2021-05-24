@@ -17,7 +17,7 @@ class TrackingTests: XCTestCase {
     override func setUp() {
         super.setUp()
         passthrough = PassthroughMiddleware()
-        sdk = getUnitTestSDK(sourceMiddleware: [passthrough], destinationMiddleware: [])
+        sdk = getUnitTestSDK(application:nil, sourceMiddleware: [passthrough], destinationMiddleware: [])
     }
     
     override func tearDown() {

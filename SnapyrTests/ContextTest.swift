@@ -15,7 +15,7 @@ class ContextTests: XCTestCase {
     
     override func setUp() {
         super.setUp()
-        sdk = getUnitTestSDK(sourceMiddleware: [], destinationMiddleware: [])
+        sdk = getUnitTestSDK(application:nil, sourceMiddleware: [], destinationMiddleware: [])
     }
     
     func testThrowsWhenUsedIncorrectly() {
