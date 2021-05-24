@@ -9,7 +9,7 @@ bootstrap:
 	.buildscript/bootstrap.sh
 
 lint:
-	pod lib lint --allow-warnings --verbose
+	pod lib lint --allow-warnings
 
 carthage:
 	export XCODE_XCCONFIG_FILE=$(PWD)/tmp.xcconfig && carthage build --platform ios --no-skip-current
