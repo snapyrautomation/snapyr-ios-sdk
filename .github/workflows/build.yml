@@ -18,5 +18,5 @@ jobs:
           DEVELOPER_DIR: /Applications/Xcode_11.7.app/Contents/Developer
       - run: make build-ios
       - run: make test-ios
-      - run: make lint --verbose
+      - run: make lint
       - run: make carthage
