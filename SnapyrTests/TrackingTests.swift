@@ -11,13 +11,12 @@ import Snapyr
 import XCTest
 
 class TrackingTests: XCTestCase {
-    
     var passthrough: PassthroughMiddleware!
     var snapyr: Snapyr!
     
     override func setUp() {
         super.setUp()
-        let config = SnapyrConfiguration(writeKey: "QUI5ydwIGeFFTa1IvCBUhxL9PyW5B0jE")
+        let config = getUnitTestConfiguration ()
         passthrough = PassthroughMiddleware()
         config.sourceMiddleware = [
             passthrough,

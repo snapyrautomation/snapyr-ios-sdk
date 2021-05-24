@@ -10,6 +10,7 @@ class EndToEndTests: XCTestCase {
         self.configuration = SnapyrConfiguration(writeKey: "RSLG3AdcWnHBvqxdGvZJ6FtkNAmudjtX")
         self.configuration.flushAt = 1
         Snapyr.debug(true)
+        self.configuration.errorHandler = failOnError
         Snapyr.setup(with: self.configuration)
         self.snapyr = Snapyr.shared()
     }

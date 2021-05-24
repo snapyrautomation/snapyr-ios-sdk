@@ -67,9 +67,6 @@ NSUInteger const kSnapyrBackgroundTaskInvalid = 0;
 - (id)initWithSDK:(SnapyrSDK *)sdk httpClient:(SnapyrHTTPClient *)httpClient fileStorage:(id <SnapyrStorage>)fileStorage userDefaultsStorage:(id<SnapyrStorage>)userDefaultsStorage settings:(NSDictionary *)settings;
 {
     if (self = [super init]) {
-        dispatch_once(&onlyOnce, ^{
-            pthread_mutex_init(&mutex, NULL);
-        });
         self.sdk = sdk;
         self.configuration = sdk.oneTimeConfiguration;
         self.meta = [settings[@"metadata"] copy];
@@ -301,10 +298,9 @@ NSUInteger const kSnapyrBackgroundTaskInvalid = 0;
 
         [payload setValue:[context copy] forKey:@"context"];
 
-        // SLog(@"%@ Enqueueing action: %@", self, payload);
+        DLog(@"SnapyrSnapyrIntegration.enqueueAction: enqueueing action [%@]", payload);
         
         NSDictionary *queuePayload = [payload copy];
-        
         if (self.configuration.experimental.rawSnapyrModificationBlock != nil) {
             NSDictionary *tempPayload = self.configuration.experimental.rawSnapyrModificationBlock(queuePayload);
             if (tempPayload == nil) {
@@ -344,8 +340,10 @@ NSUInteger const kSnapyrBackgroundTaskInvalid = 0;
         NSArray *batch;
         if ([self.queue count] >= maxBatchSize) {
             batch = [self.queue subarrayWithRange:NSMakeRange(0, maxBatchSize)];
+            SLog(@"Max Batch Size!");
         } else {
             batch = [NSArray arrayWithArray:self.queue];
+            SLog(@"Below max batch size.");
         }
         [self sendData:batch];
     };
@@ -421,7 +419,7 @@ NSUInteger const kSnapyrBackgroundTaskInvalid = 0;
     }
     
     self.batchRequest = [self.httpClient upload:payload forWriteKey:self.configuration.writeKey
-                              completionHandler:^(BOOL retry, NSData *_Nullable data) {
+                              completionHandler:^(BOOL retry, NSInteger code, NSData *_Nullable data) {
         void (^completion)(void) = ^{
             if (retry) {
                 [self notifyForName:SnapyrRequestDidFailNotification userInfo:batch];
@@ -456,16 +454,17 @@ NSUInteger const kSnapyrBackgroundTaskInvalid = 0;
                   options:NSJSONReadingAllowFragments
                   error:&dataParsingError];
     if (dataParsingError != nil) {
-        SLog(@"error parsing response json: %@", dataParsingError);
+        DLog(@"error parsing response json: %@", dataParsingError);
+        self.configuration.errorHandler(-1, @"could not parse response from snapyr engine", data);
         return;
     }
     if ([dataObj isKindOfClass:[NSDictionary class]]){
         NSDictionary *deserializedDictionary = (NSDictionary *)dataObj;
-        SLog(@"response received (dict) = %@", deserializedDictionary);
+        DLog(@"response received (dict) = %@", deserializedDictionary);
         [self handleEventActions:deserializedDictionary];
     } else if ([dataObj isKindOfClass:[NSArray class]]){
         NSArray *deserializedArray = (NSArray *)dataObj;
-        SLog(@"response received (array) = %@", deserializedArray);
+        DLog(@"response received (array) = %@", deserializedArray);
         for (int i = 0; i < [deserializedArray count]; i++) {
             NSDictionary *eventData = (NSDictionary*)[deserializedArray objectAtIndex:i];
             [self handleEventActions:eventData];

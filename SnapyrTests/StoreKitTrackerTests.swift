@@ -46,7 +46,7 @@ class StoreKitTrackerTests: XCTestCase {
     
     override func setUp() {
         super.setUp()
-        let config = SnapyrConfiguration(writeKey: "foobar")
+        let config = getUnitTestConfiguration ()
         test = TestMiddleware()
         config.sourceMiddleware = [test]
         snapyr = Snapyr(configuration: config)

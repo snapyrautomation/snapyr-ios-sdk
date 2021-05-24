@@ -32,7 +32,7 @@ static SnapyrSDK *__sharedInstance = nil;
 
 @implementation SnapyrSDK
 
-+ (void)setupWithConfiguration:(SnapyrSDKConfiguration *)configuration
++ (void)setupWithConfiguration:(SnapyrSDKConfiguration *)configuration;
 {
     DLog(@"SnapyrSDK.setupWithConfiguration");
     static dispatch_once_t onceToken;
@@ -49,7 +49,6 @@ static SnapyrSDK *__sharedInstance = nil;
     if (self = [self init]) {
         self.oneTimeConfiguration = configuration;
         self.enabled = YES;
-
         // In swift this would not have been OK... But hey.. It's objc
         // TODO: Figure out if this is really the best way to do things here.
         self.integrationsManager = [[SnapyrIntegrationsManager alloc] initWithSDK:self];

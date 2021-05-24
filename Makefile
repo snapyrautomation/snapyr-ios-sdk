@@ -40,7 +40,8 @@ build-macos:
 build: build-ios build-tvos
 
 test-ios:
-	@set -o pipefail && xcodebuild test $(IOS_XCARGS) -scheme SnapyrTests $(XC_TEST_ARGS) | xcpretty --report junit
+	xcodebuild test $(IOS_XCARGS) -scheme SnapyrTests $(XC_TEST_ARGS)
+#	@set -o pipefail && xcodebuild test $(IOS_XCARGS) -scheme SnapyrTests $(XC_TEST_ARGS) | xcpretty --report junit
 
 test-tvos:
 	@set -o pipefail && xcodebuild test $(TVOS_XCARGS) -scheme SnapyrTests $(XC_TEST_ARGS) | xcpretty --report junit

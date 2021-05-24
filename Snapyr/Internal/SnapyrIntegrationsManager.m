@@ -15,6 +15,7 @@
 #import "SnapyrIntegrationFactory.h"
 #import "SnapyrIntegration.h"
 #import "SnapyrHTTPClient.h"
+#import "SnapyrMockHTTPClient.h"
 #import "SnapyrStorage.h"
 #import "SnapyrFileStorage.h"
 #import "SnapyrUserDefaultsStorage.h"
@@ -101,7 +102,12 @@ NSString *const kSnapyrCachedSettingsFilename = @"sdk.settings.v2.plist";
         self.configuration = configuration;
         self.serialQueue = snapyr_dispatch_queue_create_specific("com.snapyr.sdk", DISPATCH_QUEUE_SERIAL);
         self.messageQueue = [[NSMutableArray alloc] init];
-        self.httpClient = [[SnapyrHTTPClient alloc] initWithRequestFactory:configuration.requestFactory];
+        if (self.configuration.actionHandler) {
+            self.httpClient = [[SnapyrMockHTTPClient alloc] initWithRequestFactory:configuration.requestFactory configuration:configuration];
+        } else {
+            self.httpClient = [[SnapyrHTTPClient alloc] initWithRequestFactory:configuration.requestFactory configuration:configuration];
+        }
+        
         
         self.userDefaultsStorage = [[SnapyrUserDefaultsStorage alloc] initWithDefaults:[NSUserDefaults standardUserDefaults] namespacePrefix:nil crypto:configuration.crypto];
 #if TARGET_OS_TV
@@ -418,7 +424,6 @@ NSString *const kSnapyrCachedSettingsFilename = @"sdk.settings.v2.plist";
             if (integration != nil) {
                 DLog(@"SnapyrIntegrationsManager.updateIntegrationsWithSettings: created integration [%@]", key);
                 self.integrations[key] = integration;
-                self.registeredIntegrations[key] = @NO;                
                 // setup integration middleware
                 NSArray<id<SnapyrMiddleware>> *middleware = [self middlewareForIntegrationKey:key];
                 self.integrationMiddleware[key] = [[SnapyrMiddlewareRunner alloc] initWithMiddleware:middleware];

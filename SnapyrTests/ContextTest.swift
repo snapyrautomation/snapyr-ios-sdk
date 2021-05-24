@@ -15,7 +15,7 @@ class ContextTests: XCTestCase {
     
     override func setUp() {
         super.setUp()
-        let config = SnapyrConfiguration(writeKey: "foobar")
+        let config = getUnitTestConfiguration ()
         snapyr = Snapyr(configuration: config)
     }
     

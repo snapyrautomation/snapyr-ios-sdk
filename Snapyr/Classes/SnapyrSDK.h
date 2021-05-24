@@ -17,7 +17,7 @@ NS_SWIFT_NAME(Snapyr)
 /**
  * Used by the sdk to configure various options.
  */
-@property (nullable, nonatomic, strong, readonly) SnapyrSDKConfiguration *configuration DEPRECATED_MSG_ATTRIBUTE("One time use object");
+@property (nullable, nonatomic, strong, readonly) SnapyrSDKConfiguration *configuration;
 
 /**
  * Setup this sdk instance.

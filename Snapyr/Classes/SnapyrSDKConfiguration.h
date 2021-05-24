@@ -39,6 +39,7 @@ typedef NSMutableURLRequest *_Nonnull (^SnapyrRequestFactory)(NSURL *_Nonnull);
 typedef NSString *_Nonnull (^SnapyrAdSupportBlock)(void);
 
 typedef void(^SnapyrActionHandlerBlock)(NSDictionary*_Nonnull action);
+typedef void(^SnapyrErrorHandlerBlock)(NSInteger code, NSString *_Nonnull message, NSData *_Nullable data);
 
 @protocol SnapyrIntegrationFactory;
 @protocol SnapyrCrypto;
@@ -99,6 +100,11 @@ NS_SWIFT_NAME(SnapyrConfiguration)
  * The number of queued events that the sdk should flush at. Setting this to `1` will not queue any events and will use more battery. `20` by default.
  */
 @property (nonatomic, assign) NSUInteger flushAt;
+
+/**
+ * Handy for testing;  when set to true, the SDK will mock out network calls.
+ */
+@property (nonatomic, assign) BOOL useMocks;
 
 /**
  * The amount of time to wait before each tick of the flush timer.
@@ -233,6 +239,12 @@ NS_SWIFT_NAME(SnapyrConfiguration)
  * Snapyr action handler callback block
  */
 @property (nonatomic, strong, nullable) SnapyrActionHandlerBlock actionHandler;
+
+/**
+ * Snapyr error handler callback block
+ */
+@property (nonatomic, strong, nullable) SnapyrErrorHandlerBlock errorHandler;
+
 
 /**
  * Sets a block to be called when IDFA / AdSupport identifier is created.

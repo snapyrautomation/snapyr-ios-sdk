@@ -40,7 +40,7 @@ let eatAllCalls = BlockMiddleware { (context, next) in
 class SourceMiddlewareTests: XCTestCase {
     
     func testReceivesEvents() {
-        let config = SnapyrConfiguration(writeKey: "TESTKEY")
+        let config = getUnitTestConfiguration ()
         let passthrough = PassthroughMiddleware()
         config.sourceMiddleware = [
             passthrough,
@@ -53,7 +53,7 @@ class SourceMiddlewareTests: XCTestCase {
     }
     
     func testModifiesAndPassesEventToNext() {
-        let config = SnapyrConfiguration(writeKey: "TESTKEY")
+        let config = getUnitTestConfiguration ()
         let passthrough = PassthroughMiddleware()
         config.sourceMiddleware = [
             customizeAllTrackCalls,
@@ -70,7 +70,7 @@ class SourceMiddlewareTests: XCTestCase {
     }
     
     func testExpectsEventToBeSwallowed() {
-        let config = SnapyrConfiguration(writeKey: "TESTKEY")
+        let config = getUnitTestConfiguration ()
         let passthrough = PassthroughMiddleware()
         config.sourceMiddleware = [
             eatAllCalls,
@@ -85,7 +85,7 @@ class SourceMiddlewareTests: XCTestCase {
 class IntegrationMiddlewareTests: XCTestCase {
     
     func disableTestReceivesEvents() {
-        let config = SnapyrConfiguration(writeKey: "TESTKEY")
+        let config = getUnitTestConfiguration ()
         let passthrough = PassthroughMiddleware()
         config.destinationMiddleware = [DestinationMiddleware(key: SnapyrIntegrationFactory().key(), middleware: [passthrough])]
         let snapyr = Snapyr(configuration: config)
@@ -104,7 +104,7 @@ class IntegrationMiddlewareTests: XCTestCase {
     }
     
     func disableTestModifiesAndPassesEventToNext() {
-        let config = SnapyrConfiguration(writeKey: "TESTKEY")
+        let config = getUnitTestConfiguration ()
         let passthrough = PassthroughMiddleware()
         config.destinationMiddleware = [DestinationMiddleware(key: SnapyrIntegrationFactory().key(), middleware: [customizeAllTrackCalls, passthrough])]
         let snapyr = Snapyr(configuration: config)
@@ -132,7 +132,7 @@ class IntegrationMiddlewareTests: XCTestCase {
             initialized = true
         }
         
-        let config = SnapyrConfiguration(writeKey: "TESTKEY")
+        let config = getUnitTestConfiguration ()
         let passthrough = PassthroughMiddleware()
         config.destinationMiddleware = [DestinationMiddleware(key: SnapyrIntegrationFactory().key(), middleware: [eatAllCalls, passthrough])]
         let snapyr = Snapyr(configuration: config)
@@ -141,7 +141,6 @@ class IntegrationMiddlewareTests: XCTestCase {
         while (!initialized) {
             sleep(1)
         }
-        
         XCTAssertNil(passthrough.lastContext)
     }
 }

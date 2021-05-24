@@ -16,7 +16,7 @@ class AutoScreenReportingTests: XCTestCase {
     override func setUp() {
         super.setUp()
         
-        let config = SnapyrConfiguration(writeKey: "foobar")
+        let config = getUnitTestConfiguration ()
         config.trackApplicationLifecycleEvents = true
         config.recordScreenViews = true
         
