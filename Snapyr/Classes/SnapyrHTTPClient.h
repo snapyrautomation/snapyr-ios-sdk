@@ -13,11 +13,13 @@ NS_SWIFT_NAME(HTTPClient)
 @property (nonatomic, readonly) NSMutableDictionary<NSString *, NSURLSession *> *sessionsByWriteKey;
 @property (nonatomic, readonly) NSURLSession *genericSession;
 @property (nonatomic, weak)  id<NSURLSessionDelegate> httpSessionDelegate;
+@property (nonatomic, assign) SnapyrSDKConfiguration *configuration;
 
 + (SnapyrRequestFactory)defaultRequestFactory;
 + (NSString *)authorizationHeader:(NSString *)writeKey;
 
-- (instancetype)initWithRequestFactory:(SnapyrRequestFactory _Nullable)requestFactory;
+- (instancetype)initWithRequestFactory:(SnapyrRequestFactory _Nullable)requestFactory
+                         configuration: (SnapyrSDKConfiguration* _Nonnull)configuration;
 
 /**
  * This method will convert the dictionary to json, gzip it and upload the data.
@@ -26,7 +28,7 @@ NS_SWIFT_NAME(HTTPClient)
  * NOTE: You need to re-dispatch within the completionHandler onto a desired queue to avoid threading issues.
  * Completion handlers are called on a dispatch queue internal to SnapyrHTTPClient.
  */
-- (nullable NSURLSessionUploadTask *)upload:(JSON_DICT)batch forWriteKey:(NSString *)writeKey completionHandler:(void (^)(BOOL retry, NSData *_Nullable data))completionHandler;
+- (nullable NSURLSessionUploadTask *)upload:(JSON_DICT)batch forWriteKey:(NSString *)writeKey completionHandler:(void (^)(BOOL retry, NSInteger code, NSData *_Nullable data))completionHandler;
 
 - (NSURLSessionDataTask *)settingsForWriteKey:(NSString *)writeKey completionHandler:(void (^)(BOOL success, JSON_DICT _Nullable settings))completionHandler;
 

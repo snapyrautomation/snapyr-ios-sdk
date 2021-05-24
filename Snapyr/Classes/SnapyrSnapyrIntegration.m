@@ -8,10 +8,14 @@
 #import "SnapyrStorage.h"
 #import "SnapyrMacros.h"
 #import "SnapyrState.h"
+#import <pthread.h>
 
 #if TARGET_OS_IPHONE
 @import UIKit;
 #endif
+
+dispatch_once_t onlyOnce;
+pthread_mutex_t mutex;
 
 NSString *const SnapyrDidSendRequestNotification = @"SnapyrDidSendRequest";
 NSString *const SnapyrRequestDidSucceedNotification = @"SnapyrRequestDidSucceed";
@@ -39,7 +43,7 @@ NSUInteger const kSnapyrBackgroundTaskInvalid = 0;
 @property (nonatomic, strong) NSDictionary *traits;
 @property (nonatomic, assign) SnapyrSDK *sdk;
 @property (nonatomic, assign) SnapyrSDKConfiguration *configuration;
-@property (nonatomic, assign) NSDictionary *meta;
+@property (nonatomic, strong) NSDictionary *meta;
 @property (atomic, copy) NSDictionary *referrer;
 @property (nonatomic, copy) NSString *userId;
 @property (nonatomic, strong) SnapyrHTTPClient *httpClient;
@@ -65,9 +69,8 @@ NSUInteger const kSnapyrBackgroundTaskInvalid = 0;
     if (self = [super init]) {
         self.sdk = sdk;
         self.configuration = sdk.oneTimeConfiguration;
-        self.meta = settings[@"metadata"];
-        NSLog(@"%@",[NSThread callStackSymbols]);
-        NSLog(@"meta = [%@]", self.meta);
+        self.meta = [settings[@"metadata"] copy];
+        DLog(@"SnapyrSnapyrIntegration.initwithsdk: meta is [%@]", self.meta);
         self.httpClient = httpClient;
         self.httpClient.httpSessionDelegate = sdk.oneTimeConfiguration.httpSessionDelegate;
         self.fileStorage = fileStorage;
@@ -221,9 +224,9 @@ NSUInteger const kSnapyrBackgroundTaskInvalid = 0;
         
     // Add in the meta for this channel
     NSDictionary *mutableContext = [[NSMutableDictionary alloc] initWithDictionary:payload.context copyItems:YES];
-    
+
+    DLog(@"SnapyrSnapyrIntegration.track : sdkmeta is %@", self.meta);
     [mutableContext setValue:self.meta forKey:@"sdkMeta"];
-    
     [self enqueueAction:@"track" dictionary:dictionary context:mutableContext integrations:payload.integrations];
 }
 
@@ -295,11 +298,9 @@ NSUInteger const kSnapyrBackgroundTaskInvalid = 0;
 
         [payload setValue:[context copy] forKey:@"context"];
 
-        SLog(@"%@ Enqueueing action: %@", self, payload);
-        NSLog(@"%@ [SNAP] enqueueing action: %@", self, payload);
+        DLog(@"SnapyrSnapyrIntegration.enqueueAction: enqueueing action [%@]", payload);
         
         NSDictionary *queuePayload = [payload copy];
-        
         if (self.configuration.experimental.rawSnapyrModificationBlock != nil) {
             NSDictionary *tempPayload = self.configuration.experimental.rawSnapyrModificationBlock(queuePayload);
             if (tempPayload == nil) {
@@ -339,8 +340,10 @@ NSUInteger const kSnapyrBackgroundTaskInvalid = 0;
         NSArray *batch;
         if ([self.queue count] >= maxBatchSize) {
             batch = [self.queue subarrayWithRange:NSMakeRange(0, maxBatchSize)];
+            SLog(@"Max Batch Size!");
         } else {
             batch = [NSArray arrayWithArray:self.queue];
+            SLog(@"Below max batch size.");
         }
         [self sendData:batch];
     };
@@ -400,24 +403,23 @@ NSUInteger const kSnapyrBackgroundTaskInvalid = 0;
     [payload setObject:iso8601FormattedString([NSDate date]) forKey:@"sentAt"];
     [payload setObject:batch forKey:@"batch"];
 
-    SLog(@"%@ Flushing %lu of %lu queued API calls.", self, (unsigned long)batch.count, (unsigned long)self.queue.count);
-    SLog(@"Flushing batch %@.", payload);
-    // NSLog(@"%@",[NSThread callStackSymbols]);
+    DLog(@"SnapyrSnapyrIntegration.batch: flushing batch, %lu of %lu queued API calls.",
+          (unsigned long)batch.count, (unsigned long)self.queue.count);
 
     NSError *error;
     NSData *jsonData = [NSJSONSerialization dataWithJSONObject:payload
                                                        options:NSJSONWritingPrettyPrinted  error:&error];
-
     if (! jsonData) {
-        NSLog(@"Got an error: %@", error);
+        DLog(@"SnapyrSnapyrIntegration.batch: error serializing to json: %@", error);
     } else {
+#ifdef DEBUG
         NSString *jsonString = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
-        NSLog(@"[SNAP] Flushing batch %@.", jsonString);
+        DLog(@"SnapyrSnapyrIntegration.batch: body is [%@]", jsonString);
+#endif
     }
     
-    
     self.batchRequest = [self.httpClient upload:payload forWriteKey:self.configuration.writeKey
-                              completionHandler:^(BOOL retry, NSData *_Nullable data) {
+                              completionHandler:^(BOOL retry, NSInteger code, NSData *_Nullable data) {
         void (^completion)(void) = ^{
             if (retry) {
                 [self notifyForName:SnapyrRequestDidFailNotification userInfo:batch];
@@ -452,16 +454,17 @@ NSUInteger const kSnapyrBackgroundTaskInvalid = 0;
                   options:NSJSONReadingAllowFragments
                   error:&dataParsingError];
     if (dataParsingError != nil) {
-        SLog(@"error parsing response json: %@", dataParsingError);
+        DLog(@"error parsing response json: %@", dataParsingError);
+        self.configuration.errorHandler(-1, @"could not parse response from snapyr engine", data);
         return;
     }
     if ([dataObj isKindOfClass:[NSDictionary class]]){
         NSDictionary *deserializedDictionary = (NSDictionary *)dataObj;
-        SLog(@"response received (dict) = %@", deserializedDictionary);
+        DLog(@"response received (dict) = %@", deserializedDictionary);
         [self handleEventActions:deserializedDictionary];
     } else if ([dataObj isKindOfClass:[NSArray class]]){
         NSArray *deserializedArray = (NSArray *)dataObj;
-        SLog(@"response received (array) = %@", deserializedArray);
+        DLog(@"response received (array) = %@", deserializedArray);
         for (int i = 0; i < [deserializedArray count]; i++) {
             NSDictionary *eventData = (NSDictionary*)[deserializedArray objectAtIndex:i];
             [self handleEventActions:eventData];

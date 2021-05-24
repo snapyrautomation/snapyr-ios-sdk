@@ -200,7 +200,8 @@ NS_ASSUME_NONNULL_END
 }
 
 - (id <SnapyrIntegration>)createWithSettings:(NSDictionary *)settings forSDK:(SnapyrSDK *)sdk {
-    SnapyrHTTPClient *httpClient = [[SnapyrHTTPClient alloc] initWithRequestFactory:nil];
+    
+    SnapyrHTTPClient *httpClient = [[SnapyrHTTPClient alloc] initWithRequestFactory:nil configuration:sdk.configuration];
     return [[SnapyrWebhookIntegration alloc] initWithSDK:sdk httpClient:httpClient webhookUrl:self.webhookUrl name:self.name];
 }
 

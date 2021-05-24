@@ -32,8 +32,9 @@ static SnapyrSDK *__sharedInstance = nil;
 
 @implementation SnapyrSDK
 
-+ (void)setupWithConfiguration:(SnapyrSDKConfiguration *)configuration
++ (void)setupWithConfiguration:(SnapyrSDKConfiguration *)configuration;
 {
+    DLog(@"SnapyrSDK.setupWithConfiguration");
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
         __sharedInstance = [[self alloc] initWithConfiguration:configuration];
@@ -42,12 +43,12 @@ static SnapyrSDK *__sharedInstance = nil;
 
 - (instancetype)initWithConfiguration:(SnapyrSDKConfiguration *)configuration
 {
+    DLog(@"SnapyrSDK.initWithConfiguration");
     NSCParameterAssert(configuration != nil);
 
     if (self = [self init]) {
         self.oneTimeConfiguration = configuration;
         self.enabled = YES;
-
         // In swift this would not have been OK... But hey.. It's objc
         // TODO: Figure out if this is really the best way to do things here.
         self.integrationsManager = [[SnapyrIntegrationsManager alloc] initWithSDK:self];
@@ -546,7 +547,12 @@ NSString *const SnapyrBuildKeyV2 = @"SnapyrBuildKeyV2";
 
 - (NSDictionary *)bundledIntegrations
 {
-    return [self.integrationsManager.registeredIntegrations copy];
+    return [self.integrationsManager.integrations copy];
+}
+
+- (void)refreshSettings
+{
+    return [self.integrationsManager refreshSettings];
 }
 
 #pragma mark - Class Methods
@@ -576,8 +582,7 @@ NSString *const SnapyrBuildKeyV2 = @"SnapyrBuildKeyV2";
     if (!self.enabled) {
         return;
     }
-    NSLog(@"SnapyrSDK.run w/ payload");
-
+    DLog(@"SnapyrSDK.payload");
     if (self.oneTimeConfiguration.experimental.nanosecondTimestamps) {
         payload.timestamp = iso8601NanoFormattedString([NSDate date]);
     } else {

@@ -76,6 +76,8 @@
 - (NSData *)dataForKey:(NSString *)key
 {
     NSURL *url = [self urlForKey:key];
+    DLog(@"SnapyrFileStorage.dataForKey [%@] at url [%@]", key, url);
+    
     NSData *data = [NSData dataWithContentsOfURL:url];
     if (!data) {
         SLog(@"WARNING: No data file for key %@", key);

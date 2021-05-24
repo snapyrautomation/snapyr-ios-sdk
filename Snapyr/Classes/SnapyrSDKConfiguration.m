@@ -64,7 +64,7 @@
 {
     if (self = [self init]) {
         self.writeKey = writeKey;
-        NSLog(@"[SNAP] SnapyrSDKConfiguration : Fetching configuration...");
+        DLog(@"SnapyrSDKConfiguration.initWithWriteKey");
         // get the host we have stored
         NSString *host = [SnapyrUtils getAPIHost];
         if ([host isEqualToString:kSnapyrAPIBaseHost]) {

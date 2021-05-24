@@ -10,7 +10,7 @@ Pod::Spec.new do |s|
                        platform.
                        DESC
 
-  s.homepage         = "http://snapyr.com/"
+  s.homepage         = "https://app.snapyr.com/"
   s.license          =  { :type => 'MIT' }
   s.source           = { :git => "https://github.com/snapyrautomation/snapyr-ios-sdk.git", :tag => s.version.to_s }
 

@@ -11,27 +11,22 @@ import Snapyr
 import XCTest
 
 class TrackingTests: XCTestCase {
-    
     var passthrough: PassthroughMiddleware!
-    var snapyr: Snapyr!
+    var sdk: Snapyr!
     
     override func setUp() {
         super.setUp()
-        let config = SnapyrConfiguration(writeKey: "QUI5ydwIGeFFTa1IvCBUhxL9PyW5B0jE")
         passthrough = PassthroughMiddleware()
-        config.sourceMiddleware = [
-            passthrough,
-        ]
-        snapyr = Snapyr(configuration: config)
+        sdk = getUnitTestSDK(application:nil, sourceMiddleware: [passthrough], destinationMiddleware: [])
     }
     
     override func tearDown() {
         super.tearDown()
-        snapyr.reset()
+        sdk.reset()
     }
     
     func testHandlesIdentify() {
-        snapyr.identify("testUserId1", traits: [
+        sdk.identify("testUserId1", traits: [
             "firstName": "Peter"
         ])
         XCTAssertEqual(passthrough.lastContext?.eventType, EventType.identify)
@@ -42,7 +37,7 @@ class TrackingTests: XCTestCase {
     }
     
     func testHandlesIdentifyAndUserIdPass() {
-        snapyr.identify("testUserId1", traits: [
+        sdk.identify("testUserId1", traits: [
             "firstName": "Peter"
         ])
         XCTAssertEqual(passthrough.lastContext?.eventType, EventType.identify)
@@ -52,7 +47,7 @@ class TrackingTests: XCTestCase {
         XCTAssertEqual(identify?.traits?["firstName"] as? String, "Peter")
         XCTAssertEqual(identify?.traits?["userId"] as? String, "testUserId1")
         
-        snapyr.identify("testUserId1")
+        sdk.identify("testUserId1")
         XCTAssertEqual(passthrough.lastContext?.eventType, EventType.identify)
         let identify2 = passthrough.lastContext?.payload as? IdentifyPayload
         XCTAssertEqual(identify2?.userId, "testUserId1")
@@ -60,7 +55,7 @@ class TrackingTests: XCTestCase {
     }
     
     func testHandlesIdentifyWithCustomAnonymousId() {
-        snapyr.identify("testUserId1", traits: [
+        sdk.identify("testUserId1", traits: [
             "firstName": "Peter"
             ], options: [
                 "anonymousId": "a_custom_anonymous_id"
@@ -73,7 +68,7 @@ class TrackingTests: XCTestCase {
     }
     
     func testHandlesTrack() {
-        snapyr.track("User Signup", properties: [
+        sdk.track("User Signup", properties: [
             "method": "SSO"
             ], options: [
                 "context": [
@@ -89,14 +84,14 @@ class TrackingTests: XCTestCase {
     }
     
     func testHandlesAlias() {
-        snapyr.alias("persistentUserId")
+        sdk.alias("persistentUserId")
         XCTAssertEqual(passthrough.lastContext?.eventType, EventType.alias)
         let payload = passthrough.lastContext?.payload as? AliasPayload
         XCTAssertEqual(payload?.theNewId, "persistentUserId")
     }
     
     func testHandlesScreen() {
-        snapyr.screen("Home", category:"test", properties: [
+        sdk.screen("Home", category:"test", properties: [
             "referrer": "Google"
         ])
         XCTAssertEqual(passthrough.lastContext?.eventType, EventType.screen)
@@ -107,7 +102,7 @@ class TrackingTests: XCTestCase {
     }
     
     func testHandlesGroup() {
-        snapyr.group("acme-company", traits: [
+        sdk.group("acme-company", traits: [
             "employees": 2333
         ])
         XCTAssertEqual(passthrough.lastContext?.eventType, EventType.group)
@@ -117,7 +112,7 @@ class TrackingTests: XCTestCase {
     }
     
     func testHandlesNullValues() {
-        snapyr.track("null test", properties: [
+        sdk.track("null test", properties: [
             "nullTest": NSNull()
         ])
         let payload = passthrough.lastContext?.payload as? TrackPayload

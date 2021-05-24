@@ -42,15 +42,13 @@ class StoreKitTrackerTests: XCTestCase {
 
     var test: TestMiddleware!
     var tracker: StoreKitTracker!
-    var snapyr: Snapyr!
+    var sdk: Snapyr!
     
     override func setUp() {
-        super.setUp()
-        let config = SnapyrConfiguration(writeKey: "foobar")
+        super.setUp()        
         test = TestMiddleware()
-        config.sourceMiddleware = [test]
-        snapyr = Snapyr(configuration: config)
-        tracker = StoreKitTracker.trackTransactions(for: snapyr)
+        sdk = getUnitTestSDK(application:nil, sourceMiddleware: [test], destinationMiddleware: [])
+        tracker = StoreKitTracker.trackTransactions(for: sdk)
     }
     
     func testSKPaymentQueueObserver() {

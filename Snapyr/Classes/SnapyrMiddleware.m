@@ -51,20 +51,16 @@
 
 - (SnapyrContext *)run:(SnapyrContext *_Nonnull)context callback:(RunMiddlewaresCallback _Nullable)callback
 {
-    NSLog(@"Actually running the middleware [%@]", self.middlewares);
-
+    DLog(@"SnapyrMiddlewareRunner.run: running middlewares [%@]", self.middlewares);
     return [self runMiddlewares:self.middlewares context:context callback:callback];
 }
 
-// TODO: Maybe rename SnapyrContext to SnapyrEvent to be a bit more clear?
-// We could also use some sanity check / other types of logging here.
 - (SnapyrContext *)runMiddlewares:(NSArray<id<SnapyrMiddleware>> *_Nonnull)middlewares
                           context:(SnapyrContext *_Nonnull)context
                          callback:(RunMiddlewaresCallback _Nullable)callback
 {
     __block SnapyrContext * _Nonnull result = context;
-    NSLog(@"SnapyrMiddleware.runMiddlwares");
-
+    DLog(@"SnapyrMiddlewareRunner.run: runMiddlwares");
     BOOL earlyExit = context == nil;
     if (middlewares.count == 0 || earlyExit) {
         if (callback) {
