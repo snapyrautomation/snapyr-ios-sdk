@@ -26,7 +26,7 @@ clean-tvos:
 clean-macos:
 	set -o pipefail && xcodebuild $(MACOS_XCARGS) -scheme Snapyr clean | xcpretty
 
-clean: clean-ios clean-tvos clean-macos
+clean: clean-ios clean-macos
 
 build-ios:
 	set -o pipefail && xcodebuild $(IOS_XCARGS) $(XC_BUILD_ARGS) | xcpretty
@@ -37,11 +37,11 @@ build-tvos:
 build-macos:
 	set -o pipefail && xcodebuild $(MACOS_XCARGS) $(XC_BUILD_ARGS) | xcpretty
 
-build: build-ios build-tvos
+build: build-ios # build-tvos
 
 test-ios:
-	xcodebuild test $(IOS_XCARGS) -scheme SnapyrTests $(XC_TEST_ARGS)
-#	@set -o pipefail && xcodebuild test $(IOS_XCARGS) -scheme SnapyrTests $(XC_TEST_ARGS) | xcpretty --report junit
+# 	xcodebuild test $(IOS_XCARGS) -scheme SnapyrTests $(XC_TEST_ARGS)
+	@set -o pipefail && xcodebuild test $(IOS_XCARGS) -scheme SnapyrTests $(XC_TEST_ARGS) | xcpretty --report junit
 
 test-tvos:
 	@set -o pipefail && xcodebuild test $(TVOS_XCARGS) -scheme SnapyrTests $(XC_TEST_ARGS) | xcpretty --report junit
@@ -49,7 +49,7 @@ test-tvos:
 test-macos:
 	@set -o pipefail && xcodebuild test $(MACOS_XCARGS) -scheme SnapyrTests $(XC_TEST_ARGS) | xcpretty --report junit
 
-test: test-ios test-tvos test-macos
+test: test-ios # test-tvos test-macos
 
 xctest:
 	xctool $(IOS_XCARGS) -scheme SnapyrTests $(XC_TEST_ARGS) run-tests -sdk iphonesimulator
