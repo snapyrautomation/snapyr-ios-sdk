@@ -43,6 +43,20 @@
 
 - (NSURLSessionDataTask *)settingsForWriteKey:(NSString *)writeKey completionHandler:(void (^)(BOOL success, JSON_DICT _Nullable settings))completionHandler
 {
+    NSBundle *bundle = [NSBundle bundleForClass:[self class]];
+    NSString *path = [bundle pathForResource:@"sdk" ofType:@"json"];
+    NSData *jsonData = [NSData dataWithContentsOfFile:path];
+    SLog(@"loaded json [%@]", jsonData);
+    
+    NSError* error = nil;
+    id dict = [NSJSONSerialization JSONObjectWithData:jsonData options:0 error:&error];
+    if (dict != nil) {
+        SLog(@"dict from json: %@", dict);
+    } else {
+        SLog(@"json error: %@", error);
+    }
+    
+    completionHandler(true, dict);
     return [OCMockObject mockForClass:[NSURLSessionDataTask class]];
 }
 

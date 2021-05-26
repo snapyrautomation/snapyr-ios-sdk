@@ -85,6 +85,7 @@
 		EADEB8F51DECD335005322DA /* CryptoTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = EADEB8E91DECD335005322DA /* CryptoTest.swift */; };
 		F61EB4AF1F996DEF0038C8C0 /* SDKUtilTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F61EB4AE1F996DEF0038C8C0 /* SDKUtilTests.swift */; };
 		F6309C7A265C091A009D8A84 /* libOCMock.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F6B8134C264DE0CC00B12EFA /* libOCMock.a */; };
+		F651DAC8265DF517000F6909 /* sdk.json in Resources */ = {isa = PBXBuildFile; fileRef = F651DAC7265DF517000F6909 /* sdk.json */; };
 		F68AD013264DB3DE00FE6513 /* SnapyrTestUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = F68AD012264DB3DE00FE6513 /* SnapyrTestUtils.swift */; };
 		F6B81351264DE26A00B12EFA /* usr in Resources */ = {isa = PBXBuildFile; fileRef = F6B81350264DE26A00B12EFA /* usr */; };
 		F6BDBFA0265C1AEA0029126B /* SnapyrMockHTTPClient.m in Sources */ = {isa = PBXBuildFile; fileRef = F6BDBF9F265C1AEA0029126B /* SnapyrMockHTTPClient.m */; };
@@ -188,6 +189,7 @@
 		EADEB9001DED3711005322DA /* Snapyr.podspec */ = {isa = PBXFileReference; lastKnownFileType = file.podspec; path = Snapyr.podspec; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
 		EADEB9011DED3711005322DA /* Podfile.lock */ = {isa = PBXFileReference; lastKnownFileType = text; path = Podfile.lock; sourceTree = "<group>"; };
 		F61EB4AE1F996DEF0038C8C0 /* SDKUtilTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SDKUtilTests.swift; sourceTree = "<group>"; };
+		F651DAC7265DF517000F6909 /* sdk.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = sdk.json; sourceTree = "<group>"; };
 		F68AD012264DB3DE00FE6513 /* SnapyrTestUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SnapyrTestUtils.swift; sourceTree = "<group>"; };
 		F6B8134C264DE0CC00B12EFA /* libOCMock.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libOCMock.a; path = usr/lib/libOCMock.a; sourceTree = "<group>"; };
 		F6B81350264DE26A00B12EFA /* usr */ = {isa = PBXFileReference; lastKnownFileType = folder; path = usr; sourceTree = "<group>"; };
@@ -360,6 +362,7 @@
 		EADEB8E11DECD335005322DA /* Utils */ = {
 			isa = PBXGroup;
 			children = (
+				F651DAC7265DF517000F6909 /* sdk.json */,
 				F6BDBF9E265C1AEA0029126B /* SnapyrMockHTTPClient.h */,
 				F6BDBF9F265C1AEA0029126B /* SnapyrMockHTTPClient.m */,
 				EADEB8E21DECD335005322DA /* NSData+SnapyrGUNZIPP.h */,
@@ -518,6 +521,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F651DAC8265DF517000F6909 /* sdk.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
