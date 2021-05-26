@@ -56,6 +56,7 @@
         SLog(@"json error: %@", error);
     }
     
+    completionHandler(true, dict);
     return [OCMockObject mockForClass:[NSURLSessionDataTask class]];
 }
 
