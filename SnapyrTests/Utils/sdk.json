@@ -1,0 +1,34 @@
+{
+    "tenant": {
+        "orgId": "f95991da-ea9c-4e44-998d-5ff5f4ca04d3",
+        "workspaceId": "d00f0649-c6a4-475c-8eeb-518ae5f29768"
+    },
+    "metadata": {
+        "engine": "",
+        "platform": "Android",
+        "channelId": "6e6e8689-b25d-46b3-a924-7682ba7e6d94",
+        "pushCategories": {
+            "TIMER_EXPIRED": {
+                "actions": [{
+                        "actionId": "SNOOZE_ACTION",
+                        "title": "Snooze",
+                        "deepLinkUrl": "http://snooze.com"
+                    },
+                    {
+                        "actionId": "STOP_ACTION",
+                        "title": "Stop",
+                        "deepLinkUrl": "http://stop.com"
+                    }
+                ],
+                "GENERAL": {
+                    "actions": [{
+                        "actionId": "SET_TIMER",
+                        "title": "Set Timer",
+                        "deepLinkUrl": "http://set.com"
+                    }]
+
+                }
+            }
+        }
+    }
+}
