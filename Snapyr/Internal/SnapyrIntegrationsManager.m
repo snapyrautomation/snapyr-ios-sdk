@@ -455,7 +455,7 @@ NSString *const kSnapyrCachedSettingsFilename = @"sdk.settings.v2.plist";
             snapyr_dispatch_specific_async(self -> _serialQueue, ^{
                 if (success) {
                     DLog(@"SnapyrIntegrationsManager.refreshingSettings: successfully received settings");
-                    [self.pushAdaptor configureCategories:settings];
+                    // [self.pushAdaptor configureCategories:settings];
                     [self setCachedSettings:settings];
                 } else {
                     DLog(@"SnapyrIntegrationsManager.refreshingSettings: failed attempting to fetch settings, falling back to previously cached settings");

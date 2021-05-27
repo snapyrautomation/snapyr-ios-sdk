@@ -8,14 +8,15 @@
 
 @import Foundation;
 #import "SnapyrPushAdaptor.h"
+#import <UserNotifications/UserNotifications.h>
 
 #ifndef SnapyrPushAdaptor_h
 #define SnapyrPushAdaptor_h
 
-NS_SWIFT_NAME(FileStorage)
+NS_SWIFT_NAME(PushAdaptor)
 @interface SnapyrPushAdaptor : NSObject
 
-- (void)configureCategories:(NSDictionary *_Nonnull)settings;
+- (void)configureCategories:(NSDictionary *_Nonnull)settings withNotificationCenter:(UNUserNotificationCenter *_Nonnull)notificationCenter;
 
 @end
 

@@ -8,11 +8,11 @@
 
 #import <Foundation/Foundation.h>
 #import "SnapyrPushAdaptor.h"
-#import <UserNotifications/UserNotifications.h>
 
 @implementation SnapyrPushAdaptor
 
-- (void)configureCategories:(NSDictionary *_Nonnull)settings{
+- (void)configureCategories:(NSDictionary *_Nonnull)settings withNotificationCenter:(UNUserNotificationCenter *_Nonnull)notificationCenter
+{
     
     UNNotificationCategory* generalCategory = [UNNotificationCategory
           categoryWithIdentifier:@"GENERAL"
@@ -23,12 +23,12 @@
     // Create the custom actions for expired timer notifications.
     UNNotificationAction* snoozeAction = [UNNotificationAction
           actionWithIdentifier:@"SNOOZE_ACTION"
-          title:@"Snooze"
+          title:@"It"
           options:UNNotificationActionOptionNone];
      
     UNNotificationAction* stopAction = [UNNotificationAction
           actionWithIdentifier:@"STOP_ACTION"
-          title:@"Stop"
+          title:@"Worked"
           options:UNNotificationActionOptionForeground];
      
     // Create the category with the custom actions.
