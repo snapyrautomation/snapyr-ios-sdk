@@ -16,9 +16,8 @@
 		3BE0609126408DF2006233F8 /* PushTestTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BE0609026408DF2006233F8 /* PushTestTests.swift */; };
 		3BE0609C26408DF2006233F8 /* PushTestUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BE0609B26408DF2006233F8 /* PushTestUITests.swift */; };
 		F67A7F59265D431700E88B99 /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F67A7F58265D431700E88B99 /* XCTest.framework */; };
-		F688456D265FED8200696CB1 /* Snapyr.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F688456C265FED8200696CB1 /* Snapyr.framework */; };
-		F688456F265FF28100696CB1 /* Snapyr.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F688456C265FED8200696CB1 /* Snapyr.framework */; };
-		F6884570265FF28100696CB1 /* Snapyr.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = F688456C265FED8200696CB1 /* Snapyr.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		F6930D9D2660167800B734E1 /* Snapyr.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F6930D9C2660167800B734E1 /* Snapyr.framework */; };
+		F6930D9E2660167800B734E1 /* Snapyr.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = F6930D9C2660167800B734E1 /* Snapyr.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		F6BAB2B9265C4CDD00974AE3 /* UserNotifications.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F6BAB2B8265C4CDD00974AE3 /* UserNotifications.framework */; };
 		F6BAB2BB265C4CDD00974AE3 /* UserNotificationsUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F6BAB2BA265C4CDD00974AE3 /* UserNotificationsUI.framework */; };
 		F6BAB2BE265C4CDD00974AE3 /* NotificationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6BAB2BD265C4CDD00974AE3 /* NotificationViewController.swift */; };
@@ -57,7 +56,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				F6884570265FF28100696CB1 /* Snapyr.framework in Embed Frameworks */,
+				F6930D9E2660167800B734E1 /* Snapyr.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -91,7 +90,7 @@
 		3BE0609B26408DF2006233F8 /* PushTestUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PushTestUITests.swift; sourceTree = "<group>"; };
 		3BE0609D26408DF2006233F8 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		F67A7F58265D431700E88B99 /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Platforms/iPhoneOS.platform/Developer/Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
-		F688456C265FED8200696CB1 /* Snapyr.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Snapyr.framework; path = ../Carthage/Build/iOS/Snapyr.framework; sourceTree = "<group>"; };
+		F6930D9C2660167800B734E1 /* Snapyr.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Snapyr.framework; path = ../Carthage/Build/iOS/Snapyr.framework; sourceTree = "<group>"; };
 		F6BAB2B6265C4CDD00974AE3 /* PushTestExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = PushTestExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		F6BAB2B8265C4CDD00974AE3 /* UserNotifications.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UserNotifications.framework; path = System/Library/Frameworks/UserNotifications.framework; sourceTree = SDKROOT; };
 		F6BAB2BA265C4CDD00974AE3 /* UserNotificationsUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UserNotificationsUI.framework; path = System/Library/Frameworks/UserNotificationsUI.framework; sourceTree = SDKROOT; };
@@ -105,7 +104,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				F688456F265FF28100696CB1 /* Snapyr.framework in Frameworks */,
+				F6930D9D2660167800B734E1 /* Snapyr.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -113,7 +112,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				F688456D265FED8200696CB1 /* Snapyr.framework in Frameworks */,
 				F67A7F59265D431700E88B99 /* XCTest.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -195,7 +193,7 @@
 		F6BAB2B7265C4CDD00974AE3 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				F688456C265FED8200696CB1 /* Snapyr.framework */,
+				F6930D9C2660167800B734E1 /* Snapyr.framework */,
 				F67A7F58265D431700E88B99 /* XCTest.framework */,
 				F6BAB2B8265C4CDD00974AE3 /* UserNotifications.framework */,
 				F6BAB2BA265C4CDD00974AE3 /* UserNotificationsUI.framework */,
@@ -490,6 +488,7 @@
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
+				FRAMEWORK_SEARCH_PATHS = $PROJECT_DIR/../Carthage/Build/iOS/;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_NO_COMMON_BLOCKS = YES;
@@ -551,6 +550,7 @@
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				FRAMEWORK_SEARCH_PATHS = $PROJECT_DIR/../Carthage/Build/iOS/;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;

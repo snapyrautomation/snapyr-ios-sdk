@@ -13,12 +13,7 @@ import Snapyr
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-        
-        let notificationCenter = UNUserNotificationCenter.current()
-        notificationCenter.requestAuthorization(options: [.alert, .sound]) { granted, error in
-          // handle permissions here
-        }
-        
+                
         let configuration = SnapyrConfiguration(writeKey: "FBa8x47JC3PzO1YOE4ojqxcGGCPyPesD")
         configuration.trackApplicationLifecycleEvents = true // Enable this to record certain application events automatically!
         configuration.recordScreenViews = true // Enable this to record screen views automatically!
@@ -33,39 +28,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         Snapyr.setup(with: configuration)
         Snapyr.shared().identify("wikram")
         
-        print ("HERE!")
-        
+        // Configure Categories & Actions
+        let notificationCenter = UNUserNotificationCenter.current()
+        notificationCenter.requestAuthorization(options: [.alert, .sound]) { granted, error in
+        }
         let pushAdaptor = PushAdaptor()
-        
-        let mockSettings: [AnyHashable: Any] = [
-            "helloString" : "Hello, World!",
-            "magicNumber" : 42,
-        ]
-        
-        pushAdaptor.configureCategories(mockSettings, notificationCenter)
-        print ("RAN PUSH!")
-
-        //        let generalCategory = UNNotificationCategory(identifier: "GENERAL",
-//                                                     actions: [],
-//                                                     intentIdentifiers: [],
-//                                                     options: .customDismissAction)
-//
-//        // Create the custom actions for the TIMER_EXPIRED category.
-//        let snoozeAction = UNNotificationAction(identifier: "SNOOZE_ACTION",
-//                                                title: "Hit me",
-//                                                options: UNNotificationActionOptions(rawValue: 0))
-//        let stopAction = UNNotificationAction(identifier: "STOP_ACTION",
-//                                              title: "Stay",
-//                                              options: .foreground)
-//
-//        let expiredCategory = UNNotificationCategory(identifier: "TIMER_EXPIRED",
-//                                                     actions: [snoozeAction, stopAction],
-//                                                     intentIdentifiers: [],
-//                                                     options: UNNotificationCategoryOptions(rawValue: 0))
-//
-//        // Register the notification categories.
-//        notificationCenter.setNotificationCategories([generalCategory, expiredCategory])
-        
+        let mockSettings: [AnyHashable: Any] = ["magicNumber" : 42]
+        pushAdaptor.configureCategories(mockSettings, with:notificationCenter)
+        print ("Successfully configured push.")
         return true
     }
 

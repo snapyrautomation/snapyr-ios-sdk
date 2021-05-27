@@ -34,6 +34,6 @@ class PushAdaptorTests: XCTestCase {
         }
 
         print("sdkConfig : [\(sdkConfig)]")
-        pushAdaptor.configureCategories(sdkConfig)
+        pushAdaptor.configureCategories(sdkConfig, with:nil)
     }
 }

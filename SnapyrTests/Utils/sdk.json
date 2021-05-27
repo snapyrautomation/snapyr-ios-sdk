@@ -7,28 +7,19 @@
         "engine": "",
         "platform": "Android",
         "channelId": "6e6e8689-b25d-46b3-a924-7682ba7e6d94",
-        "pushCategories": {
-            "TIMER_EXPIRED": {
-                "actions": [{
-                        "actionId": "SNOOZE_ACTION",
-                        "title": "Snooze",
-                        "deepLinkUrl": "http://snooze.com"
-                    },
-                    {
-                        "actionId": "STOP_ACTION",
-                        "title": "Stop",
-                        "deepLinkUrl": "http://stop.com"
-                    }
-                ],
-                "GENERAL": {
-                    "actions": [{
-                        "actionId": "SET_TIMER",
-                        "title": "Set Timer",
-                        "deepLinkUrl": "http://set.com"
-                    }]
-
-                }
-            }
-        }
+        "pushCategories": [{
+            "id": "c2ca4311-19f8-45ce-bf45-b0c40ea00c5d",
+            "category": "buttons_galore",
+            "actions": [{
+                "actionId": "action1",
+                "title": "title for action1"
+            }, {
+                "actionId": "action2",
+                "title": "title for action2"
+            }, {
+                "actionId": "totle 3",
+                "title": "totle for action3"
+            }]
+        }]
     }
 }

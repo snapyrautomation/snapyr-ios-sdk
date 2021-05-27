@@ -19,6 +19,7 @@ FOUNDATION_EXPORT const unsigned char SnapyrVersionString[];
 #import "SnapyrSnapyrIntegrationFactory.h"
 #import "SnapyrContext.h"
 #import "SnapyrMiddleware.h"
+#import "SnapyrPushAdaptor.h"
 #import "SnapyrScreenReporting.h"
 #import "SnapyrSDKUtils.h"
 #import "SnapyrWebhookIntegration.h"

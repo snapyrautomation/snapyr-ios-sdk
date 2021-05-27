@@ -84,11 +84,12 @@
 		EADEB8F41DECD335005322DA /* ContextTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = EADEB8E81DECD335005322DA /* ContextTest.swift */; };
 		EADEB8F51DECD335005322DA /* CryptoTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = EADEB8E91DECD335005322DA /* CryptoTest.swift */; };
 		F608200B265FD899006C6E41 /* PushAdaptorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F608200A265FD899006C6E41 /* PushAdaptorTests.swift */; };
+		F615B05B26601A0A00A45A43 /* SnapyrPushAdaptor.h in Headers */ = {isa = PBXBuildFile; fileRef = F68845722660047700696CB1 /* SnapyrPushAdaptor.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		F615B05C26601A0E00A45A43 /* SnapyrPushAdaptor.m in Sources */ = {isa = PBXBuildFile; fileRef = F681354C265FC56700266615 /* SnapyrPushAdaptor.m */; };
 		F61EB4AF1F996DEF0038C8C0 /* SDKUtilTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F61EB4AE1F996DEF0038C8C0 /* SDKUtilTests.swift */; };
 		F6309C7A265C091A009D8A84 /* libOCMock.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F6B8134C264DE0CC00B12EFA /* libOCMock.a */; };
 		F651DAC8265DF517000F6909 /* sdk.json in Resources */ = {isa = PBXBuildFile; fileRef = F651DAC7265DF517000F6909 /* sdk.json */; };
 		F681354D265FC56700266615 /* SnapyrPushAdaptor.m in Sources */ = {isa = PBXBuildFile; fileRef = F681354C265FC56700266615 /* SnapyrPushAdaptor.m */; };
-		F6884560265FDDD200696CB1 /* SnapyrPushAdaptor.m in Sources */ = {isa = PBXBuildFile; fileRef = F681354C265FC56700266615 /* SnapyrPushAdaptor.m */; };
 		F6884562265FEA1700696CB1 /* UserNotifications.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F6884561265FEA1700696CB1 /* UserNotifications.framework */; };
 		F6884564265FEA2000696CB1 /* NotificationCenter.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F6884563265FEA2000696CB1 /* NotificationCenter.framework */; };
 		F6884566265FEA2B00696CB1 /* UserNotificationsUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F6884565265FEA2B00696CB1 /* UserNotificationsUI.framework */; };
@@ -334,6 +335,8 @@
 				EADEB8A81DECD12B005322DA /* SnapyrMiddleware.m */,
 				EADEB8861DECD12B005322DA /* SnapyrPayload.h */,
 				EADEB8871DECD12B005322DA /* SnapyrPayload.m */,
+				F68845722660047700696CB1 /* SnapyrPushAdaptor.h */,
+				F681354C265FC56700266615 /* SnapyrPushAdaptor.m */,
 				EAA5427B1EB42B8C00945DA7 /* SnapyrReachability.h */,
 				EAA5427C1EB42B8C00945DA7 /* SnapyrReachability.m */,
 				EADEB8881DECD12B005322DA /* SnapyrScreenPayload.h */,
@@ -366,8 +369,6 @@
 				EADEB8791DECD12B005322DA /* SnapyrAES256Crypto.m */,
 				EADEB8911DECD12B005322DA /* SnapyrFileStorage.h */,
 				EADEB8921DECD12B005322DA /* SnapyrFileStorage.m */,
-				F68845722660047700696CB1 /* SnapyrPushAdaptor.h */,
-				F681354C265FC56700266615 /* SnapyrPushAdaptor.m */,
 				EADEB8841DECD12B005322DA /* SnapyrIntegrationsManager.h */,
 				EADEB8851DECD12B005322DA /* SnapyrIntegrationsManager.m */,
 				A352175F23AD5825005B07F6 /* SnapyrMacros.h */,
@@ -424,6 +425,7 @@
 				EADEB8B81DECD12B005322DA /* SnapyrIntegrationFactory.h in Headers */,
 				EADEB8CB1DECD12B005322DA /* SnapyrSnapyrIntegration.h in Headers */,
 				EADEB8CD1DECD12B005322DA /* SnapyrSnapyrIntegrationFactory.h in Headers */,
+				F615B05B26601A0A00A45A43 /* SnapyrPushAdaptor.h in Headers */,
 				EADEB8B71DECD12B005322DA /* SnapyrIntegration.h in Headers */,
 				EADEB8B51DECD12B005322DA /* SnapyrIdentifyPayload.h in Headers */,
 				EADEB8BB1DECD12B005322DA /* SnapyrPayload.h in Headers */,
@@ -599,7 +601,7 @@
 				8D84EE3826448D7300B982F8 /* EndToEndTests.swift in Sources */,
 				F68AD013264DB3DE00FE6513 /* SnapyrTestUtils.swift in Sources */,
 				EAA542771EB4035400945DA7 /* TrackingTests.swift in Sources */,
-				F6884560265FDDD200696CB1 /* SnapyrPushAdaptor.m in Sources */,
+				F615B05C26601A0E00A45A43 /* SnapyrPushAdaptor.m in Sources */,
 				EADEB8F41DECD335005322DA /* ContextTest.swift in Sources */,
 				A31958EF2385AC3A00A47EFA /* SerializationTests.m in Sources */,
 				EADEB8F31DECD335005322DA /* SnapyrTests.swift in Sources */,

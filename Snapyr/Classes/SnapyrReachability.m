@@ -492,7 +492,9 @@ static void TMReachabilityCallback(SCNetworkReachabilityRef target, SCNetworkRea
 - (NSString *)description;
 {
     NSString *description = [NSString stringWithFormat:@"<%@: %#x>",
-                                                       NSStringFromClass([self class]), (unsigned int)self];
+                                                       NSStringFromClass([self class]), (unsigned int)-1];
+    // TODO (@boneill42): Figure out what this is actually doing,
+    // was (unsigned int)self above, but that casts this class to an int !?
     return description;
 }
 
