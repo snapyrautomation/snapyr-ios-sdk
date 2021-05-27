@@ -14,6 +14,7 @@
 #import "SnapyrSDK.h"
 #import "SnapyrIntegrationFactory.h"
 #import "SnapyrIntegration.h"
+#import "SnapyrPushAdaptor.h"
 #import "SnapyrHTTPClient.h"
 #import "SnapyrStorage.h"
 #import "SnapyrFileStorage.h"
@@ -65,6 +66,7 @@ NSString *const kSnapyrCachedSettingsFilename = @"sdk.settings.v2.plist";
 @property (nonatomic, strong) SnapyrSDK *sdk;
 @property (nonatomic, strong) NSDictionary *cachedSettings;
 @property (nonatomic, strong) SnapyrSDKConfiguration *configuration;
+@property (nonatomic, strong) SnapyrPushAdaptor *pushAdaptor;
 @property (nonatomic, strong) dispatch_queue_t serialQueue;
 @property (nonatomic, strong) NSMutableArray *messageQueue;
 @property (nonatomic, strong) NSArray *factories;
@@ -453,6 +455,7 @@ NSString *const kSnapyrCachedSettingsFilename = @"sdk.settings.v2.plist";
             snapyr_dispatch_specific_async(self -> _serialQueue, ^{
                 if (success) {
                     DLog(@"SnapyrIntegrationsManager.refreshingSettings: successfully received settings");
+                    [self.pushAdaptor configureCategories:settings]
                     [self setCachedSettings:settings];
                 } else {
                     DLog(@"SnapyrIntegrationsManager.refreshingSettings: failed attempting to fetch settings, falling back to previously cached settings");

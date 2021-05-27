@@ -84,7 +84,6 @@
 		EADEB8F41DECD335005322DA /* ContextTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = EADEB8E81DECD335005322DA /* ContextTest.swift */; };
 		EADEB8F51DECD335005322DA /* CryptoTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = EADEB8E91DECD335005322DA /* CryptoTest.swift */; };
 		F608200B265FD899006C6E41 /* PushAdaptorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F608200A265FD899006C6E41 /* PushAdaptorTests.swift */; };
-		F6082010265FDC86006C6E41 /* SnapyrPushAdaptor.h in Headers */ = {isa = PBXBuildFile; fileRef = F681354B265FC54200266615 /* SnapyrPushAdaptor.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		F61EB4AF1F996DEF0038C8C0 /* SDKUtilTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F61EB4AE1F996DEF0038C8C0 /* SDKUtilTests.swift */; };
 		F6309C7A265C091A009D8A84 /* libOCMock.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F6B8134C264DE0CC00B12EFA /* libOCMock.a */; };
 		F651DAC8265DF517000F6909 /* sdk.json in Resources */ = {isa = PBXBuildFile; fileRef = F651DAC7265DF517000F6909 /* sdk.json */; };
@@ -201,11 +200,11 @@
 		F608200A265FD899006C6E41 /* PushAdaptorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PushAdaptorTests.swift; sourceTree = "<group>"; };
 		F61EB4AE1F996DEF0038C8C0 /* SDKUtilTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SDKUtilTests.swift; sourceTree = "<group>"; };
 		F651DAC7265DF517000F6909 /* sdk.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = sdk.json; sourceTree = "<group>"; };
-		F681354B265FC54200266615 /* SnapyrPushAdaptor.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SnapyrPushAdaptor.h; sourceTree = "<group>"; };
 		F681354C265FC56700266615 /* SnapyrPushAdaptor.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SnapyrPushAdaptor.m; sourceTree = "<group>"; };
 		F6884561265FEA1700696CB1 /* UserNotifications.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UserNotifications.framework; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX11.3.sdk/System/Library/Frameworks/UserNotifications.framework; sourceTree = DEVELOPER_DIR; };
 		F6884563265FEA2000696CB1 /* NotificationCenter.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = NotificationCenter.framework; path = System/Library/Frameworks/NotificationCenter.framework; sourceTree = SDKROOT; };
 		F6884565265FEA2B00696CB1 /* UserNotificationsUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UserNotificationsUI.framework; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX11.3.sdk/System/iOSSupport/System/Library/Frameworks/UserNotificationsUI.framework; sourceTree = DEVELOPER_DIR; };
+		F68845722660047700696CB1 /* SnapyrPushAdaptor.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SnapyrPushAdaptor.h; sourceTree = "<group>"; };
 		F68AD012264DB3DE00FE6513 /* SnapyrTestUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SnapyrTestUtils.swift; sourceTree = "<group>"; };
 		F6B8134C264DE0CC00B12EFA /* libOCMock.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libOCMock.a; path = usr/lib/libOCMock.a; sourceTree = "<group>"; };
 		F6B81350264DE26A00B12EFA /* usr */ = {isa = PBXFileReference; lastKnownFileType = folder; path = usr; sourceTree = "<group>"; };
@@ -367,7 +366,7 @@
 				EADEB8791DECD12B005322DA /* SnapyrAES256Crypto.m */,
 				EADEB8911DECD12B005322DA /* SnapyrFileStorage.h */,
 				EADEB8921DECD12B005322DA /* SnapyrFileStorage.m */,
-				F681354B265FC54200266615 /* SnapyrPushAdaptor.h */,
+				F68845722660047700696CB1 /* SnapyrPushAdaptor.h */,
 				F681354C265FC56700266615 /* SnapyrPushAdaptor.m */,
 				EADEB8841DECD12B005322DA /* SnapyrIntegrationsManager.h */,
 				EADEB8851DECD12B005322DA /* SnapyrIntegrationsManager.m */,
@@ -425,7 +424,6 @@
 				EADEB8B81DECD12B005322DA /* SnapyrIntegrationFactory.h in Headers */,
 				EADEB8CB1DECD12B005322DA /* SnapyrSnapyrIntegration.h in Headers */,
 				EADEB8CD1DECD12B005322DA /* SnapyrSnapyrIntegrationFactory.h in Headers */,
-				F6082010265FDC86006C6E41 /* SnapyrPushAdaptor.h in Headers */,
 				EADEB8B71DECD12B005322DA /* SnapyrIntegration.h in Headers */,
 				EADEB8B51DECD12B005322DA /* SnapyrIdentifyPayload.h in Headers */,
 				EADEB8BB1DECD12B005322DA /* SnapyrPayload.h in Headers */,
