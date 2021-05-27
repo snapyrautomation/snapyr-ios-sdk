@@ -7,6 +7,7 @@
 
 import UIKit
 import UserNotifications
+import Snapyr
 
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -18,6 +19,21 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
           // handle permissions here
         }
         
+        let configuration = SnapyrConfiguration(writeKey: "FBa8x47JC3PzO1YOE4ojqxcGGCPyPesD")
+        configuration.trackApplicationLifecycleEvents = true // Enable this to record certain application events automatically!
+        configuration.recordScreenViews = true // Enable this to record screen views automatically!
+        configuration.actionHandler = {
+            action in
+            print("ACTION ", action)
+            let zone = action["zone"]!
+            let userId = action["userId"]!
+            NSLog("Action Received zone=\(zone) userId=\(userId)")
+        }
+        Snapyr.debug(true)
+        Snapyr.setup(with: configuration)
+        Snapyr.shared().identify("wikram")
+        
+        print ("HERE!")
         let generalCategory = UNNotificationCategory(identifier: "GENERAL",
                                                      actions: [],
                                                      intentIdentifiers: [],
@@ -25,10 +41,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
          
         // Create the custom actions for the TIMER_EXPIRED category.
         let snoozeAction = UNNotificationAction(identifier: "SNOOZE_ACTION",
-                                                title: "Snooze",
+                                                title: "Hit me",
                                                 options: UNNotificationActionOptions(rawValue: 0))
         let stopAction = UNNotificationAction(identifier: "STOP_ACTION",
-                                              title: "Stop",
+                                              title: "Stay",
                                               options: .foreground)
          
         let expiredCategory = UNNotificationCategory(identifier: "TIMER_EXPIRED",
