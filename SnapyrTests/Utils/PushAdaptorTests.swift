@@ -33,6 +33,7 @@ class PushAdaptorTests: XCTestCase {
             fatalError("Unable to convert sdk.json to JSON dictionary")
         }
         print("sdkConfig : [\(sdkConfig)]")
-        pushAdaptor.configureCategories(sdkConfig, with: nil)
+        let metadata = sdkConfig["metadata"] as! [AnyHashable:Any]
+        pushAdaptor.configureCategories(metadata, with: nil)
     }
 }
