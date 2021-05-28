@@ -8,8 +8,6 @@
 
 #import <Foundation/Foundation.h>
 #import "SnapyrPushAdaptor.h"
-#import "SnapyrPushAction.h"
-#import "SnapyrPushCategory.h"
 
 @implementation SnapyrPushAdaptor
 
@@ -20,12 +18,10 @@
     NSArray *pushCategories =[settings valueForKeyPath:@"pushCategories"];
     if (pushCategories != nil) {
         for (NSDictionary* category in pushCategories) {
-            NSMutableArray<UNNotificationAction*> *actions = [NSMutableArray new];
             // NSString *categoryId =[category valueForKeyPath:@"id"];
             NSString *categoryName =[category valueForKeyPath:@"category"];
-            NSArray *pushActions = [category valueForKeyPath:@"actions"];
-            
-            NSMutableArray *apnActions = [NSMutableArray new];
+            NSArray *pushActions = [category valueForKeyPath:@"actions"];            
+            NSMutableArray<UNNotificationAction*> *apnActions = [NSMutableArray new];
             for (NSDictionary* action in pushActions) {
                 // NSString *actionId =[action valueForKeyPath:@"actionId"];
                 NSString *title =[action valueForKeyPath:@"title"];

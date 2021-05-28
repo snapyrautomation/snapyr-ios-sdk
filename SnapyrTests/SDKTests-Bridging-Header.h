@@ -11,9 +11,7 @@
 #import <Snapyr/UIViewController+SnapyrScreen.h>
 #import <Snapyr/SnapyrSDKUtils.h>
 #import <Snapyr/SnapyrIntegrationsManager.h>
-#import <Snapyr/SnapyrPushAction.h>
 #import <Snapyr/SnapyrPushAdaptor.h>
-#import <Snapyr/SnapyrPushCategory.h>
 #import <Snapyr/SnapyrUtils.h>
 #import <Snapyr/SnapyrScreenReporting.h>
 

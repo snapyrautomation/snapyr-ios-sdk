@@ -32,15 +32,7 @@ class PushAdaptorTests: XCTestCase {
         guard let sdkConfig = try? JSONSerialization.jsonObject(with: jsonData, options: []) as? [String:Any] else {
             fatalError("Unable to convert sdk.json to JSON dictionary")
         }
-
         print("sdkConfig : [\(sdkConfig)]")
-        let categories = pushAdaptor.parseCategories(sdkConfig)
-        guard
-            let category = categories?[0] as? PushCategory
-        else {
-            XCTFail("category not parsed")
-            return
-        }
-        XCTAssertEqual(category.actions.count, 3)
+        pushAdaptor.configureCategories(sdkConfig, with: nil)
     }
 }

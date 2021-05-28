@@ -86,12 +86,6 @@
 		F608200B265FD899006C6E41 /* PushAdaptorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F608200A265FD899006C6E41 /* PushAdaptorTests.swift */; };
 		F615B05B26601A0A00A45A43 /* SnapyrPushAdaptor.h in Headers */ = {isa = PBXBuildFile; fileRef = F68845722660047700696CB1 /* SnapyrPushAdaptor.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		F615B05C26601A0E00A45A43 /* SnapyrPushAdaptor.m in Sources */ = {isa = PBXBuildFile; fileRef = F681354C265FC56700266615 /* SnapyrPushAdaptor.m */; };
-		F615B06126602B8800A45A43 /* SnapyrPushCategory.m in Sources */ = {isa = PBXBuildFile; fileRef = F615B05D26602B8800A45A43 /* SnapyrPushCategory.m */; };
-		F615B06226602B8800A45A43 /* SnapyrPushAction.h in Headers */ = {isa = PBXBuildFile; fileRef = F615B05E26602B8800A45A43 /* SnapyrPushAction.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		F615B06326602B8800A45A43 /* SnapyrPushAction.m in Sources */ = {isa = PBXBuildFile; fileRef = F615B05F26602B8800A45A43 /* SnapyrPushAction.m */; };
-		F615B06426602B8800A45A43 /* SnapyrPushCategory.h in Headers */ = {isa = PBXBuildFile; fileRef = F615B06026602B8800A45A43 /* SnapyrPushCategory.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		F615B0652660643100A45A43 /* SnapyrPushCategory.m in Sources */ = {isa = PBXBuildFile; fileRef = F615B05D26602B8800A45A43 /* SnapyrPushCategory.m */; };
-		F615B0662660643B00A45A43 /* SnapyrPushAction.m in Sources */ = {isa = PBXBuildFile; fileRef = F615B05F26602B8800A45A43 /* SnapyrPushAction.m */; };
 		F61EB4AF1F996DEF0038C8C0 /* SDKUtilTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F61EB4AE1F996DEF0038C8C0 /* SDKUtilTests.swift */; };
 		F6309C7A265C091A009D8A84 /* libOCMock.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F6B8134C264DE0CC00B12EFA /* libOCMock.a */; };
 		F651DAC8265DF517000F6909 /* sdk.json in Resources */ = {isa = PBXBuildFile; fileRef = F651DAC7265DF517000F6909 /* sdk.json */; };
@@ -205,10 +199,6 @@
 		EADEB9001DED3711005322DA /* Snapyr.podspec */ = {isa = PBXFileReference; lastKnownFileType = file.podspec; path = Snapyr.podspec; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
 		EADEB9011DED3711005322DA /* Podfile.lock */ = {isa = PBXFileReference; lastKnownFileType = text; path = Podfile.lock; sourceTree = "<group>"; };
 		F608200A265FD899006C6E41 /* PushAdaptorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PushAdaptorTests.swift; sourceTree = "<group>"; };
-		F615B05D26602B8800A45A43 /* SnapyrPushCategory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SnapyrPushCategory.m; sourceTree = "<group>"; };
-		F615B05E26602B8800A45A43 /* SnapyrPushAction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SnapyrPushAction.h; sourceTree = "<group>"; };
-		F615B05F26602B8800A45A43 /* SnapyrPushAction.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SnapyrPushAction.m; sourceTree = "<group>"; };
-		F615B06026602B8800A45A43 /* SnapyrPushCategory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SnapyrPushCategory.h; sourceTree = "<group>"; };
 		F61EB4AE1F996DEF0038C8C0 /* SDKUtilTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SDKUtilTests.swift; sourceTree = "<group>"; };
 		F651DAC7265DF517000F6909 /* sdk.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = sdk.json; sourceTree = "<group>"; };
 		F681354C265FC56700266615 /* SnapyrPushAdaptor.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SnapyrPushAdaptor.m; sourceTree = "<group>"; };
@@ -345,10 +335,6 @@
 				EADEB8A81DECD12B005322DA /* SnapyrMiddleware.m */,
 				EADEB8861DECD12B005322DA /* SnapyrPayload.h */,
 				EADEB8871DECD12B005322DA /* SnapyrPayload.m */,
-				F615B05E26602B8800A45A43 /* SnapyrPushAction.h */,
-				F615B05F26602B8800A45A43 /* SnapyrPushAction.m */,
-				F615B06026602B8800A45A43 /* SnapyrPushCategory.h */,
-				F615B05D26602B8800A45A43 /* SnapyrPushCategory.m */,
 				F68845722660047700696CB1 /* SnapyrPushAdaptor.h */,
 				F681354C265FC56700266615 /* SnapyrPushAdaptor.m */,
 				EAA5427B1EB42B8C00945DA7 /* SnapyrReachability.h */,
@@ -442,7 +428,6 @@
 				F615B05B26601A0A00A45A43 /* SnapyrPushAdaptor.h in Headers */,
 				EADEB8B71DECD12B005322DA /* SnapyrIntegration.h in Headers */,
 				EADEB8B51DECD12B005322DA /* SnapyrIdentifyPayload.h in Headers */,
-				F615B06426602B8800A45A43 /* SnapyrPushCategory.h in Headers */,
 				EADEB8BB1DECD12B005322DA /* SnapyrPayload.h in Headers */,
 				EADEB8B11DECD12B005322DA /* SnapyrAliasPayload.h in Headers */,
 				EADEB8BD1DECD12B005322DA /* SnapyrScreenPayload.h in Headers */,
@@ -469,7 +454,6 @@
 				EADEB8C51DECD12B005322DA /* SnapyrFileStorage.h in Headers */,
 				EAA5427D1EB42B8C00945DA7 /* SnapyrReachability.h in Headers */,
 				EADEB8C11DECD12B005322DA /* NSData+SnapyrGZIP.h in Headers */,
-				F615B06226602B8800A45A43 /* SnapyrPushAction.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -578,7 +562,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				EADEB8DD1DECD12B005322DA /* SnapyrSDK.m in Sources */,
-				F615B06326602B8800A45A43 /* SnapyrPushAction.m in Sources */,
 				EADEB8BE1DECD12B005322DA /* SnapyrScreenPayload.m in Sources */,
 				EADEB8B61DECD12B005322DA /* SnapyrIdentifyPayload.m in Sources */,
 				EADEB8CE1DECD12B005322DA /* SnapyrSnapyrIntegrationFactory.m in Sources */,
@@ -604,7 +587,6 @@
 				EADEB8B41DECD12B005322DA /* SnapyrGroupPayload.m in Sources */,
 				A34CC6DD249AAEBB00C5E368 /* SnapyrState.m in Sources */,
 				EADEB8D71DECD12B005322DA /* UIViewController+SnapyrScreen.m in Sources */,
-				F615B06126602B8800A45A43 /* SnapyrPushCategory.m in Sources */,
 				EADEB8D11DECD12B005322DA /* SnapyrStoreKitTracker.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -617,7 +599,6 @@
 				F6BDBFA0265C1AEA0029126B /* SnapyrMockHTTPClient.m in Sources */,
 				EADEB8F21DECD335005322DA /* UserDefaultsStorageTest.swift in Sources */,
 				8D84EE3826448D7300B982F8 /* EndToEndTests.swift in Sources */,
-				F615B0662660643B00A45A43 /* SnapyrPushAction.m in Sources */,
 				F68AD013264DB3DE00FE6513 /* SnapyrTestUtils.swift in Sources */,
 				EAA542771EB4035400945DA7 /* TrackingTests.swift in Sources */,
 				F615B05C26601A0E00A45A43 /* SnapyrPushAdaptor.m in Sources */,
@@ -633,7 +614,6 @@
 				6E265C791FB1178C0030E08E /* IntegrationsManagerTest.swift in Sources */,
 				EADEB8EF1DECD335005322DA /* NSData+SnapyrGUNZIPP.m in Sources */,
 				EADEB8F01DECD335005322DA /* TestUtils.swift in Sources */,
-				F615B0652660643100A45A43 /* SnapyrPushCategory.m in Sources */,
 				5AF0E8AE77F57B356DACCFE7 /* AutoScreenReportingTest.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
