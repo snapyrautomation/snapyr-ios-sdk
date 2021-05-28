@@ -25,7 +25,7 @@
 		<key>NSExtensionAttributes</key>
 		<dict>
 			<key>UNNotificationExtensionCategory</key>
-			<string>TIMER_EXPIRED</string>
+			<string>buttons_galore</string>
 			<key>UNNotificationExtensionInitialContentSizeRatio</key>
 			<integer>1</integer>
 		</dict>

@@ -41,14 +41,22 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             let notificationCenter = UNUserNotificationCenter.current()
             notificationCenter.requestAuthorization(options: [.alert, .sound]) { granted, error in
             }
+
             let pushAdaptor = PushAdaptor()
-            pushAdaptor.configureCategories(settings, with:notificationCenter)
-            print ("Successfully configured push.")
+            //pushAdaptor.configureNotifications(fromSettings:settings, with:notificationCenter)
+            let categories = pushAdaptor.parseCategories(settings)
+            print ("categories = [\(categories!)]")
+            for category in categories!  {
+                let myCat = category as? PushCategory
+                print("category = [\(myCat!.name)] with [\(myCat?.actions.count)] actions")
+            }
+            pushAdaptor.configureCategories(categories!, with:notificationCenter);
+
             return true
         } catch {
-            print("JsonError: ", error)
+            print("JsonError: ", error) 
         }
-            return false
+        return false
     }
     
     // MARK: UISceneSession Lifecycle
