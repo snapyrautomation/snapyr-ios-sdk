@@ -44,14 +44,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
             let pushAdaptor = PushAdaptor()
             //pushAdaptor.configureNotifications(fromSettings:settings, with:notificationCenter)
-            let categories = pushAdaptor.parseCategories(settings)
-            print ("categories = [\(categories!)]")
-            for category in categories!  {
-                let myCat = category as? PushCategory
-                print("category = [\(myCat!.name)] with [\(myCat?.actions.count)] actions")
-            }
-            pushAdaptor.configureCategories(categories!, with:notificationCenter);
-
+            pushAdaptor.configureCategories(settings, with:notificationCenter)
             return true
         } catch {
             print("JsonError: ", error) 

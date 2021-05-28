@@ -16,11 +16,8 @@
 NS_SWIFT_NAME(PushAdaptor)
 @interface SnapyrPushAdaptor : NSObject
 
-- (void)configureNotificationsFromSettings:(NSDictionary *_Nonnull)settings withNotificationCenter:(UNUserNotificationCenter *_Nullable)notificationCenter;
-
-- (NSArray*)parseCategories:(NSDictionary *_Nonnull)settings;
-
-- (void)configureCategories:(NSArray *_Nonnull)categories withNotificationCenter:(UNUserNotificationCenter *_Nullable)notificationCenter;
+- (NSSet<UNNotificationCategory*> *_Nonnull)configureCategories:(NSDictionary *_Nonnull)settings
+     withNotificationCenter:(UNUserNotificationCenter *_Nullable)notificationCenter;
 
 @end
 

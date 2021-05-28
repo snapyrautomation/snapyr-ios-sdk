@@ -15,6 +15,7 @@
 		3BE0608626408DF2006233F8 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3BE0608426408DF2006233F8 /* LaunchScreen.storyboard */; };
 		3BE0609126408DF2006233F8 /* PushTestTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BE0609026408DF2006233F8 /* PushTestTests.swift */; };
 		3BE0609C26408DF2006233F8 /* PushTestUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BE0609B26408DF2006233F8 /* PushTestUITests.swift */; };
+		F6147B7926612099006367F6 /* Snapyr.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F6930D9C2660167800B734E1 /* Snapyr.framework */; };
 		F67A7F59265D431700E88B99 /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F67A7F58265D431700E88B99 /* XCTest.framework */; };
 		F6930D9D2660167800B734E1 /* Snapyr.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F6930D9C2660167800B734E1 /* Snapyr.framework */; };
 		F6930D9E2660167800B734E1 /* Snapyr.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = F6930D9C2660167800B734E1 /* Snapyr.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
@@ -127,6 +128,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F6147B7926612099006367F6 /* Snapyr.framework in Frameworks */,
 				F6BAB2BB265C4CDD00974AE3 /* UserNotificationsUI.framework in Frameworks */,
 				F6BAB2B9265C4CDD00974AE3 /* UserNotifications.framework in Frameworks */,
 			);

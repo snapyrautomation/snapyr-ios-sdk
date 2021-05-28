@@ -21,26 +21,6 @@ class PushTestTests: XCTestCase {
     func testImageDownload() throws {
         print("testing image download...")
 
-        let pushUtilities = PushUtilities();
-        
-        guard let url = URL(string: "https://skookle.com/screen_shot.png") else {
-            XCTFail("Could not parse url for image.")
-            return
-        }
-        
-        print("downloading image...")
-        pushUtilities.downloadImage(forURL: url)  { result in
-            guard let image = try? result.get() else {
-                return
-            }
-            XCTAssertNotNil(image)
-            print("saving attachment...")
-            let fileUrl = pushUtilities.saveImageAttachment(image: image, forIdentifier: "image.png")
-            print("the url = \(fileUrl!)")
-        }
-        for _ in 1...2 {
-            sleep(5)
-        }
     }
     
     func testPerformanceExample() throws {

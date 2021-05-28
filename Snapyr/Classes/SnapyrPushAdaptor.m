@@ -13,60 +13,91 @@
 
 @implementation SnapyrPushAdaptor
 
-- (void)configureNotificationsFromSettings:(NSDictionary *_Nonnull)settings withNotificationCenter:(UNUserNotificationCenter *_Nullable)notificationCenter{
-    NSArray* categories = [self parseCategories:settings];
-    [self configureCategories:categories withNotificationCenter:notificationCenter];
-}
-
-- (NSArray*)parseCategories:(NSDictionary *_Nonnull)settings
-{
-    NSMutableArray *snapyrCategories = [NSMutableArray new];
-    NSDictionary *metadata =[settings valueForKeyPath:@"metadata"];
-    if (metadata != nil) {
-        NSArray *pushCategories =[metadata valueForKeyPath:@"pushCategories"];
-        if (pushCategories != nil) {
-            for (NSDictionary* category in pushCategories) {
-                NSString *categoryId =[category valueForKeyPath:@"id"];
-                NSString *categoryName =[category valueForKeyPath:@"category"];
-                NSArray *pushActions = [category valueForKeyPath:@"actions"];
-                NSMutableArray *snapyrActions = [NSMutableArray new];
-                for (NSDictionary* action in pushActions) {
-                    NSString *actionId =[action valueForKeyPath:@"actionId"];
-                    NSString *title =[action valueForKeyPath:@"title"];
-                    SnapyrPushAction* snapyrAction = [[SnapyrPushAction alloc] initWithTitle:title actionId:actionId];
-                    [snapyrActions addObject:snapyrAction];
-                }
-                SnapyrPushCategory *snapyrCategory = [[SnapyrPushCategory alloc] initWithName:categoryName categoryId:categoryName actions:snapyrActions];
-                [snapyrCategories addObject:snapyrCategory];
-            }
-        }
-    }
-    return snapyrCategories;
-}
-
-
-- (void)configureCategories:(NSArray *_Nonnull)categories
+- (NSSet<UNNotificationCategory*> *_Nonnull)configureCategories:(NSDictionary *_Nonnull)settings
      withNotificationCenter:(UNUserNotificationCenter *_Nullable)notificationCenter{
-        NSMutableSet *apnCategories = [NSMutableSet new];
-        for (SnapyrPushCategory* category in categories) {
-            NSMutableArray *actions = [NSMutableArray new];
-            for (SnapyrPushAction* action in category.actions){
+    
+    NSMutableSet<UNNotificationCategory*> *apnCategories = [NSMutableSet new];
+    NSArray *pushCategories =[settings valueForKeyPath:@"pushCategories"];
+    if (pushCategories != nil) {
+        for (NSDictionary* category in pushCategories) {
+            NSMutableArray<UNNotificationAction*> *actions = [NSMutableArray new];
+            // NSString *categoryId =[category valueForKeyPath:@"id"];
+            NSString *categoryName =[category valueForKeyPath:@"category"];
+            NSArray *pushActions = [category valueForKeyPath:@"actions"];
+            
+            NSMutableArray *apnActions = [NSMutableArray new];
+            for (NSDictionary* action in pushActions) {
+                // NSString *actionId =[action valueForKeyPath:@"actionId"];
+                NSString *title =[action valueForKeyPath:@"title"];
                 UNNotificationAction* apnAction = [UNNotificationAction
-                                                   actionWithIdentifier:action.title
-                                                   title:action.title
+                                                   actionWithIdentifier:title
+                                                   title:title
                                                    options:UNNotificationActionOptionNone];
-                [actions addObject:apnAction];
+                [apnActions addObject:apnAction];
             }
             UNNotificationCategory* apnCategory = [UNNotificationCategory
-                                                categoryWithIdentifier:category.name
-                                                actions:actions
-                                                intentIdentifiers:@[]
-                                                options:UNNotificationCategoryOptionNone];
+                                                   categoryWithIdentifier:categoryName
+                                                   actions:apnActions
+                                                   intentIdentifiers:@[]
+                                                   options:UNNotificationCategoryOptionNone];
             [apnCategories addObject:apnCategory];
-    
         }
         [notificationCenter setNotificationCategories:apnCategories];
-    
+    }
+    return apnCategories;
+}
+@end
+
+
+// --------------------------------------------------------------------------------------------------------------
+// R.I.P.
+// --------------------------------------------------------------------------------------------------------------
+//
+//NSMutableArray *snapyrCategories = [NSMutableArray new];
+//NSDictionary *metadata =[settings valueForKeyPath:@"metadata"];
+//if (metadata != nil) {
+//    NSArray *pushCategories =[metadata valueForKeyPath:@"pushCategories"];
+//    if (pushCategories != nil) {
+//        for (NSDictionary* category in pushCategories) {
+//            NSString *categoryId =[category valueForKeyPath:@"id"];
+//            NSString *categoryName =[category valueForKeyPath:@"category"];
+//            NSArray *pushActions = [category valueForKeyPath:@"actions"];
+//            NSMutableArray *snapyrActions = [NSMutableArray new];
+//            for (NSDictionary* action in pushActions) {
+//                NSString *actionId =[action valueForKeyPath:@"actionId"];
+//                NSString *title =[action valueForKeyPath:@"title"];
+//                SnapyrPushAction* snapyrAction = [[SnapyrPushAction alloc] initWithTitle:title actionId:actionId];
+//                [snapyrActions addObject:snapyrAction];
+//            }
+//            SnapyrPushCategory *snapyrCategory = [[SnapyrPushCategory alloc] initWithName:categoryName categoryId:categoryName actions:snapyrActions];
+//            [snapyrCategories addObject:snapyrCategory];
+//        }
+//    }
+//}
+//return snapyrCategories;
+
+
+//NSMutableSet *apnCategories = [NSMutableSet new];
+//for (SnapyrPushCategory* category in categories) {
+//    NSMutableArray *actions = [NSMutableArray new];
+//    for (SnapyrPushAction* action in category.actions){
+//        UNNotificationAction* apnAction = [UNNotificationAction
+//                                           actionWithIdentifier:action.title
+//                                           title:action.title
+//                                           options:UNNotificationActionOptionNone];
+//        [actions addObject:apnAction];
+//    }
+//    UNNotificationCategory* apnCategory = [UNNotificationCategory
+//                                        categoryWithIdentifier:category.name
+//                                        actions:actions
+//                                        intentIdentifiers:@[]
+//                                        options:UNNotificationCategoryOptionNone];
+//    [apnCategories addObject:apnCategory];
+//
+//}
+//[notificationCenter setNotificationCategories:apnCategories];
+
+
 //    UNNotificationCategory* generalCategory = [UNNotificationCategory
 //                                               categoryWithIdentifier:@"GENERAL"
 //                                               actions:@[]
@@ -92,7 +123,4 @@
 //                                               options:UNNotificationCategoryOptionNone];
 //
 //    [notificationCenter setNotificationCategories:[NSSet setWithObjects:generalCategory, expiredCategory, nil]];
-    
-}
 
-@end
