@@ -10,7 +10,7 @@
 #ifndef SnapyrPushCategory_h
 #define SnapyrPushCategory_h
 
-NS_SWIFT_NAME(PushAction)
+NS_SWIFT_NAME(PushCategory)
 @interface SnapyrPushCategory : NSObject
 
 @property (nonatomic, strong) NSString *categoryId;

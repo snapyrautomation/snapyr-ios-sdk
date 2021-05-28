@@ -87,9 +87,11 @@
 		F615B05B26601A0A00A45A43 /* SnapyrPushAdaptor.h in Headers */ = {isa = PBXBuildFile; fileRef = F68845722660047700696CB1 /* SnapyrPushAdaptor.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		F615B05C26601A0E00A45A43 /* SnapyrPushAdaptor.m in Sources */ = {isa = PBXBuildFile; fileRef = F681354C265FC56700266615 /* SnapyrPushAdaptor.m */; };
 		F615B06126602B8800A45A43 /* SnapyrPushCategory.m in Sources */ = {isa = PBXBuildFile; fileRef = F615B05D26602B8800A45A43 /* SnapyrPushCategory.m */; };
-		F615B06226602B8800A45A43 /* SnapyrPushAction.h in Headers */ = {isa = PBXBuildFile; fileRef = F615B05E26602B8800A45A43 /* SnapyrPushAction.h */; };
+		F615B06226602B8800A45A43 /* SnapyrPushAction.h in Headers */ = {isa = PBXBuildFile; fileRef = F615B05E26602B8800A45A43 /* SnapyrPushAction.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		F615B06326602B8800A45A43 /* SnapyrPushAction.m in Sources */ = {isa = PBXBuildFile; fileRef = F615B05F26602B8800A45A43 /* SnapyrPushAction.m */; };
-		F615B06426602B8800A45A43 /* SnapyrPushCategory.h in Headers */ = {isa = PBXBuildFile; fileRef = F615B06026602B8800A45A43 /* SnapyrPushCategory.h */; };
+		F615B06426602B8800A45A43 /* SnapyrPushCategory.h in Headers */ = {isa = PBXBuildFile; fileRef = F615B06026602B8800A45A43 /* SnapyrPushCategory.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		F615B0652660643100A45A43 /* SnapyrPushCategory.m in Sources */ = {isa = PBXBuildFile; fileRef = F615B05D26602B8800A45A43 /* SnapyrPushCategory.m */; };
+		F615B0662660643B00A45A43 /* SnapyrPushAction.m in Sources */ = {isa = PBXBuildFile; fileRef = F615B05F26602B8800A45A43 /* SnapyrPushAction.m */; };
 		F61EB4AF1F996DEF0038C8C0 /* SDKUtilTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F61EB4AE1F996DEF0038C8C0 /* SDKUtilTests.swift */; };
 		F6309C7A265C091A009D8A84 /* libOCMock.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F6B8134C264DE0CC00B12EFA /* libOCMock.a */; };
 		F651DAC8265DF517000F6909 /* sdk.json in Resources */ = {isa = PBXBuildFile; fileRef = F651DAC7265DF517000F6909 /* sdk.json */; };
@@ -615,6 +617,7 @@
 				F6BDBFA0265C1AEA0029126B /* SnapyrMockHTTPClient.m in Sources */,
 				EADEB8F21DECD335005322DA /* UserDefaultsStorageTest.swift in Sources */,
 				8D84EE3826448D7300B982F8 /* EndToEndTests.swift in Sources */,
+				F615B0662660643B00A45A43 /* SnapyrPushAction.m in Sources */,
 				F68AD013264DB3DE00FE6513 /* SnapyrTestUtils.swift in Sources */,
 				EAA542771EB4035400945DA7 /* TrackingTests.swift in Sources */,
 				F615B05C26601A0E00A45A43 /* SnapyrPushAdaptor.m in Sources */,
@@ -630,6 +633,7 @@
 				6E265C791FB1178C0030E08E /* IntegrationsManagerTest.swift in Sources */,
 				EADEB8EF1DECD335005322DA /* NSData+SnapyrGUNZIPP.m in Sources */,
 				EADEB8F01DECD335005322DA /* TestUtils.swift in Sources */,
+				F615B0652660643100A45A43 /* SnapyrPushCategory.m in Sources */,
 				5AF0E8AE77F57B356DACCFE7 /* AutoScreenReportingTest.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

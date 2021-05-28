@@ -34,6 +34,13 @@ class PushAdaptorTests: XCTestCase {
         }
 
         print("sdkConfig : [\(sdkConfig)]")
-        pushAdaptor.configureCategories(sdkConfig, with:nil)
+        let categories = pushAdaptor.parseCategories(sdkConfig)
+        guard
+            let category = categories?[0] as? PushCategory
+        else {
+            XCTFail("category not parsed")
+            return
+        }
+        XCTAssertEqual(category.actions.count, 3)
     }
 }
