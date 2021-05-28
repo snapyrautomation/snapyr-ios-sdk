@@ -11,7 +11,6 @@
 #import "SnapyrPushAction.h"
 #import "SnapyrPushCategory.h"
 
-
 @implementation SnapyrPushAdaptor
 
 - (void)configureNotificationsFromSettings:(NSDictionary *_Nonnull)settings withNotificationCenter:(UNUserNotificationCenter *_Nullable)notificationCenter{
@@ -28,10 +27,7 @@
         if (pushCategories != nil) {
             for (NSDictionary* category in pushCategories) {
                 NSString *categoryId =[category valueForKeyPath:@"id"];
-                NSLog(@"category.id = [%@]", categoryId);
                 NSString *categoryName =[category valueForKeyPath:@"category"];
-                NSLog(@"categor.name = [%@]", categoryName);
-                
                 NSArray *pushActions = [category valueForKeyPath:@"actions"];
                 NSMutableArray *snapyrActions = [NSMutableArray new];
                 for (NSDictionary* action in pushActions) {
@@ -49,43 +45,27 @@
 }
 
 
-- (void)configureCategories:(NSArray *_Nonnull)categories withNotificationCenter:(UNUserNotificationCenter *_Nullable)notificationCenter{
-    //
-    //    for (SnapyrPushCategory* category in pushCategories) {
-    //        NSMutableArray *actions = [NSMutableArray alloc];
-    //        for (SnapyrPushAction* action in category.actions){
-    //
-    //        }
-    //    }
-    //
-    //
-    //        UNNotificationCategory* generalCategory = [UNNotificationCategory
-    //              categoryWithIdentifier:@"GENERAL"
-    //              actions:@[]
-    //              intentIdentifiers:@[]
-    //              options:UNNotificationCategoryOptionCustomDismissAction];
-    //
-    //        // Create the custom actions for expired timer notifications.
-    //        UNNotificationAction* snoozeAction = [UNNotificationAction
-    //              actionWithIdentifier:@"SNOOZE_ACTION"
-    //              title:@"It"
-    //              options:UNNotificationActionOptionNone];
-    //
-    //        UNNotificationAction* stopAction = [UNNotificationAction
-    //              actionWithIdentifier:@"STOP_ACTION"
-    //              title:@"Worked"
-    //              options:UNNotificationActionOptionForeground];
-    //
-    //        // Create the category with the custom actions.
-    //        UNNotificationCategory* expiredCategory = [UNNotificationCategory
-    //              categoryWithIdentifier:@"TIMER_EXPIRED"
-    //              actions:@[snoozeAction, stopAction]
-    //              intentIdentifiers:@[]
-    //              options:UNNotificationCategoryOptionNone];
-    //
-    //        UNUserNotificationCenter* center = [UNUserNotificationCenter currentNotificationCenter];
-    //        [center setNotificationCategories:[NSSet setWithObjects:generalCategory, expiredCategory, nil]];
-    
+- (void)configureCategories:(NSArray *_Nonnull)categories
+     withNotificationCenter:(UNUserNotificationCenter *_Nullable)notificationCenter{
+    NSMutableArray *apnCategories = [NSMutableArray new];
+    for (SnapyrPushCategory* category in categories) {
+        NSMutableArray *actions = [NSMutableArray new];
+        for (SnapyrPushAction* action in category.actions){
+            UNNotificationAction* apnAction = [UNNotificationAction
+                                               actionWithIdentifier:action.actionId
+                                               title:action.title
+                                               options:UNNotificationActionOptionNone];
+            [actions addObject:apnAction];
+        }
+        UNNotificationCategory* apnCategory = [UNNotificationCategory
+                                            categoryWithIdentifier:category.categoryId
+                                            actions:actions
+                                            intentIdentifiers:@[]
+                                            options:UNNotificationCategoryOptionNone];
+        [apnCategories addObject:apnCategory];
+
+    }
+    [notificationCenter setNotificationCategories:[NSSet setWithObjects:apnCategories, nil]];
 }
 
 @end
