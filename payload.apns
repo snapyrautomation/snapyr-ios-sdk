@@ -1,0 +1,42 @@
+{
+	"Simulator Target Bundle": "com.snapyr.pushtest",
+	"aps": {
+		"alert": {
+			"title": "Do you remember Katy's dog's name?",
+			"body": "Try pressing one of the buttons below to guess!"
+		},
+		"mutable-content": 1,
+		"category": "snapyr"
+	},
+	"imageUrl": "https://assets.pethaven.in/images/Notifications/PN_3.jpg",
+	"pushCategories": [{
+		"id": "c2ca4311-19f8-45ce-bf45-b0c40ea00c5d",
+		"category": "snapyr",
+		"actions": [{
+			"actionId": "fido",
+			"title": "Fido"
+		}, {
+			"actionId": "max",
+			"title": "Max"
+		}, {
+			"actionId": "rover",
+			"title": "Rover"
+		}]
+	}, {
+		"id": "fe6ec18d-86eb-47a9-80d7-8e0ea60ff1c3",
+		"category": "Paul's Category",
+		"actions": [{
+			"actionId": "action1",
+			"title": "First",
+			"deepLinkUrl": "snapyrsample://test/action1/data+from+action+one"
+		}, {
+			"actionId": "action2",
+			"title": "Second",
+			"deepLinkUrl": "snapyrsample://test/action2/data+from+action+two"
+		}, {
+			"actionId": "action3",
+			"title": "Third",
+			"deepLinkUrl": "snapyrsample://test/action3/data+from+action+three"
+		}]
+	}]
+}

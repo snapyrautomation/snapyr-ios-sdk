@@ -8,6 +8,8 @@
 import UIKit
 import UserNotifications
 import UserNotificationsUI
+import Snapyr
+
 
 class NotificationViewController: UIViewController, UNNotificationContentExtension {
     @IBOutlet weak var label: UILabel!
@@ -15,18 +17,19 @@ class NotificationViewController: UIViewController, UNNotificationContentExtensi
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        print("viewDidLoad")
     }
     
     func didReceive(_ notification: UNNotification) {
         self.label?.text = "foo"
-        print("didReceive")
-        //if let urlString = notification.request.content.userInfo["attachment-url"] as! String? {
-        if let imageURL = URL(string: "https://skookle.com/screen_shot.png") {
+        let imageKey = notification.request.content.userInfo["imageUrl"] as! String
+        if let imageURL = URL(string: imageKey) {
             if let data = NSData(contentsOf: imageURL) {
                 self.imageView.image = UIImage(data: data as Data)
             }
         }
+        self.view.frame = CGRect(x: 0, y: 0, width: 320, height: 160)
+        self.view.translatesAutoresizingMaskIntoConstraints = false;
+        let pushAdaptor = PushAdaptor()
+        pushAdaptor.configureCategories(notification.request.content.userInfo, with: UNUserNotificationCenter.current())
     }
 }
-
