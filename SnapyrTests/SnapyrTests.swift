@@ -24,7 +24,7 @@ class SnapyrTests: XCTestCase {
         "integrations": [
             "Snapyr": [
                 "apiKey": "QUI5ydwIGeFFTa1IvCBUhxL9PyW5B0jE",
-                "apiHost": "engine.snapyr.com/v1"
+                "apiHost": "dev-engine.snapyrdev.net/v1"
             ]
         ],
         "plan": ["track": [:]],
