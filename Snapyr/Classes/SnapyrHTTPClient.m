@@ -3,11 +3,13 @@
 #import "SnapyrSDKUtils.h"
 #import "SnapyrUtils.h"
 
-#define SNAPYR_CDN_BASE [NSURL URLWithString:@"https://dev-api.snapyrdev.net/sdk"]
+#define SNAPYR_CDN_BASE [NSURL URLWithString:@"https://api.snapyr.com/sdk"]
+#define SNAPYR_CDN_BASE_DEV [NSURL URLWithString:@"https://dev-api.snapyrdev.net/sdk"]
 
 static const NSUInteger kMaxBatchSize = 475000; // 475KB
 
-NSString * const kSnapyrAPIBaseHost = @"https://dev-engine.snapyrdev.net/v1";
+NSString * const kSnapyrAPIBaseHost = @"https://engine.snapyr.com/v1";
+NSString * const kSnapyrAPIBaseHostDev = @"https://dev-engine.snapyrdev.net/v1";
 
 
 @implementation SnapyrHTTPClient
@@ -81,7 +83,7 @@ NSString * const kSnapyrAPIBaseHost = @"https://dev-engine.snapyrdev.net/v1";
     //    batch = snapyrCoerceDictionary(batch);
     NSURLSession *session = [self sessionForWriteKey:writeKey];
     
-    NSURL *url = [[SnapyrUtils getAPIHostURL] URLByAppendingPathComponent:@"batch"];
+    NSURL *url = [[SnapyrUtils getAPIHostURL:self.configuration.enableDevEnvironment] URLByAppendingPathComponent:@"batch"];
     NSMutableURLRequest *request = self.requestFactory(url);
     
     // This is a workaround for an IOS 8.3 bug that causes Content-Type to be incorrectly set
@@ -161,7 +163,13 @@ NSString * const kSnapyrAPIBaseHost = @"https://dev-engine.snapyrdev.net/v1";
 {
     
     NSURLSession *session = self.genericSession;
-    NSURL *url = [SNAPYR_CDN_BASE URLByAppendingPathComponent:[NSString stringWithFormat:@"/%@", writeKey]];
+    NSURL *urlBase;
+    if (self.configuration.enableDevEnvironment) {
+        urlBase = SNAPYR_CDN_BASE_DEV;
+    } else {
+        urlBase = SNAPYR_CDN_BASE;
+    }
+    NSURL *url = [urlBase URLByAppendingPathComponent:[NSString stringWithFormat:@"/%@", writeKey]];
     NSMutableURLRequest *request = self.requestFactory(url);
     NSDictionary *meta = @{ @"defaults": @"true" };
     NSDictionary *defaultSettings = @{ @"metadata" : meta};

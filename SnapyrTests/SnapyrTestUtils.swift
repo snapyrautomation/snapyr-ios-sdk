@@ -10,7 +10,7 @@ import Foundation
 import XCTest
 
 struct TestVariables {
-    static var apiHost = "dev-engine.snapyrdev.net"
+    static var apiHost = "engine.snapyr.com"
 }
 
 func failOnError (code: Int, message: String, data: Optional<Data>) {
