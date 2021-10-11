@@ -17,7 +17,9 @@ NS_SWIFT_NAME(Utilities)
 
 + (void)saveAPIHost:(nonnull NSString *)apiHost;
 + (nonnull NSString *)getAPIHost;
++ (nonnull NSString *)getAPIHost:(BOOL)enableDevEnvironment;
 + (nullable NSURL *)getAPIHostURL;
++ (nullable NSURL *)getAPIHostURL:(BOOL)enableDevEnvironment;
 
 + (NSData *_Nullable)dataFromPlist:(nonnull id)plist;
 + (id _Nullable)plistFromData:(NSData *)data;

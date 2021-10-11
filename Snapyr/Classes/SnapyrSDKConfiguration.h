@@ -85,6 +85,13 @@ NS_SWIFT_NAME(SnapyrConfiguration)
 @property (nonatomic, copy, readonly, nullable) NSURL *apiHost;
 
 /**
+ * Whether to use dev endpoints for API config and engine. `NO` by default.
+ * If `NO`, uses production endpoints (`api.snapyr.com` and `engine.snapyr.com`)
+ * If `YES`, uses dev endpoints (`api.snapyrdev.net` and `dev-engine.snapyrdev.net`)
+ */
+@property (nonatomic, assign) BOOL enableDevEnvironment;
+
+/**
  * Whether the sdk should use location services.
  * If `YES` and the host app hasn't asked for permission to use location services then the user will be presented with an alert view asking to do so. `NO` by default.
  * If `YES`, please make sure to add a description for `NSLocationAlwaysUsageDescription` in your `Info.plist` explaining why your app is accessing Location APIs.

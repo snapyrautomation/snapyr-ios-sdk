@@ -66,13 +66,14 @@
         self.writeKey = writeKey;
         DLog(@"SnapyrSDKConfiguration.initWithWriteKey");
         // get the host we have stored
-        NSString *host = [SnapyrUtils getAPIHost];
+        NSString *host = [SnapyrUtils getAPIHost:self.enableDevEnvironment];
         if ([host isEqualToString:kSnapyrAPIBaseHost]) {
             // we're getting the generic host back.  have they
             // supplied something other than that?
             if (defaultAPIHost && ![host isEqualToString:defaultAPIHost.absoluteString]) {
                 // we should use the supplied default.
                 host = defaultAPIHost.absoluteString;
+                DLog(@"SnapyrSDKConfiguration init: host: [%@]", host);
                 [SnapyrUtils saveAPIHost:host];
             }
         }
@@ -85,6 +86,7 @@
     if (self = [super init]) {
         self.experimental = [[SnapyrSDKExperimental alloc] init];
         self.shouldUseLocationServices = NO;
+        self.enableDevEnvironment = NO;
         self.enableAdvertisingTracking = YES;
         self.shouldUseBluetooth = NO;
         self.flushAt = 20;
@@ -109,7 +111,7 @@
 
 - (NSURL *)apiHost
 {
-    return [SnapyrUtils getAPIHostURL];
+    return [SnapyrUtils getAPIHostURL:self.enableDevEnvironment];
 }
 
 - (void)use:(id<SnapyrIntegrationFactory>)factory

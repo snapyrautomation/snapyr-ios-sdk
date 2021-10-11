@@ -4,6 +4,7 @@
 NS_ASSUME_NONNULL_BEGIN
 
 extern NSString * const kSnapyrAPIBaseHost;
+extern NSString * const kSnapyrAPIBaseHostDev;
 
 
 NS_SWIFT_NAME(HTTPClient)
