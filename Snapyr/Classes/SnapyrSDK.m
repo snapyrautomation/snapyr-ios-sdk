@@ -337,12 +337,12 @@ NSString *const SnapyrBuildKeyV2 = @"SnapyrBuildKeyV2";
 
 - (void)pushNotificationReceived:(NSDictionary *)info
 {
-    [self track:@"snapyr.internal.pushNotificationReceived" properties:info];
+    [self track:@"snapyr.observation.event.Impression" properties:info];
 }
 
 - (void)pushNotificationTapped:(NSDictionary *)info
 {
-    [self track:@"snapyr.internal.pushNotificationTapped" properties:info];
+    [self track:@"snapyr.observation.event.Behavior" properties:info];
 }
 
 
