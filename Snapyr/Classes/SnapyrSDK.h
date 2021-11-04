@@ -1,4 +1,4 @@
-@import Foundation;
+#import <Foundation/Foundation.h>
 #import "SnapyrIntegrationFactory.h"
 #import "SnapyrCrypto.h"
 #import "SnapyrSDKConfiguration.h"

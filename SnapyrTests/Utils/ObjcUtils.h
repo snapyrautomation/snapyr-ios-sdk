@@ -6,6 +6,6 @@
 //  Copyright © 2020 Segment. All rights reserved.
 //
 
-@import Foundation;
+#import <Foundation/Foundation.h>
 
 NSException * _Nullable objc_tryCatch(void (^ _Nonnull block)(void));

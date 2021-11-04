@@ -3,7 +3,7 @@
 //
 //
 
-@import Foundation;
+#import <Foundation/Foundation.h>
 #import "SnapyrSDKUtils.h"
 #import "SnapyrSerializableValue.h"
 

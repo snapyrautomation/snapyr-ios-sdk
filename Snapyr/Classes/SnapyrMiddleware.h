@@ -6,7 +6,7 @@
 //  Copyright © 2016 Segment. All rights reserved.
 //
 
-@import Foundation;
+#import <Foundation/Foundation.h>
 #import "SnapyrContext.h"
 
 typedef void (^SnapyrMiddlewareNext)(SnapyrContext *_Nullable newContext);

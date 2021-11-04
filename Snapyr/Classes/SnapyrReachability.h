@@ -21,8 +21,8 @@
  POSSIBILITY OF SUCH DAMAGE.
  */
 
-@import Foundation;
-@import SystemConfiguration;
+#import <Foundation/Foundation.h>
+#import <SystemConfiguration/SystemConfiguration.h>
 
 /**
  * Does ARC support GCD objects?
