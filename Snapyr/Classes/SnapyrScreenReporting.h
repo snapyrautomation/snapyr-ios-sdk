@@ -1,7 +1,7 @@
 #if TARGET_OS_IPHONE
-@import UIKit;
+#import <UIKit/UIKit.h>
 #elif TARGET_OS_OSX
-@import Cocoa;
+#import <Cocoa/Cocoa.h>
 #endif
 
 #import "SnapyrSerializableValue.h"

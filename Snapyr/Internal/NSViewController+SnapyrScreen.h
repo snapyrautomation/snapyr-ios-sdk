@@ -9,7 +9,7 @@
 #import "SnapyrSerializableValue.h"
 
 #if TARGET_OS_OSX
-@import Cocoa;
+#import <Cocoa/Cocoa.h>
 
 @interface NSViewController (SnapyrScreen)
 

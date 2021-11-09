@@ -302,6 +302,15 @@ NSString *const SnapyrBuildKeyV2 = @"SnapyrBuildKeyV2";
                                                                               traits:snapyrCoerceDictionary(existingTraitsCopy)
                                                                              context:snapyrCoerceDictionary([options objectForKey:@"context"])
                                                                         integrations:[options objectForKey:@"integrations"]]];
+    
+    if ([SnapyrState sharedInstance].userInfo.hasUnregisteredDeviceToken == YES
+        && [SnapyrState sharedInstance].userInfo.userId != nil) {
+        // Device push token was set before we had a user ID to attach it to. Now that we have a user ID, send the token to backend
+        NSMutableDictionary *properties = [NSMutableDictionary dictionaryWithCapacity:1];
+        properties[@"token"] = [SnapyrState sharedInstance].context.deviceToken;
+        [self track:@"snapyr.hidden.apnsTokenSet" properties:properties];
+        [SnapyrState sharedInstance].userInfo.hasUnregisteredDeviceToken = NO;
+    }
 }
 
 #pragma mark - Track
@@ -330,9 +339,14 @@ NSString *const SnapyrBuildKeyV2 = @"SnapyrBuildKeyV2";
 
 - (void)setPushNotificationToken:(NSString*)token
 {
-    NSMutableDictionary *properties = [NSMutableDictionary dictionaryWithCapacity:1];
-    properties[@"token"] = token;
-    [self track:@"snapyr.hidden.apnsTokenSet" properties:properties];
+    [SnapyrState sharedInstance].context.deviceToken = token;
+    if ([SnapyrState sharedInstance].userInfo.userId != nil) {
+        NSMutableDictionary *properties = [NSMutableDictionary dictionaryWithCapacity:1];
+        properties[@"token"] = token;
+        [self track:@"snapyr.hidden.apnsTokenSet" properties:properties];
+    } else {
+        [SnapyrState sharedInstance].userInfo.hasUnregisteredDeviceToken = YES;
+    }
 }
 
 - (void)pushNotificationReceived:(NSDictionary *)info

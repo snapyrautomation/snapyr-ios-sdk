@@ -6,7 +6,7 @@
 //  Copyright © 2016 Segment. All rights reserved.
 //
 
-@import Foundation;
+#import <Foundation/Foundation.h>
 #import "SnapyrIntegration.h"
 
 typedef NS_ENUM(NSInteger, SnapyrEventType) {

@@ -13,9 +13,9 @@
 #import "SnapyrHTTPClient.h"
 #import "SnapyrUtils.h"
 #if TARGET_OS_IPHONE
-@import UIKit;
+#import <UIKit/UIKit.h>
 #elif TARGET_OS_OSX
-@import Cocoa;
+#import <Cocoa/Cocoa.h>
 #endif
 
 #if TARGET_OS_IPHONE

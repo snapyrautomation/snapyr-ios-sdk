@@ -1,4 +1,4 @@
-@import Foundation;
+#import <Foundation/Foundation.h>
 #import "SnapyrIdentifyPayload.h"
 #import "SnapyrTrackPayload.h"
 #import "SnapyrScreenPayload.h"

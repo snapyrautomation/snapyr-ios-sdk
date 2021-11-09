@@ -31,7 +31,7 @@
 //
 
 
-@import Foundation;
+#import <Foundation/Foundation.h>
 
 extern void *_Nullable snapyr_libzOpen(void);
 

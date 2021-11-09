@@ -12,7 +12,8 @@
 #include <sys/sysctl.h>
 
 #if TARGET_OS_IOS && !TARGET_OS_MACCATALYST
-@import CoreTelephony;
+#import <CoreTelephony/CTTelephonyNetworkInfo.h>
+#import <CoreTelephony/CTCarrier.h>
 static CTTelephonyNetworkInfo *_telephonyNetworkInfo;
 #endif
 

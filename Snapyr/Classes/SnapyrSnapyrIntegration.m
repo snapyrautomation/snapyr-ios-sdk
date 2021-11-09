@@ -11,7 +11,7 @@
 #import <pthread.h>
 
 #if TARGET_OS_IPHONE
-@import UIKit;
+#import <UIKit/UIKit.h>
 #endif
 
 dispatch_once_t onlyOnce;

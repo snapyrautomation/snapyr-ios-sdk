@@ -6,7 +6,7 @@
 //  Copyright © 2020 Segment. All rights reserved.
 //
 
-@import Foundation;
+#import <Foundation/Foundation.h>
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -16,6 +16,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, strong) NSString *anonymousId;
 @property (nonatomic, strong, nullable) NSString *userId;
 @property (nonatomic, strong, nullable) NSDictionary *traits;
+@property (nonatomic, assign) BOOL hasUnregisteredDeviceToken;
 @end
 
 @interface SnapyrPayloadContext: NSObject
