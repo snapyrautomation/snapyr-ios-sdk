@@ -351,12 +351,20 @@ NSString *const SnapyrBuildKeyV2 = @"SnapyrBuildKeyV2";
 
 - (void)pushNotificationReceived:(NSDictionary *)info
 {
-    [self track:@"snapyr.observation.event.Impression" properties:info];
+    NSMutableDictionary *properties = [NSMutableDictionary dictionaryWithCapacity:2];
+    properties[@"actionToken"] = [info[@"actionToken"] copy];
+    properties[@"deepLinkUrl"] = info[@"deepLinkUrl"];
+    
+    [self track:@"snapyr.observation.event.Impression" properties:properties];
 }
 
 - (void)pushNotificationTapped:(NSDictionary *)info
 {
-    [self track:@"snapyr.observation.event.Behavior" properties:info];
+    NSMutableDictionary *properties = [NSMutableDictionary dictionaryWithCapacity:2];
+    properties[@"actionToken"] = info[@"actionToken"];
+    properties[@"deepLinkUrl"] = info[@"deepLinkUrl"];
+    
+    [self track:@"snapyr.observation.event.Behavior" properties:properties];
 }
 
 
