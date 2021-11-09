@@ -252,6 +252,7 @@ class SnapyrTests: XCTestCase {
     
     func testRespectsMaxQueueSize() {
         let config = SnapyrConfiguration(writeKey: "RSLG3AdcWnHBvqxdGvZJ6FtkNAmudjtX")
+        config.enableDevEnvironment = true
         let max = 72
         config.maxQueueSize = UInt(max)
         let sdk2 = Snapyr(configuration: config)
@@ -338,7 +339,8 @@ class SnapyrTests: XCTestCase {
         if let data = data {
             sdk.registeredForRemoteNotifications(withDeviceToken: data)
             let deviceTokenString = getStringFrom(token: data)
-            XCTAssertTrue(deviceTokenString == sdk.getDeviceToken())
+            let sdkProvidedToken = sdk.getDeviceToken()
+            XCTAssertEqual(deviceTokenString, sdkProvidedToken)
         } else {
             XCTAssertNotNil(data)
         }
