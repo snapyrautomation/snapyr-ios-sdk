@@ -10,6 +10,7 @@
 #import <UIKit/UIKit.h>
 #endif
 #import <objc/runtime.h>
+#import <UserNotifications/UserNotifications.h>
 #import "SnapyrSDKUtils.h"
 #import "SnapyrSDK.h"
 #import "SnapyrIntegrationFactory.h"
@@ -403,12 +404,17 @@ NSString *const kSnapyrCachedSettingsFilename = @"sdk.settings.v2.plist";
 
 - (void)updateIntegrationsWithSettings:(NSDictionary *)projectSettings
 {
+    DLog(@"SnapyrIntegrationsManager.updateIntegrationsWithSettings");
     // see if we have a new snapyr API host and set it.
     NSString *apiHost = projectSettings[@"Snapyr"][@"apiHost"];
     if (apiHost) {
         [SnapyrUtils saveAPIHost:apiHost];
     }
+    [self registerPushCategories:projectSettings];
     snapyr_dispatch_specific_sync(_serialQueue, ^{
+        // TODO: (@paul) store last modified date for templates. If initialized, compare modified from incoming data to cached data.
+        // If they all match, THEN return (as it does now)
+        // If not, then we need to at least update push category registration before returning
         if (self.initialized) {
             DLog(@"SnapyrIntegrationsManager.updateIntegrationsWithSettings: already initialized, returning");
             return;
@@ -429,6 +435,36 @@ NSString *const kSnapyrCachedSettingsFilename = @"sdk.settings.v2.plist";
         [self flushMessageQueue];
         self.initialized = true;
     });
+}
+
+- (void)registerPushCategories:(NSDictionary *)projectSettings
+{
+    NSLog(@"SnapyrIntegrationsManager.registerPushCategories: %@", projectSettings);
+    
+    NSArray<NSDictionary *> *pushTemplates = projectSettings[@"metadata"][@"pushTemplates"];
+    NSMutableSet<UNNotificationCategory *> *notificationCategories = [NSMutableSet set];
+    for (NSDictionary *pushTemplate in pushTemplates) {
+        NSArray<NSDictionary *> *actions = pushTemplate[@"actions"];
+        if (actions) {
+            NSMutableArray<UNNotificationAction *> *categoryActions = [NSMutableArray array];
+            for (NSDictionary *actionDef in actions) {
+                [categoryActions addObject: [UNNotificationAction actionWithIdentifier:actionDef[@"id"]
+                  title:actionDef[@"title"] options:UNNotificationActionOptionNone]];
+            }
+            [notificationCategories addObject: [UNNotificationCategory categoryWithIdentifier:pushTemplate[@"id"] actions:categoryActions intentIdentifiers:@[] options:UNNotificationCategoryOptionNone]];
+        }
+    }
+    
+    if ([notificationCategories count] == 0) {
+        NSLog(@"SnapyrIntegrationsManager.registerPushCategories: no categories, skipping.");
+        return;
+    }
+    
+    NSLog(@"SnapyrIntegrationsManager.registerPushCategories: about to register categories... %@", notificationCategories);
+    UNUserNotificationCenter *center = [UNUserNotificationCenter currentNotificationCenter];
+//    [center get]
+    [center setNotificationCategories:notificationCategories];
+    NSLog(@"SnapyrIntegrationsManager.registerPushCategories: categories registered, seemingly successfully.");
 }
 
 
