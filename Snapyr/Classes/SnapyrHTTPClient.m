@@ -182,7 +182,7 @@ NSString * const kSnapyrAPIBaseHostDev = @"https://dev-engine.snapyrdev.net/v1";
             return;
         }
         NSInteger code = ((NSHTTPURLResponse *)response).statusCode;
-        if (code > 300) {
+        if (code >= 300) {
             DLog(@"SnapyrHTTPClient.settingsForWriteKey: server responded with unexpected HTTP code [%li]", code);
             
             completionHandler(NO, defaultSettings);
