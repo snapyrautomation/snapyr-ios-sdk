@@ -78,6 +78,7 @@ NSString *const kSnapyrCachedSettingsFilename = @"sdk.settings.v2.plist";
 @property (nonatomic, strong) NSURLSessionDataTask *settingsRequest;
 @property (nonatomic, strong) id<SnapyrStorage> userDefaultsStorage;
 @property (nonatomic, strong) id<SnapyrStorage> fileStorage;
+@property (nonatomic, strong) NSMutableDictionary *actionIdMap;
 
 @end
 
@@ -437,10 +438,27 @@ NSString *const kSnapyrCachedSettingsFilename = @"sdk.settings.v2.plist";
     });
 }
 
+- (nullable NSURL *)getDeepLinkForActionId:(NSString *)actionId
+{
+    NSString *deepLinkUrl = self.actionIdMap[actionId];
+    NSLog(@"SnapyrIntegrationsManager.getDeepLinkForActionId: START. actionId: %@, result: %@", actionId, deepLinkUrl);
+    if (deepLinkUrl) {
+        return [NSURL URLWithString:deepLinkUrl];
+    }
+    NSLog(@"NOT FOUND :(   dump: %@", self.actionIdMap);
+    return nil;
+}
+
 - (void)registerPushCategories:(NSDictionary *)projectSettings
 {
     NSLog(@"SnapyrIntegrationsManager.registerPushCategories: %@", projectSettings);
     
+//    self.integrations = [NSMutableDictionary dictionaryWithCapacity:factories.count];
+    self.actionIdMap = [NSMutableDictionary dictionary];
+    
+#if !TARGET_OS_IPHONE
+    return;
+#endif
     NSArray<NSDictionary *> *pushTemplates = projectSettings[@"metadata"][@"pushTemplates"];
     NSMutableSet<UNNotificationCategory *> *notificationCategories = [NSMutableSet set];
     for (NSDictionary *pushTemplate in pushTemplates) {
@@ -450,6 +468,10 @@ NSString *const kSnapyrCachedSettingsFilename = @"sdk.settings.v2.plist";
             for (NSDictionary *actionDef in actions) {
                 [categoryActions addObject: [UNNotificationAction actionWithIdentifier:actionDef[@"id"]
                   title:actionDef[@"title"] options:UNNotificationActionOptionNone]];
+                NSString *deepLinkUrl = actionDef[@"deepLinkUrl"];
+                if (deepLinkUrl) {
+                    self.actionIdMap[actionDef[@"id"]] = deepLinkUrl;
+                }
             }
             [notificationCategories addObject: [UNNotificationCategory categoryWithIdentifier:pushTemplate[@"id"] actions:categoryActions intentIdentifiers:@[] options:UNNotificationCategoryOptionNone]];
         }

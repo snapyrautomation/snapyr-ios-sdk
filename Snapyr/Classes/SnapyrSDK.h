@@ -160,6 +160,8 @@ NS_SWIFT_NAME(Snapyr)
 - (void)continueUserActivity:(NSUserActivity *)activity;
 - (void)openURL:(NSURL *)url options:(NSDictionary *)options;
 
+- (nullable NSURL *)getDeepLinkForActionId:(NSString *)actionId;
+
 /*!
  @method
 

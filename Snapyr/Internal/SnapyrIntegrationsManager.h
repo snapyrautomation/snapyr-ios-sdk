@@ -32,6 +32,7 @@ NS_SWIFT_NAME(IntegrationsManager)
 // @Deprecated - Exposing for backward API compat reasons only
 @property (nonatomic, readonly) NSMutableDictionary *_Nonnull integrations;
 
+- (nullable NSURL *)getDeepLinkForActionId:(NSString *_Nonnull)actionId;
 - (instancetype _Nonnull)initWithSDK:(SnapyrSDK *_Nonnull)sdk;
 
 // @Deprecated - Exposing for backward API compat reasons only

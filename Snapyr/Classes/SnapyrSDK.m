@@ -41,6 +41,13 @@ static SnapyrSDK *__sharedInstance = nil;
     });
 }
 
+// Just pass thru to integrationsManager, where the data actually lives
+// TODO: (@paulwsmith) rename/refactor to `getPayloadForActionId`? (support deep link + other payload types like user-defined JSON)
+- (nullable NSURL *)getDeepLinkForActionId:(NSString *)actionId
+{
+    return [self.integrationsManager getDeepLinkForActionId:actionId];
+}
+
 - (instancetype)initWithConfiguration:(SnapyrSDKConfiguration *)configuration
 {
     DLog(@"SnapyrSDK.initWithConfiguration");
