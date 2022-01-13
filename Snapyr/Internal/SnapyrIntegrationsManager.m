@@ -107,7 +107,7 @@ NSString *const kSnapyrCachedSettingsFilename = @"sdk.settings.v2.plist";
         self.httpClient = [[SnapyrHTTPClient alloc] initWithRequestFactory:configuration.requestFactory configuration:configuration];
         
         
-        self.userDefaultsStorage = [[SnapyrUserDefaultsStorage alloc] initWithDefaults:[NSUserDefaults standardUserDefaults] namespacePrefix:nil crypto:configuration.crypto];
+        self.userDefaultsStorage = [[SnapyrUserDefaultsStorage alloc] initWithDefaults:getGroupUserDefaults() namespacePrefix:nil crypto:configuration.crypto];
 #if TARGET_OS_TV
         self.fileStorage = [[SnapyrFileStorage alloc] initWithFolder:[SnapyrFileStorage cachesDirectoryURL] crypto:configuration.crypto];
 #else

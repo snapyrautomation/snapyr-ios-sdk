@@ -131,46 +131,40 @@
     [self setJSON:string forKey:key];
 }
 
-
 + (NSURL *)applicationSupportDirectoryURL
 {
-    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSApplicationSupportDirectory, NSUserDomainMask, YES);
-    NSString *storagePath = [paths firstObject];
-#if TARGET_OS_IPHONE
-    // will return ".../Application Support" because it's in a sandbox.
-    return [NSURL fileURLWithPath:storagePath];
-#else
-    NSString *executableName = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleExecutable"];
-    // if we can't get an exec name, we're probably running as tests in a library of some kind, so make one up.
-    if (executableName == nil) {
-        executableName = @"snapyr-test";
-    }
-    NSString *newStoragePath = [storagePath stringByAppendingPathComponent:executableName];
-    BOOL isDirectory = NO;
-    BOOL exists = [[NSFileManager defaultManager] fileExistsAtPath:newStoragePath isDirectory:&isDirectory];
-    // if it exists, but isn't a directory... yikes, but make a snapyr-specific one.
-    if (!isDirectory && exists) {
-        newStoragePath = [storagePath stringByAppendingPathComponent:[NSString stringWithFormat:@"%@-%@", executableName, @"snapyr"]];
-    }
+    // If we can get a container URL for app group, use that. (used w/ notif extension, to share data w/ main app)
+    NSString *appGroupID = getAppGroupName();
+    NSURL *containerURL = [[NSFileManager defaultManager] containerURLForSecurityApplicationGroupIdentifier:appGroupID];
     
-    if (!exists) {
-        [[NSFileManager defaultManager] createDirectoryAtPath:newStoragePath withIntermediateDirectories:NO attributes:nil error:nil];
+    if (containerURL) {
+        NSLog(@"PAUL1: applicationSupportDirectoryURL FOUND containerURL: %@", containerURL);
+        return [containerURL URLByAppendingPathComponent:@"app"];
+    } else {
+        NSLog(@"PAUL1: applicationSupportDirectoryURL COULD NOT FIND containerURL: %@", appGroupID);
+        // Probably no app group - default to the application support dir for this app
+        NSArray *paths = NSSearchPathForDirectoriesInDomains(NSApplicationSupportDirectory, NSUserDomainMask, YES);
+        NSString *storagePath = [paths firstObject];
+        // will return ".../Application Support" because it's in a sandbox.
+        return [NSURL fileURLWithPath:storagePath];
     }
-    
-    exists = [[NSFileManager defaultManager] fileExistsAtPath:newStoragePath isDirectory:&isDirectory];
-    if (!exists || !isDirectory) {
-        // we got some major prollems boss.
-        NSAssert(NO, @"We were unable to create or get the Application Support directory for your executable!");
-    }
-    return [NSURL fileURLWithPath:newStoragePath];
-#endif
 }
 
 + (NSURL *)cachesDirectoryURL
 {
-    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES);
-    NSString *storagePath = [paths firstObject];
-    return [NSURL fileURLWithPath:storagePath];
+    // If we can get a container URL for app group, use that. (used w/ notif extension, to share data w/ main app)
+    NSString *appGroupID = getAppGroupName();
+    NSURL *containerURL = [[NSFileManager defaultManager] containerURLForSecurityApplicationGroupIdentifier:appGroupID];
+    if (containerURL) {
+        NSLog(@"PAUL1: cachesDirectoryURL FOUND containerURL: %@", containerURL);
+        return [containerURL URLByAppendingPathComponent:@"cache"];
+    } else {
+        NSLog(@"PAUL1: cachesDirectoryURL COULD NOT FINE containerURL: %@", appGroupID);
+        // Probably no app group - default to the cache dir for this app
+        NSArray *paths = NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES);
+        NSString *storagePath = [paths firstObject];
+        return [NSURL fileURLWithPath:storagePath];
+    }
 }
 
 - (NSURL *)urlForKey:(NSString *)key
