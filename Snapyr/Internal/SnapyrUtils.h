@@ -42,6 +42,7 @@ NSString *GenerateUUIDString(void);
 NSDictionary *mobileSpecifications(SnapyrSDKConfiguration *configuration, NSString * _Nullable deviceToken);
 #elif TARGET_OS_OSX
 NSDictionary *desktopSpecifications(SnapyrSDKConfiguration *configuration, NSString * _Nullable deviceToken);
+NSString *getMacUUID(void);
 #endif
 
 // Date Utils
