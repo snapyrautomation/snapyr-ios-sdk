@@ -34,10 +34,13 @@ NS_SWIFT_NAME(IntegrationsManager)
 
 - (nullable NSURL *)getDeepLinkForActionId:(NSString *_Nonnull)actionId;
 - (instancetype _Nonnull)initWithSDK:(SnapyrSDK *_Nonnull)sdk;
+- (instancetype _Nonnull)initForExtensionWithWriteKey:(NSString *_Nonnull)writeKey;
+- (nullable NSDictionary *)getCachedPushDataForTemplateId: (NSString *_Nonnull)templateId;
 
 // @Deprecated - Exposing for backward API compat reasons only
 - (NSString *_Nonnull)getAnonymousId;
-- (void) refreshSettings;
+- (void)refreshSettings;
+- (void)refreshSettingsWithCompletionHandler:(void (^_Nonnull)(BOOL success, JSON_DICT _Nullable settings))completionHandler;
 
 @end
 

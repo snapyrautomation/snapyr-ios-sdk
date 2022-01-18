@@ -79,6 +79,12 @@ NSString *const kSnapyrCachedSettingsFilename = @"sdk.settings.v2.plist";
 @property (nonatomic, strong) id<SnapyrStorage> userDefaultsStorage;
 @property (nonatomic, strong) id<SnapyrStorage> fileStorage;
 @property (nonatomic, strong) NSMutableDictionary *actionIdMap;
+@property (nonatomic, strong) NSMutableDictionary *pushTemplates;
+
+@property (nonatomic) BOOL isServiceExtensionInstance;
+
+// If this instance is init'd from extension, there's no SnapyrSDK instance; writeKey will be stored here directly
+@property (nonatomic, strong) NSString *writeKey;
 
 @end
 
@@ -99,8 +105,10 @@ NSString *const kSnapyrCachedSettingsFilename = @"sdk.settings.v2.plist";
     
     DLog(@"SnapyrIntegrationsManager.initWithSDK");
     if (self = [super init]) {
+        self.isServiceExtensionInstance = NO;
         self.sdk = sdk;
         self.configuration = configuration;
+        self.writeKey = configuration.writeKey;
         self.serialQueue = snapyr_dispatch_queue_create_specific("com.snapyr.sdk", DISPATCH_QUEUE_SERIAL);
         self.messageQueue = [[NSMutableArray alloc] init];
         
@@ -135,6 +143,43 @@ NSString *const kSnapyrCachedSettingsFilename = @"sdk.settings.v2.plist";
         }
     }
     return self;
+}
+
+- (instancetype _Nonnull)initForExtensionWithWriteKey:(NSString *)writeKey
+{
+    if (self = [super init]) {
+        self.isServiceExtensionInstance = YES;
+        self.writeKey = writeKey;
+        self.serialQueue = snapyr_dispatch_queue_create_specific("com.snapyr.sdk", DISPATCH_QUEUE_SERIAL);
+        // nil request factory builds with default values.
+        // TODO: cache config from main app and use here if config wasn't passed in?
+        self.httpClient = [[SnapyrHTTPClient alloc] initWithRequestFactory:nil configuration:nil];
+        
+        // TODO: enable optional crypto here? (This isn't currently documented/exposed)
+        self.userDefaultsStorage = [[SnapyrUserDefaultsStorage alloc] initWithDefaults:getGroupUserDefaults() namespacePrefix:nil crypto:nil];
+#if TARGET_OS_TV
+        self.fileStorage = [[SnapyrFileStorage alloc] initWithFolder:[SnapyrFileStorage cachesDirectoryURL] crypto:configuration.crypto];
+#else
+        // TODO: enable optional crypto here? (This isn't currently documented/exposed)
+        self.fileStorage = [[SnapyrFileStorage alloc] initWithFolder:[SnapyrFileStorage applicationSupportDirectoryURL] crypto:nil];
+#endif
+        
+        // Load cached settings immediately but don't refresh from the network (avoid network calls from extension unless necessary)
+        [self loadCachedSettings];
+        [self parsePushTemplateData:_cachedSettings];
+//        [self registerPushCategories:projectSettings];
+    }
+    return self;
+}
+
+- (void)loadCachedSettings
+{
+    // with the last values while we wait to see about any updates.
+    NSDictionary *previouslyCachedSettings = [self cachedSettings];
+    if (previouslyCachedSettings && [previouslyCachedSettings count] > 0) {
+        DLog(@"SnapyrIntegrationsManager.loadCachedSettings: using previously cached settings");
+        [self setCachedSettings:previouslyCachedSettings];
+    }
 }
 
 
@@ -438,6 +483,12 @@ NSString *const kSnapyrCachedSettingsFilename = @"sdk.settings.v2.plist";
     });
 }
 
+- (nullable NSDictionary *)getCachedPushDataForTemplateId: (NSString *)templateId
+{
+    NSDictionary *templateData = [self.pushTemplates[templateId] copy];
+    return templateData;
+}
+
 - (nullable NSURL *)getDeepLinkForActionId:(NSString *)actionId
 {
     NSString *deepLinkUrl = self.actionIdMap[actionId];
@@ -454,6 +505,7 @@ NSString *const kSnapyrCachedSettingsFilename = @"sdk.settings.v2.plist";
     NSLog(@"SnapyrIntegrationsManager.registerPushCategories: %@", projectSettings);
     
 //    self.integrations = [NSMutableDictionary dictionaryWithCapacity:factories.count];
+    self.pushTemplates = [NSMutableDictionary dictionary];
     self.actionIdMap = [NSMutableDictionary dictionary];
     
 #if !TARGET_OS_IPHONE
@@ -462,8 +514,18 @@ NSString *const kSnapyrCachedSettingsFilename = @"sdk.settings.v2.plist";
     NSArray<NSDictionary *> *pushTemplates = projectSettings[@"metadata"][@"pushTemplates"];
     NSMutableSet<UNNotificationCategory *> *notificationCategories = [NSMutableSet set];
     for (NSDictionary *pushTemplate in pushTemplates) {
+        // Record template id and last modified date for cache validition checks later
+        // Using plain ISO 8601 strings + string comparison for now
+        NSMutableDictionary* pushData = [NSMutableDictionary dictionary];
+        pushData[@"modified"] = pushTemplate[@"modified"];
+        pushData[@"hasActions"] = @NO;
+//        [@NO boolValue];
+//        self.pushTemplates[pushTemplate[@"id"]] = pushTemplate[@"modified"];
+        
+        // If actions are set, record for deeplink lookup and iOS notification category registration
         NSArray<NSDictionary *> *actions = pushTemplate[@"actions"];
         if (actions) {
+            pushData[@"id"][@"hasActions"] = @YES;
             NSMutableArray<UNNotificationAction *> *categoryActions = [NSMutableArray array];
             for (NSDictionary *actionDef in actions) {
                 [categoryActions addObject: [UNNotificationAction actionWithIdentifier:actionDef[@"id"]
@@ -475,43 +537,68 @@ NSString *const kSnapyrCachedSettingsFilename = @"sdk.settings.v2.plist";
             }
             [notificationCategories addObject: [UNNotificationCategory categoryWithIdentifier:pushTemplate[@"id"] actions:categoryActions intentIdentifiers:@[] options:UNNotificationCategoryOptionNone]];
         }
+        
+        self.pushTemplates[pushTemplate[@"id"]] = pushData;
     }
     
     if ([notificationCategories count] == 0) {
-        NSLog(@"SnapyrIntegrationsManager.registerPushCategories: no categories, skipping.");
-        return;
+        NSLog(@"SnapyrIntegrationsManager.registerPushCategories: no categories, but still registering to clear any outdated categories.");
+//        return;
     }
     
     NSLog(@"SnapyrIntegrationsManager.registerPushCategories: about to register categories... %@", notificationCategories);
     UNUserNotificationCenter *center = [UNUserNotificationCenter currentNotificationCenter];
 //    [center get]
     [center setNotificationCategories:notificationCategories];
-    NSLog(@"SnapyrIntegrationsManager.registerPushCategories: categories registered, seemingly successfully.");
+    NSLog(@"SnapyrIntegrationsManager.registerPushCategories: categories registered successfully.");
 }
 
 
-- (void)refreshSettings
+- (void)refreshSettingsWithCompletionHandler:(void (^)(BOOL success, JSON_DICT _Nullable settings))completionHandler
 {
     // look at our cache immediately, lets try to get things running
     DLog(@"SnapyrIntegrationsManager.refreshingSettings");
     
-    // with the last values while we wait to see about any updates.
-    NSDictionary *previouslyCachedSettings = [self cachedSettings];
-    if (previouslyCachedSettings && [previouslyCachedSettings count] > 0) {
-        DLog(@"SnapyrIntegrationsManager.refreshingSettings: using previously cached settings");
-        [self setCachedSettings:previouslyCachedSettings];
-    }
+//    [self loadCachedSettings];
     
     snapyr_dispatch_specific_async(_serialQueue, ^{
         DLog(@"SnapyrIntegrationsManager.refreshingSettings: fetching new setttings");
         if (self.settingsRequest) {
+//            completionHandler(YES, [NSDictionary dictionary]);
             return;
         }
-        self.settingsRequest = [self.httpClient settingsForWriteKey:self.configuration.writeKey completionHandler:^(BOOL success, NSDictionary *settings) {
+//        completionHandler(NO, [NSDictionary dictionary]);
+//        return;
+        self.settingsRequest = [self.httpClient settingsForWriteKey:self.writeKey completionHandler:^(BOOL success, NSDictionary *settings) {
+            self.settingsRequest = nil;
+            if (success) {
+                [self setCachedSettings:settings];
+                [self parsePushTemplateData:settings];
+                [self registerPushCategories:settings];
+            }
+            completionHandler(success, settings);
+        }];
+    });
+}
+
+- (void)refreshSettings
+{
+//    // look at our cache immediately, lets try to get things running
+//    DLog(@"SnapyrIntegrationsManager.refreshingSettings");
+//
+    [self loadCachedSettings];
+//
+//    snapyr_dispatch_specific_async(_serialQueue, ^{
+//        DLog(@"SnapyrIntegrationsManager.refreshingSettings: fetching new setttings");
+//        if (self.settingsRequest) {
+//            return;
+//        }
+//        [self.refr]
+        [self refreshSettingsWithCompletionHandler:^(BOOL success, NSDictionary *settings) {
             snapyr_dispatch_specific_async(self -> _serialQueue, ^{
                 if (success) {
                     DLog(@"SnapyrIntegrationsManager.refreshingSettings: successfully received settings");
-                    [self setCachedSettings:settings];
+//                    [self setCachedSettings:settings];
                 } else {
                     DLog(@"SnapyrIntegrationsManager.refreshingSettings: failed attempting to fetch settings, falling back to previously cached settings");
                     NSDictionary *previouslyCachedSettings = [self cachedSettings];
@@ -524,7 +611,7 @@ NSString *const kSnapyrCachedSettingsFilename = @"sdk.settings.v2.plist";
                 self.settingsRequest = nil;
             });
         }];
-    });
+//    });
 }
 
 #pragma mark - Private
