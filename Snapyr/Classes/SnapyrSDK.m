@@ -41,6 +41,64 @@ static SnapyrSDK *__sharedInstance = nil;
     });
 }
 
++ (void)handleNoticationExtensionRequestWithWriteKey:(NSString *)writeKey bestAttemptContent:(UNMutableNotificationContent * _Nonnull)bestAttemptContent originalRequest:(UNNotificationRequest *_Nonnull)originalRequest contentHandler:(void (^)(UNNotificationContent * _Nonnull))contentHandler
+{
+    bestAttemptContent.body = @"X";
+    NSDictionary *snapyrData = originalRequest.content.userInfo[@"snapyr"];
+    if (!snapyrData) {
+        bestAttemptContent.body = @"NO SNAPYR DATA, RETURNING";
+        contentHandler(bestAttemptContent);
+        return;
+    }
+    NSDictionary *payloadTemplate = snapyrData[@"pushTemplate"];
+    if (!payloadTemplate || !payloadTemplate[@"id"] || !payloadTemplate[@"modified"]) {
+        bestAttemptContent.body = [NSString stringWithFormat:@"%@: %@", bestAttemptContent.body, @"NO TEMPLATE ON PAYLOAD"];
+        bestAttemptContent.body = [NSString stringWithFormat:@"%@: userInfo: %@", bestAttemptContent.body, [originalRequest.content.userInfo description]];
+        contentHandler(bestAttemptContent);
+        return;
+    }
+    
+    bestAttemptContent.body = [NSString stringWithFormat:@"%@: payload tmp ID: %@", bestAttemptContent.body, payloadTemplate[@"id"]];
+    
+    // Always set category id to template ID - if this template has no actions (no category registered) it will simply be ignored
+//    bestAttemptContent.categoryIdentifier = payloadTemplate[@"id"];
+    
+    SnapyrIntegrationsManager *integrationsManager = [[SnapyrIntegrationsManager alloc] initForExtensionWithWriteKey:writeKey];
+    NSDictionary *cachedTemplate = [integrationsManager getCachedPushDataForTemplateId:payloadTemplate[@"id"]];
+    
+    if (cachedTemplate == nil) {
+        bestAttemptContent.body = [NSString stringWithFormat:@"%@: cachedTemplate nil", bestAttemptContent.body];
+    } else {
+        bestAttemptContent.body = [NSString stringWithFormat:@"%@: cachedTemplate modified: %@", bestAttemptContent.body, cachedTemplate[@"modified"]];
+    }
+
+    if (cachedTemplate == nil || [cachedTemplate[@"modified"] caseInsensitiveCompare:payloadTemplate[@"modified"]] == NSOrderedAscending) {
+        // Template id missing from cache, or outdated. Trigger SDK settings refresh and check again
+        bestAttemptContent.body = [NSString stringWithFormat:@"%@: %@", bestAttemptContent.body, @"CACHED MISSING OR OUT OF DATE"];
+        
+        [integrationsManager refreshSettingsWithCompletionHandler:^(BOOL success, NSDictionary *settings) {
+            bestAttemptContent.body = [NSString stringWithFormat:@"%@: %@: %d", bestAttemptContent.body, @"GOT HERE", success];
+            if (success) {
+                bestAttemptContent.body = [NSString stringWithFormat:@"%@: %@", bestAttemptContent.body, @"successful"];
+                bestAttemptContent.body = [NSString stringWithFormat:@"%@: newsettings: %@", bestAttemptContent.body, [settings description]];
+                NSDictionary *newCachedTemplate = [integrationsManager getCachedPushDataForTemplateId:payloadTemplate[@"id"]];
+                bestAttemptContent.body = [NSString stringWithFormat:@"%@: newCachedTemplate: %@", bestAttemptContent.body, [newCachedTemplate description]];
+                
+                bestAttemptContent.categoryIdentifier = payloadTemplate[@"id"];
+                contentHandler(bestAttemptContent);
+            } else {
+                bestAttemptContent.body = [NSString stringWithFormat:@"%@: %@", bestAttemptContent.body, @"unsuccessful"];
+                contentHandler(bestAttemptContent);
+            }
+        }];
+    } else {
+        bestAttemptContent.title = [NSString stringWithFormat:@"%@: %@", bestAttemptContent.title, @"CATEGORY UP-TO-DATE, ALL SET"];
+        bestAttemptContent.categoryIdentifier = payloadTemplate[@"id"];
+        contentHandler(bestAttemptContent);
+        return;
+    }
+}
+
 // Just pass thru to integrationsManager, where the data actually lives
 // TODO: (@paulwsmith) rename/refactor to `getPayloadForActionId`? (support deep link + other payload types like user-defined JSON)
 - (nullable NSURL *)getDeepLinkForActionId:(NSString *)actionId
