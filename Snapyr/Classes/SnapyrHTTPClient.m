@@ -30,7 +30,7 @@ NSString * const kSnapyrAPIBaseHostDev = @"https://dev-engine.snapyrdev.net/v1";
 
 
 - (instancetype)initWithRequestFactory:(SnapyrRequestFactory)requestFactory
-                         configuration: (SnapyrSDKConfiguration* _Nonnull)configuration
+                         configuration: (SnapyrSDKConfiguration *)configuration
 {
     if (self = [self init]) {
         if (requestFactory == nil) {
@@ -83,7 +83,11 @@ NSString * const kSnapyrAPIBaseHostDev = @"https://dev-engine.snapyrdev.net/v1";
     //    batch = snapyrCoerceDictionary(batch);
     NSURLSession *session = [self sessionForWriteKey:writeKey];
     
-    NSURL *url = [[SnapyrUtils getAPIHostURL:self.configuration.enableDevEnvironment] URLByAppendingPathComponent:@"batch"];
+    BOOL enableDev = NO;
+    if (self.configuration && self.configuration.enableDevEnvironment) {
+        enableDev = YES;
+    }
+    NSURL *url = [[SnapyrUtils getAPIHostURL:enableDev] URLByAppendingPathComponent:@"batch"];
     NSMutableURLRequest *request = self.requestFactory(url);
     
     // This is a workaround for an IOS 8.3 bug that causes Content-Type to be incorrectly set
@@ -145,7 +149,7 @@ NSString * const kSnapyrAPIBaseHostDev = @"https://dev-engine.snapyrdev.net/v1";
             // non-429 4xx response codes. Don't retry.
             SLog(@"Server rejected payload with HTTP code %d.", code);
             completionHandler(NO, code, nil);
-            if (self.configuration.errorHandler != NULL) {
+            if (self.configuration && self.configuration.errorHandler != NULL) {
                 self.configuration.errorHandler(code, @"error in httpclient", data);
             }
             return;

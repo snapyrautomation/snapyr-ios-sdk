@@ -14,13 +14,15 @@ NS_SWIFT_NAME(HTTPClient)
 @property (nonatomic, readonly) NSMutableDictionary<NSString *, NSURLSession *> *sessionsByWriteKey;
 @property (nonatomic, readonly) NSURLSession *genericSession;
 @property (nonatomic, weak)  id<NSURLSessionDelegate> httpSessionDelegate;
+
 @property (nonatomic, assign) SnapyrSDKConfiguration *configuration;
+@property (nonatomic, assign) BOOL enableDevEnvironment;
 
 + (SnapyrRequestFactory)defaultRequestFactory;
 + (NSString *)authorizationHeader:(NSString *)writeKey;
 
 - (instancetype)initWithRequestFactory:(SnapyrRequestFactory _Nullable)requestFactory
-                         configuration: (SnapyrSDKConfiguration* _Nonnull)configuration;
+                         configuration: (SnapyrSDKConfiguration *_Nullable)configuration;
 
 /**
  * This method will convert the dictionary to json, gzip it and upload the data.

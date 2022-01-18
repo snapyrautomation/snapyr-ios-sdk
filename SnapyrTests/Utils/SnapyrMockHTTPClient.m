@@ -30,7 +30,7 @@
 
 
 - (instancetype)initWithRequestFactory:(SnapyrRequestFactory)requestFactory
-                         configuration: (SnapyrSDKConfiguration* _Nonnull)configuration
+                         configuration: (SnapyrSDKConfiguration *)configuration
 {
     return self;
     
