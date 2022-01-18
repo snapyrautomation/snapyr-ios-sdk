@@ -456,7 +456,17 @@ NSString *const kSnapyrCachedSettingsFilename = @"sdk.settings.v2.plist";
     if (apiHost) {
         [SnapyrUtils saveAPIHost:apiHost];
     }
-    [self registerPushCategories:projectSettings];
+//    [self registerPushTemplatesAndCategories:projectSettings];
+    // PS: disabling for a test, re-enable?
+//    [self parsePushTemplateData:projectSettings];
+//    [self registerPushCategories:projectSettings];
+    
+    if (self.isServiceExtensionInstance) {
+        // For service extension, we only want to update base settings; NOT boot up integration factories
+        // (those are used to send batch requests and listen to app events - N/A in this context)
+        self.initialized = true;
+        return;
+    }
     snapyr_dispatch_specific_sync(_serialQueue, ^{
         // TODO: (@paul) store last modified date for templates. If initialized, compare modified from incoming data to cached data.
         // If they all match, THEN return (as it does now)
@@ -500,11 +510,10 @@ NSString *const kSnapyrCachedSettingsFilename = @"sdk.settings.v2.plist";
     return nil;
 }
 
-- (void)registerPushCategories:(NSDictionary *)projectSettings
+- (void)parsePushTemplateData:(NSDictionary *)projectSettings
 {
     NSLog(@"SnapyrIntegrationsManager.registerPushCategories: %@", projectSettings);
     
-//    self.integrations = [NSMutableDictionary dictionaryWithCapacity:factories.count];
     self.pushTemplates = [NSMutableDictionary dictionary];
     self.actionIdMap = [NSMutableDictionary dictionary];
     
@@ -512,47 +521,61 @@ NSString *const kSnapyrCachedSettingsFilename = @"sdk.settings.v2.plist";
     return;
 #endif
     NSArray<NSDictionary *> *pushTemplates = projectSettings[@"metadata"][@"pushTemplates"];
-    NSMutableSet<UNNotificationCategory *> *notificationCategories = [NSMutableSet set];
     for (NSDictionary *pushTemplate in pushTemplates) {
         // Record template id and last modified date for cache validition checks later
         // Using plain ISO 8601 strings + string comparison for now
         NSMutableDictionary* pushData = [NSMutableDictionary dictionary];
         pushData[@"modified"] = pushTemplate[@"modified"];
         pushData[@"hasActions"] = @NO;
-//        [@NO boolValue];
-//        self.pushTemplates[pushTemplate[@"id"]] = pushTemplate[@"modified"];
-        
-        // If actions are set, record for deeplink lookup and iOS notification category registration
+        // If actions are set, record for deeplink lookup
         NSArray<NSDictionary *> *actions = pushTemplate[@"actions"];
         if (actions) {
             pushData[@"id"][@"hasActions"] = @YES;
-            NSMutableArray<UNNotificationAction *> *categoryActions = [NSMutableArray array];
             for (NSDictionary *actionDef in actions) {
-                [categoryActions addObject: [UNNotificationAction actionWithIdentifier:actionDef[@"id"]
-                  title:actionDef[@"title"] options:UNNotificationActionOptionNone]];
                 NSString *deepLinkUrl = actionDef[@"deepLinkUrl"];
                 if (deepLinkUrl) {
                     self.actionIdMap[actionDef[@"id"]] = deepLinkUrl;
                 }
             }
-            [notificationCategories addObject: [UNNotificationCategory categoryWithIdentifier:pushTemplate[@"id"] actions:categoryActions intentIdentifiers:@[] options:UNNotificationCategoryOptionNone]];
         }
         
         self.pushTemplates[pushTemplate[@"id"]] = pushData;
     }
+}
+
+- (void)registerPushCategories:(NSDictionary *)projectSettings
+{
+    NSLog(@"SnapyrIntegrationsManager.registerPushCategories: %@", projectSettings);
+
+#if !TARGET_OS_IPHONE
+    return;
+#endif
+    NSArray<NSDictionary *> *pushTemplates = projectSettings[@"metadata"][@"pushTemplates"];
+    NSMutableSet<UNNotificationCategory *> *notificationCategories = [NSMutableSet set];
+    for (NSDictionary *pushTemplate in pushTemplates) {
+        // If actions are set, add to iOS notification category registration
+        NSArray<NSDictionary *> *actions = pushTemplate[@"actions"];
+        if (actions) {
+            NSMutableArray<UNNotificationAction *> *categoryActions = [NSMutableArray array];
+            for (NSDictionary *actionDef in actions) {
+                [categoryActions addObject: [UNNotificationAction actionWithIdentifier:actionDef[@"id"]
+                  title:actionDef[@"title"] options:UNNotificationActionOptionNone]];
+            }
+            // Push `categoryIdentifier` will always be set to Snapyr push template ID, to keep referencing simple
+            [notificationCategories addObject: [UNNotificationCategory categoryWithIdentifier:pushTemplate[@"id"] actions:categoryActions intentIdentifiers:@[] options:UNNotificationCategoryOptionNone]];
+        }
+    }
     
     if ([notificationCategories count] == 0) {
         NSLog(@"SnapyrIntegrationsManager.registerPushCategories: no categories, but still registering to clear any outdated categories.");
-//        return;
     }
     
     NSLog(@"SnapyrIntegrationsManager.registerPushCategories: about to register categories... %@", notificationCategories);
     UNUserNotificationCenter *center = [UNUserNotificationCenter currentNotificationCenter];
-//    [center get]
     [center setNotificationCategories:notificationCategories];
+    
     NSLog(@"SnapyrIntegrationsManager.registerPushCategories: categories registered successfully.");
 }
-
 
 - (void)refreshSettingsWithCompletionHandler:(void (^)(BOOL success, JSON_DICT _Nullable settings))completionHandler
 {
