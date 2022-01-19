@@ -82,7 +82,6 @@ static SnapyrSDK *__sharedInstance = nil;
                         DLog(@"SnapyrSDK NotifExt: Template data found after settings refresh.");
                     }
                     
-//                    bestAttemptContent.categoryIdentifier = payloadTemplate[@"id"];
                     contentHandler(bestAttemptContent);
                 }];
             } else {
@@ -94,7 +93,6 @@ static SnapyrSDK *__sharedInstance = nil;
     } else {
         // Cached template data is up-to-date - no further work to do
         DLog(@"SnapyrSDK NotifExt: Using cached template data.");
-//        bestAttemptContent.categoryIdentifier = payloadTemplate[@"id"];
         contentHandler(bestAttemptContent);
         return;
     }
