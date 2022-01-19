@@ -414,7 +414,6 @@ NSString* getAppGroupName(void)
     
     NSString* bundleID = [bundle bundleIdentifier];
     return [NSString stringWithFormat:@"%@.%@.%@", @"group", bundleID, @"snapyr"];
-//    return [NSString stringWithFormat:@"%@.%@.%@", @"group", @"snapyr", bundleID];
 }
 
 /**

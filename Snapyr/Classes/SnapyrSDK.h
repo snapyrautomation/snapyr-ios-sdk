@@ -44,6 +44,7 @@ NS_SWIFT_NAME(Snapyr)
  * @param contentHandler the content handler callback from the notification service extension, used to tell the OS that this request is complete.
  */
 + (void)handleNoticationExtensionRequestWithWriteKey:(NSString *)writeKey bestAttemptContent:(UNMutableNotificationContent * _Nonnull)bestAttemptContent originalRequest:(UNNotificationRequest * _Nonnull)originalRequest contentHandler:(void (^)(UNNotificationContent * _Nonnull))contentHandler;
+
 /**
  * Enabled/disables debug logging to trace your data going through the SDK.
  *

@@ -43,57 +43,58 @@ static SnapyrSDK *__sharedInstance = nil;
 
 + (void)handleNoticationExtensionRequestWithWriteKey:(NSString *)writeKey bestAttemptContent:(UNMutableNotificationContent * _Nonnull)bestAttemptContent originalRequest:(UNNotificationRequest *_Nonnull)originalRequest contentHandler:(void (^)(UNNotificationContent * _Nonnull))contentHandler
 {
-    bestAttemptContent.body = @"X";
     NSDictionary *snapyrData = originalRequest.content.userInfo[@"snapyr"];
     if (!snapyrData) {
-        bestAttemptContent.body = @"NO SNAPYR DATA, RETURNING";
+        DLog(@"SnapyrSDK NotifExt: Not a Snapyr notification (no Snapyr payload) returning.");
         contentHandler(bestAttemptContent);
         return;
     }
     NSDictionary *payloadTemplate = snapyrData[@"pushTemplate"];
     if (!payloadTemplate || !payloadTemplate[@"id"] || !payloadTemplate[@"modified"]) {
-        bestAttemptContent.body = [NSString stringWithFormat:@"%@: %@", bestAttemptContent.body, @"NO TEMPLATE ON PAYLOAD"];
-        bestAttemptContent.body = [NSString stringWithFormat:@"%@: userInfo: %@", bestAttemptContent.body, [originalRequest.content.userInfo description]];
+        DLog(@"SnapyrSDK NotifExt: Missing template data on payload; returning.");
         contentHandler(bestAttemptContent);
         return;
     }
     
-    bestAttemptContent.body = [NSString stringWithFormat:@"%@: payload tmp ID: %@", bestAttemptContent.body, payloadTemplate[@"id"]];
-    
     // Always set category id to template ID - if this template has no actions (no category registered) it will simply be ignored
-//    bestAttemptContent.categoryIdentifier = payloadTemplate[@"id"];
+    bestAttemptContent.categoryIdentifier = payloadTemplate[@"id"];
     
     SnapyrIntegrationsManager *integrationsManager = [[SnapyrIntegrationsManager alloc] initForExtensionWithWriteKey:writeKey];
     NSDictionary *cachedTemplate = [integrationsManager getCachedPushDataForTemplateId:payloadTemplate[@"id"]];
     
-    if (cachedTemplate == nil) {
-        bestAttemptContent.body = [NSString stringWithFormat:@"%@: cachedTemplate nil", bestAttemptContent.body];
-    } else {
-        bestAttemptContent.body = [NSString stringWithFormat:@"%@: cachedTemplate modified: %@", bestAttemptContent.body, cachedTemplate[@"modified"]];
-    }
-
     if (cachedTemplate == nil || [cachedTemplate[@"modified"] caseInsensitiveCompare:payloadTemplate[@"modified"]] == NSOrderedAscending) {
         // Template id missing from cache, or outdated. Trigger SDK settings refresh and check again
-        bestAttemptContent.body = [NSString stringWithFormat:@"%@: %@", bestAttemptContent.body, @"CACHED MISSING OR OUT OF DATE"];
-        
         [integrationsManager refreshSettingsWithCompletionHandler:^(BOOL success, NSDictionary *settings) {
-            bestAttemptContent.body = [NSString stringWithFormat:@"%@: %@: %d", bestAttemptContent.body, @"GOT HERE", success];
             if (success) {
-                bestAttemptContent.body = [NSString stringWithFormat:@"%@: %@", bestAttemptContent.body, @"successful"];
-                bestAttemptContent.body = [NSString stringWithFormat:@"%@: newsettings: %@", bestAttemptContent.body, [settings description]];
-                NSDictionary *newCachedTemplate = [integrationsManager getCachedPushDataForTemplateId:payloadTemplate[@"id"]];
-                bestAttemptContent.body = [NSString stringWithFormat:@"%@: newCachedTemplate: %@", bestAttemptContent.body, [newCachedTemplate description]];
-                
-                bestAttemptContent.categoryIdentifier = payloadTemplate[@"id"];
-                contentHandler(bestAttemptContent);
+                DLog(@"SnapyrSDK NotifExt: Settings refresh successful.");
+                // When updated categories were just registered (as part of refreshSettings...), they're not available yet for the current
+                // notification - it'll still use the outdated category definition.
+                // Reading the categories back seems to invalidate/flush the updates, making this work. Fun times.
+                // Since the category read is async, wait until the callback to process the original notification extension contentHandler
+                // callback (which finishes processing the incoming notification - it's ready to display w/ new categories at that point)
+                // TODO: move this readback/flush into the integrations manager code?
+                UNUserNotificationCenter *center = [UNUserNotificationCenter currentNotificationCenter];
+                [center getNotificationCategoriesWithCompletionHandler:^(NSSet<UNNotificationCategory *> *categories) {
+                    NSDictionary *newCachedTemplate = [integrationsManager getCachedPushDataForTemplateId:payloadTemplate[@"id"]];
+                    if (newCachedTemplate == nil) {
+                        DLog(@"SnapyrSDK NotifExt: Template on payload still missing from updated settings.");
+                    } else {
+                        DLog(@"SnapyrSDK NotifExt: Template data found after settings refresh.");
+                    }
+                    
+//                    bestAttemptContent.categoryIdentifier = payloadTemplate[@"id"];
+                    contentHandler(bestAttemptContent);
+                }];
             } else {
-                bestAttemptContent.body = [NSString stringWithFormat:@"%@: %@", bestAttemptContent.body, @"unsuccessful"];
+                DLog(@"SnapyrSDK NotifExt: Failed attempt to refresh template data.");
+                // Nothing further we can do, let the service extension finish processing
                 contentHandler(bestAttemptContent);
             }
         }];
     } else {
-        bestAttemptContent.title = [NSString stringWithFormat:@"%@: %@", bestAttemptContent.title, @"CATEGORY UP-TO-DATE, ALL SET"];
-        bestAttemptContent.categoryIdentifier = payloadTemplate[@"id"];
+        // Cached template data is up-to-date - no further work to do
+        DLog(@"SnapyrSDK NotifExt: Using cached template data.");
+//        bestAttemptContent.categoryIdentifier = payloadTemplate[@"id"];
         contentHandler(bestAttemptContent);
         return;
     }
