@@ -43,6 +43,11 @@ static SnapyrSDK *__sharedInstance = nil;
 
 + (void)handleNoticationExtensionRequestWithWriteKey:(NSString *)writeKey bestAttemptContent:(UNMutableNotificationContent * _Nonnull)bestAttemptContent originalRequest:(UNNotificationRequest *_Nonnull)originalRequest contentHandler:(void (^)(UNNotificationContent * _Nonnull))contentHandler
 {
+    [SnapyrSDK handleNoticationExtensionRequestWithWriteKey:writeKey bestAttemptContent:bestAttemptContent originalRequest:originalRequest contentHandler:contentHandler devMode:NO];
+}
+
++ (void)handleNoticationExtensionRequestWithWriteKey:(NSString *)writeKey bestAttemptContent:(UNMutableNotificationContent * _Nonnull)bestAttemptContent originalRequest:(UNNotificationRequest *_Nonnull)originalRequest contentHandler:(void (^)(UNNotificationContent * _Nonnull))contentHandler devMode:(BOOL)enableDevMode
+{
     NSDictionary *snapyrData = originalRequest.content.userInfo[@"snapyr"];
     if (!snapyrData) {
         DLog(@"SnapyrSDK NotifExt: Not a Snapyr notification (no Snapyr payload) returning.");
@@ -59,7 +64,9 @@ static SnapyrSDK *__sharedInstance = nil;
     // Always set category id to template ID - if this template has no actions (no category registered) it will simply be ignored
     bestAttemptContent.categoryIdentifier = payloadTemplate[@"id"];
     
-    SnapyrIntegrationsManager *integrationsManager = [[SnapyrIntegrationsManager alloc] initForExtensionWithWriteKey:writeKey];
+    SnapyrSDKConfiguration *oneOffConfig = [SnapyrSDKConfiguration configurationWithWriteKey:writeKey];
+    oneOffConfig.enableDevEnvironment = enableDevMode;
+    SnapyrIntegrationsManager *integrationsManager = [[SnapyrIntegrationsManager alloc] initForExtensionWithConfig:oneOffConfig];
     NSDictionary *cachedTemplate = [integrationsManager getCachedPushDataForTemplateId:payloadTemplate[@"id"]];
     
     if (cachedTemplate == nil || [cachedTemplate[@"modified"] caseInsensitiveCompare:payloadTemplate[@"modified"]] == NSOrderedAscending) {
