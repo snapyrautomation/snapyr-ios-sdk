@@ -190,7 +190,6 @@ static SnapyrSDK *__sharedInstance = nil;
 #pragma mark -
 
 NSString *const SnapyrVersionKey = @"SnapyrVersionKey";
-NSString *const SnapyrBuildKeyV1 = @"SnapyrBuildKey";
 NSString *const SnapyrBuildKeyV2 = @"SnapyrBuildKeyV2";
 
 #if TARGET_OS_IPHONE
@@ -230,17 +229,12 @@ NSString *const SnapyrBuildKeyV2 = @"SnapyrBuildKeyV2";
     if (!self.oneTimeConfiguration.trackApplicationLifecycleEvents) {
         return;
     }
-    // Previously SnapyrBuildKey was stored an integer. This was incorrect because the CFBundleVersion
-    // can be a string. This migrates SnapyrBuildKey to be stored as a string.
-    NSInteger previousBuildV1 = [[NSUserDefaults standardUserDefaults] integerForKey:SnapyrBuildKeyV1];
-    if (previousBuildV1) {
-        [[NSUserDefaults standardUserDefaults] setObject:[@(previousBuildV1) stringValue] forKey:SnapyrBuildKeyV2];
-        [[NSUserDefaults standardUserDefaults] removeObjectForKey:SnapyrBuildKeyV1];
-    }
+    
+    NSUserDefaults *userDefaults = getGroupUserDefaults();
 
-    NSString *previousVersion = [[NSUserDefaults standardUserDefaults] stringForKey:SnapyrVersionKey];
-    NSString *previousBuildV2 = [[NSUserDefaults standardUserDefaults] stringForKey:SnapyrBuildKeyV2];
-
+    NSString *previousVersion = [userDefaults stringForKey:SnapyrVersionKey];
+    NSString *previousBuildV2 = [userDefaults stringForKey:SnapyrBuildKeyV2];
+    
     NSString *currentVersion = [[NSBundle mainBundle] infoDictionary][@"CFBundleShortVersionString"];
     NSString *currentBuild = [[NSBundle mainBundle] infoDictionary][@"CFBundleVersion"];
 
@@ -276,10 +270,10 @@ NSString *const SnapyrBuildKeyV2 = @"SnapyrBuildKeyV2";
 #endif
 
 
-    [[NSUserDefaults standardUserDefaults] setObject:currentVersion forKey:SnapyrVersionKey];
-    [[NSUserDefaults standardUserDefaults] setObject:currentBuild forKey:SnapyrBuildKeyV2];
+    [userDefaults setObject:currentVersion forKey:SnapyrVersionKey];
+    [userDefaults setObject:currentBuild forKey:SnapyrBuildKeyV2];
 
-    [[NSUserDefaults standardUserDefaults] synchronize];
+    [userDefaults synchronize];
 }
 
 - (void)_applicationWillEnterForeground
