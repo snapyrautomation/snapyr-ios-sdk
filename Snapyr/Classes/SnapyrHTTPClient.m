@@ -84,7 +84,7 @@ NSString * const kSnapyrAPIBaseHostDev = @"https://dev-engine.snapyrdev.net/v1";
     NSURLSession *session = [self sessionForWriteKey:writeKey];
     
     BOOL enableDev = NO;
-    if (self.configuration && self.configuration.enableDevEnvironment) {
+    if (self.configuration.enableDevEnvironment) {
         enableDev = YES;
     }
     NSURL *url = [[SnapyrUtils getAPIHostURL:enableDev] URLByAppendingPathComponent:@"batch"];
@@ -149,7 +149,7 @@ NSString * const kSnapyrAPIBaseHostDev = @"https://dev-engine.snapyrdev.net/v1";
             // non-429 4xx response codes. Don't retry.
             SLog(@"Server rejected payload with HTTP code %d.", code);
             completionHandler(NO, code, nil);
-            if (self.configuration && self.configuration.errorHandler != NULL) {
+            if (self.configuration.errorHandler != NULL) {
                 self.configuration.errorHandler(code, @"error in httpclient", data);
             }
             return;

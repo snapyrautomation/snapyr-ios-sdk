@@ -83,9 +83,6 @@ NSString *const kSnapyrCachedSettingsFilename = @"sdk.settings.v2.plist";
 
 @property (nonatomic) BOOL isServiceExtensionInstance;
 
-// If this instance is init'd from extension, there's no SnapyrSDK instance; writeKey will be stored here directly
-@property (nonatomic, strong) NSString *writeKey;
-
 @end
 
 @interface SnapyrSDK ()
@@ -108,7 +105,6 @@ NSString *const kSnapyrCachedSettingsFilename = @"sdk.settings.v2.plist";
         self.isServiceExtensionInstance = NO;
         self.sdk = sdk;
         self.configuration = configuration;
-        self.writeKey = configuration.writeKey;
         self.serialQueue = snapyr_dispatch_queue_create_specific("com.snapyr.sdk", DISPATCH_QUEUE_SERIAL);
         self.messageQueue = [[NSMutableArray alloc] init];
         
@@ -145,11 +141,11 @@ NSString *const kSnapyrCachedSettingsFilename = @"sdk.settings.v2.plist";
     return self;
 }
 
-- (instancetype _Nonnull)initForExtensionWithWriteKey:(NSString *)writeKey
+- (instancetype _Nonnull)initForExtensionWithConfig:(SnapyrSDKConfiguration *)configuration
 {
     if (self = [super init]) {
         self.isServiceExtensionInstance = YES;
-        self.writeKey = writeKey;
+        self.configuration = configuration;
         self.serialQueue = snapyr_dispatch_queue_create_specific("com.snapyr.sdk", DISPATCH_QUEUE_SERIAL);
         // nil request factory builds with default values.
         // TODO: cache config from main app and use here if config wasn't passed in?
@@ -568,7 +564,7 @@ NSString *const kSnapyrCachedSettingsFilename = @"sdk.settings.v2.plist";
         if (self.settingsRequest) {
             return;
         }
-        self.settingsRequest = [self.httpClient settingsForWriteKey:self.writeKey completionHandler:^(BOOL success, NSDictionary *settings) {
+        self.settingsRequest = [self.httpClient settingsForWriteKey:self.configuration.writeKey completionHandler:^(BOOL success, NSDictionary *settings) {
             self.settingsRequest = nil;
             if (success) {
                 [self setCachedSettings:settings];

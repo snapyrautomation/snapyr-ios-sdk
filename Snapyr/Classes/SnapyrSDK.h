@@ -46,6 +46,11 @@ NS_SWIFT_NAME(Snapyr)
 + (void)handleNoticationExtensionRequestWithWriteKey:(NSString *)writeKey bestAttemptContent:(UNMutableNotificationContent * _Nonnull)bestAttemptContent originalRequest:(UNNotificationRequest * _Nonnull)originalRequest contentHandler:(void (^)(UNNotificationContent * _Nonnull))contentHandler;
 
 /**
+ * An extension of the above for internal use/testing, allowed dev mode to be enabled (use dev endpoints rather than prod).
+ */
++ (void)handleNoticationExtensionRequestWithWriteKey:(NSString *)writeKey bestAttemptContent:(UNMutableNotificationContent * _Nonnull)bestAttemptContent originalRequest:(UNNotificationRequest * _Nonnull)originalRequest contentHandler:(void (^)(UNNotificationContent * _Nonnull))contentHandler devMode:(BOOL)enableDevMode;
+
+/**
  * Enabled/disables debug logging to trace your data going through the SDK.
  *
  * @param showDebugLogs `YES` to enable logging, `NO` otherwise. `NO` by default.

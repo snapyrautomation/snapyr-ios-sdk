@@ -16,7 +16,6 @@ NS_SWIFT_NAME(HTTPClient)
 @property (nonatomic, weak)  id<NSURLSessionDelegate> httpSessionDelegate;
 
 @property (nonatomic, assign) SnapyrSDKConfiguration *configuration;
-@property (nonatomic, assign) BOOL enableDevEnvironment;
 
 + (SnapyrRequestFactory)defaultRequestFactory;
 + (NSString *)authorizationHeader:(NSString *)writeKey;
@@ -33,7 +32,7 @@ NS_SWIFT_NAME(HTTPClient)
  */
 - (nullable NSURLSessionUploadTask *)upload:(JSON_DICT)batch forWriteKey:(NSString *)writeKey completionHandler:(void (^)(BOOL retry, NSInteger code, NSData *_Nullable data))completionHandler;
 
-- (NSURLSessionDataTask *)settingsForWriteKey:(NSString *)writeKey completionHandler:(void (^)(BOOL success, JSON_DICT _Nullable settings))completionHandler;
+- (NSURLSessionDataTask *)settingsForWriteKey:(NSString *)writeKey completionHandler:(void (^)(BOOL success, JSON_DICT _Nonnull settings))completionHandler;
 
 @end
 
