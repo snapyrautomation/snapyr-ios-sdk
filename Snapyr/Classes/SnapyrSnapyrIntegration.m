@@ -91,19 +91,13 @@ NSUInteger const kSnapyrBackgroundTaskInvalid = 0;
 
         [self dispatchBackground:^{
             // Check for previous queue data in NSUserDefaults and remove if present.
-            NSLog(@"PAUL1: 1");
             if ([getGroupUserDefaults() objectForKey:SnapyrQueueKey]) {
-                NSLog(@"PAUL1: 2");
                 [getGroupUserDefaults() removeObjectForKey:SnapyrQueueKey];
-                NSLog(@"PAUL1: 2a");
             }
 #if !TARGET_OS_TV
             // Check for previous track data in NSUserDefaults and remove if present (Traits still exist in NSUserDefaults on tvOS)
-            NSLog(@"PAUL1: 3");
             if ([getGroupUserDefaults() objectForKey:SnapyrTraitsKey]) {
-                NSLog(@"PAUL1: 4");
                 [getGroupUserDefaults() removeObjectForKey:SnapyrTraitsKey];
-                NSLog(@"PAUL1: 4a");
             }
 #endif
         }];

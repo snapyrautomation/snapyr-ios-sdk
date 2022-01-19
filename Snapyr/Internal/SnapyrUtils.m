@@ -398,6 +398,9 @@ NSDictionary *getLiveContext(SnapyrReachability *reachability, NSDictionary *ref
     return [context copy];
 }
 
+/**
+ * Get the app group name used by Snapyr SDK convention: `group.{bundle ID}.snapyr`, e.g. `group.com.testorg.testapp.snapyr`
+ */
 NSString* getAppGroupName(void)
 {
     // https://stackoverflow.com/a/27849695
@@ -410,8 +413,8 @@ NSString* getAppGroupName(void)
     }
     
     NSString* bundleID = [bundle bundleIdentifier];
-//    return [NSString stringWithFormat:@"%@.%@.%@", @"group", bundleID, @"snapyr"];
-    return [NSString stringWithFormat:@"%@.%@.%@", @"group", @"snapyr", bundleID];
+    return [NSString stringWithFormat:@"%@.%@.%@", @"group", bundleID, @"snapyr"];
+//    return [NSString stringWithFormat:@"%@.%@.%@", @"group", @"snapyr", bundleID];
 }
 
 /**
@@ -423,13 +426,9 @@ NSUserDefaults* getGroupUserDefaults(void)
     NSString *appGroupName = getAppGroupName();
     
     @try {
-        NSLog(@"PAUL1: 11: getGroupUserDefaults, appGroupName: %@", appGroupName);
-        id x = [[NSUserDefaults alloc] initWithSuiteName:appGroupName];
-        NSLog(@"PAUL1: 12: getGroupUserDefaults, result: %@", x);
-        return x;
+        return [[NSUserDefaults alloc] initWithSuiteName:appGroupName];
     }
     @catch (NSException *exc) {
-        NSLog(@"SNAPYR getGroupUserDefaults error. appGroupName: %@, bundleID: %@", appGroupName, [[NSBundle mainBundle] bundleIdentifier]);
         return [NSUserDefaults standardUserDefaults];
     }
 }

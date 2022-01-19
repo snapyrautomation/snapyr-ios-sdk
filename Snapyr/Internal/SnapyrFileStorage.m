@@ -138,10 +138,10 @@
     NSURL *containerURL = [[NSFileManager defaultManager] containerURLForSecurityApplicationGroupIdentifier:appGroupID];
     
     if (containerURL) {
-        NSLog(@"PAUL1: applicationSupportDirectoryURL FOUND containerURL: %@", containerURL);
+        DLog(@"SnapyrFileStorage: applicationSupportDirectoryURL found containerURL: %@", containerURL);
         return [containerURL URLByAppendingPathComponent:@"app"];
     } else {
-        NSLog(@"PAUL1: applicationSupportDirectoryURL COULD NOT FIND containerURL: %@", appGroupID);
+        DLog(@"SnapyrFileStorage: applicationSupportDirectoryURL - no containerURL found, falling back to appGroupID: %@", appGroupID);
         // Probably no app group - default to the application support dir for this app
         NSArray *paths = NSSearchPathForDirectoriesInDomains(NSApplicationSupportDirectory, NSUserDomainMask, YES);
         NSString *storagePath = [paths firstObject];
@@ -156,10 +156,10 @@
     NSString *appGroupID = getAppGroupName();
     NSURL *containerURL = [[NSFileManager defaultManager] containerURLForSecurityApplicationGroupIdentifier:appGroupID];
     if (containerURL) {
-        NSLog(@"PAUL1: cachesDirectoryURL FOUND containerURL: %@", containerURL);
+        DLog(@"SnapyrFileStorage: cachesDirectoryURL found containerURL: %@", containerURL);
         return [containerURL URLByAppendingPathComponent:@"cache"];
     } else {
-        NSLog(@"PAUL1: cachesDirectoryURL COULD NOT FINE containerURL: %@", appGroupID);
+        DLog(@"SnapyrFileStorage: cachesDirectoryURL - no containerURL found, falling back to appGroupID: %@", appGroupID);
         // Probably no app group - default to the cache dir for this app
         NSArray *paths = NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES);
         NSString *storagePath = [paths firstObject];

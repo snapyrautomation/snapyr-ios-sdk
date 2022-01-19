@@ -167,7 +167,6 @@ NSString *const kSnapyrCachedSettingsFilename = @"sdk.settings.v2.plist";
         // Load cached settings immediately but don't refresh from the network (avoid network calls from extension unless necessary)
         [self loadCachedSettings];
         [self parsePushTemplateData:_cachedSettings];
-//        [self registerPushCategories:projectSettings];
     }
     return self;
 }
@@ -456,10 +455,6 @@ NSString *const kSnapyrCachedSettingsFilename = @"sdk.settings.v2.plist";
     if (apiHost) {
         [SnapyrUtils saveAPIHost:apiHost];
     }
-//    [self registerPushTemplatesAndCategories:projectSettings];
-    // PS: disabling for a test, re-enable?
-//    [self parsePushTemplateData:projectSettings];
-//    [self registerPushCategories:projectSettings];
     
     if (self.isServiceExtensionInstance) {
         // For service extension, we only want to update base settings; NOT boot up integration factories
@@ -468,9 +463,6 @@ NSString *const kSnapyrCachedSettingsFilename = @"sdk.settings.v2.plist";
         return;
     }
     snapyr_dispatch_specific_sync(_serialQueue, ^{
-        // TODO: (@paul) store last modified date for templates. If initialized, compare modified from incoming data to cached data.
-        // If they all match, THEN return (as it does now)
-        // If not, then we need to at least update push category registration before returning
         if (self.initialized) {
             DLog(@"SnapyrIntegrationsManager.updateIntegrationsWithSettings: already initialized, returning");
             return;
@@ -502,18 +494,15 @@ NSString *const kSnapyrCachedSettingsFilename = @"sdk.settings.v2.plist";
 - (nullable NSURL *)getDeepLinkForActionId:(NSString *)actionId
 {
     NSString *deepLinkUrl = self.actionIdMap[actionId];
-    NSLog(@"SnapyrIntegrationsManager.getDeepLinkForActionId: START. actionId: %@, result: %@", actionId, deepLinkUrl);
+    DLog(@"SnapyrIntegrationsManager.getDeepLinkForActionId: actionId: %@, result: %@", actionId, deepLinkUrl);
     if (deepLinkUrl) {
         return [NSURL URLWithString:deepLinkUrl];
     }
-    NSLog(@"NOT FOUND :(   dump: %@", self.actionIdMap);
     return nil;
 }
 
 - (void)parsePushTemplateData:(NSDictionary *)projectSettings
 {
-    NSLog(@"SnapyrIntegrationsManager.registerPushCategories: %@", projectSettings);
-    
     self.pushTemplates = [NSMutableDictionary dictionary];
     self.actionIdMap = [NSMutableDictionary dictionary];
     
@@ -545,8 +534,6 @@ NSString *const kSnapyrCachedSettingsFilename = @"sdk.settings.v2.plist";
 
 - (void)registerPushCategories:(NSDictionary *)projectSettings
 {
-    NSLog(@"SnapyrIntegrationsManager.registerPushCategories: %@", projectSettings);
-
 #if !TARGET_OS_IPHONE
     return;
 #endif
@@ -567,31 +554,20 @@ NSString *const kSnapyrCachedSettingsFilename = @"sdk.settings.v2.plist";
     }
     
     if ([notificationCategories count] == 0) {
-        NSLog(@"SnapyrIntegrationsManager.registerPushCategories: no categories, but still registering to clear any outdated categories.");
+        DLog(@"SnapyrIntegrationsManager.registerPushCategories: no categories, but still registering to clear any outdated categories.");
     }
     
-    NSLog(@"SnapyrIntegrationsManager.registerPushCategories: about to register categories... %@", notificationCategories);
     UNUserNotificationCenter *center = [UNUserNotificationCenter currentNotificationCenter];
     [center setNotificationCategories:notificationCategories];
-    
-    NSLog(@"SnapyrIntegrationsManager.registerPushCategories: categories registered successfully.");
 }
 
 - (void)refreshSettingsWithCompletionHandler:(void (^)(BOOL success, JSON_DICT _Nullable settings))completionHandler
 {
-    // look at our cache immediately, lets try to get things running
-    DLog(@"SnapyrIntegrationsManager.refreshingSettings");
-    
-//    [self loadCachedSettings];
-    
     snapyr_dispatch_specific_async(_serialQueue, ^{
-        DLog(@"SnapyrIntegrationsManager.refreshingSettings: fetching new setttings");
+        DLog(@"SnapyrIntegrationsManager.refreshSettingsWithCompletionHandler: fetching new setttings");
         if (self.settingsRequest) {
-//            completionHandler(YES, [NSDictionary dictionary]);
             return;
         }
-//        completionHandler(NO, [NSDictionary dictionary]);
-//        return;
         self.settingsRequest = [self.httpClient settingsForWriteKey:self.writeKey completionHandler:^(BOOL success, NSDictionary *settings) {
             self.settingsRequest = nil;
             if (success) {
@@ -606,35 +582,29 @@ NSString *const kSnapyrCachedSettingsFilename = @"sdk.settings.v2.plist";
 
 - (void)refreshSettings
 {
-//    // look at our cache immediately, lets try to get things running
-//    DLog(@"SnapyrIntegrationsManager.refreshingSettings");
-//
+    // look at our cache immediately, lets try to get things running
+    // with the last values while we wait to see about any updates.
+    DLog(@"SnapyrIntegrationsManager.refreshingSettings");
     [self loadCachedSettings];
-//
-//    snapyr_dispatch_specific_async(_serialQueue, ^{
-//        DLog(@"SnapyrIntegrationsManager.refreshingSettings: fetching new setttings");
-//        if (self.settingsRequest) {
-//            return;
-//        }
-//        [self.refr]
-        [self refreshSettingsWithCompletionHandler:^(BOOL success, NSDictionary *settings) {
-            snapyr_dispatch_specific_async(self -> _serialQueue, ^{
-                if (success) {
-                    DLog(@"SnapyrIntegrationsManager.refreshingSettings: successfully received settings");
-//                    [self setCachedSettings:settings];
+    
+    [self refreshSettingsWithCompletionHandler:^(BOOL success, NSDictionary *settings) {
+        snapyr_dispatch_specific_async(self -> _serialQueue, ^{
+            if (success) {
+                DLog(@"SnapyrIntegrationsManager.refreshingSettings: successfully received settings");
+                // default stuff like setCachedSettings, etc. happen in refreshSettingsWithCompletionHandler before this callback is called -
+                // nothing more to do here
+            } else {
+                DLog(@"SnapyrIntegrationsManager.refreshingSettings: failed attempting to fetch settings, falling back to previously cached settings");
+                NSDictionary *previouslyCachedSettings = [self cachedSettings];
+                if (previouslyCachedSettings && [previouslyCachedSettings count] > 0) {
+                    [self setCachedSettings:previouslyCachedSettings];
                 } else {
-                    DLog(@"SnapyrIntegrationsManager.refreshingSettings: failed attempting to fetch settings, falling back to previously cached settings");
-                    NSDictionary *previouslyCachedSettings = [self cachedSettings];
-                    if (previouslyCachedSettings && [previouslyCachedSettings count] > 0) {
-                        [self setCachedSettings:previouslyCachedSettings];
-                    } else {
-                        DLog(@"ERROR: SnapyrIntegrationsManager.refreshingSettings: failed to fetch settings and no previously cached settings");
-                    }
+                    DLog(@"ERROR: SnapyrIntegrationsManager.refreshingSettings: failed to fetch settings and no previously cached settings");
                 }
-                self.settingsRequest = nil;
-            });
-        }];
-//    });
+            }
+            self.settingsRequest = nil;
+        });
+    }];
 }
 
 #pragma mark - Private
