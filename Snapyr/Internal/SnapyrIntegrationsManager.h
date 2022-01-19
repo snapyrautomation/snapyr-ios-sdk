@@ -8,6 +8,7 @@
 
 #import <Foundation/Foundation.h>
 #import "SnapyrMiddleware.h"
+#import "SnapyrSDKConfiguration.h"
 
 /**
  * Filenames of "Application Support" files where essential data is stored.
