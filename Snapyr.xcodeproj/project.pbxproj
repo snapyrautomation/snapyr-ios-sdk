@@ -21,6 +21,7 @@
 		A352176023AD5825005B07F6 /* SnapyrMacros.h in Headers */ = {isa = PBXBuildFile; fileRef = A352175F23AD5825005B07F6 /* SnapyrMacros.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		A3B6E29925116B3A00609A13 /* Snapyr.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EADEB85B1DECD080005322DA /* Snapyr.framework */; };
 		A3BECDD024BCE1E3009E2BD3 /* ObjcUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = A3BECDCF24BCE1E3009E2BD3 /* ObjcUtils.m */; };
+		DA142C3B2798B88B0050D26F /* usr in Resources */ = {isa = PBXBuildFile; fileRef = F6B81350264DE26A00B12EFA /* usr */; };
 		EA88A5981DED7608009FB66A /* SnapyrSerializableValue.h in Headers */ = {isa = PBXBuildFile; fileRef = EA88A5971DED7608009FB66A /* SnapyrSerializableValue.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		EA8F09741E24C5C600B8B93F /* MiddlewareTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA8F09731E24C5C600B8B93F /* MiddlewareTests.swift */; };
 		EAA542771EB4035400945DA7 /* TrackingTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAA542761EB4035400945DA7 /* TrackingTests.swift */; };
@@ -87,7 +88,6 @@
 		F6309C7A265C091A009D8A84 /* libOCMock.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F6B8134C264DE0CC00B12EFA /* libOCMock.a */; };
 		F651DAC8265DF517000F6909 /* sdk.json in Resources */ = {isa = PBXBuildFile; fileRef = F651DAC7265DF517000F6909 /* sdk.json */; };
 		F68AD013264DB3DE00FE6513 /* SnapyrTestUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = F68AD012264DB3DE00FE6513 /* SnapyrTestUtils.swift */; };
-		F6B81351264DE26A00B12EFA /* usr in Resources */ = {isa = PBXBuildFile; fileRef = F6B81350264DE26A00B12EFA /* usr */; };
 		F6BDBFA0265C1AEA0029126B /* SnapyrMockHTTPClient.m in Sources */ = {isa = PBXBuildFile; fileRef = F6BDBF9F265C1AEA0029126B /* SnapyrMockHTTPClient.m */; };
 /* End PBXBuildFile section */
 
@@ -513,7 +513,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				F6B81351264DE26A00B12EFA /* usr in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -522,6 +521,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				F651DAC8265DF517000F6909 /* sdk.json in Resources */,
+				DA142C3B2798B88B0050D26F /* usr in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
