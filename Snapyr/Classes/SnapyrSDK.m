@@ -50,7 +50,7 @@ static SnapyrSDK *__sharedInstance = nil;
 {
     NSDictionary *snapyrData = originalRequest.content.userInfo[@"snapyr"];
     if (!snapyrData) {
-        DLog(@"SnapyrSDK NotifExt: Not a Snapyr notification (no Snapyr payload) returning.");
+        DLog(@"SnapyrSDK NotifExt: Not a Snapyr notification (no Snapyr payload); returning.");
         contentHandler(bestAttemptContent);
         return;
     }
@@ -416,18 +416,38 @@ NSString *const SnapyrBuildKeyV2 = @"SnapyrBuildKeyV2";
 
 - (void)pushNotificationReceived:(NSDictionary *)info
 {
-    NSMutableDictionary *properties = [NSMutableDictionary dictionaryWithCapacity:2];
-    properties[@"actionToken"] = [info[@"actionToken"] copy];
-    properties[@"deepLinkUrl"] = info[@"deepLinkUrl"];
+    NSMutableDictionary *properties = [NSMutableDictionary dictionary];
+    
+    NSDictionary *snapyrData = info[@"snapyr"];
+    if (!snapyrData) {
+        DLog(@"SnapyrSDK pushNotificationReceived: Not a Snapyr notification (no Snapyr payload); returning.");
+        return;
+    }
+    
+    properties[@"actionToken"] = snapyrData[@"actionToken"];
+    properties[@"deepLinkUrl"] = snapyrData[@"deepLinkUrl"];
     
     [self track:@"snapyr.observation.event.Impression" properties:properties];
 }
 
 - (void)pushNotificationTapped:(NSDictionary *)info
 {
-    NSMutableDictionary *properties = [NSMutableDictionary dictionaryWithCapacity:2];
+    [self pushNotificationTapped:info actionId:nil];
+}
+
+- (void)pushNotificationTapped:(SERIALIZABLE_DICT _Nullable)info actionId:(NSString* _Nullable)actionId
+{
+    NSMutableDictionary *properties = [NSMutableDictionary dictionary];
+    
+    NSDictionary *snapyrData = info[@"snapyr"];
+    if (!snapyrData) {
+        DLog(@"SnapyrSDK pushNotificationTapped: Not a Snapyr notification (no Snapyr payload); returning.");
+        return;
+    }
+    
     properties[@"actionToken"] = info[@"actionToken"];
     properties[@"deepLinkUrl"] = info[@"deepLinkUrl"];
+    properties[@"actionId"] = actionId;
     
     [self track:@"snapyr.observation.event.Behavior" properties:properties];
 }
