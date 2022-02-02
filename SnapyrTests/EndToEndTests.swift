@@ -8,7 +8,7 @@ class EndToEndTests: XCTestCase {
     override func setUp() {
         super.setUp()
         self.configuration = SnapyrConfiguration(writeKey: "RSLG3AdcWnHBvqxdGvZJ6FtkNAmudjtX")
-        self.configuration.enableDevEnvironment = true
+        self.configuration.snapyrEnvironment = SnapyrEnvironment.dev
         self.configuration.flushAt = 1
         Snapyr.debug(true)
         self.configuration.errorHandler = failOnError

@@ -12,14 +12,20 @@ NS_ASSUME_NONNULL_BEGIN
 @class SnapyrSDKConfiguration;
 @class SnapyrReachability;
 
+typedef NS_ENUM(NSInteger, SnapyrEnvironment) {
+    SnapyrEnvironmentDefault,
+    SnapyrEnvironmentStage,
+    SnapyrEnvironmentDev
+} NS_SWIFT_NAME(SnapyrEnvironment);
+
 NS_SWIFT_NAME(Utilities)
 @interface SnapyrUtils : NSObject
 
 + (void)saveAPIHost:(nonnull NSString *)apiHost;
 + (nonnull NSString *)getAPIHost;
-+ (nonnull NSString *)getAPIHost:(BOOL)enableDevEnvironment;
++ (nonnull NSString *)getAPIHost:(SnapyrEnvironment)snapyrEnvironment;
 + (nullable NSURL *)getAPIHostURL;
-+ (nullable NSURL *)getAPIHostURL:(BOOL)enableDevEnvironment;
++ (nullable NSURL *)getAPIHostURL:(SnapyrEnvironment)snapyrEnvironment;
 
 + (NSData *_Nullable)dataFromPlist:(nonnull id)plist;
 + (id _Nullable)plistFromData:(NSData *)data;
@@ -84,6 +90,5 @@ NSString *snapyrEventNameForScreenTitle(NSString *title);
 
 @interface NSArray(SerializableDeepCopy) <SnapyrSerializableDeepCopy>
 @end
-
 
 NS_ASSUME_NONNULL_END

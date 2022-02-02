@@ -7,6 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "SnapyrUtils.h"
 
 #if TARGET_OS_IPHONE
 #import <UIKit/UIKit.h>
@@ -88,8 +89,12 @@ NS_SWIFT_NAME(SnapyrConfiguration)
  * Whether to use dev endpoints for API config and engine. `NO` by default.
  * If `NO`, uses production endpoints (`api.snapyr.com` and `engine.snapyr.com`)
  * If `YES`, uses dev endpoints (`api.snapyrdev.net` and `dev-engine.snapyrdev.net`)
+ *
+ * This is deprecated. Use `snapyrEnvironment` instead.
  */
-@property (nonatomic, assign) BOOL enableDevEnvironment;
+@property (nonatomic, assign) BOOL enableDevEnvironment DEPRECATED_MSG_ATTRIBUTE("Use .snapyrEnvironment instead.");
+
+@property (nonatomic, assign) SnapyrEnvironment snapyrEnvironment;
 
 /**
  * Whether the sdk should use location services.

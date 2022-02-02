@@ -33,12 +33,25 @@ const NSString *snapyr_apiHost = @"snapyr_apihost";
     [defaults setObject:apiHost forKey:[snapyr_apiHost copy]];
 }
 
-+ (nonnull NSString *)getAPIHost:(BOOL) enableDevEnvironment
++ (nonnull NSString *)getAPIHost:(SnapyrEnvironment) snapyrEnvironment
 {
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     NSString *result = [defaults stringForKey:[snapyr_apiHost copy]];
     if (!result) {
-        result = (enableDevEnvironment) ? kSnapyrAPIBaseHostDev : kSnapyrAPIBaseHost;
+        switch (snapyrEnvironment) {
+            case SnapyrEnvironmentDev: {
+                result = kSnapyrAPIBaseHostDev;
+                break;
+            }
+            case SnapyrEnvironmentStage: {
+                result = kSnapyrAPIBaseHostStage;
+                break;
+            }
+            case SnapyrEnvironmentDefault:
+            default: {
+                result = kSnapyrAPIBaseHost;
+            }
+        }
     }
     return result;
 }
@@ -53,9 +66,9 @@ const NSString *snapyr_apiHost = @"snapyr_apihost";
 //    return kSnapyrAPIBaseHost;
 //}
 
-+ (nullable NSURL *)getAPIHostURL:(BOOL) enableDevEnvironment
++ (nullable NSURL *)getAPIHostURL:(SnapyrEnvironment) snapyrEnvironment
 {
-    return [NSURL URLWithString:[SnapyrUtils getAPIHost:enableDevEnvironment]];
+    return [NSURL URLWithString:[SnapyrUtils getAPIHost:snapyrEnvironment]];
 }
 
 + (nullable NSURL *)getAPIHostURL
