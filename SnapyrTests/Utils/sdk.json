@@ -4,31 +4,35 @@
         "workspaceId": "d00f0649-c6a4-475c-8eeb-518ae5f29768"
     },
     "metadata": {
-        "engine": "",
-        "platform": "Android",
+        "engine": "https://dev-engine.snapyrdev.net",
         "channelId": "6e6e8689-b25d-46b3-a924-7682ba7e6d94",
-        "pushCategories": {
-            "TIMER_EXPIRED": {
+        "pushTemplates": [{
+                "id": "691d895d-bac0-4b92-90ba-df88681461bd",
+                "modified": "2022-01-01T00:00:00.000Z",
                 "actions": [{
+                        "id": "22c6d726-42d4-4339-860d-59714d3bcd46",
                         "actionId": "SNOOZE_ACTION",
                         "title": "Snooze",
                         "deepLinkUrl": "http://snooze.com"
                     },
                     {
+                        "id": "06d5b198-a6c0-4df1-a58f-d6ebcad0bc30",
                         "actionId": "STOP_ACTION",
                         "title": "Stop",
                         "deepLinkUrl": "http://stop.com"
                     }
-                ],
-                "GENERAL": {
-                    "actions": [{
-                        "actionId": "SET_TIMER",
-                        "title": "Set Timer",
-                        "deepLinkUrl": "http://set.com"
-                    }]
-
-                }
+                ]
+            },
+            {
+                "id": "0ed69b61-8af2-47ce-ae45-71a3600cc815",
+                "modified": "2022-01-01T00:00:00.000Z",
+                "actions": [{
+                    "id": "60465344-f2fd-4fc0-9de0-8aa15e25ad37",
+                    "actionId": "SET_TIMER",
+                    "title": "Set Timer",
+                    "deepLinkUrl": "http://set.com"
+                }]
             }
-        }
+        ]
     }
 }

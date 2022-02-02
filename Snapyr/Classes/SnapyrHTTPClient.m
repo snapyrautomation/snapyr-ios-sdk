@@ -32,7 +32,7 @@ NSString * const kSnapyrAPIBaseHostStage = @"https://stage-engine.snapyrdev.net/
 
 
 - (instancetype)initWithRequestFactory:(SnapyrRequestFactory)requestFactory
-                         configuration: (SnapyrSDKConfiguration* _Nonnull)configuration
+                         configuration: (SnapyrSDKConfiguration *)configuration
 {
     if (self = [self init]) {
         if (requestFactory == nil) {
@@ -193,7 +193,7 @@ NSString * const kSnapyrAPIBaseHostStage = @"https://stage-engine.snapyrdev.net/
             return;
         }
         NSInteger code = ((NSHTTPURLResponse *)response).statusCode;
-        if (code > 300) {
+        if (code >= 300) {
             DLog(@"SnapyrHTTPClient.settingsForWriteKey: server responded with unexpected HTTP code [%li]", code);
             
             completionHandler(NO, defaultSettings);

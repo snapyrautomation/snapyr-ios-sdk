@@ -206,10 +206,12 @@ NS_SWIFT_NAME(SnapyrConfiguration)
  */
 @property (nonatomic, strong, nullable) id<SnapyrEdgeFunctionMiddleware> edgeFunctionMiddleware;
 
-/**
- * Register a factory that can be used to create an integration.
- */
-- (void)use:(id<SnapyrIntegrationFactory> _Nonnull)factory;
+// PS (2021-01-18): commenting this out to hide from public API. We do not currently support user/config endpoint-configurable factories,
+// only built-in SnapyrSnapyrIntegration. See SnapyrIntegrationsManager `initWithSDK`
+///**
+// * Register a factory that can be used to create an integration.
+// */
+//- (void)use:(id<SnapyrIntegrationFactory> _Nonnull)factory;
 
 /**
  * Leave this nil for iOS extensions, otherwise set to UIApplication.sharedApplication.

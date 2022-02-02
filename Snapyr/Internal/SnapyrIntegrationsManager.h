@@ -8,6 +8,7 @@
 
 #import <Foundation/Foundation.h>
 #import "SnapyrMiddleware.h"
+#import "SnapyrSDKConfiguration.h"
 
 /**
  * Filenames of "Application Support" files where essential data is stored.
@@ -32,11 +33,15 @@ NS_SWIFT_NAME(IntegrationsManager)
 // @Deprecated - Exposing for backward API compat reasons only
 @property (nonatomic, readonly) NSMutableDictionary *_Nonnull integrations;
 
+- (nullable NSURL *)getDeepLinkForActionId:(NSString *_Nonnull)actionId;
 - (instancetype _Nonnull)initWithSDK:(SnapyrSDK *_Nonnull)sdk;
+- (instancetype _Nonnull)initForExtensionWithConfig:(SnapyrSDKConfiguration *_Nonnull)configuration;
+- (nullable NSDictionary *)getCachedPushDataForTemplateId: (NSString *_Nonnull)templateId;
 
 // @Deprecated - Exposing for backward API compat reasons only
 - (NSString *_Nonnull)getAnonymousId;
-- (void) refreshSettings;
+- (void)refreshSettings;
+- (void)refreshSettingsWithCompletionHandler:(void (^_Nonnull)(BOOL success, JSON_DICT _Nullable settings))completionHandler;
 
 @end
 

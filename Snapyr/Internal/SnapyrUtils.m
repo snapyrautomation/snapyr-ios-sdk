@@ -29,13 +29,13 @@ const NSString *snapyr_apiHost = @"snapyr_apihost";
     if (![apiHost containsString:@"https://"]) {
         apiHost = [NSString stringWithFormat:@"https://%@", apiHost];
     }
-    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    NSUserDefaults *defaults = getGroupUserDefaults();
     [defaults setObject:apiHost forKey:[snapyr_apiHost copy]];
 }
 
 + (nonnull NSString *)getAPIHost:(SnapyrEnvironment) snapyrEnvironment
 {
-    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    NSUserDefaults *defaults = getGroupUserDefaults();
     NSString *result = [defaults stringForKey:[snapyr_apiHost copy]];
     if (!result) {
         switch (snapyrEnvironment) {
@@ -409,6 +409,40 @@ NSDictionary *getLiveContext(SnapyrReachability *reachability, NSDictionary *ref
     }
     
     return [context copy];
+}
+
+/**
+ * Get the app group name used by Snapyr SDK convention: `group.{bundle ID}.snapyr`, e.g. `group.com.testorg.testapp.snapyr`
+ */
+NSString* getAppGroupName(void)
+{
+    // https://stackoverflow.com/a/27849695
+    NSBundle *bundle = [NSBundle mainBundle];
+    // Path extension is "appex" for extensions (in the case of notif service extension)
+    // Remove it to get back to the main bundle ID which will be the same as that from the main app
+    if ([[bundle.bundleURL pathExtension] isEqualToString:@"appex"]) {
+        // Peel off two directory levels - MY_APP.app/PlugIns/MY_APP_EXTENSION.appex
+        bundle = [NSBundle bundleWithURL:[[bundle.bundleURL URLByDeletingLastPathComponent] URLByDeletingLastPathComponent]];
+    }
+    
+    NSString* bundleID = [bundle bundleIdentifier];
+    return [NSString stringWithFormat:@"%@.%@.%@", @"group", bundleID, @"snapyr"];
+}
+
+/**
+ * Get UserDefaults for shared app group, which is used to share data between main app and notification service extension.
+ * If that doesn't work (because there's no app group by the expected name), fall back to standardUserDefaults
+ */
+NSUserDefaults* getGroupUserDefaults(void)
+{
+    NSString *appGroupName = getAppGroupName();
+    
+    @try {
+        return [[NSUserDefaults alloc] initWithSuiteName:appGroupName];
+    }
+    @catch (NSException *exc) {
+        return [NSUserDefaults standardUserDefaults];
+    }
 }
 
 
