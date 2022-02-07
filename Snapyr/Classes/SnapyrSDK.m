@@ -41,6 +41,77 @@ static SnapyrSDK *__sharedInstance = nil;
     });
 }
 
++ (void)handleNoticationExtensionRequestWithWriteKey:(NSString *)writeKey bestAttemptContent:(UNMutableNotificationContent * _Nonnull)bestAttemptContent originalRequest:(UNNotificationRequest *_Nonnull)originalRequest contentHandler:(void (^)(UNNotificationContent * _Nonnull))contentHandler
+{
+    [SnapyrSDK handleNoticationExtensionRequestWithWriteKey:writeKey bestAttemptContent:bestAttemptContent originalRequest:originalRequest contentHandler:contentHandler devMode:NO];
+}
+
++ (void)handleNoticationExtensionRequestWithWriteKey:(NSString *)writeKey bestAttemptContent:(UNMutableNotificationContent * _Nonnull)bestAttemptContent originalRequest:(UNNotificationRequest *_Nonnull)originalRequest contentHandler:(void (^)(UNNotificationContent * _Nonnull))contentHandler devMode:(BOOL)enableDevMode
+{
+    NSDictionary *snapyrData = originalRequest.content.userInfo[@"snapyr"];
+    if (!snapyrData) {
+        DLog(@"SnapyrSDK NotifExt: Not a Snapyr notification (no Snapyr payload); returning.");
+        contentHandler(bestAttemptContent);
+        return;
+    }
+    NSDictionary *payloadTemplate = snapyrData[@"pushTemplate"];
+    if (!payloadTemplate || !payloadTemplate[@"id"] || !payloadTemplate[@"modified"]) {
+        DLog(@"SnapyrSDK NotifExt: Missing template data on payload; returning.");
+        contentHandler(bestAttemptContent);
+        return;
+    }
+    
+    // Always set category id to template ID - if this template has no actions (no category registered) it will simply be ignored
+    bestAttemptContent.categoryIdentifier = payloadTemplate[@"id"];
+    
+    SnapyrSDKConfiguration *oneOffConfig = [SnapyrSDKConfiguration configurationWithWriteKey:writeKey];
+    oneOffConfig.enableDevEnvironment = enableDevMode;
+    SnapyrIntegrationsManager *integrationsManager = [[SnapyrIntegrationsManager alloc] initForExtensionWithConfig:oneOffConfig];
+    NSDictionary *cachedTemplate = [integrationsManager getCachedPushDataForTemplateId:payloadTemplate[@"id"]];
+    
+    if (cachedTemplate == nil || [cachedTemplate[@"modified"] caseInsensitiveCompare:payloadTemplate[@"modified"]] == NSOrderedAscending) {
+        // Template id missing from cache, or outdated. Trigger SDK settings refresh and check again
+        [integrationsManager refreshSettingsWithCompletionHandler:^(BOOL success, NSDictionary *settings) {
+            if (success) {
+                DLog(@"SnapyrSDK NotifExt: Settings refresh successful.");
+                // When updated categories were just registered (as part of refreshSettings...), they're not available yet for the current
+                // notification - it'll still use the outdated category definition.
+                // Reading the categories back seems to invalidate/flush the updates, making this work. Fun times.
+                // Since the category read is async, wait until the callback to process the original notification extension contentHandler
+                // callback (which finishes processing the incoming notification - it's ready to display w/ new categories at that point)
+                // TODO: move this readback/flush into the integrations manager code?
+                UNUserNotificationCenter *center = [UNUserNotificationCenter currentNotificationCenter];
+                [center getNotificationCategoriesWithCompletionHandler:^(NSSet<UNNotificationCategory *> *categories) {
+                    NSDictionary *newCachedTemplate = [integrationsManager getCachedPushDataForTemplateId:payloadTemplate[@"id"]];
+                    if (newCachedTemplate == nil) {
+                        DLog(@"SnapyrSDK NotifExt: Template on payload still missing from updated settings.");
+                    } else {
+                        DLog(@"SnapyrSDK NotifExt: Template data found after settings refresh.");
+                    }
+                    
+                    contentHandler(bestAttemptContent);
+                }];
+            } else {
+                DLog(@"SnapyrSDK NotifExt: Failed attempt to refresh template data.");
+                // Nothing further we can do, let the service extension finish processing
+                contentHandler(bestAttemptContent);
+            }
+        }];
+    } else {
+        // Cached template data is up-to-date - no further work to do
+        DLog(@"SnapyrSDK NotifExt: Using cached template data.");
+        contentHandler(bestAttemptContent);
+        return;
+    }
+}
+
+// Just pass thru to integrationsManager, where the data actually lives
+// TODO: (@paulwsmith) rename/refactor to `getPayloadForActionId`? (support deep link + other payload types like user-defined JSON)
+- (nullable NSURL *)getDeepLinkForActionId:(NSString *)actionId
+{
+    return [self.integrationsManager getDeepLinkForActionId:actionId];
+}
+
 - (instancetype)initWithConfiguration:(SnapyrSDKConfiguration *)configuration
 {
     DLog(@"SnapyrSDK.initWithConfiguration");
@@ -125,7 +196,6 @@ static SnapyrSDK *__sharedInstance = nil;
 #pragma mark -
 
 NSString *const SnapyrVersionKey = @"SnapyrVersionKey";
-NSString *const SnapyrBuildKeyV1 = @"SnapyrBuildKey";
 NSString *const SnapyrBuildKeyV2 = @"SnapyrBuildKeyV2";
 
 #if TARGET_OS_IPHONE
@@ -165,17 +235,12 @@ NSString *const SnapyrBuildKeyV2 = @"SnapyrBuildKeyV2";
     if (!self.oneTimeConfiguration.trackApplicationLifecycleEvents) {
         return;
     }
-    // Previously SnapyrBuildKey was stored an integer. This was incorrect because the CFBundleVersion
-    // can be a string. This migrates SnapyrBuildKey to be stored as a string.
-    NSInteger previousBuildV1 = [[NSUserDefaults standardUserDefaults] integerForKey:SnapyrBuildKeyV1];
-    if (previousBuildV1) {
-        [[NSUserDefaults standardUserDefaults] setObject:[@(previousBuildV1) stringValue] forKey:SnapyrBuildKeyV2];
-        [[NSUserDefaults standardUserDefaults] removeObjectForKey:SnapyrBuildKeyV1];
-    }
+    
+    NSUserDefaults *userDefaults = getGroupUserDefaults();
 
-    NSString *previousVersion = [[NSUserDefaults standardUserDefaults] stringForKey:SnapyrVersionKey];
-    NSString *previousBuildV2 = [[NSUserDefaults standardUserDefaults] stringForKey:SnapyrBuildKeyV2];
-
+    NSString *previousVersion = [userDefaults stringForKey:SnapyrVersionKey];
+    NSString *previousBuildV2 = [userDefaults stringForKey:SnapyrBuildKeyV2];
+    
     NSString *currentVersion = [[NSBundle mainBundle] infoDictionary][@"CFBundleShortVersionString"];
     NSString *currentBuild = [[NSBundle mainBundle] infoDictionary][@"CFBundleVersion"];
 
@@ -211,10 +276,10 @@ NSString *const SnapyrBuildKeyV2 = @"SnapyrBuildKeyV2";
 #endif
 
 
-    [[NSUserDefaults standardUserDefaults] setObject:currentVersion forKey:SnapyrVersionKey];
-    [[NSUserDefaults standardUserDefaults] setObject:currentBuild forKey:SnapyrBuildKeyV2];
+    [userDefaults setObject:currentVersion forKey:SnapyrVersionKey];
+    [userDefaults setObject:currentBuild forKey:SnapyrBuildKeyV2];
 
-    [[NSUserDefaults standardUserDefaults] synchronize];
+    [userDefaults synchronize];
 }
 
 - (void)_applicationWillEnterForeground
@@ -351,18 +416,38 @@ NSString *const SnapyrBuildKeyV2 = @"SnapyrBuildKeyV2";
 
 - (void)pushNotificationReceived:(NSDictionary *)info
 {
-    NSMutableDictionary *properties = [NSMutableDictionary dictionaryWithCapacity:2];
-    properties[@"actionToken"] = [info[@"actionToken"] copy];
-    properties[@"deepLinkUrl"] = info[@"deepLinkUrl"];
+    NSMutableDictionary *properties = [NSMutableDictionary dictionary];
+    
+    NSDictionary *snapyrData = info[@"snapyr"];
+    if (!snapyrData) {
+        DLog(@"SnapyrSDK pushNotificationReceived: Not a Snapyr notification (no Snapyr payload); returning.");
+        return;
+    }
+    
+    properties[@"actionToken"] = snapyrData[@"actionToken"];
+    properties[@"deepLinkUrl"] = snapyrData[@"deepLinkUrl"];
     
     [self track:@"snapyr.observation.event.Impression" properties:properties];
 }
 
 - (void)pushNotificationTapped:(NSDictionary *)info
 {
-    NSMutableDictionary *properties = [NSMutableDictionary dictionaryWithCapacity:2];
+    [self pushNotificationTapped:info actionId:nil];
+}
+
+- (void)pushNotificationTapped:(SERIALIZABLE_DICT _Nullable)info actionId:(NSString* _Nullable)actionId
+{
+    NSMutableDictionary *properties = [NSMutableDictionary dictionary];
+    
+    NSDictionary *snapyrData = info[@"snapyr"];
+    if (!snapyrData) {
+        DLog(@"SnapyrSDK pushNotificationTapped: Not a Snapyr notification (no Snapyr payload); returning.");
+        return;
+    }
+    
     properties[@"actionToken"] = info[@"actionToken"];
     properties[@"deepLinkUrl"] = info[@"deepLinkUrl"];
+    properties[@"actionId"] = actionId;
     
     [self track:@"snapyr.observation.event.Behavior" properties:properties];
 }

@@ -30,7 +30,7 @@
 
 
 - (instancetype)initWithRequestFactory:(SnapyrRequestFactory)requestFactory
-                         configuration: (SnapyrSDKConfiguration* _Nonnull)configuration
+                         configuration: (SnapyrSDKConfiguration *)configuration
 {
     return self;
     
@@ -41,7 +41,7 @@
     return [OCMockObject mockForClass:[NSURLSessionUploadTask class]];
 }
 
-- (NSURLSessionDataTask *)settingsForWriteKey:(NSString *)writeKey completionHandler:(void (^)(BOOL success, JSON_DICT _Nullable settings))completionHandler
+- (NSURLSessionDataTask *)settingsForWriteKey:(NSString *)writeKey completionHandler:(void (^)(BOOL success, JSON_DICT _Nonnull settings))completionHandler
 {
     NSBundle *bundle = [NSBundle bundleForClass:[self class]];
     NSString *path = [bundle pathForResource:@"sdk" ofType:@"json"];

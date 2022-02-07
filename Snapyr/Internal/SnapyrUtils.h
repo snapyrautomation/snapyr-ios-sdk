@@ -35,6 +35,8 @@ NSString *getDeviceModel(void);
 BOOL getAdTrackingEnabled(SnapyrSDKConfiguration *configuration);
 NSDictionary *getStaticContext(SnapyrSDKConfiguration *configuration, NSString * _Nullable deviceToken);
 NSDictionary *getLiveContext(SnapyrReachability *reachability, NSDictionary * _Nullable referrer, NSDictionary * _Nullable traits);
+NSString* getAppGroupName(void);
+NSUserDefaults* getGroupUserDefaults(void);
 
 NSString *GenerateUUIDString(void);
 

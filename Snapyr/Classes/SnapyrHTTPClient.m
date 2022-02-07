@@ -30,7 +30,7 @@ NSString * const kSnapyrAPIBaseHostDev = @"https://dev-engine.snapyrdev.net/v1";
 
 
 - (instancetype)initWithRequestFactory:(SnapyrRequestFactory)requestFactory
-                         configuration: (SnapyrSDKConfiguration* _Nonnull)configuration
+                         configuration: (SnapyrSDKConfiguration *)configuration
 {
     if (self = [self init]) {
         if (requestFactory == nil) {
@@ -83,7 +83,11 @@ NSString * const kSnapyrAPIBaseHostDev = @"https://dev-engine.snapyrdev.net/v1";
     //    batch = snapyrCoerceDictionary(batch);
     NSURLSession *session = [self sessionForWriteKey:writeKey];
     
-    NSURL *url = [[SnapyrUtils getAPIHostURL:self.configuration.enableDevEnvironment] URLByAppendingPathComponent:@"batch"];
+    BOOL enableDev = NO;
+    if (self.configuration.enableDevEnvironment) {
+        enableDev = YES;
+    }
+    NSURL *url = [[SnapyrUtils getAPIHostURL:enableDev] URLByAppendingPathComponent:@"batch"];
     NSMutableURLRequest *request = self.requestFactory(url);
     
     // This is a workaround for an IOS 8.3 bug that causes Content-Type to be incorrectly set
@@ -182,7 +186,7 @@ NSString * const kSnapyrAPIBaseHostDev = @"https://dev-engine.snapyrdev.net/v1";
             return;
         }
         NSInteger code = ((NSHTTPURLResponse *)response).statusCode;
-        if (code > 300) {
+        if (code >= 300) {
             DLog(@"SnapyrHTTPClient.settingsForWriteKey: server responded with unexpected HTTP code [%li]", code);
             
             completionHandler(NO, defaultSettings);
