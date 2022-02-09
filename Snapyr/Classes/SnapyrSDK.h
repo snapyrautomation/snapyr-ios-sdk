@@ -43,7 +43,23 @@ NS_SWIFT_NAME(Snapyr)
  * @param originalRequest the original notification request received by the extension, used for referencing data on the notification
  * @param contentHandler the content handler callback from the notification service extension, used to tell the OS that this request is complete.
  */
++ (void)handleNoticationExtensionRequestWithBestAttemptContent:(UNMutableNotificationContent * _Nonnull)bestAttemptContent originalRequest:(UNNotificationRequest * _Nonnull)originalRequest contentHandler:(void (^)(UNNotificationContent * _Nonnull))contentHandler;
+
+/**
+ * Handle incoming notification from a notification service extension. Adds category data, and updates template/category config
+ * when necessary.
+ *
+ * @param writeKey the Snapyr write key
+ * @param bestAttemptContent the mutable copy of notifcation content, which will be written to here and passed to callback
+ * @param originalRequest the original notification request received by the extension, used for referencing data on the notification
+ * @param contentHandler the content handler callback from the notification service extension, used to tell the OS that this request is complete.
+ */
 + (void)handleNoticationExtensionRequestWithWriteKey:(NSString *)writeKey bestAttemptContent:(UNMutableNotificationContent * _Nonnull)bestAttemptContent originalRequest:(UNNotificationRequest * _Nonnull)originalRequest contentHandler:(void (^)(UNNotificationContent * _Nonnull))contentHandler;
+
+/**
+ * An extension of the above for internal use/testing, allowed dev mode to be enabled (use dev endpoints rather than prod).
+ */
++ (void)handleNoticationExtensionRequestWithBestAttemptContent:(UNMutableNotificationContent * _Nonnull)bestAttemptContent originalRequest:(UNNotificationRequest * _Nonnull)originalRequest contentHandler:(void (^)(UNNotificationContent * _Nonnull))contentHandler devMode:(BOOL)enableDevMode;
 
 /**
  * An extension of the above for internal use/testing, allowed dev mode to be enabled (use dev endpoints rather than prod).
