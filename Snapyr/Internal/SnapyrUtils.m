@@ -63,6 +63,11 @@ const NSString *snapyr_apiHost = @"snapyr_apihost";
     return [SnapyrUtils getAPIHostURL:NO];
 }
 
++ (nullable NSString *)getWriteKey
+{
+    return [NSUserDefaults.standardUserDefaults stringForKey:@"snapyr_write_key"];
+}
+
 + (NSData *_Nullable)dataFromPlist:(nonnull id)plist
 {
     NSError *error = nil;
