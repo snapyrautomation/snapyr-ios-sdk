@@ -29,6 +29,24 @@ class SnapyrTests: XCTestCase {
         ],
         "plan": ["track": [:]],
     ] as NSDictionary
+    
+    private func getTestPayload(invalidURL: Bool = false) -> UNNotificationRequest {
+        let c = UNMutableNotificationContent()
+        c.title = "Push #1"
+        c.body = "Tap a button to do awesome stuff now!"
+        c.userInfo = [
+            "snapyr": [
+                "deepLinkUrl": "snapyrrunner://test/reachedAScoreOf/11",
+                "imageUrl": invalidURL ? "https://blah.com" : "https://images-na.ssl-images-amazon.com/images/S/pv-target-images/fb1fd46fbac48892ef9ba8c78f1eb6fa7d005de030b2a3d17b50581b2935832f._RI_.jpg",
+                "pushTemplate": [
+                    "id": "0f819332-2c27-4b99-bc87-325cca7b724a",
+                    "modified": "2022-01-21T16:28:40.626Z"
+                ],
+                "actionToken": "abc1234562"
+            ]
+        ]
+        return UNNotificationRequest.init(identifier: "test_id", content: c, trigger: nil)
+    }
     var sdk: Snapyr!
     var testMiddleware: TestMiddleware!
     var testApplication: TestApplication!
@@ -344,6 +362,51 @@ class SnapyrTests: XCTestCase {
         } else {
             XCTAssertNotNil(data)
         }
+    }
+    
+    func testHandleNotificationImageSuccess() {
+        let dummyRequest = getTestPayload()
+        guard let payload = (dummyRequest.content.mutableCopy() as? UNMutableNotificationContent) else { XCTFail("No payload found in dummy request") ; return }
+        let handleNotificationExpectation = expectation(description: "Test Handle Notification Image Success")
+        Snapyr.handleNoticationExtensionRequest(withBestAttempt: payload, originalRequest: dummyRequest, contentHandler: { modifiedContent in
+            guard let imageAttachment = modifiedContent.attachments.first,
+                  let imageData = try? Data(contentsOf: imageAttachment.url) else {
+                      XCTFail("Could not fetch image data")
+                      handleNotificationExpectation.fulfill()
+                      return
+                  }
+            handleNotificationExpectation.fulfill()
+                  
+        }, devMode: true)
+        wait(for: [handleNotificationExpectation], timeout: 5)
+    }
+    
+    func testHandleNotificationImageFailure() {
+        let dummyRequest = getTestPayload(invalidURL: true)
+        guard let payload = (dummyRequest.content.mutableCopy() as? UNMutableNotificationContent) else { XCTFail("No payload found in dummy request") ; return }
+        let handleNotificationExpectation = expectation(description: "Test Handle Notification Image Failure")
+        Snapyr.handleNoticationExtensionRequest(withBestAttempt: payload, originalRequest: dummyRequest, contentHandler: { modifiedContent in
+            guard let imageAttachment = modifiedContent.attachments.first,
+                  let imageData = try? Data(contentsOf: imageAttachment.url) else {
+                      // success, because content Handler is called
+                      handleNotificationExpectation.fulfill()
+                      return
+                  }
+            XCTFail("Image should fail")
+            handleNotificationExpectation.fulfill()
+        }, devMode: true)
+        wait(for: [handleNotificationExpectation], timeout: 5)
+    }
+    
+    func testHandleNotificationImageTimeout() {
+        let dummyRequest = getTestPayload(invalidURL: true)
+        guard let payload = (dummyRequest.content.mutableCopy() as? UNMutableNotificationContent) else { XCTFail("No payload found in dummy request") ; return }
+        let handleNotificationExpectation = expectation(description: "Test Handle Notification Image Timeout")
+        Snapyr.handleNoticationExtensionRequest(withBestAttempt: payload, originalRequest: dummyRequest, contentHandler: { modifiedContent in
+            // success
+            handleNotificationExpectation.fulfill()
+        }, devMode: true)
+        wait(for: [handleNotificationExpectation], timeout: 5)
     }
 }
 
