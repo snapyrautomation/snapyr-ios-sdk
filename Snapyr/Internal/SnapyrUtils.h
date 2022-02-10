@@ -20,6 +20,7 @@ NS_SWIFT_NAME(Utilities)
 + (nonnull NSString *)getAPIHost:(BOOL)enableDevEnvironment;
 + (nullable NSURL *)getAPIHostURL;
 + (nullable NSURL *)getAPIHostURL:(BOOL)enableDevEnvironment;
++ (void) setWriteKey: (nonnull NSString*)writeKey;
 + (nullable NSString *)getWriteKey;
 
 + (NSData *_Nullable)dataFromPlist:(nonnull id)plist;

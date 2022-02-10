@@ -64,6 +64,7 @@
 {
     if (self = [self init]) {
         self.writeKey = writeKey;
+        [SnapyrUtils setWriteKey:writeKey];
         DLog(@"SnapyrSDKConfiguration.initWithWriteKey");
         // get the host we have stored
         NSString *host = [SnapyrUtils getAPIHost:self.enableDevEnvironment];

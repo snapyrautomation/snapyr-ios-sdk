@@ -18,6 +18,7 @@ static CTTelephonyNetworkInfo *_telephonyNetworkInfo;
 #endif
 
 const NSString *snapyr_apiHost = @"snapyr_apihost";
+NSString * const kSnapyrWriteKey = @"snapyr_write_key";
 
 @implementation SnapyrUtils
 
@@ -63,9 +64,14 @@ const NSString *snapyr_apiHost = @"snapyr_apihost";
     return [SnapyrUtils getAPIHostURL:NO];
 }
 
++ (void) setWriteKey: (nonnull NSString*)writeKey
+{
+    [getGroupUserDefaults() setObject:writeKey forKey:[kSnapyrWriteKey copy]];
+}
+
 + (nullable NSString *)getWriteKey
 {
-    return [NSUserDefaults.standardUserDefaults stringForKey:@"snapyr_write_key"];
+    return [getGroupUserDefaults() stringForKey: [kSnapyrWriteKey copy]];
 }
 
 + (NSData *_Nullable)dataFromPlist:(nonnull id)plist

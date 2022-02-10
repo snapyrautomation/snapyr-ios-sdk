@@ -53,11 +53,7 @@ static SnapyrSDK *__sharedInstance = nil;
 
 + (void)handleNoticationExtensionRequestWithBestAttemptContent:(UNMutableNotificationContent * _Nonnull)bestAttemptContent originalRequest:(UNNotificationRequest *_Nonnull)originalRequest contentHandler:(void (^)(UNNotificationContent * _Nonnull))contentHandler devMode:(BOOL)enableDevMode
 {
-    NSString *writeKey = __sharedInstance.configuration.writeKey;
-    if (!writeKey) {
-        writeKey = [SnapyrUtils getWriteKey];
-    }
-    
+    NSString *writeKey = [SnapyrUtils getWriteKey];
     if (!writeKey) {
         DLog(@"SnapyrSDK NotifExt: Could not get stored write key; returning");
         contentHandler(bestAttemptContent);
@@ -81,20 +77,6 @@ static SnapyrSDK *__sharedInstance = nil;
         return;
     }
     
-    NSString *urlPath = snapyrData[@"imageURL"];
-    NSURL *url = [[NSURL alloc] initWithString:urlPath];
-    if (urlPath && url) {
-        NSURL *destination = [[[NSURL alloc] initFileURLWithPath:NSTemporaryDirectory()] URLByAppendingPathComponent:url.lastPathComponent];
-        
-        @try {
-            NSData *data = [[NSData alloc] initWithContentsOfURL:destination];
-            [data writeToURL:destination atomically:false];
-            UNNotificationAttachment *attachment = [UNNotificationAttachment attachmentWithIdentifier:@"" URL:destination options:NULL error:NULL];
-            bestAttemptContent.attachments = @[attachment];
-        } @catch (NSException *exception) {
-            DLog(@"SnapyrSDK NotifExt: Could not fetch notification image from URL");
-        }
-    }
     
     // Always set category id to template ID - if this template has no actions (no category registered) it will simply be ignored
     bestAttemptContent.categoryIdentifier = payloadTemplate[@"id"];
@@ -124,12 +106,10 @@ static SnapyrSDK *__sharedInstance = nil;
                         DLog(@"SnapyrSDK NotifExt: Template data found after settings refresh.");
                     }
                     
-                    contentHandler(bestAttemptContent);
                 }];
             } else {
                 DLog(@"SnapyrSDK NotifExt: Failed attempt to refresh template data.");
                 // Nothing further we can do, let the service extension finish processing
-                contentHandler(bestAttemptContent);
             }
         }];
     } else {
@@ -137,6 +117,36 @@ static SnapyrSDK *__sharedInstance = nil;
         DLog(@"SnapyrSDK NotifExt: Using cached template data.");
         contentHandler(bestAttemptContent);
         return;
+    }
+    NSString *urlPath = snapyrData[@"imageUrl"];
+    if (urlPath) {
+        NSURL *url = [[NSURL alloc] initWithString:urlPath];
+        NSURL *destination = [[[NSURL alloc] initFileURLWithPath:NSTemporaryDirectory()] URLByAppendingPathComponent:url.lastPathComponent];
+        
+        NSURLSessionConfiguration *config = NSURLSessionConfiguration.defaultSessionConfiguration;
+        config.timeoutIntervalForRequest = 4;
+        config.timeoutIntervalForResource = 4;
+        
+        NSURLSessionDataTask *task = [[NSURLSession sessionWithConfiguration:config] dataTaskWithURL:url completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
+            if (data == NULL) {
+                DLog(@"SnapyrSDK NotifExt: Could not fetch notification image from URL");
+                contentHandler(bestAttemptContent);
+            } else {
+                @try {
+                    [data writeToURL:destination atomically:false];
+                    // empty attachment lets the system create its own UUID
+                    UNNotificationAttachment *attachment = [UNNotificationAttachment attachmentWithIdentifier:@"" URL:destination options:NULL error:NULL];
+                    bestAttemptContent.attachments = @[attachment];
+                    contentHandler(bestAttemptContent);
+                } @catch (NSException *exception) {
+                    DLog(@"SnapyrSDK NotifExt: Exception happened while creating attachment");
+                    contentHandler(bestAttemptContent);
+                }
+            }
+        }];
+        [task resume];
+    } else {
+        contentHandler(bestAttemptContent);
     }
 }
 
