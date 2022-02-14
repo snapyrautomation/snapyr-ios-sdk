@@ -402,6 +402,23 @@ NSString *const SnapyrBuildKeyV2 = @"SnapyrBuildKeyV2";
 
 #pragma mark - Push Notifications
 
+- (void)setPushNotificationTokenData:(NSData*)tokenData
+{
+    NSUInteger length = tokenData.length;
+    if (length == 0) {
+        DLog(@"SnapyrSDK setPushNotificationTokenData: Invalid token data, length is zero");
+        return;
+    }
+    
+    const unsigned char *tokenBytes = (const unsigned char *)tokenData.bytes;
+    NSMutableString *tokenString  = [NSMutableString stringWithCapacity:(length * 2)];
+    for (int i = 0; i < length; ++i) {
+        [tokenString appendFormat:@"%02x", tokenBytes[i]];
+    }
+    NSString *resultTokenString = [tokenString copy];
+    [self setPushNotificationToken:resultTokenString];
+}
+
 - (void)setPushNotificationToken:(NSString*)token
 {
     [SnapyrState sharedInstance].context.deviceToken = token;
@@ -414,7 +431,17 @@ NSString *const SnapyrBuildKeyV2 = @"SnapyrBuildKeyV2";
     }
 }
 
-- (void)pushNotificationReceived:(NSDictionary *)info
+- (void)pushNotificationReceivedWithResponse:(UNNotificationResponse *)response
+{
+    [self pushNotificationReceived: response.notification];
+}
+
+- (void)pushNotificationReceived:(UNNotification *)notification
+{
+    [self pushNotificationReceivedWithInfo: notification.request.content.userInfo];
+}
+
+- (void)pushNotificationReceivedWithInfo:(NSDictionary *)info
 {
     NSMutableDictionary *properties = [NSMutableDictionary dictionary];
     
@@ -430,12 +457,32 @@ NSString *const SnapyrBuildKeyV2 = @"SnapyrBuildKeyV2";
     [self track:@"snapyr.observation.event.Impression" properties:properties];
 }
 
-- (void)pushNotificationTapped:(NSDictionary *)info
+- (void)pushNotificationTappedWithResponse:(UNNotificationResponse*)response
 {
-    [self pushNotificationTapped:info actionId:nil];
+    [self pushNotificationTapped:response.notification];
 }
 
-- (void)pushNotificationTapped:(SERIALIZABLE_DICT _Nullable)info actionId:(NSString* _Nullable)actionId
+- (void)pushNotificationTappedWithResponse:(UNNotificationResponse*)response actionId:(NSString* _Nullable)actionId
+{
+    [self pushNotificationTapped:response.notification actionId:actionId];
+}
+
+- (void)pushNotificationTapped:(UNNotification*)notification
+{
+    [self pushNotificationTapped:notification];
+}
+
+- (void)pushNotificationTapped:(UNNotification*)notification actionId:(NSString* _Nullable)actionId
+{
+    [self pushNotificationTappedWithInfo:notification.request.content.userInfo actionId:actionId];
+}
+
+- (void)pushNotificationTappedWithInfo:(NSDictionary *)info
+{
+    [self pushNotificationTappedWithInfo:info actionId:nil];
+}
+
+- (void)pushNotificationTappedWithInfo:(SERIALIZABLE_DICT _Nullable)info actionId:(NSString* _Nullable)actionId
 {
     NSMutableDictionary *properties = [NSMutableDictionary dictionary];
     
