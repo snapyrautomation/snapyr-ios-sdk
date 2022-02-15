@@ -41,9 +41,25 @@ static SnapyrSDK *__sharedInstance = nil;
     });
 }
 
++ (void)handleNoticationExtensionRequestWithBestAttemptContent:(UNMutableNotificationContent * _Nonnull)bestAttemptContent originalRequest:(UNNotificationRequest *_Nonnull)originalRequest contentHandler:(void (^)(UNNotificationContent * _Nonnull))contentHandler
+{
+    [SnapyrSDK handleNoticationExtensionRequestWithBestAttemptContent:bestAttemptContent originalRequest:originalRequest contentHandler:contentHandler devMode:NO];
+}
+
 + (void)handleNoticationExtensionRequestWithWriteKey:(NSString *)writeKey bestAttemptContent:(UNMutableNotificationContent * _Nonnull)bestAttemptContent originalRequest:(UNNotificationRequest *_Nonnull)originalRequest contentHandler:(void (^)(UNNotificationContent * _Nonnull))contentHandler
 {
     [SnapyrSDK handleNoticationExtensionRequestWithWriteKey:writeKey bestAttemptContent:bestAttemptContent originalRequest:originalRequest contentHandler:contentHandler devMode:NO];
+}
+
++ (void)handleNoticationExtensionRequestWithBestAttemptContent:(UNMutableNotificationContent * _Nonnull)bestAttemptContent originalRequest:(UNNotificationRequest *_Nonnull)originalRequest contentHandler:(void (^)(UNNotificationContent * _Nonnull))contentHandler devMode:(BOOL)enableDevMode
+{
+    NSString *writeKey = [SnapyrUtils getWriteKey];
+    if (!writeKey) {
+        DLog(@"SnapyrSDK NotifExt: Could not get stored write key; returning");
+        contentHandler(bestAttemptContent);
+    }
+    
+    [SnapyrSDK handleNoticationExtensionRequestWithWriteKey:writeKey bestAttemptContent:bestAttemptContent originalRequest:originalRequest contentHandler:contentHandler devMode:enableDevMode];
 }
 
 + (void)handleNoticationExtensionRequestWithWriteKey:(NSString *)writeKey bestAttemptContent:(UNMutableNotificationContent * _Nonnull)bestAttemptContent originalRequest:(UNNotificationRequest *_Nonnull)originalRequest contentHandler:(void (^)(UNNotificationContent * _Nonnull))contentHandler devMode:(BOOL)enableDevMode
@@ -60,6 +76,15 @@ static SnapyrSDK *__sharedInstance = nil;
         contentHandler(bestAttemptContent);
         return;
     }
+    
+  
+    __block bool categoryFetchFinished = NO;
+    __block bool imageFetchFinished = NO;
+    void (^tryToComplete)() = ^void {
+        if (categoryFetchFinished && imageFetchFinished) {
+            contentHandler(bestAttemptContent);
+        }
+    };
     
     // Always set category id to template ID - if this template has no actions (no category registered) it will simply be ignored
     bestAttemptContent.categoryIdentifier = payloadTemplate[@"id"];
@@ -88,21 +113,56 @@ static SnapyrSDK *__sharedInstance = nil;
                     } else {
                         DLog(@"SnapyrSDK NotifExt: Template data found after settings refresh.");
                     }
-                    
-                    contentHandler(bestAttemptContent);
+                    categoryFetchFinished = YES;
+                    tryToComplete();
                 }];
             } else {
-                DLog(@"SnapyrSDK NotifExt: Failed attempt to refresh template data.");
-                // Nothing further we can do, let the service extension finish processing
-                contentHandler(bestAttemptContent);
+              // Nothing further we can do, let the service extension finish processing
+              DLog(@"SnapyrSDK NotifExt: Failed attempt to refresh template data.");
+              categoryFetchFinished = YES;
+              tryToComplete();
             }
         }];
     } else {
-        // Cached template data is up-to-date - no further work to do
-        DLog(@"SnapyrSDK NotifExt: Using cached template data.");
-        contentHandler(bestAttemptContent);
-        return;
+      // Cached template data is up-to-date - no further work to do
+      DLog(@"SnapyrSDK NotifExt: Using cached template data.");
+      categoryFetchFinished = YES;
+      tryToComplete();
     }
+  NSString *urlPath = snapyrData[@"imageUrl"];
+  if (urlPath) {
+    NSURL *url = [[NSURL alloc] initWithString:urlPath];
+    NSURL *destination = [[[NSURL alloc] initFileURLWithPath:NSTemporaryDirectory()] URLByAppendingPathComponent:url.lastPathComponent];
+    
+    NSURLSessionConfiguration *config = NSURLSessionConfiguration.defaultSessionConfiguration;
+    config.timeoutIntervalForRequest = 4;
+    config.timeoutIntervalForResource = 4;
+    
+    NSURLSessionDataTask *task = [[NSURLSession sessionWithConfiguration:config] dataTaskWithURL:url completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
+      if ((data == NULL) || (error != NULL)) {
+        DLog(@"SnapyrSDK NotifExt: Could not fetch notification image from URL");
+        imageFetchFinished = YES;
+        tryToComplete();
+      } else {
+        @try {
+          [data writeToURL:destination atomically:false];
+          // empty attachment lets the system create its own UUID
+          UNNotificationAttachment *attachment = [UNNotificationAttachment attachmentWithIdentifier:@"" URL:destination options:NULL error:NULL];
+          bestAttemptContent.attachments = @[attachment];
+          imageFetchFinished = YES;
+          tryToComplete();
+        } @catch (NSException *exception) {
+          DLog(@"SnapyrSDK NotifExt: Exception happened while creating attachment");
+          imageFetchFinished = YES;
+          tryToComplete();
+        }
+      }
+    }];
+    [task resume];
+  } else {
+    imageFetchFinished = YES;
+    tryToComplete();
+  }
 }
 
 // Just pass thru to integrationsManager, where the data actually lives
