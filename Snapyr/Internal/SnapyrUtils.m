@@ -433,9 +433,9 @@ NSString* getAppGroupName(void)
  */
 NSUserDefaults* getGroupUserDefaults(void)
 {
-    NSString *appGroupName = getAppGroupName();
     
     @try {
+        NSString *appGroupName = getAppGroupName();
         return [[NSUserDefaults alloc] initWithSuiteName:appGroupName];
     }
     @catch (NSException *exc) {

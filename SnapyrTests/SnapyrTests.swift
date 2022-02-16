@@ -86,20 +86,19 @@ class SnapyrTests: XCTestCase {
     
     func testConfigAPIHost() {
         // gotta remove the key first
-        UserDefaults.standard.removeObject(forKey: "snapyr_apihost")
-        
+        getGroupUserDefaults().removeObject(forKey: "snapyr_apihost")
         let dummyHost = URL(string: "https://blah.com/")
-        let config2 = SnapyrConfiguration(writeKey: "TESTKEY", defaultAPIHost: dummyHost)
+        let config3 = SnapyrConfiguration(writeKey: "TESTKEY", defaultAPIHost: dummyHost)
         
-        let currentHost = config2.apiHost?.absoluteString
-        let storedHost = UserDefaults.standard.string(forKey: "snapyr_apihost")
+        let currentHost = config3.apiHost?.absoluteString
+        let storedHost = getGroupUserDefaults().string(forKey: "snapyr_apihost")
         
-        XCTAssertEqual(config2.apiHost, dummyHost)
+        XCTAssertEqual(config3.apiHost, dummyHost)
         XCTAssertEqual(currentHost, storedHost)
     }
     
     func testCachedSettingsAPIHost() {
-        UserDefaults.standard.removeObject(forKey: "snapyr_apihost")
+        getGroupUserDefaults().removeObject(forKey: "snapyr_apihost")
         var initialized = false
         NotificationCenter.default.addObserver(forName: NSNotification.Name(rawValue: SnapyrSDKIntegrationDidStart), object: nil, queue: nil) { (notification) in
             let key = notification.object as? String
@@ -143,7 +142,7 @@ class SnapyrTests: XCTestCase {
     //    }
     
     func testClearsSEGQueueFromUserDefaults() {
-        expectUntil(2.0, expression: UserDefaults.standard.string(forKey: "snapyrQueue") == nil)
+        expectUntil(2.0, expression: getGroupUserDefaults().string(forKey: "snapyrQueue") == nil)
     }
     
     /* TODO: Fix me when the Context object isn't so wild.
@@ -279,7 +278,7 @@ class SnapyrTests: XCTestCase {
         }
         let integration = sdk.test_integrationsManager()?.test_snapyrIntegration()
         XCTAssertNotNil(integration)
-        let timeOut = Date() + 60
+        let timeOut = Date() + 120
         while(integration?.test_queue()?.count != max && Date() < timeOut) {
             sdk2.track("test.maxQueue")
         }

@@ -20,7 +20,7 @@ class FileStorageTest : XCTestCase {
         #if os(macOS)
         XCTAssertEqual(url?.lastPathComponent, "snapyr-test")
         #else
-        XCTAssertEqual(url?.lastPathComponent, "Application Support")
+        XCTAssertEqual(url?.lastPathComponent, "app")
         #endif
         storage = FileStorage(folder: url!, crypto: nil)
     }
@@ -33,7 +33,7 @@ class FileStorageTest : XCTestCase {
     func testCreatesCachesDirectory() {
         let url = FileStorage.cachesDirectoryURL()
         XCTAssertNotNil(url, "URL should not be nil")
-        XCTAssertEqual(url?.lastPathComponent, "Caches", "Last part of url should be Caches")
+        XCTAssertEqual(url?.lastPathComponent, "cache", "Last part of url should be Caches")
     }
     
     func testCreatesFolderIfNoneExists() {
