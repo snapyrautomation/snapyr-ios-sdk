@@ -111,15 +111,15 @@ NS_SWIFT_NAME(Snapyr)
 - (void)setPushNotificationTokenData:(NSData*)tokenData;
 
 - (void)pushNotificationReceivedWithResponse:(UNNotificationResponse *)response;
-- (void)pushNotificationReceived:(UNNotification *)notification;
-- (void)pushNotificationReceivedWithInfo:(SERIALIZABLE_DICT _Nullable)info;
+- (void)pushNotificationReceivedWithNotification:(UNNotification *)notification;
+- (void)pushNotificationReceived:(SERIALIZABLE_DICT _Nullable)info;
 
 - (void)pushNotificationTappedWithResponse:(UNNotificationResponse*)response;
 - (void)pushNotificationTappedWithResponse:(UNNotificationResponse*)response actionId:(NSString* _Nullable)actionId;
-- (void)pushNotificationTapped:(UNNotification*)notification;
-- (void)pushNotificationTapped:(UNNotification*)notification actionId:(NSString* _Nullable)actionId;
-- (void)pushNotificationTappedWithInfo:(SERIALIZABLE_DICT _Nullable)info;
-- (void)pushNotificationTappedWithInfo:(SERIALIZABLE_DICT _Nullable)info actionId:(NSString* _Nullable)actionId;
+- (void)pushNotificationTappedWithNotification:(UNNotification*)notification;
+- (void)pushNotificationTappedWithNotification:(UNNotification*)notification actionId:(NSString* _Nullable)actionId;
+- (void)pushNotificationTapped:(SERIALIZABLE_DICT _Nullable)info;
+- (void)pushNotificationTapped:(SERIALIZABLE_DICT _Nullable)info actionId:(NSString* _Nullable)actionId;
 
 /*!
  @method
