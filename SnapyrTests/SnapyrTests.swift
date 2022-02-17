@@ -276,7 +276,8 @@ class SnapyrTests: XCTestCase {
         for i in 1...max * 2 {
             sdk2.track("test #\(i)")
         }
-        let integration = sdk.test_integrationsManager()?.test_snapyrIntegration()
+        
+        let integration = sdk2.test_integrationsManager()?.test_snapyrIntegration()
         XCTAssertNotNil(integration)
         let timeOut = Date() + 120
         while(integration?.test_queue()?.count != max && Date() < timeOut) {
