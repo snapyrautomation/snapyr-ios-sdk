@@ -462,6 +462,23 @@ NSString *const SnapyrBuildKeyV2 = @"SnapyrBuildKeyV2";
 
 #pragma mark - Push Notifications
 
+- (void)setPushNotificationTokenData:(NSData*)tokenData
+{
+    NSUInteger length = tokenData.length;
+    if (length == 0) {
+        DLog(@"SnapyrSDK setPushNotificationTokenData: Invalid token data, length is zero");
+        return;
+    }
+    
+    const unsigned char *tokenBytes = (const unsigned char *)tokenData.bytes;
+    NSMutableString *tokenString  = [NSMutableString stringWithCapacity:(length * 2)];
+    for (int i = 0; i < length; ++i) {
+        [tokenString appendFormat:@"%02x", tokenBytes[i]];
+    }
+    NSString *resultTokenString = [tokenString copy];
+    [self setPushNotificationToken:resultTokenString];
+}
+
 - (void)setPushNotificationToken:(NSString*)token
 {
     [SnapyrState sharedInstance].context.deviceToken = token;
@@ -472,6 +489,16 @@ NSString *const SnapyrBuildKeyV2 = @"SnapyrBuildKeyV2";
     } else {
         [SnapyrState sharedInstance].userInfo.hasUnregisteredDeviceToken = YES;
     }
+}
+
+- (void)pushNotificationReceivedWithResponse:(UNNotificationResponse *)response
+{
+    [self pushNotificationReceivedWithNotification: response.notification];
+}
+
+- (void)pushNotificationReceivedWithNotification:(UNNotification *)notification
+{
+    [self pushNotificationReceived: notification.request.content.userInfo];
 }
 
 - (void)pushNotificationReceived:(NSDictionary *)info
@@ -488,6 +515,26 @@ NSString *const SnapyrBuildKeyV2 = @"SnapyrBuildKeyV2";
     properties[@"deepLinkUrl"] = snapyrData[@"deepLinkUrl"];
     
     [self track:@"snapyr.observation.event.Impression" properties:properties];
+}
+
+- (void)pushNotificationTappedWithResponse:(UNNotificationResponse*)response
+{
+    [self pushNotificationTappedWithNotification:response.notification];
+}
+
+- (void)pushNotificationTappedWithResponse:(UNNotificationResponse*)response actionId:(NSString* _Nullable)actionId
+{
+    [self pushNotificationTappedWithNotification:response.notification actionId:actionId];
+}
+
+- (void)pushNotificationTappedWithNotification:(UNNotification*)notification
+{
+    [self pushNotificationTappedWithNotification:notification];
+}
+
+- (void)pushNotificationTappedWithNotification:(UNNotification*)notification actionId:(NSString* _Nullable)actionId
+{
+    [self pushNotificationTapped:notification.request.content.userInfo actionId:actionId];
 }
 
 - (void)pushNotificationTapped:(NSDictionary *)info

@@ -124,7 +124,16 @@ NS_SWIFT_NAME(Snapyr)
 - (void)track:(NSString *)event;
 
 - (void)setPushNotificationToken:(NSString*)token;
+- (void)setPushNotificationTokenData:(NSData*)tokenData;
+
+- (void)pushNotificationReceivedWithResponse:(UNNotificationResponse *)response;
+- (void)pushNotificationReceivedWithNotification:(UNNotification *)notification;
 - (void)pushNotificationReceived:(SERIALIZABLE_DICT _Nullable)info;
+
+- (void)pushNotificationTappedWithResponse:(UNNotificationResponse*)response;
+- (void)pushNotificationTappedWithResponse:(UNNotificationResponse*)response actionId:(NSString* _Nullable)actionId;
+- (void)pushNotificationTappedWithNotification:(UNNotification*)notification;
+- (void)pushNotificationTappedWithNotification:(UNNotification*)notification actionId:(NSString* _Nullable)actionId;
 - (void)pushNotificationTapped:(SERIALIZABLE_DICT _Nullable)info;
 - (void)pushNotificationTapped:(SERIALIZABLE_DICT _Nullable)info actionId:(NSString* _Nullable)actionId;
 
