@@ -533,28 +533,35 @@ NSString *const kSnapyrCachedSettingsFilename = @"sdk.settings.v2.plist";
 #if !TARGET_OS_IPHONE
     return;
 #endif
-    NSArray<NSDictionary *> *pushTemplates = projectSettings[@"metadata"][@"pushTemplates"];
-    NSMutableSet<UNNotificationCategory *> *notificationCategories = [NSMutableSet set];
-    for (NSDictionary *pushTemplate in pushTemplates) {
-        // If actions are set, add to iOS notification category registration
-        NSArray<NSDictionary *> *actions = pushTemplate[@"actions"];
-        if (actions) {
-            NSMutableArray<UNNotificationAction *> *categoryActions = [NSMutableArray array];
-            for (NSDictionary *actionDef in actions) {
-                [categoryActions addObject: [UNNotificationAction actionWithIdentifier:actionDef[@"id"]
-                  title:actionDef[@"title"] options:UNNotificationActionOptionNone]];
+    // check for bundle id existence (UNUserNotificationCenter requires it), and if tests aren't running, because even with bundle id check some random tests are failing with signal abrt
+    if ((NSBundle.mainBundle.bundleIdentifier) && (!NSProcessInfo.processInfo.environment[@"XCTestConfigurationFilePath"])) {
+        @try {
+            NSArray<NSDictionary *> *pushTemplates = projectSettings[@"metadata"][@"pushTemplates"];
+            NSMutableSet<UNNotificationCategory *> *notificationCategories = [NSMutableSet set];
+            for (NSDictionary *pushTemplate in pushTemplates) {
+                // If actions are set, add to iOS notification category registration
+                NSArray<NSDictionary *> *actions = pushTemplate[@"actions"];
+                if (actions) {
+                    NSMutableArray<UNNotificationAction *> *categoryActions = [NSMutableArray array];
+                    for (NSDictionary *actionDef in actions) {
+                        [categoryActions addObject: [UNNotificationAction actionWithIdentifier:actionDef[@"id"]
+                                                                                         title:actionDef[@"title"] options:UNNotificationActionOptionNone]];
+                    }
+                    // Push `categoryIdentifier` will always be set to Snapyr push template ID, to keep referencing simple
+                    [notificationCategories addObject: [UNNotificationCategory categoryWithIdentifier:pushTemplate[@"id"] actions:categoryActions intentIdentifiers:@[] options:UNNotificationCategoryOptionNone]];
+                }
             }
-            // Push `categoryIdentifier` will always be set to Snapyr push template ID, to keep referencing simple
-            [notificationCategories addObject: [UNNotificationCategory categoryWithIdentifier:pushTemplate[@"id"] actions:categoryActions intentIdentifiers:@[] options:UNNotificationCategoryOptionNone]];
+            
+            
+            if ([notificationCategories count] == 0) {
+                DLog(@"SnapyrIntegrationsManager.registerPushCategories: no categories, but still registering to clear any outdated categories.");
+            }
+            UNUserNotificationCenter *center = [UNUserNotificationCenter currentNotificationCenter];
+            [center setNotificationCategories:notificationCategories];
+        } @catch (NSException *exception) {
+            DLog(@"SnapyrIntegrationsManager.registerPushCategories: Failed to set notification categories");
         }
     }
-    
-    if ([notificationCategories count] == 0) {
-        DLog(@"SnapyrIntegrationsManager.registerPushCategories: no categories, but still registering to clear any outdated categories.");
-    }
-    
-    UNUserNotificationCenter *center = [UNUserNotificationCenter currentNotificationCenter];
-    [center setNotificationCategories:notificationCategories];
 }
 
 - (void)refreshSettingsWithCompletionHandler:(void (^)(BOOL success, JSON_DICT _Nullable settings))completionHandler

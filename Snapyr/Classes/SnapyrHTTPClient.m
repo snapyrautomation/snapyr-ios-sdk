@@ -45,6 +45,8 @@ NSString * const kSnapyrAPIBaseHostDev = @"https://dev-engine.snapyrdev.net/v1";
             @"Accept-Encoding" : @"gzip",
             @"User-Agent" : [NSString stringWithFormat:@"sdk-ios/%@", [SnapyrSDK version]],
         };
+        config.timeoutIntervalForRequest = 4;
+        config.timeoutIntervalForResource = 4;
         _genericSession = [NSURLSession sessionWithConfiguration:config];
     }
     return self;

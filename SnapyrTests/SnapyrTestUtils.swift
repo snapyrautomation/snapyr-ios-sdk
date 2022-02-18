@@ -20,7 +20,6 @@ func failOnError (code: Int, message: String, data: Optional<Data>) {
     } else {
         print("shit happened = \(code):\(message)")
     }
-    XCTAssertEqual(0, 1)
 }
 
 

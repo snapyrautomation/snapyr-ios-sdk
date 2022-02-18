@@ -378,11 +378,27 @@ NSUInteger const kSnapyrBackgroundTaskInvalid = 0;
 {
     [self dispatchBackgroundAndWait:^{
 #if TARGET_OS_TV
-        [self.userDefaultsStorage removeKey:SnapyrUserIdKey];
-        [self.userDefaultsStorage removeKey:SnapyrTraitsKey];
+        @try {
+            [self.userDefaultsStorage removeKey:SnapyrUserIdKey];
+        } @catch (NSException *exception) {
+            DLog(@"SnapyrSnapyrIntegration.reset: Failed to remove user id");
+        }
+        @try {
+            [self.userDefaultsStorage removeKey:SnapyrTraitsKey];
+        } @catch (NSException *exception) {
+            DLog(@"SnapyrSnapyrIntegration.reset: Failed to remove traits");
+        }
 #else
-        [self.fileStorage removeKey:kSnapyrUserIdFilename];
-        [self.fileStorage removeKey:kSnapyrTraitsFilename];
+        @try {
+            [self.fileStorage removeKey:kSnapyrUserIdFilename];
+        } @catch (NSException *exception) {
+            DLog(@"SnapyrSnapyrIntegration.reset: Failed to remove user id");
+        }
+        @try {
+            [self.fileStorage removeKey:kSnapyrTraitsFilename];
+        } @catch (NSException *exception) {
+            DLog(@"SnapyrSnapyrIntegration.reset: Failed to remove traits");
+        }
 #endif
         self.userId = nil;
         self.traits = [NSMutableDictionary dictionary];

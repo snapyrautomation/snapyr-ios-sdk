@@ -68,7 +68,7 @@
         DLog(@"SnapyrSDKConfiguration.initWithWriteKey");
         // get the host we have stored
         NSString *host = [SnapyrUtils getAPIHost:self.enableDevEnvironment];
-        if ([host isEqualToString:kSnapyrAPIBaseHost]) {
+        if ([host isEqualToString:(self.enableDevEnvironment) ? kSnapyrAPIBaseHostDev : kSnapyrAPIBaseHost]) {
             // we're getting the generic host back.  have they
             // supplied something other than that?
             if (defaultAPIHost && ![host isEqualToString:defaultAPIHost.absoluteString]) {
