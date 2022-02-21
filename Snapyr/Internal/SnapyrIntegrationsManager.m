@@ -149,7 +149,7 @@ NSString *const kSnapyrCachedSettingsFilename = @"sdk.settings.v2.plist";
         self.serialQueue = snapyr_dispatch_queue_create_specific("com.snapyr.sdk", DISPATCH_QUEUE_SERIAL);
         // nil request factory builds with default values.
         // TODO: cache config from main app and use here if config wasn't passed in?
-        self.httpClient = [[SnapyrHTTPClient alloc] initWithRequestFactory:nil configuration:nil];
+        self.httpClient = [[SnapyrHTTPClient alloc] initWithRequestFactory:nil configuration:configuration];
         
         // TODO: enable optional crypto here? (This isn't currently documented/exposed)
         self.userDefaultsStorage = [[SnapyrUserDefaultsStorage alloc] initWithDefaults:getGroupUserDefaults() namespacePrefix:nil crypto:nil];

@@ -269,7 +269,7 @@ class SnapyrTests: XCTestCase {
     
     func testRespectsMaxQueueSize() {
         let config = SnapyrConfiguration(writeKey: "RSLG3AdcWnHBvqxdGvZJ6FtkNAmudjtX")
-        config.enableDevEnvironment = true
+        config.snapyrEnvironment = SnapyrEnvironment.dev
         let max = 72
         config.maxQueueSize = UInt(max)
         let sdk2 = Snapyr(configuration: config)

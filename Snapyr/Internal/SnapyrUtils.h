@@ -17,9 +17,10 @@ NS_SWIFT_NAME(Utilities)
 
 + (void)saveAPIHost:(nonnull NSString *)apiHost;
 + (nonnull NSString *)getAPIHost;
-+ (nonnull NSString *)getAPIHost:(BOOL)enableDevEnvironment;
++ (nonnull NSString *)getAPIHost:(SnapyrEnvironment)snapyrEnvironment;
++ (nonnull NSString *)getDefaultAPIHostForEnvironment:(SnapyrEnvironment) snapyrEnvironment;
 + (nullable NSURL *)getAPIHostURL;
-+ (nullable NSURL *)getAPIHostURL:(BOOL)enableDevEnvironment;
++ (nullable NSURL *)getAPIHostURL:(SnapyrEnvironment)snapyrEnvironment;
 + (void) setWriteKey: (nonnull NSString*)writeKey;
 + (nullable NSString *)getWriteKey;
 
@@ -88,6 +89,5 @@ NSString *snapyrEventNameForScreenTitle(NSString *title);
 
 @interface NSArray(SerializableDeepCopy) <SnapyrSerializableDeepCopy>
 @end
-
 
 NS_ASSUME_NONNULL_END

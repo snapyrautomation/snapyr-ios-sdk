@@ -5,11 +5,13 @@
 
 #define SNAPYR_CDN_BASE [NSURL URLWithString:@"https://api.snapyr.com/sdk"]
 #define SNAPYR_CDN_BASE_DEV [NSURL URLWithString:@"https://dev-api.snapyrdev.net/sdk"]
+#define SNAPYR_CDN_BASE_STAGE [NSURL URLWithString:@"https://stage-api.snapyrdev.net/sdk"]
 
 static const NSUInteger kMaxBatchSize = 475000; // 475KB
 
 NSString * const kSnapyrAPIBaseHost = @"https://engine.snapyr.com/v1";
 NSString * const kSnapyrAPIBaseHostDev = @"https://dev-engine.snapyrdev.net/v1";
+NSString * const kSnapyrAPIBaseHostStage = @"https://stage-engine.snapyrdev.net/v1";
 
 
 @implementation SnapyrHTTPClient
@@ -85,11 +87,7 @@ NSString * const kSnapyrAPIBaseHostDev = @"https://dev-engine.snapyrdev.net/v1";
     //    batch = snapyrCoerceDictionary(batch);
     NSURLSession *session = [self sessionForWriteKey:writeKey];
     
-    BOOL enableDev = NO;
-    if (self.configuration.enableDevEnvironment) {
-        enableDev = YES;
-    }
-    NSURL *url = [[SnapyrUtils getAPIHostURL:enableDev] URLByAppendingPathComponent:@"batch"];
+    NSURL *url = [[SnapyrUtils getAPIHostURL:self.configuration.snapyrEnvironment] URLByAppendingPathComponent:@"batch"];
     NSMutableURLRequest *request = self.requestFactory(url);
     
     // This is a workaround for an IOS 8.3 bug that causes Content-Type to be incorrectly set
@@ -170,10 +168,19 @@ NSString * const kSnapyrAPIBaseHostDev = @"https://dev-engine.snapyrdev.net/v1";
     
     NSURLSession *session = self.genericSession;
     NSURL *urlBase;
-    if (self.configuration.enableDevEnvironment) {
-        urlBase = SNAPYR_CDN_BASE_DEV;
-    } else {
-        urlBase = SNAPYR_CDN_BASE;
+    switch (self.configuration.snapyrEnvironment) {
+        case SnapyrEnvironmentDev: {
+            urlBase = SNAPYR_CDN_BASE_DEV;
+            break;
+        }
+        case SnapyrEnvironmentStage: {
+            urlBase = SNAPYR_CDN_BASE_STAGE;
+            break;
+        }
+        case SnapyrEnvironmentDefault:
+        default: {
+            urlBase = SNAPYR_CDN_BASE;
+        }
     }
     NSURL *url = [urlBase URLByAppendingPathComponent:[NSString stringWithFormat:@"/%@", writeKey]];
     NSMutableURLRequest *request = self.requestFactory(url);

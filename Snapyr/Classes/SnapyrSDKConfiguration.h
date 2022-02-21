@@ -34,6 +34,8 @@ NS_SWIFT_NAME(ApplicationProtocol)
 @end
 #endif
 
+NS_SWIFT_NAME(SnapyrEnvironment)
+typedef NS_ENUM(NSInteger, SnapyrEnvironment);
 
 typedef NSMutableURLRequest *_Nonnull (^SnapyrRequestFactory)(NSURL *_Nonnull);
 typedef NSString *_Nonnull (^SnapyrAdSupportBlock)(void);
@@ -88,8 +90,12 @@ NS_SWIFT_NAME(SnapyrConfiguration)
  * Whether to use dev endpoints for API config and engine. `NO` by default.
  * If `NO`, uses production endpoints (`api.snapyr.com` and `engine.snapyr.com`)
  * If `YES`, uses dev endpoints (`api.snapyrdev.net` and `dev-engine.snapyrdev.net`)
+ *
+ * This is deprecated. Use `snapyrEnvironment` instead.
  */
-@property (nonatomic, assign) BOOL enableDevEnvironment;
+@property (nonatomic, assign) BOOL enableDevEnvironment DEPRECATED_MSG_ATTRIBUTE("Use .snapyrEnvironment instead.");
+
+@property (nonatomic, assign) SnapyrEnvironment snapyrEnvironment;
 
 /**
  * Whether the sdk should use location services.
