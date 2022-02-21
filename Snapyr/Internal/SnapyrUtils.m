@@ -18,6 +18,7 @@ static CTTelephonyNetworkInfo *_telephonyNetworkInfo;
 #endif
 
 const NSString *snapyr_apiHost = @"snapyr_apihost";
+NSString * const kSnapyrWriteKey = @"snapyr_write_key";
 
 @implementation SnapyrUtils
 
@@ -38,22 +39,25 @@ const NSString *snapyr_apiHost = @"snapyr_apihost";
     NSUserDefaults *defaults = getGroupUserDefaults();
     NSString *result = [defaults stringForKey:[snapyr_apiHost copy]];
     if (!result) {
-        switch (snapyrEnvironment) {
-            case SnapyrEnvironmentDev: {
-                result = kSnapyrAPIBaseHostDev;
-                break;
-            }
-            case SnapyrEnvironmentStage: {
-                result = kSnapyrAPIBaseHostStage;
-                break;
-            }
-            case SnapyrEnvironmentDefault:
-            default: {
-                result = kSnapyrAPIBaseHost;
-            }
-        }
+        result = [SnapyrUtils getDefaultAPIHostForEnvironment:snapyrEnvironment];
     }
     return result;
+}
+
++ (nonnull NSString *)getDefaultAPIHostForEnvironment:(SnapyrEnvironment) snapyrEnvironment
+{
+    switch (snapyrEnvironment) {
+        case SnapyrEnvironmentDev: {
+            return kSnapyrAPIBaseHostDev;
+        }
+        case SnapyrEnvironmentStage: {
+            return kSnapyrAPIBaseHostStage;
+        }
+        case SnapyrEnvironmentDefault:
+        default: {
+            return kSnapyrAPIBaseHost;
+        }
+    }
 }
 
 + (nonnull NSString *)getAPIHost
@@ -74,6 +78,16 @@ const NSString *snapyr_apiHost = @"snapyr_apihost";
 + (nullable NSURL *)getAPIHostURL
 {
     return [SnapyrUtils getAPIHostURL:NO];
+}
+
++ (void) setWriteKey: (nonnull NSString*)writeKey
+{
+    [getGroupUserDefaults() setObject:writeKey forKey:[kSnapyrWriteKey copy]];
+}
+
++ (nullable NSString *)getWriteKey
+{
+    return [getGroupUserDefaults() stringForKey: [kSnapyrWriteKey copy]];
 }
 
 + (NSData *_Nullable)dataFromPlist:(nonnull id)plist
@@ -435,9 +449,9 @@ NSString* getAppGroupName(void)
  */
 NSUserDefaults* getGroupUserDefaults(void)
 {
-    NSString *appGroupName = getAppGroupName();
     
     @try {
+        NSString *appGroupName = getAppGroupName();
         return [[NSUserDefaults alloc] initWithSuiteName:appGroupName];
     }
     @catch (NSException *exc) {

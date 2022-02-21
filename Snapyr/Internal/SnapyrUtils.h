@@ -18,8 +18,11 @@ NS_SWIFT_NAME(Utilities)
 + (void)saveAPIHost:(nonnull NSString *)apiHost;
 + (nonnull NSString *)getAPIHost;
 + (nonnull NSString *)getAPIHost:(SnapyrEnvironment)snapyrEnvironment;
++ (nonnull NSString *)getDefaultAPIHostForEnvironment:(SnapyrEnvironment) snapyrEnvironment;
 + (nullable NSURL *)getAPIHostURL;
 + (nullable NSURL *)getAPIHostURL:(SnapyrEnvironment)snapyrEnvironment;
++ (void) setWriteKey: (nonnull NSString*)writeKey;
++ (nullable NSString *)getWriteKey;
 
 + (NSData *_Nullable)dataFromPlist:(nonnull id)plist;
 + (id _Nullable)plistFromData:(NSData *)data;

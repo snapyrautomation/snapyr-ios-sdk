@@ -29,6 +29,24 @@ class SnapyrTests: XCTestCase {
         ],
         "plan": ["track": [:]],
     ] as NSDictionary
+    
+    private func getTestPayload(invalidURL: Bool = false) -> UNNotificationRequest {
+        let c = UNMutableNotificationContent()
+        c.title = "Push #1"
+        c.body = "Tap a button to do awesome stuff now!"
+        c.userInfo = [
+            "snapyr": [
+                "deepLinkUrl": "snapyrrunner://test/reachedAScoreOf/11",
+                "imageUrl": invalidURL ? "https://blah.com" : "https://images-na.ssl-images-amazon.com/images/S/pv-target-images/fb1fd46fbac48892ef9ba8c78f1eb6fa7d005de030b2a3d17b50581b2935832f._RI_.jpg",
+                "pushTemplate": [
+                    "id": "0f819332-2c27-4b99-bc87-325cca7b724a",
+                    "modified": "2022-01-21T16:28:40.626Z"
+                ],
+                "actionToken": "abc1234562"
+            ]
+        ]
+        return UNNotificationRequest.init(identifier: "test_id", content: c, trigger: nil)
+    }
     var sdk: Snapyr!
     var testMiddleware: TestMiddleware!
     var testApplication: TestApplication!
@@ -68,20 +86,19 @@ class SnapyrTests: XCTestCase {
     
     func testConfigAPIHost() {
         // gotta remove the key first
-        UserDefaults.standard.removeObject(forKey: "snapyr_apihost")
-        
+        getGroupUserDefaults().removeObject(forKey: "snapyr_apihost")
         let dummyHost = URL(string: "https://blah.com/")
-        let config2 = SnapyrConfiguration(writeKey: "TESTKEY", defaultAPIHost: dummyHost)
+        let config3 = SnapyrConfiguration(writeKey: "TESTKEY", defaultAPIHost: dummyHost)
         
-        let currentHost = config2.apiHost?.absoluteString
-        let storedHost = UserDefaults.standard.string(forKey: "snapyr_apihost")
+        let currentHost = config3.apiHost?.absoluteString
+        let storedHost = getGroupUserDefaults().string(forKey: "snapyr_apihost")
         
-        XCTAssertEqual(config2.apiHost, dummyHost)
+        XCTAssertEqual(config3.apiHost, dummyHost)
         XCTAssertEqual(currentHost, storedHost)
     }
     
     func testCachedSettingsAPIHost() {
-        UserDefaults.standard.removeObject(forKey: "snapyr_apihost")
+        getGroupUserDefaults().removeObject(forKey: "snapyr_apihost")
         var initialized = false
         NotificationCenter.default.addObserver(forName: NSNotification.Name(rawValue: SnapyrSDKIntegrationDidStart), object: nil, queue: nil) { (notification) in
             let key = notification.object as? String
@@ -125,7 +142,7 @@ class SnapyrTests: XCTestCase {
     //    }
     
     func testClearsSEGQueueFromUserDefaults() {
-        expectUntil(2.0, expression: UserDefaults.standard.string(forKey: "snapyrQueue") == nil)
+        expectUntil(2.0, expression: getGroupUserDefaults().string(forKey: "snapyrQueue") == nil)
     }
     
     /* TODO: Fix me when the Context object isn't so wild.
@@ -259,9 +276,10 @@ class SnapyrTests: XCTestCase {
         for i in 1...max * 2 {
             sdk2.track("test #\(i)")
         }
-        let integration = sdk.test_integrationsManager()?.test_snapyrIntegration()
+        
+        let integration = sdk2.test_integrationsManager()?.test_snapyrIntegration()
         XCTAssertNotNil(integration)
-        let timeOut = Date() + 60
+        let timeOut = Date() + 120
         while(integration?.test_queue()?.count != max && Date() < timeOut) {
             sdk2.track("test.maxQueue")
         }
@@ -344,6 +362,51 @@ class SnapyrTests: XCTestCase {
         } else {
             XCTAssertNotNil(data)
         }
+    }
+    
+    func testHandleNotificationImageSuccess() {
+        let dummyRequest = getTestPayload()
+        guard let payload = (dummyRequest.content.mutableCopy() as? UNMutableNotificationContent) else { XCTFail("No payload found in dummy request") ; return }
+        let handleNotificationExpectation = expectation(description: "Test Handle Notification Image Success")
+        Snapyr.handleNoticationExtensionRequest(withBestAttempt: payload, originalRequest: dummyRequest, contentHandler: { modifiedContent in
+            guard let imageAttachment = modifiedContent.attachments.first,
+                  let imageData = try? Data(contentsOf: imageAttachment.url) else {
+                      XCTFail("Could not fetch image data")
+                      handleNotificationExpectation.fulfill()
+                      return
+                  }
+            handleNotificationExpectation.fulfill()
+                  
+        }, devMode: true)
+        wait(for: [handleNotificationExpectation], timeout: 5)
+    }
+    
+    func testHandleNotificationImageFailure() {
+        let dummyRequest = getTestPayload(invalidURL: true)
+        guard let payload = (dummyRequest.content.mutableCopy() as? UNMutableNotificationContent) else { XCTFail("No payload found in dummy request") ; return }
+        let handleNotificationExpectation = expectation(description: "Test Handle Notification Image Failure")
+        Snapyr.handleNoticationExtensionRequest(withBestAttempt: payload, originalRequest: dummyRequest, contentHandler: { modifiedContent in
+            guard let imageAttachment = modifiedContent.attachments.first,
+                  let imageData = try? Data(contentsOf: imageAttachment.url) else {
+                      // success, because content Handler is called
+                      handleNotificationExpectation.fulfill()
+                      return
+                  }
+            XCTFail("Image should fail")
+            handleNotificationExpectation.fulfill()
+        }, devMode: true)
+        wait(for: [handleNotificationExpectation], timeout: 5)
+    }
+    
+    func testHandleNotificationImageTimeout() {
+        let dummyRequest = getTestPayload(invalidURL: true)
+        guard let payload = (dummyRequest.content.mutableCopy() as? UNMutableNotificationContent) else { XCTFail("No payload found in dummy request") ; return }
+        let handleNotificationExpectation = expectation(description: "Test Handle Notification Image Timeout")
+        Snapyr.handleNoticationExtensionRequest(withBestAttempt: payload, originalRequest: dummyRequest, contentHandler: { modifiedContent in
+            // success
+            handleNotificationExpectation.fulfill()
+        }, devMode: true)
+        wait(for: [handleNotificationExpectation], timeout: 5)
     }
 }
 

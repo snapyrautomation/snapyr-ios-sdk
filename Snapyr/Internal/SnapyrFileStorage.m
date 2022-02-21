@@ -134,14 +134,22 @@
 + (NSURL *)applicationSupportDirectoryURL
 {
     // If we can get a container URL for app group, use that. (used w/ notif extension, to share data w/ main app)
-    NSString *appGroupID = getAppGroupName();
-    NSURL *containerURL = [[NSFileManager defaultManager] containerURLForSecurityApplicationGroupIdentifier:appGroupID];
-    
-    if (containerURL) {
-        DLog(@"SnapyrFileStorage: applicationSupportDirectoryURL found containerURL: %@", containerURL);
-        return [containerURL URLByAppendingPathComponent:@"app"];
-    } else {
-        DLog(@"SnapyrFileStorage: applicationSupportDirectoryURL - no containerURL found, falling back to appGroupID: %@", appGroupID);
+    @try {
+        NSString *appGroupID = getAppGroupName();
+        NSURL *containerURL = [[NSFileManager defaultManager] containerURLForSecurityApplicationGroupIdentifier:appGroupID];
+        if (containerURL) {
+            DLog(@"SnapyrFileStorage: applicationSupportDirectoryURL found containerURL: %@", containerURL);
+            return [containerURL URLByAppendingPathComponent:@"app"];
+        } else {
+            DLog(@"SnapyrFileStorage: applicationSupportDirectoryURL - no containerURL found, falling back to appGroupID: %@", appGroupID);
+            // Probably no app group - default to the application support dir for this app
+            NSArray *paths = NSSearchPathForDirectoriesInDomains(NSApplicationSupportDirectory, NSUserDomainMask, YES);
+            NSString *storagePath = [paths firstObject];
+            // will return ".../Application Support" because it's in a sandbox.
+            return [NSURL fileURLWithPath:storagePath];
+        }
+    } @catch (NSException *exception) {
+        DLog(@"SnapyrFileStorage: applicationSupportDirectoryURL - no containerURL found");
         // Probably no app group - default to the application support dir for this app
         NSArray *paths = NSSearchPathForDirectoriesInDomains(NSApplicationSupportDirectory, NSUserDomainMask, YES);
         NSString *storagePath = [paths firstObject];
@@ -152,14 +160,21 @@
 
 + (NSURL *)cachesDirectoryURL
 {
-    // If we can get a container URL for app group, use that. (used w/ notif extension, to share data w/ main app)
-    NSString *appGroupID = getAppGroupName();
-    NSURL *containerURL = [[NSFileManager defaultManager] containerURLForSecurityApplicationGroupIdentifier:appGroupID];
-    if (containerURL) {
-        DLog(@"SnapyrFileStorage: cachesDirectoryURL found containerURL: %@", containerURL);
-        return [containerURL URLByAppendingPathComponent:@"cache"];
-    } else {
-        DLog(@"SnapyrFileStorage: cachesDirectoryURL - no containerURL found, falling back to appGroupID: %@", appGroupID);
+    @try {
+        NSString *appGroupID = getAppGroupName();
+        NSURL *containerURL = [[NSFileManager defaultManager] containerURLForSecurityApplicationGroupIdentifier:appGroupID];
+        if (containerURL) {
+            DLog(@"SnapyrFileStorage: cachesDirectoryURL found containerURL: %@", containerURL);
+            return [containerURL URLByAppendingPathComponent:@"cache"];
+        } else {
+            DLog(@"SnapyrFileStorage: cachesDirectoryURL - no containerURL found, falling back to appGroupID: %@", appGroupID);
+            // Probably no app group - default to the cache dir for this app
+            NSArray *paths = NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES);
+            NSString *storagePath = [paths firstObject];
+            return [NSURL fileURLWithPath:storagePath];
+        }
+    } @catch (NSException *exception) {
+        DLog(@"SnapyrFileStorage: cachesDirectoryURL - no containerURL found");
         // Probably no app group - default to the cache dir for this app
         NSArray *paths = NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES);
         NSString *storagePath = [paths firstObject];

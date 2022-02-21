@@ -41,9 +41,32 @@ static SnapyrSDK *__sharedInstance = nil;
     });
 }
 
++ (void)handleNoticationExtensionRequestWithBestAttemptContent:(UNMutableNotificationContent * _Nonnull)bestAttemptContent originalRequest:(UNNotificationRequest *_Nonnull)originalRequest contentHandler:(void (^)(UNNotificationContent * _Nonnull))contentHandler
+{
+    [SnapyrSDK handleNoticationExtensionRequestWithBestAttemptContent:bestAttemptContent originalRequest:originalRequest contentHandler:contentHandler snapyrEnvironment:SnapyrEnvironmentDefault];
+}
+
 + (void)handleNoticationExtensionRequestWithWriteKey:(NSString *)writeKey bestAttemptContent:(UNMutableNotificationContent * _Nonnull)bestAttemptContent originalRequest:(UNNotificationRequest *_Nonnull)originalRequest contentHandler:(void (^)(UNNotificationContent * _Nonnull))contentHandler
 {
     [SnapyrSDK handleNoticationExtensionRequestWithWriteKey:writeKey bestAttemptContent:bestAttemptContent originalRequest:originalRequest contentHandler:contentHandler snapyrEnvironment:SnapyrEnvironmentDefault];
+}
+
++ (void)handleNoticationExtensionRequestWithBestAttemptContent:(UNMutableNotificationContent * _Nonnull)bestAttemptContent originalRequest:(UNNotificationRequest *_Nonnull)originalRequest contentHandler:(void (^)(UNNotificationContent * _Nonnull))contentHandler snapyrEnvironment:(SnapyrEnvironment)snapyrEnvironment
+{
+    @try {
+        NSString *writeKey = [SnapyrUtils getWriteKey];
+        if (!writeKey) {
+            DLog(@"SnapyrSDK NotifExt: Could not get stored write key; returning");
+            contentHandler(bestAttemptContent);
+            return;
+        }
+        [SnapyrSDK handleNoticationExtensionRequestWithWriteKey:writeKey bestAttemptContent:bestAttemptContent originalRequest:originalRequest contentHandler:contentHandler snapyrEnvironment:SnapyrEnvironmentDefault];
+    } @catch (NSException *exception) {
+        DLog(@"SnapyrSDK NotifExt: Could not get stored write key; returning");
+        contentHandler(bestAttemptContent);
+        return;
+    }
+    
 }
 
 + (void)handleNoticationExtensionRequestWithWriteKey:(NSString *)writeKey bestAttemptContent:(UNMutableNotificationContent * _Nonnull)bestAttemptContent originalRequest:(UNNotificationRequest *_Nonnull)originalRequest contentHandler:(void (^)(UNNotificationContent * _Nonnull))contentHandler snapyrEnvironment:(SnapyrEnvironment)snapyrEnvironment
@@ -60,6 +83,15 @@ static SnapyrSDK *__sharedInstance = nil;
         contentHandler(bestAttemptContent);
         return;
     }
+    
+    
+    __block bool categoryFetchFinished = NO;
+    __block bool imageFetchFinished = NO;
+    void (^tryToComplete)() = ^void {
+        if (categoryFetchFinished && imageFetchFinished) {
+            contentHandler(bestAttemptContent);
+        }
+    };
     
     // Always set category id to template ID - if this template has no actions (no category registered) it will simply be ignored
     bestAttemptContent.categoryIdentifier = payloadTemplate[@"id"];
@@ -80,28 +112,71 @@ static SnapyrSDK *__sharedInstance = nil;
                 // Since the category read is async, wait until the callback to process the original notification extension contentHandler
                 // callback (which finishes processing the incoming notification - it's ready to display w/ new categories at that point)
                 // TODO: move this readback/flush into the integrations manager code?
-                UNUserNotificationCenter *center = [UNUserNotificationCenter currentNotificationCenter];
-                [center getNotificationCategoriesWithCompletionHandler:^(NSSet<UNNotificationCategory *> *categories) {
-                    NSDictionary *newCachedTemplate = [integrationsManager getCachedPushDataForTemplateId:payloadTemplate[@"id"]];
-                    if (newCachedTemplate == nil) {
-                        DLog(@"SnapyrSDK NotifExt: Template on payload still missing from updated settings.");
-                    } else {
-                        DLog(@"SnapyrSDK NotifExt: Template data found after settings refresh.");
+                if ((NSBundle.mainBundle.bundleIdentifier) && (!NSProcessInfo.processInfo.environment[@"XCTestConfigurationFilePath"])) {
+                    @try {
+                        UNUserNotificationCenter *center = [UNUserNotificationCenter currentNotificationCenter];
+                        [center getNotificationCategoriesWithCompletionHandler:^(NSSet<UNNotificationCategory *> *categories) {
+                            NSDictionary *newCachedTemplate = [integrationsManager getCachedPushDataForTemplateId:payloadTemplate[@"id"]];
+                            if (newCachedTemplate == nil) {
+                                DLog(@"SnapyrSDK NotifExt: Template on payload still missing from updated settings.");
+                            } else {
+                                DLog(@"SnapyrSDK NotifExt: Template data found after settings refresh.");
+                            }
+                            categoryFetchFinished = YES;
+                            tryToComplete();
+                        }];
+                    } @catch (NSException *exception) {
+                        DLog(@"SnapyrSDK NotifExt: Issue with UNUserNotificationManager occured");
+                        categoryFetchFinished = YES;
+                        tryToComplete();
                     }
-                    
-                    contentHandler(bestAttemptContent);
-                }];
+                }
             } else {
-                DLog(@"SnapyrSDK NotifExt: Failed attempt to refresh template data.");
                 // Nothing further we can do, let the service extension finish processing
-                contentHandler(bestAttemptContent);
+                DLog(@"SnapyrSDK NotifExt: Failed attempt to refresh template data.");
+                categoryFetchFinished = YES;
+                tryToComplete();
             }
         }];
     } else {
         // Cached template data is up-to-date - no further work to do
         DLog(@"SnapyrSDK NotifExt: Using cached template data.");
-        contentHandler(bestAttemptContent);
-        return;
+        categoryFetchFinished = YES;
+        tryToComplete();
+    }
+    NSString *urlPath = snapyrData[@"imageUrl"];
+    if (urlPath) {
+        NSURL *url = [[NSURL alloc] initWithString:urlPath];
+        NSURL *destination = [[[NSURL alloc] initFileURLWithPath:NSTemporaryDirectory()] URLByAppendingPathComponent:url.lastPathComponent];
+        
+        NSURLSessionConfiguration *config = NSURLSessionConfiguration.defaultSessionConfiguration;
+        config.timeoutIntervalForRequest = 4;
+        config.timeoutIntervalForResource = 4;
+        
+        NSURLSessionDataTask *task = [[NSURLSession sessionWithConfiguration:config] dataTaskWithURL:url completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
+            if ((data == NULL) || (error != NULL)) {
+                DLog(@"SnapyrSDK NotifExt: Could not fetch notification image from URL");
+                imageFetchFinished = YES;
+                tryToComplete();
+            } else {
+                @try {
+                    [data writeToURL:destination atomically:false];
+                    // empty attachment lets the system create its own UUID
+                    UNNotificationAttachment *attachment = [UNNotificationAttachment attachmentWithIdentifier:@"" URL:destination options:NULL error:NULL];
+                    bestAttemptContent.attachments = @[attachment];
+                    imageFetchFinished = YES;
+                    tryToComplete();
+                } @catch (NSException *exception) {
+                    DLog(@"SnapyrSDK NotifExt: Exception happened while creating attachment");
+                    imageFetchFinished = YES;
+                    tryToComplete();
+                }
+            }
+        }];
+        [task resume];
+    } else {
+        imageFetchFinished = YES;
+        tryToComplete();
     }
 }
 
@@ -402,6 +477,23 @@ NSString *const SnapyrBuildKeyV2 = @"SnapyrBuildKeyV2";
 
 #pragma mark - Push Notifications
 
+- (void)setPushNotificationTokenData:(NSData*)tokenData
+{
+    NSUInteger length = tokenData.length;
+    if (length == 0) {
+        DLog(@"SnapyrSDK setPushNotificationTokenData: Invalid token data, length is zero");
+        return;
+    }
+    
+    const unsigned char *tokenBytes = (const unsigned char *)tokenData.bytes;
+    NSMutableString *tokenString  = [NSMutableString stringWithCapacity:(length * 2)];
+    for (int i = 0; i < length; ++i) {
+        [tokenString appendFormat:@"%02x", tokenBytes[i]];
+    }
+    NSString *resultTokenString = [tokenString copy];
+    [self setPushNotificationToken:resultTokenString];
+}
+
 - (void)setPushNotificationToken:(NSString*)token
 {
     [SnapyrState sharedInstance].context.deviceToken = token;
@@ -412,6 +504,16 @@ NSString *const SnapyrBuildKeyV2 = @"SnapyrBuildKeyV2";
     } else {
         [SnapyrState sharedInstance].userInfo.hasUnregisteredDeviceToken = YES;
     }
+}
+
+- (void)pushNotificationReceivedWithResponse:(UNNotificationResponse *)response
+{
+    [self pushNotificationReceivedWithNotification: response.notification];
+}
+
+- (void)pushNotificationReceivedWithNotification:(UNNotification *)notification
+{
+    [self pushNotificationReceived: notification.request.content.userInfo];
 }
 
 - (void)pushNotificationReceived:(NSDictionary *)info
@@ -428,6 +530,26 @@ NSString *const SnapyrBuildKeyV2 = @"SnapyrBuildKeyV2";
     properties[@"deepLinkUrl"] = snapyrData[@"deepLinkUrl"];
     
     [self track:@"snapyr.observation.event.Impression" properties:properties];
+}
+
+- (void)pushNotificationTappedWithResponse:(UNNotificationResponse*)response
+{
+    [self pushNotificationTappedWithNotification:response.notification];
+}
+
+- (void)pushNotificationTappedWithResponse:(UNNotificationResponse*)response actionId:(NSString* _Nullable)actionId
+{
+    [self pushNotificationTappedWithNotification:response.notification actionId:actionId];
+}
+
+- (void)pushNotificationTappedWithNotification:(UNNotification*)notification
+{
+    [self pushNotificationTappedWithNotification:notification];
+}
+
+- (void)pushNotificationTappedWithNotification:(UNNotification*)notification actionId:(NSString* _Nullable)actionId
+{
+    [self pushNotificationTapped:notification.request.content.userInfo actionId:actionId];
 }
 
 - (void)pushNotificationTapped:(NSDictionary *)info
@@ -624,7 +746,11 @@ NSString *const SnapyrBuildKeyV2 = @"SnapyrBuildKeyV2";
 
 - (void)reset
 {
-    [self run:SnapyrEventTypeReset payload:nil];
+    @try {
+        [self run:SnapyrEventTypeReset payload:nil];
+    } @catch (NSException *exception) {
+        DLog(@"SnapyrSDK: Failed to reset");
+    }
 }
 
 - (void)flush

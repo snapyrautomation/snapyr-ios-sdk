@@ -43,7 +43,23 @@ NS_SWIFT_NAME(Snapyr)
  * @param originalRequest the original notification request received by the extension, used for referencing data on the notification
  * @param contentHandler the content handler callback from the notification service extension, used to tell the OS that this request is complete.
  */
++ (void)handleNoticationExtensionRequestWithBestAttemptContent:(UNMutableNotificationContent * _Nonnull)bestAttemptContent originalRequest:(UNNotificationRequest * _Nonnull)originalRequest contentHandler:(void (^)(UNNotificationContent * _Nonnull))contentHandler;
+
+/**
+ * Handle incoming notification from a notification service extension. Adds category data, and updates template/category config
+ * when necessary.
+ *
+ * @param writeKey the Snapyr write key
+ * @param bestAttemptContent the mutable copy of notifcation content, which will be written to here and passed to callback
+ * @param originalRequest the original notification request received by the extension, used for referencing data on the notification
+ * @param contentHandler the content handler callback from the notification service extension, used to tell the OS that this request is complete.
+ */
 + (void)handleNoticationExtensionRequestWithWriteKey:(NSString *)writeKey bestAttemptContent:(UNMutableNotificationContent * _Nonnull)bestAttemptContent originalRequest:(UNNotificationRequest * _Nonnull)originalRequest contentHandler:(void (^)(UNNotificationContent * _Nonnull))contentHandler;
+
+/**
+ * An extension of the above for internal use/testing, allowed dev mode to be enabled (use dev endpoints rather than prod).
+ */
++ (void)handleNoticationExtensionRequestWithBestAttemptContent:(UNMutableNotificationContent * _Nonnull)bestAttemptContent originalRequest:(UNNotificationRequest * _Nonnull)originalRequest contentHandler:(void (^)(UNNotificationContent * _Nonnull))contentHandler snapyrEnvironment:(SnapyrEnvironment)snapyrEnvironment;
 
 /**
  * An extension of the above for internal use/testing, allowed dev mode to be enabled (use dev endpoints rather than prod).
@@ -108,7 +124,16 @@ NS_SWIFT_NAME(Snapyr)
 - (void)track:(NSString *)event;
 
 - (void)setPushNotificationToken:(NSString*)token;
+- (void)setPushNotificationTokenData:(NSData*)tokenData;
+
+- (void)pushNotificationReceivedWithResponse:(UNNotificationResponse *)response;
+- (void)pushNotificationReceivedWithNotification:(UNNotification *)notification;
 - (void)pushNotificationReceived:(SERIALIZABLE_DICT _Nullable)info;
+
+- (void)pushNotificationTappedWithResponse:(UNNotificationResponse*)response;
+- (void)pushNotificationTappedWithResponse:(UNNotificationResponse*)response actionId:(NSString* _Nullable)actionId;
+- (void)pushNotificationTappedWithNotification:(UNNotification*)notification;
+- (void)pushNotificationTappedWithNotification:(UNNotification*)notification actionId:(NSString* _Nullable)actionId;
 - (void)pushNotificationTapped:(SERIALIZABLE_DICT _Nullable)info;
 - (void)pushNotificationTapped:(SERIALIZABLE_DICT _Nullable)info actionId:(NSString* _Nullable)actionId;
 
