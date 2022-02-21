@@ -7,7 +7,6 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "SnapyrUtils.h"
 
 #if TARGET_OS_IPHONE
 #import <UIKit/UIKit.h>
@@ -35,6 +34,8 @@ NS_SWIFT_NAME(ApplicationProtocol)
 @end
 #endif
 
+NS_SWIFT_NAME(SnapyrEnvironment)
+typedef NS_ENUM(NSInteger, SnapyrEnvironment);
 
 typedef NSMutableURLRequest *_Nonnull (^SnapyrRequestFactory)(NSURL *_Nonnull);
 typedef NSString *_Nonnull (^SnapyrAdSupportBlock)(void);

@@ -12,12 +12,6 @@ NS_ASSUME_NONNULL_BEGIN
 @class SnapyrSDKConfiguration;
 @class SnapyrReachability;
 
-typedef NS_ENUM(NSInteger, SnapyrEnvironment) {
-    SnapyrEnvironmentDefault,
-    SnapyrEnvironmentStage,
-    SnapyrEnvironmentDev
-} NS_SWIFT_NAME(SnapyrEnvironment);
-
 NS_SWIFT_NAME(Utilities)
 @interface SnapyrUtils : NSObject
 

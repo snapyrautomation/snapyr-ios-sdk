@@ -43,10 +43,10 @@ static SnapyrSDK *__sharedInstance = nil;
 
 + (void)handleNoticationExtensionRequestWithWriteKey:(NSString *)writeKey bestAttemptContent:(UNMutableNotificationContent * _Nonnull)bestAttemptContent originalRequest:(UNNotificationRequest *_Nonnull)originalRequest contentHandler:(void (^)(UNNotificationContent * _Nonnull))contentHandler
 {
-    [SnapyrSDK handleNoticationExtensionRequestWithWriteKey:writeKey bestAttemptContent:bestAttemptContent originalRequest:originalRequest contentHandler:contentHandler devMode:NO];
+    [SnapyrSDK handleNoticationExtensionRequestWithWriteKey:writeKey bestAttemptContent:bestAttemptContent originalRequest:originalRequest contentHandler:contentHandler snapyrEnvironment:SnapyrEnvironmentDefault];
 }
 
-+ (void)handleNoticationExtensionRequestWithWriteKey:(NSString *)writeKey bestAttemptContent:(UNMutableNotificationContent * _Nonnull)bestAttemptContent originalRequest:(UNNotificationRequest *_Nonnull)originalRequest contentHandler:(void (^)(UNNotificationContent * _Nonnull))contentHandler devMode:(BOOL)enableDevMode
++ (void)handleNoticationExtensionRequestWithWriteKey:(NSString *)writeKey bestAttemptContent:(UNMutableNotificationContent * _Nonnull)bestAttemptContent originalRequest:(UNNotificationRequest *_Nonnull)originalRequest contentHandler:(void (^)(UNNotificationContent * _Nonnull))contentHandler snapyrEnvironment:(SnapyrEnvironment)snapyrEnvironment
 {
     NSDictionary *snapyrData = originalRequest.content.userInfo[@"snapyr"];
     if (!snapyrData) {
@@ -65,7 +65,7 @@ static SnapyrSDK *__sharedInstance = nil;
     bestAttemptContent.categoryIdentifier = payloadTemplate[@"id"];
     
     SnapyrSDKConfiguration *oneOffConfig = [SnapyrSDKConfiguration configurationWithWriteKey:writeKey];
-    oneOffConfig.enableDevEnvironment = enableDevMode;
+    oneOffConfig.snapyrEnvironment = snapyrEnvironment;
     SnapyrIntegrationsManager *integrationsManager = [[SnapyrIntegrationsManager alloc] initForExtensionWithConfig:oneOffConfig];
     NSDictionary *cachedTemplate = [integrationsManager getCachedPushDataForTemplateId:payloadTemplate[@"id"]];
     

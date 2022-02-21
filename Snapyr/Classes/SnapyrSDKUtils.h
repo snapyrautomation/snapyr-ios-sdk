@@ -10,6 +10,12 @@ void SLog(NSString *format, ...);
 
 #pragma mark - Serialization Extensions
 
+typedef NS_ENUM(NSInteger, SnapyrEnvironment) {
+    SnapyrEnvironmentDefault,
+    SnapyrEnvironmentStage,
+    SnapyrEnvironmentDev
+} NS_SWIFT_NAME(SnapyrEnvironment);
+
 NS_SWIFT_NAME(SnapyrSerializable)
 @protocol SnapyrSerializable
 /**
