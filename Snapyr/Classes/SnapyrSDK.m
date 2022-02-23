@@ -145,7 +145,7 @@ static SnapyrSDK *__sharedInstance = nil;
         tryToComplete();
     }
     NSString *urlPath = snapyrData[@"imageUrl"];
-    if (urlPath) {
+    if (![urlPath isEqualToString:@""]) {
         NSURL *url = [[NSURL alloc] initWithString:urlPath];
         NSURL *destination = [[[NSURL alloc] initFileURLWithPath:NSTemporaryDirectory()] URLByAppendingPathComponent:url.lastPathComponent];
         
@@ -520,7 +520,7 @@ NSString *const SnapyrBuildKeyV2 = @"SnapyrBuildKeyV2";
 {
     NSMutableDictionary *properties = [NSMutableDictionary dictionary];
     
-    NSDictionary *snapyrData = info[@"snapyr"];
+    NSDictionary *snapyrData = info;
     if (!snapyrData) {
         DLog(@"SnapyrSDK pushNotificationReceived: Not a Snapyr notification (no Snapyr payload); returning.");
         return;
@@ -561,7 +561,7 @@ NSString *const SnapyrBuildKeyV2 = @"SnapyrBuildKeyV2";
 {
     NSMutableDictionary *properties = [NSMutableDictionary dictionary];
     
-    NSDictionary *snapyrData = info[@"snapyr"];
+    NSDictionary *snapyrData = info;
     if (!snapyrData) {
         DLog(@"SnapyrSDK pushNotificationTapped: Not a Snapyr notification (no Snapyr payload); returning.");
         return;
