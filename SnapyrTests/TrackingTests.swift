@@ -11,6 +11,9 @@ import Snapyr
 import XCTest
 
 class TrackingTests: XCTestCase {
+    enum TestError: String, Error {
+        case testError
+    }
     var passthrough: PassthroughMiddleware!
     var sdk: Snapyr!
     
@@ -18,12 +21,106 @@ class TrackingTests: XCTestCase {
         super.setUp()
         passthrough = PassthroughMiddleware()
         sdk = getUnitTestSDK(application:nil, sourceMiddleware: [passthrough], destinationMiddleware: [])
+        Snapyr.debug(true)
     }
     
     override func tearDown() {
         super.tearDown()
         sdk.reset()
     }
+    
+    func testOpenUrl() {
+        sdk.open(.init(string: "https://blah.com/")!, options: [:])
+        
+        let payload = passthrough.lastContext?.payload as? TrackPayload
+        XCTAssertEqual(passthrough.lastContext?.eventType, .track)
+        XCTAssertNotNil(payload)
+        XCTAssertEqual(payload?.event, "Deep Link Opened")
+        XCTAssertEqual(payload?.properties?["url"] as? String, "https://blah.com/")
+    }
+    
+    func testContinueUserActivity() {
+        let userActivity = NSUserActivity(activityType: "test")
+        sdk.continue(userActivity)
+        
+        let payload = passthrough.lastContext?.payload as? ContinueUserActivityPayload
+        XCTAssertEqual(passthrough.lastContext?.eventType, .continueUserActivity)
+        XCTAssertNotNil(payload)
+    }
+    
+    func testHandleActionWithIdentifier() {
+        let actionIdentifier = "snapyrsdk"
+        sdk.handleAction(withIdentifier: actionIdentifier, forRemoteNotification: [:])
+        let payload = passthrough.lastContext?.payload as? RemoteNotificationPayload
+        XCTAssertEqual(passthrough.lastContext?.eventType, .handleActionWithForRemoteNotification)
+        XCTAssertNotNil(payload)
+        XCTAssertEqual(payload?.actionIdentifier, actionIdentifier)
+    }
+    
+    func testRegisteredForRemoteNotificationsWithDeviceToken() {
+        let deviceToken = UUID().uuidString.data(using: .ascii)!
+        sdk.registeredForRemoteNotifications(withDeviceToken: deviceToken)
+        let payload = passthrough.lastContext?.payload as? RemoteNotificationPayload
+        XCTAssertNotNil(payload)
+        XCTAssertEqual(passthrough.lastContext?.eventType, .registeredForRemoteNotifications)
+        XCTAssertEqual(payload?.deviceToken, deviceToken)
+    }
+    
+    func testFailedToRegisterForRemoteNotifications() {
+        
+        sdk.failedToRegisterForRemoteNotificationsWithError(TestError.testError)
+        
+        let payload = passthrough.lastContext?.payload as? RemoteNotificationPayload
+        XCTAssertEqual(passthrough.lastContext?.eventType, .failedToRegisterForRemoteNotifications)
+        XCTAssertNotNil(payload)
+        XCTAssertEqual(payload?.error as? TestError, TestError.testError)
+    }
+    
+    func testPushNotificationReceived(){
+        let testPayload = getTestUserInfo()
+        sdk.pushNotificationReceived(testPayload)
+        
+        let testSnapyrPayload = testPayload["snapyr"] as? NSDictionary
+        let payload = passthrough.lastContext?.payload as? TrackPayload
+        XCTAssertEqual(passthrough.lastContext?.eventType, .track)
+        XCTAssertNotNil(payload)
+        XCTAssertEqual(payload?.event, "snapyr.observation.event.Impression")
+        XCTAssertEqual(payload?.properties?["actionToken"] as? String, testSnapyrPayload?["actionToken"] as? String)
+        XCTAssertEqual(payload?.properties?["deepLinkUrl"] as? String, testSnapyrPayload?["deepLinkUrl"] as? String)
+        print(payload?.properties)
+        print(testPayload)
+    }
+    
+    func testPushNotificationTapped(){
+        let testPayload = getTestUserInfo()
+        sdk.pushNotificationTapped(testPayload, actionId: "snapyrsdk")
+        
+        let payload = passthrough.lastContext?.payload as? TrackPayload
+        XCTAssertEqual(passthrough.lastContext?.eventType, .track)
+        XCTAssertNotNil(payload)
+        XCTAssertEqual(payload?.event, "snapyr.observation.event.Behavior")
+        XCTAssertEqual(payload?.properties?["actionToken"] as? String, testPayload["actionToken"] as? String)
+        XCTAssertEqual(payload?.properties?["deepLinkUrl"] as? String, testPayload["deepLinkUrl"] as? String)
+        XCTAssertEqual(payload?.properties?["actionId"] as? String, "snapyrsdk")
+    }
+    
+    func testReceivedRemoteNotification() {
+        let testPayload = getTestUserInfo()
+        sdk.receivedRemoteNotification(testPayload)
+        
+        let payload = passthrough.lastContext?.payload as? RemoteNotificationPayload
+        XCTAssertEqual(passthrough.lastContext?.eventType, .receivedRemoteNotification)
+        XCTAssertNotNil(payload)
+        let snapyrInfo = payload?.userInfo?["snapyr"] as? [String: Any]
+        let expectedSnapyrInfo = testPayload["snapyr"] as? [String: Any]
+        XCTAssertNotNil(snapyrInfo)
+        XCTAssertEqual(snapyrInfo?["deepLinkUrl"] as? String, expectedSnapyrInfo?["deepLinkUrl"] as? String)
+        XCTAssertEqual(snapyrInfo?["imageUrl"] as? String, expectedSnapyrInfo?["imageUrl"] as? String)
+        XCTAssertEqual(snapyrInfo?["actionToken"] as? String, expectedSnapyrInfo?["actionToken"] as? String)
+        XCTAssertEqual((snapyrInfo?["pushTemplate"] as? [String: Any])?["id"] as? String, (expectedSnapyrInfo?["pushTemplate"] as? [String: Any])?["id"] as? String)
+        XCTAssertEqual((snapyrInfo?["pushTemplate"] as? [String: Any])?["modified"] as? String, (expectedSnapyrInfo?["pushTemplate"] as? [String: Any])?["modified"] as? String)
+    }
+    
     
     func testHandlesIdentify() {
         sdk.identify("testUserId1", traits: [

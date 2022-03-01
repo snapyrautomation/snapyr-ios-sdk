@@ -44,6 +44,9 @@ extension Snapyr {
     func test_integrationsManager() -> IntegrationsManager? {
         return self.value(forKey: "integrationsManager") as? IntegrationsManager
     }
+    func test_enabled() -> Bool? {
+        return self.value(forKey: "enabled") as? Bool
+    }
 }
 
 extension IntegrationsManager {
@@ -59,7 +62,9 @@ extension IntegrationsManager {
     func test_setHttpClient(httpClient: HTTPClient) -> Void {
         self.setValue(httpClient, forKey:"httpClient")
     }
-
+    func test_setActionIdMap(_ data: NSMutableDictionary) {
+        self.setValue(data, forKey: "actionIdMap")
+    }
 }
 
 extension SnapyrIntegration {
