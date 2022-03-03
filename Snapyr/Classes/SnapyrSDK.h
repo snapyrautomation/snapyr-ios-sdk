@@ -38,7 +38,6 @@ NS_SWIFT_NAME(Snapyr)
  * Handle incoming notification from a notification service extension. Adds category data, and updates template/category config
  * when necessary.
  *
- * @param writeKey the Snapyr write key
  * @param bestAttemptContent the mutable copy of notifcation content, which will be written to here and passed to callback
  * @param originalRequest the original notification request received by the extension, used for referencing data on the notification
  * @param contentHandler the content handler callback from the notification service extension, used to tell the OS that this request is complete.
