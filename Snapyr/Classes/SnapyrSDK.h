@@ -42,7 +42,7 @@ NS_SWIFT_NAME(Snapyr)
  * @param originalRequest the original notification request received by the extension, used for referencing data on the notification
  * @param contentHandler the content handler callback from the notification service extension, used to tell the OS that this request is complete.
  */
-+ (void)handleNoticationExtensionRequestWithBestAttemptContent:(UNMutableNotificationContent * _Nonnull)bestAttemptContent originalRequest:(UNNotificationRequest * _Nonnull)originalRequest contentHandler:(void (^)(UNNotificationContent * _Nonnull))contentHandler;
++ (void)handleNoticationExtensionRequestWithBestAttemptContent:(UNMutableNotificationContent * _Nonnull)bestAttemptContent originalRequest:(UNNotificationRequest * _Nonnull)originalRequest contentHandler:(void (^)(UNNotificationContent * _Nonnull))contentHandler API_UNAVAILABLE(tvos);
 
 /**
  * Handle incoming notification from a notification service extension. Adds category data, and updates template/category config
@@ -53,17 +53,17 @@ NS_SWIFT_NAME(Snapyr)
  * @param originalRequest the original notification request received by the extension, used for referencing data on the notification
  * @param contentHandler the content handler callback from the notification service extension, used to tell the OS that this request is complete.
  */
-+ (void)handleNoticationExtensionRequestWithWriteKey:(NSString *)writeKey bestAttemptContent:(UNMutableNotificationContent * _Nonnull)bestAttemptContent originalRequest:(UNNotificationRequest * _Nonnull)originalRequest contentHandler:(void (^)(UNNotificationContent * _Nonnull))contentHandler;
++ (void)handleNoticationExtensionRequestWithWriteKey:(NSString *)writeKey bestAttemptContent:(UNMutableNotificationContent * _Nonnull)bestAttemptContent originalRequest:(UNNotificationRequest * _Nonnull)originalRequest contentHandler:(void (^)(UNNotificationContent * _Nonnull))contentHandler API_UNAVAILABLE(tvos);
 
 /**
  * An extension of the above for internal use/testing, allowed dev mode to be enabled (use dev endpoints rather than prod).
  */
-+ (void)handleNoticationExtensionRequestWithBestAttemptContent:(UNMutableNotificationContent * _Nonnull)bestAttemptContent originalRequest:(UNNotificationRequest * _Nonnull)originalRequest contentHandler:(void (^)(UNNotificationContent * _Nonnull))contentHandler snapyrEnvironment:(SnapyrEnvironment)snapyrEnvironment;
++ (void)handleNoticationExtensionRequestWithBestAttemptContent:(UNMutableNotificationContent * _Nonnull)bestAttemptContent originalRequest:(UNNotificationRequest * _Nonnull)originalRequest contentHandler:(void (^)(UNNotificationContent * _Nonnull))contentHandler snapyrEnvironment:(SnapyrEnvironment)snapyrEnvironment API_UNAVAILABLE(tvos);
 
 /**
  * An extension of the above for internal use/testing, allowed dev mode to be enabled (use dev endpoints rather than prod).
  */
-+ (void)handleNoticationExtensionRequestWithWriteKey:(NSString *)writeKey bestAttemptContent:(UNMutableNotificationContent * _Nonnull)bestAttemptContent originalRequest:(UNNotificationRequest * _Nonnull)originalRequest contentHandler:(void (^)(UNNotificationContent * _Nonnull))contentHandler snapyrEnvironment:(SnapyrEnvironment)snapyrEnvironment;
++ (void)handleNoticationExtensionRequestWithWriteKey:(NSString *)writeKey bestAttemptContent:(UNMutableNotificationContent * _Nonnull)bestAttemptContent originalRequest:(UNNotificationRequest * _Nonnull)originalRequest contentHandler:(void (^)(UNNotificationContent * _Nonnull))contentHandler snapyrEnvironment:(SnapyrEnvironment)snapyrEnvironment API_UNAVAILABLE(tvos);
 
 /**
  * Enabled/disables debug logging to trace your data going through the SDK.
@@ -125,14 +125,14 @@ NS_SWIFT_NAME(Snapyr)
 - (void)setPushNotificationToken:(NSString*)token;
 - (void)setPushNotificationTokenData:(NSData*)tokenData;
 
-- (void)pushNotificationReceivedWithResponse:(UNNotificationResponse *)response;
-- (void)pushNotificationReceivedWithNotification:(UNNotification *)notification;
+- (void)pushNotificationReceivedWithResponse:(UNNotificationResponse *)response API_UNAVAILABLE(tvos);
+- (void)pushNotificationReceivedWithNotification:(UNNotification *)notification API_UNAVAILABLE(tvos);
 - (void)pushNotificationReceived:(SERIALIZABLE_DICT _Nullable)info;
 
-- (void)pushNotificationTappedWithResponse:(UNNotificationResponse*)response;
-- (void)pushNotificationTappedWithResponse:(UNNotificationResponse*)response actionId:(NSString* _Nullable)actionId;
-- (void)pushNotificationTappedWithNotification:(UNNotification*)notification;
-- (void)pushNotificationTappedWithNotification:(UNNotification*)notification actionId:(NSString* _Nullable)actionId;
+- (void)pushNotificationTappedWithResponse:(UNNotificationResponse*)response API_UNAVAILABLE(tvos);
+- (void)pushNotificationTappedWithResponse:(UNNotificationResponse*)response actionId:(NSString* _Nullable)actionId API_UNAVAILABLE(tvos);
+- (void)pushNotificationTappedWithNotification:(UNNotification*)notification API_UNAVAILABLE(tvos);
+- (void)pushNotificationTappedWithNotification:(UNNotification*)notification actionId:(NSString* _Nullable)actionId API_UNAVAILABLE(tvos);
 - (void)pushNotificationTapped:(SERIALIZABLE_DICT _Nullable)info;
 - (void)pushNotificationTapped:(SERIALIZABLE_DICT _Nullable)info actionId:(NSString* _Nullable)actionId;
 
