@@ -28,7 +28,7 @@ class TrackingTests: XCTestCase {
         super.tearDown()
         sdk.reset()
     }
-    
+    /*
     func testOpenUrl() {
         sdk.open(.init(string: "https://blah.com/")!, options: [:])
         
@@ -37,7 +37,7 @@ class TrackingTests: XCTestCase {
         XCTAssertNotNil(payload)
         XCTAssertEqual(payload?.event, "Deep Link Opened")
         XCTAssertEqual(payload?.properties?["url"] as? String, "https://blah.com/")
-    }
+    }*/
     
     func testContinueUserActivity() {
         let userActivity = NSUserActivity(activityType: "test")
