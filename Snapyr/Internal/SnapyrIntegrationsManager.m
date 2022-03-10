@@ -528,7 +528,7 @@ NSString *const kSnapyrCachedSettingsFilename = @"sdk.settings.v2.plist";
     }
 }
 
-- (void)registerPushCategories:(NSDictionary *)projectSettings
+- (void)registerPushCategories:(NSDictionary *)projectSettings  API_UNAVAILABLE(tvos)
 {
 #if !TARGET_OS_IPHONE
     return;
@@ -576,7 +576,10 @@ NSString *const kSnapyrCachedSettingsFilename = @"sdk.settings.v2.plist";
             if (success) {
                 [self setCachedSettings:settings];
                 [self parsePushTemplateData:settings];
-                [self registerPushCategories:settings];
+                if (@available(tvOS 12, *)) {} // tvOS 12 because deployment target is 12, just need to check if we're running not on tvOS to register push categories
+                else {
+                    [self registerPushCategories:settings];
+                }
             }
             completionHandler(success, settings);
         }];

@@ -87,7 +87,7 @@ static SnapyrSDK *__sharedInstance = nil;
     
     __block bool categoryFetchFinished = NO;
     __block bool imageFetchFinished = NO;
-    void (^tryToComplete)() = ^void {
+    void (^tryToComplete)(void) = ^void {
         if (categoryFetchFinished && imageFetchFinished) {
             contentHandler(bestAttemptContent);
         }

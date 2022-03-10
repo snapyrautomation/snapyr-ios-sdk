@@ -368,7 +368,7 @@ class SnapyrTests: XCTestCase {
                   }
             handleNotificationExpectation.fulfill()
                   
-        }, devMode: true)
+        }, snapyrEnvironment: .dev)
         wait(for: [handleNotificationExpectation], timeout: 5)
     }
     
@@ -385,7 +385,7 @@ class SnapyrTests: XCTestCase {
                   }
             XCTFail("Image should fail")
             handleNotificationExpectation.fulfill()
-        }, devMode: true)
+        }, snapyrEnvironment: .dev)
         wait(for: [handleNotificationExpectation], timeout: 5)
     }
     
@@ -396,7 +396,7 @@ class SnapyrTests: XCTestCase {
         Snapyr.handleNoticationExtensionRequest(withBestAttempt: payload, originalRequest: dummyRequest, contentHandler: { modifiedContent in
             // success
             handleNotificationExpectation.fulfill()
-        }, devMode: true)
+        }, snapyrEnvironment: .dev)
         wait(for: [handleNotificationExpectation], timeout: 5)
     }
     
