@@ -78,9 +78,9 @@ class TrackingTests: XCTestCase {
     
     func testPushNotificationReceived(){
         let testPayload = getTestUserInfo()
-        sdk.pushNotificationReceived(testPayload)
-        
         let testSnapyrPayload = testPayload["snapyr"] as? NSDictionary
+        sdk.pushNotificationReceived(testSnapyrPayload as? [String : Any])
+        
         let payload = passthrough.lastContext?.payload as? TrackPayload
         XCTAssertEqual(passthrough.lastContext?.eventType, .track)
         XCTAssertNotNil(payload)
