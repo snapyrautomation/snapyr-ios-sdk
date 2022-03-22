@@ -1,11 +1,14 @@
 #!/bin/bash
 echo "Creating directory 'builtframework' where XCFramework will be stored"
-mkdir builtframework
-mkdir builtframework/ .archives
+mkdir builtframework/.archives
+
+rm -r builtframework/Snapyr.xcframework.zip
+rm -r builtframework/Snapyr.xcframework
 
 echo "Archiving for iPhone Simulator"
 rm -r builtframework/.archives
 xcodebuild archive \
+ -quiet \
  -scheme Snapyr \
  -archivePath builtframework/.archives/Snapyr-iphonesimulator.xcarchive \
  -sdk iphonesimulator \
@@ -13,6 +16,7 @@ xcodebuild archive \
 
 echo "Archiving for iOS"
 xcodebuild archive \
+ -quiet \
  -scheme Snapyr \
  -archivePath builtframework/.archives/Snapyr-iphoneos.xcarchive \
  -sdk iphoneos \
@@ -20,6 +24,7 @@ xcodebuild archive \
 
 echo "Archiving for macOS"
 xcodebuild archive \
+ -quiet \
  -scheme Snapyr \
  -archivePath builtframework/.archives/Snapyr-macosx.xcarchive \
  -sdk macosx \
@@ -27,6 +32,7 @@ xcodebuild archive \
 
 echo "Archiving for Apple TV Simulator"
 xcodebuild archive \
+ -quiet \
  -scheme Snapyr \
  -archivePath builtframework/.archives/Snapyr-appletvsimulator.xcarchive \
  -sdk appletvsimulator \
@@ -34,6 +40,7 @@ xcodebuild archive \
 
 echo "Archiving for Apple tvOS"
 xcodebuild archive \
+ -quiet \
  -scheme Snapyr \
  -archivePath builtframework/.archives/Snapyr-appletvos.xcarchive \
  -sdk appletvos \
@@ -48,7 +55,13 @@ xcodebuild -create-xcframework \
  -framework builtframework/.archives/Snapyr-appletvsimulator.xcarchive/Products/Library/Frameworks/Snapyr.framework \
  -framework builtframework/.archives/Snapyr-appletvos.xcarchive/Products/Library/Frameworks/Snapyr.framework \
  -output builtframework/Snapyr.xcframework
+ 
+cd builtframework
 
-rm -r builtframework/.archives
 
-open builtframework
+zip -vr Snapyr.xcframework.zip Snapyr.xcframework/
+
+rm -r .archives
+rm -r builtframework/Snapyr.xcframework
+
+echo "Archive finished"
