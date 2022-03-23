@@ -34,6 +34,7 @@ static SnapyrSDK *__sharedInstance = nil;
 
 + (void)setupWithConfiguration:(SnapyrSDKConfiguration *)configuration;
 {
+    [SnapyrUtils setConfiguration:configuration];
     DLog(@"SnapyrSDK.setupWithConfiguration");
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
@@ -77,6 +78,11 @@ static SnapyrSDK *__sharedInstance = nil;
         contentHandler(bestAttemptContent);
         return;
     }
+    
+    SnapyrSDKConfiguration *config = [SnapyrUtils getSavedConfigurationWithEnvironment:snapyrEnvironment];
+    SnapyrSDK *sdk = [[SnapyrSDK alloc] initWithConfiguration:config];
+    [sdk pushNotificationReceived:originalRequest.content.userInfo];
+    
     NSDictionary *payloadTemplate = snapyrData[@"pushTemplate"];
     if (!payloadTemplate || !payloadTemplate[@"id"] || !payloadTemplate[@"modified"]) {
         DLog(@"SnapyrSDK NotifExt: Missing template data on payload; returning.");
