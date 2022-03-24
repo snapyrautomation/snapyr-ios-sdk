@@ -10,6 +10,10 @@
 		5AF0E8AE77F57B356DACCFE7 /* AutoScreenReportingTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AF0E8457CCFC077382BF449 /* AutoScreenReportingTest.swift */; };
 		630FC8EA2107F2A500A759C5 /* SnapyrScreenReporting.h in Headers */ = {isa = PBXBuildFile; fileRef = 5AF0EDFEDC0EE79A0A0EB713 /* SnapyrScreenReporting.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		6E265C791FB1178C0030E08E /* IntegrationsManagerTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E265C781FB1178C0030E08E /* IntegrationsManagerTest.swift */; };
+		7304B25A27DB3F67008FB718 /* SnapyrNotificationsProxy.h in Headers */ = {isa = PBXBuildFile; fileRef = 7304B25927DB3F67008FB718 /* SnapyrNotificationsProxy.h */; };
+		7304B25C27DB4067008FB718 /* SnapyrNotificationsProxy.m in Sources */ = {isa = PBXBuildFile; fileRef = 7304B25B27DB4067008FB718 /* SnapyrNotificationsProxy.m */; };
+		7304B25F27DB4A75008FB718 /* SnapyrProxyImplementations.h in Headers */ = {isa = PBXBuildFile; fileRef = 7304B25D27DB4A75008FB718 /* SnapyrProxyImplementations.h */; };
+		7304B26027DB4A75008FB718 /* SnapyrProxyImplementations.m in Sources */ = {isa = PBXBuildFile; fileRef = 7304B25E27DB4A75008FB718 /* SnapyrProxyImplementations.m */; };
 		75FD4202252401B500BC8970 /* SnapyrWebhookIntegration.m in Sources */ = {isa = PBXBuildFile; fileRef = 75FD4201252401B500BC8970 /* SnapyrWebhookIntegration.m */; };
 		75FD42052524F1E000BC8970 /* SnapyrWebhookIntegration.h in Headers */ = {isa = PBXBuildFile; fileRef = 75FD42002524019100BC8970 /* SnapyrWebhookIntegration.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		8D84EE3826448D7300B982F8 /* EndToEndTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EEC1C702017EA370089C478 /* EndToEndTests.swift */; };
@@ -107,6 +111,10 @@
 		63E090D722DD49C300DEC7EC /* UIViewController+SnapyrScreenTest.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UIViewController+SnapyrScreenTest.h"; sourceTree = "<group>"; };
 		6E265C781FB1178C0030E08E /* IntegrationsManagerTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntegrationsManagerTest.swift; sourceTree = "<group>"; };
 		6EEC1C702017EA370089C478 /* EndToEndTests.swift */ = {isa = PBXFileReference; indentWidth = 4; lastKnownFileType = sourcecode.swift; path = EndToEndTests.swift; sourceTree = "<group>"; tabWidth = 4; };
+		7304B25927DB3F67008FB718 /* SnapyrNotificationsProxy.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SnapyrNotificationsProxy.h; sourceTree = "<group>"; };
+		7304B25B27DB4067008FB718 /* SnapyrNotificationsProxy.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SnapyrNotificationsProxy.m; sourceTree = "<group>"; };
+		7304B25D27DB4A75008FB718 /* SnapyrProxyImplementations.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SnapyrProxyImplementations.h; sourceTree = "<group>"; };
+		7304B25E27DB4A75008FB718 /* SnapyrProxyImplementations.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SnapyrProxyImplementations.m; sourceTree = "<group>"; };
 		75FD42002524019100BC8970 /* SnapyrWebhookIntegration.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SnapyrWebhookIntegration.h; sourceTree = "<group>"; };
 		75FD4201252401B500BC8970 /* SnapyrWebhookIntegration.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SnapyrWebhookIntegration.m; sourceTree = "<group>"; };
 		96A12C2624B680DB00949804 /* NSViewController+SnapyrScreen.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NSViewController+SnapyrScreen.h"; sourceTree = "<group>"; };
@@ -355,6 +363,10 @@
 				EADEB8A31DECD12B005322DA /* UIViewController+SnapyrScreen.m */,
 				96A12C2624B680DB00949804 /* NSViewController+SnapyrScreen.h */,
 				96A12C2724B680DB00949804 /* NSViewController+SnapyrScreen.m */,
+				7304B25927DB3F67008FB718 /* SnapyrNotificationsProxy.h */,
+				7304B25B27DB4067008FB718 /* SnapyrNotificationsProxy.m */,
+				7304B25D27DB4A75008FB718 /* SnapyrProxyImplementations.h */,
+				7304B25E27DB4A75008FB718 /* SnapyrProxyImplementations.m */,
 			);
 			path = Internal;
 			sourceTree = "<group>";
@@ -413,9 +425,11 @@
 				EADEB8D61DECD12B005322DA /* UIViewController+SnapyrScreen.h in Headers */,
 				EADEB8CF1DECD12B005322DA /* SnapyrStorage.h in Headers */,
 				75FD42052524F1E000BC8970 /* SnapyrWebhookIntegration.h in Headers */,
+				7304B25F27DB4A75008FB718 /* SnapyrProxyImplementations.h in Headers */,
 				A352176023AD5825005B07F6 /* SnapyrMacros.h in Headers */,
 				EADEB8D21DECD12B005322DA /* SnapyrUserDefaultsStorage.h in Headers */,
 				EADEB8D01DECD12B005322DA /* SnapyrStoreKitTracker.h in Headers */,
+				7304B25A27DB3F67008FB718 /* SnapyrNotificationsProxy.h in Headers */,
 				EADEB8D41DECD12B005322DA /* SnapyrUtils.h in Headers */,
 				EADEB8601DECD080005322DA /* Snapyr.h in Headers */,
 				EADEB8C31DECD12B005322DA /* SnapyrSDKUtils.h in Headers */,
@@ -555,9 +569,11 @@
 				EADEB8D51DECD12B005322DA /* SnapyrUtils.m in Sources */,
 				EAA5427E1EB42B8C00945DA7 /* SnapyrReachability.m in Sources */,
 				EADEB8B41DECD12B005322DA /* SnapyrGroupPayload.m in Sources */,
+				7304B26027DB4A75008FB718 /* SnapyrProxyImplementations.m in Sources */,
 				A34CC6DD249AAEBB00C5E368 /* SnapyrState.m in Sources */,
 				EADEB8D71DECD12B005322DA /* UIViewController+SnapyrScreen.m in Sources */,
 				EADEB8D11DECD12B005322DA /* SnapyrStoreKitTracker.m in Sources */,
+				7304B25C27DB4067008FB718 /* SnapyrNotificationsProxy.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -16,6 +16,7 @@
 #import "SnapyrIntegrationsManager.h"
 #import "SnapyrState.h"
 #import "SnapyrUtils.h"
+#import "SnapyrNotificationsProxy.h"
 
 static SnapyrSDK *__sharedInstance = nil;
 
@@ -35,6 +36,8 @@ static SnapyrSDK *__sharedInstance = nil;
 + (void)setupWithConfiguration:(SnapyrSDKConfiguration *)configuration;
 {
     [SnapyrUtils setConfiguration:configuration];
+    SnapyrNotificationsProxy *proxy = [SnapyrNotificationsProxy sharedProxy];
+    [proxy swizzleMethodsIfPossible];
     DLog(@"SnapyrSDK.setupWithConfiguration");
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
