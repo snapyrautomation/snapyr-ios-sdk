@@ -14,6 +14,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 NS_SWIFT_NAME(Utilities)
 @interface SnapyrUtils : NSObject
++ (void)setConfiguration:(SnapyrSDKConfiguration*) config;
++ (SnapyrSDKConfiguration *)getSavedConfigurationWithEnvironment: (SnapyrEnvironment) env;
 
 + (void)saveAPIHost:(nonnull NSString *)apiHost;
 + (nonnull NSString *)getAPIHost;

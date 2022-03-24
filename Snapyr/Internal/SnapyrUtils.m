@@ -19,8 +19,229 @@ static CTTelephonyNetworkInfo *_telephonyNetworkInfo;
 
 const NSString *snapyr_apiHost = @"snapyr_apihost";
 NSString * const kSnapyrWriteKey = @"snapyr_write_key";
+NSString * const kSnapyrUseLSKey = @"snapyr_use_ls_key";
+NSString * const kSnapyrAdTrackKey = @"snapyr_track_ads_key";
+NSString * const kSnapyrFlushAtKey = @"snapyr_flush_at_key";
+NSString * const kSnapyrUseMockKey = @"snapyr_use_mock_key";
+NSString * const kSnapyrFlushIntervalKey = @"snapyr_flush_interval_key";
+NSString * const kSnapyrMaxQueueSizeKey = @"snapyr_max_queue_size_key";
+NSString * const kSnapyrTrackAppCycleEventsKey = @"snapyr_track_app_cycle_events_key";
+NSString * const kSnapyrUseBTKey = @"snapyr_use_bt_key";
+NSString * const kSnapyrRecordScreenViewsKey = @"snapyr_record_screen_views_key";
+NSString * const kSnapyrTrackInAppPurchasesKey = @"snapyr_track_in_app_purchases_key";
+NSString * const kSnapyrTrackPNKey = @"snapyr_track_pn_key";
+NSString * const kSnapyrTrackDLKey = @"snapyr_track_dl_key";
+
 
 @implementation SnapyrUtils
+
++ (void)setConfiguration:(SnapyrSDKConfiguration*) config
+{
+    [SnapyrUtils saveShouldUseLocationServices:config.shouldUseLocationServices];
+    [SnapyrUtils saveEnabledAdTracking:config.enableAdvertisingTracking];
+    [SnapyrUtils saveFlushAt:config.flushAt];
+    [SnapyrUtils saveUseMock:config.useMocks];
+    [SnapyrUtils saveFlushInterval:config.flushInterval];
+    [SnapyrUtils saveMaxQueueSize:config.maxQueueSize];
+    [SnapyrUtils saveTrackAppLifecycleEvents:config.trackApplicationLifecycleEvents];
+    [SnapyrUtils saveShouldUseBluetooth:config.shouldUseBluetooth];
+    [SnapyrUtils saveRecordScreenViews:config.recordScreenViews];
+    [SnapyrUtils saveTrackInAppPurchases:config.trackInAppPurchases];
+    [SnapyrUtils saveTrackPushNotifications:config.trackPushNotifications];
+    [SnapyrUtils saveTrackDeepLinks:config.trackDeepLinks];
+}
+
++ (SnapyrSDKConfiguration *)getSavedConfigurationWithEnvironment: (SnapyrEnvironment) env;
+{
+    NSURL *apiHost = [SnapyrUtils getAPIHostURL:env];
+    NSString *writeKey = [SnapyrUtils getWriteKey];
+    SnapyrSDKConfiguration *config = [SnapyrSDKConfiguration configurationWithWriteKey:writeKey defaultAPIHost:apiHost];
+    
+    config.snapyrEnvironment = env;
+    config.shouldUseLocationServices = [SnapyrUtils getShouldUseLocationServices];
+    config.enableAdvertisingTracking = [SnapyrUtils getEnabledAdTracking];
+    config.flushAt = [SnapyrUtils getFlushAt];
+    config.useMocks = [SnapyrUtils getUseMock];
+    config.flushInterval = [SnapyrUtils getFlushInterval];
+    config.maxQueueSize = [SnapyrUtils getMaxQueueSize];
+    config.trackApplicationLifecycleEvents = [SnapyrUtils getTrackAppLifecycleEvents];
+    config.shouldUseBluetooth = [SnapyrUtils getShouldUseBluetooth];
+    config.recordScreenViews = [SnapyrUtils getRecordScreenViews];
+    config.trackInAppPurchases = [SnapyrUtils getTrackInAppPurchases];
+    config.trackPushNotifications = [SnapyrUtils getTrackPushNotifications];
+    config.trackDeepLinks = [SnapyrUtils getTrackDeepLinks];
+    
+    return config;
+}
+
+
++ (void)saveShouldUseLocationServices:( BOOL )value
+{
+    NSUserDefaults *defaults = getGroupUserDefaults();
+    [defaults setBool:value forKey:[kSnapyrUseLSKey copy]];
+}
+
++ (BOOL)getShouldUseLocationServices
+{
+    NSUserDefaults *defaults = getGroupUserDefaults();
+    BOOL result = [defaults boolForKey:[kSnapyrUseLSKey copy]];
+    return result;
+}
+
+
++ (void)saveEnabledAdTracking:( BOOL )value
+{
+    NSUserDefaults *defaults = getGroupUserDefaults();
+    [defaults setBool:value forKey:[kSnapyrAdTrackKey copy]];
+}
+
++ ( BOOL )getEnabledAdTracking
+{
+    NSUserDefaults *defaults = getGroupUserDefaults();
+    BOOL result = [defaults boolForKey:[kSnapyrAdTrackKey copy]];
+    return result;
+}
+
+
++ (void)saveFlushAt:( NSUInteger )value
+{
+    NSUserDefaults *defaults = getGroupUserDefaults();
+    [defaults setInteger:value forKey:[kSnapyrFlushAtKey copy]];
+}
+
++ ( NSUInteger )getFlushAt
+{
+    NSUserDefaults *defaults = getGroupUserDefaults();
+    NSUInteger result = [defaults integerForKey:[kSnapyrFlushAtKey copy]];
+    return result;
+}
+
+
++ (void)saveUseMock:( BOOL )value
+{
+    NSUserDefaults *defaults = getGroupUserDefaults();
+    [defaults setBool:value forKey:[kSnapyrUseMockKey copy]];
+}
+
++ ( BOOL )getUseMock
+{
+    NSUserDefaults *defaults = getGroupUserDefaults();
+    BOOL result = [defaults boolForKey:[kSnapyrUseMockKey copy]];
+    return result;
+}
+
+
++ (void)saveFlushInterval:(NSTimeInterval)value
+{
+    NSUserDefaults *defaults = getGroupUserDefaults();
+    [defaults setDouble:value forKey:[kSnapyrFlushIntervalKey copy]];
+}
+
++ (NSTimeInterval)getFlushInterval
+{
+    NSUserDefaults *defaults = getGroupUserDefaults();
+    NSTimeInterval result = (NSTimeInterval)[defaults doubleForKey:[kSnapyrFlushIntervalKey copy]];
+    return result;
+}
+
+
++ (void)saveMaxQueueSize:( NSUInteger )value
+{
+    NSUserDefaults *defaults = getGroupUserDefaults();
+    [defaults setInteger:value forKey:[kSnapyrMaxQueueSizeKey copy]];
+}
+
++ ( NSUInteger )getMaxQueueSize
+{
+    NSUserDefaults *defaults = getGroupUserDefaults();
+    NSUInteger result = [defaults integerForKey:[kSnapyrMaxQueueSizeKey copy]];
+    return result;
+}
+
+
++ (void)saveTrackAppLifecycleEvents:( BOOL )value
+{
+    NSUserDefaults *defaults = getGroupUserDefaults();
+    [defaults setBool:value forKey:[kSnapyrTrackAppCycleEventsKey copy]];
+}
+
++ ( BOOL )getTrackAppLifecycleEvents
+{
+    NSUserDefaults *defaults = getGroupUserDefaults();
+    BOOL result = [defaults boolForKey:[kSnapyrTrackAppCycleEventsKey copy]];
+    return result;
+}
+
+
++ (void)saveShouldUseBluetooth:( BOOL )value
+{
+    NSUserDefaults *defaults = getGroupUserDefaults();
+    [defaults setBool:value forKey:[kSnapyrUseBTKey copy]];
+}
+
++ ( BOOL )getShouldUseBluetooth
+{
+    NSUserDefaults *defaults = getGroupUserDefaults();
+    BOOL result = [defaults boolForKey:[kSnapyrUseBTKey copy]];
+    return result;
+}
+
+
++ (void)saveRecordScreenViews:( BOOL )value
+{
+    NSUserDefaults *defaults = getGroupUserDefaults();
+    [defaults setBool:value forKey:[kSnapyrRecordScreenViewsKey copy]];
+}
+
++ ( BOOL )getRecordScreenViews
+{
+    NSUserDefaults *defaults = getGroupUserDefaults();
+    BOOL result = [defaults boolForKey:[kSnapyrRecordScreenViewsKey copy]];
+    return result;
+}
+
+
++ (void)saveTrackInAppPurchases:( BOOL )value
+{
+    NSUserDefaults *defaults = getGroupUserDefaults();
+    [defaults setBool:value forKey:[kSnapyrTrackInAppPurchasesKey copy]];
+}
+
++ ( BOOL )getTrackInAppPurchases
+{
+    NSUserDefaults *defaults = getGroupUserDefaults();
+    BOOL result = [defaults boolForKey:[kSnapyrTrackInAppPurchasesKey copy]];
+    return result;
+}
+
+
++ (void)saveTrackPushNotifications:( BOOL )value
+{
+    NSUserDefaults *defaults = getGroupUserDefaults();
+    [defaults setBool:value forKey:[kSnapyrTrackPNKey copy]];
+}
+
++ ( BOOL )getTrackPushNotifications
+{
+    NSUserDefaults *defaults = getGroupUserDefaults();
+    BOOL result = [defaults boolForKey:[kSnapyrTrackPNKey copy]];
+    return result;
+}
+
+
++ (void)saveTrackDeepLinks:( BOOL )value
+{
+    NSUserDefaults *defaults = getGroupUserDefaults();
+    [defaults setBool:value forKey:[kSnapyrTrackDLKey copy]];
+}
+
++ ( BOOL )getTrackDeepLinks
+{
+    NSUserDefaults *defaults = getGroupUserDefaults();
+    BOOL result = [defaults boolForKey:[kSnapyrTrackDLKey copy]];
+    return result;
+}
+
 
 + (void)saveAPIHost:(nonnull NSString *)apiHost
 {
