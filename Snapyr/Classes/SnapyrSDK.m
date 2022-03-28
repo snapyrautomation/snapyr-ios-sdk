@@ -553,7 +553,7 @@ NSString *const SnapyrBuildKeyV2 = @"SnapyrBuildKeyV2";
 
 - (void)pushNotificationTappedWithNotification:(UNNotification*)notification
 {
-    [self pushNotificationTappedWithNotification:notification];
+    [self pushNotificationTappedWithNotification:notification actionId:nil];
 }
 
 - (void)pushNotificationTappedWithNotification:(UNNotification*)notification actionId:(NSString* _Nullable)actionId

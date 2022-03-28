@@ -28,6 +28,9 @@ static id<SApplicationDelegate> sOriginalAppDelegate;
 
 static NSString *const kDidRegisterForRemoteNotificationsSEL =
 @"application:didRegisterForRemoteNotificationsWithDeviceToken:";
+static NSString *const kContinueUserActivity = @"application:continueUserActivity:restorationHandler:";
+static NSString *const kDidFailToRegisterForRemoteNotifiations = @"application:didFailToRegisterForRemoteNotificationsWithError:";
+static NSString *const kOpenURL = @"application:openURL:options:";
 
 static NSString *const kAppDelegateKeyPath = @"delegate";
 
@@ -88,140 +91,6 @@ static id SnapyrUserInfoFromNotification(id notification) {
     return notificationUserInfo;
 }
 
-// Swizzled methods
-
-
-static void SnapyrSwizzleWillPresentNotificationWithHandler(id self, SEL cmd, id center, id notification, void (^handler)(NSUInteger)) {
-    SnapyrNotificationsProxy *proxy = [SnapyrNotificationsProxy sharedProxy];
-    IMP originalImp = [proxy originalImplementationForSelector:cmd];
-    
-    void (^callOriginalMethodIfAvailable)(void) = ^{
-        if (originalImp) {
-            ((void (*)(id, SEL, id, id, void (^)(NSUInteger)))originalImp)(self, cmd, center,
-                                                                           notification, handler);
-        }
-        return;
-    };
-    
-    Class notificationCenterClass = NSClassFromString(@"UNUserNotificationCenter");
-    Class notificationClass = NSClassFromString(@"UNNotification");
-    if (!notificationCenterClass || !notificationClass) {
-        // Can't find UserNotifications framework. Do not swizzle, just execute the original method.
-        callOriginalMethodIfAvailable();
-    }
-    
-    if (!center || ![center isKindOfClass:[notificationCenterClass class]]) {
-        // Invalid parameter type from the original method.
-        // Do not swizzle, just execute the original method.
-        callOriginalMethodIfAvailable();
-        return;
-    }
-    
-    if (!notification || ![notification isKindOfClass:[notificationClass class]]) {
-        // Invalid parameter type from the original method.
-        // Do not swizzle, just execute the original method.
-        callOriginalMethodIfAvailable();
-        return;
-    }
-    
-    if (!handler) {
-        // Invalid parameter type from the original method.
-        // Do not swizzle, just execute the original method.
-        callOriginalMethodIfAvailable();
-        return;
-    }
-    
-    // Attempt to access the user info
-    id notificationUserInfo = SnapyrUserInfoFromNotification(notification);
-    
-    if (!notificationUserInfo) {
-        // Could not access notification.request.content.userInfo.
-        callOriginalMethodIfAvailable();
-        return;
-    }
-    
-    [SnapyrProxyImplementations notificationCenterWillPresent:notificationUserInfo originalImp:originalImp withCompletionHandler:handler];
-    // Execute the original implementation.
-    callOriginalMethodIfAvailable();
-}
-
-
-static void SnapyrSwizzleDidReceiveNotificationResponseWithHandler(id self, SEL cmd, id center, id response, void (^handler)(void)) {
-    SnapyrNotificationsProxy *proxy = [SnapyrNotificationsProxy sharedProxy];
-    IMP originalImp = [proxy originalImplementationForSelector:cmd];
-    
-    void (^callOriginalMethodIfAvailable)(void) = ^{
-        if (originalImp) {
-            ((void (*)(id, SEL, id, id, void (^)(void)))originalImp)(self, cmd, center, response,
-                                                                     handler);
-        }
-        return;
-    };
-    
-    Class notificationCenterClass = NSClassFromString(@"UNUserNotificationCenter");
-    Class responseClass = NSClassFromString(@"UNNotificationResponse");
-    if (!center || ![center isKindOfClass:[notificationCenterClass class]]) {
-        // Invalid parameter type from the original method.
-        // Do not swizzle, just execute the original method.
-        callOriginalMethodIfAvailable();
-        return;
-    }
-    
-    if (!response || ![response isKindOfClass:[responseClass class]]) {
-        // Invalid parameter type from the original method.
-        // Do not swizzle, just execute the original method.
-        callOriginalMethodIfAvailable();
-        return;
-    }
-    
-    if (!handler) {
-        // Invalid parameter type from the original method.
-        // Do not swizzle, just execute the original method.
-        callOriginalMethodIfAvailable();
-        return;
-    }
-    
-    // Try to access the response.notification property
-    SEL notificationSelector = NSSelectorFromString(@"notification");
-    if (![response respondsToSelector:notificationSelector]) {
-        // Cannot access the .notification property.
-        callOriginalMethodIfAvailable();
-        return;
-    }
-    id notificationClass = NSClassFromString(@"UNNotification");
-    id notification = SnapyrPropertyNameForObject(response, @"notification", notificationClass);
-    
-    // With a notification object, use the common code to reach deep into notification
-    // (notification.request.content.userInfo)
-    id notificationUserInfo = SnapyrUserInfoFromNotification(notification);
-    if (!notificationUserInfo) {
-        // Could not access notification.request.content.userInfo.
-        callOriginalMethodIfAvailable();
-        return;
-    }
-    
-    [SnapyrProxyImplementations notificationCenterDidReceive:notificationUserInfo originalImp:originalImp withCompletionHandler:handler];
-    // Execute the original implementation.
-    callOriginalMethodIfAvailable();
-}
-
-
-static void SnapyrSwizzleDidRegisteredForRemote(id self, SEL cmd, id application, id token) {
-    SnapyrNotificationsProxy *proxy = [SnapyrNotificationsProxy sharedProxy];
-    IMP originalImp = [proxy originalImplementationForSelector:cmd];
-    
-    void (^callOriginalMethodIfAvailable)(void) = ^{
-        if (originalImp) {
-            ((void (*)(id, SEL, id, id))originalImp)(self, cmd, application, token);
-        }
-        return;
-    };
-    
-    [SnapyrProxyImplementations application:application appdelegateRegisteredToAPNSWithToken:token];
-    
-    // Execute the original implementation.
-    callOriginalMethodIfAvailable();
-}
 
 
 @implementation SnapyrNotificationsProxy
@@ -326,6 +195,24 @@ static void SnapyrSwizzleDidRegisteredForRemote(id self, SEL cmd, id application
                           inClass:[delegate class]
                withImplementation:(IMP)SnapyrSwizzleDidRegisteredForRemote
                        inProtocol:appDelegate];
+        
+        SEL continueUserActivitySEL = NSSelectorFromString(kContinueUserActivity);
+        [self swizzleSelector:continueUserActivitySEL
+                      inClass:[delegate class]
+           withImplementation:(IMP)SnapyrSwizzleContinueUserActivity
+                   inProtocol:appDelegate];
+        
+        SEL failToRegisterForPNSEL = NSSelectorFromString(kDidFailToRegisterForRemoteNotifiations);
+        [self swizzleSelector:failToRegisterForPNSEL
+                      inClass:[delegate class]
+           withImplementation:(IMP)SnapyrSwizzleFailToRegisterForPN
+                   inProtocol:appDelegate];
+        
+        SEL openUrlSEL = NSSelectorFromString(kOpenURL);
+        [self swizzleSelector:openUrlSEL
+                      inClass:[delegate class]
+           withImplementation:(IMP)SnapyrSwizzleOpenURL
+                   inProtocol:appDelegate];
     }
 }
 
@@ -435,3 +322,174 @@ static void SnapyrSwizzleDidRegisteredForRemote(id self, SEL cmd, id application
 @end
 
 
+// Swizzled methods
+
+
+static void SnapyrSwizzleWillPresentNotificationWithHandler(id self, SEL cmd, id center, id notification, void (^handler)(NSUInteger)) {
+    SnapyrNotificationsProxy *proxy = [SnapyrNotificationsProxy sharedProxy];
+    IMP originalImp = [proxy originalImplementationForSelector:cmd];
+    
+    void (^callOriginalMethodIfAvailable)(void) = ^{
+        if (originalImp) {
+            ((void (*)(id, SEL, id, id, void (^)(NSUInteger)))originalImp)(self, cmd, center,
+                                                                           notification, handler);
+        }
+        return;
+    };
+    
+    Class notificationCenterClass = NSClassFromString(@"UNUserNotificationCenter");
+    Class notificationClass = NSClassFromString(@"UNNotification");
+    if (!notificationCenterClass || !notificationClass) {
+        // Can't find UserNotifications framework. Do not swizzle, just execute the original method.
+        callOriginalMethodIfAvailable();
+    }
+    
+    if (!center || ![center isKindOfClass:[notificationCenterClass class]]) {
+        // Invalid parameter type from the original method.
+        // Do not swizzle, just execute the original method.
+        callOriginalMethodIfAvailable();
+        return;
+    }
+    
+    if (!notification || ![notification isKindOfClass:[notificationClass class]]) {
+        // Invalid parameter type from the original method.
+        // Do not swizzle, just execute the original method.
+        callOriginalMethodIfAvailable();
+        return;
+    }
+    
+    if (!handler) {
+        // Invalid parameter type from the original method.
+        // Do not swizzle, just execute the original method.
+        callOriginalMethodIfAvailable();
+        return;
+    }
+    
+    // Attempt to access the user info
+    id notificationUserInfo = SnapyrUserInfoFromNotification(notification);
+    
+    if (!notificationUserInfo) {
+        // Could not access notification.request.content.userInfo.
+        callOriginalMethodIfAvailable();
+        return;
+    }
+    
+    [SnapyrProxyImplementations notificationCenterWillPresent:notificationUserInfo originalImp:originalImp withCompletionHandler:handler];
+    // Execute the original implementation.
+    callOriginalMethodIfAvailable();
+}
+
+
+static void SnapyrSwizzleDidReceiveNotificationResponseWithHandler(id self, SEL cmd, id center, id response, void (^handler)(void)) {
+    SnapyrNotificationsProxy *proxy = [SnapyrNotificationsProxy sharedProxy];
+    IMP originalImp = [proxy originalImplementationForSelector:cmd];
+    
+    void (^callOriginalMethodIfAvailable)(void) = ^{
+        if (originalImp) {
+            ((void (*)(id, SEL, id, id, void (^)(void)))originalImp)(self, cmd, center, response,
+                                                                     handler);
+        }
+        return;
+    };
+    
+    Class notificationCenterClass = NSClassFromString(@"UNUserNotificationCenter");
+    Class responseClass = NSClassFromString(@"UNNotificationResponse");
+    if (!center || ![center isKindOfClass:[notificationCenterClass class]]) {
+        // Invalid parameter type from the original method.
+        // Do not swizzle, just execute the original method.
+        callOriginalMethodIfAvailable();
+        return;
+    }
+    
+    if (!response || ![response isKindOfClass:[responseClass class]]) {
+        // Invalid parameter type from the original method.
+        // Do not swizzle, just execute the original method.
+        callOriginalMethodIfAvailable();
+        return;
+    }
+    
+    if (!handler) {
+        // Invalid parameter type from the original method.
+        // Do not swizzle, just execute the original method.
+        callOriginalMethodIfAvailable();
+        return;
+    }
+      
+    
+    [SnapyrProxyImplementations notificationCenterDidReceive:response originalImp:originalImp withCompletionHandler:handler];
+    // Execute the original implementation.
+    callOriginalMethodIfAvailable();
+}
+
+
+static void SnapyrSwizzleDidRegisteredForRemote(id self, SEL cmd, id application, id token) {
+    SnapyrNotificationsProxy *proxy = [SnapyrNotificationsProxy sharedProxy];
+    IMP originalImp = [proxy originalImplementationForSelector:cmd];
+    
+    void (^callOriginalMethodIfAvailable)(void) = ^{
+        if (originalImp) {
+            ((void (*)(id, SEL, id, id))originalImp)(self, cmd, application, token);
+        }
+        return;
+    };
+    
+    [SnapyrProxyImplementations application:application appdelegateRegisteredToAPNSWithToken:token];
+    
+    // Execute the original implementation.
+    callOriginalMethodIfAvailable();
+}
+
+
+static void SnapyrSwizzleContinueUserActivity(id self, SEL cmd, id application, id userActivity, id handler)
+{
+    SnapyrNotificationsProxy *proxy = [SnapyrNotificationsProxy sharedProxy];
+    IMP originalImp = [proxy originalImplementationForSelector:cmd];
+    
+    void (^callOriginalMethodIfAvailable)(void) = ^{
+        if (originalImp) {
+            ((void (*)(id, SEL, id, id, id))originalImp)(self, cmd, application, userActivity, handler);
+        }
+        return;
+    };
+    
+    [SnapyrProxyImplementations application:application continueUserActivity:userActivity];
+    
+    // Execute the original implementation.
+    callOriginalMethodIfAvailable();
+}
+
+static void SnapyrSwizzleFailToRegisterForPN(id self, SEL cmd, id application, id error)
+{
+    SnapyrNotificationsProxy *proxy = [SnapyrNotificationsProxy sharedProxy];
+    IMP originalImp = [proxy originalImplementationForSelector:cmd];
+    
+    void (^callOriginalMethodIfAvailable)(void) = ^{
+        if (originalImp) {
+            ((void (*)(id, SEL, id, id))originalImp)(self, cmd, application, error);
+        }
+        return;
+    };
+    
+    [SnapyrProxyImplementations application:application didFailToRegisterForRemoteNotificationsWithError:error];
+    
+    // Execute the original implementation.
+    callOriginalMethodIfAvailable();
+}
+
+static void SnapyrSwizzleOpenURL(id self, SEL cmd, id application, id url, id options)
+{
+    SnapyrNotificationsProxy *proxy = [SnapyrNotificationsProxy sharedProxy];
+    IMP originalImp = [proxy originalImplementationForSelector:cmd];
+    
+    void (^callOriginalMethodIfAvailable)(void) = ^{
+        if (originalImp) {
+            ((void (*)(id, SEL, id, id, id))originalImp)(self, cmd, application, url, options);
+        }
+        return;
+    };
+    
+    [SnapyrProxyImplementations application:application openURL:url options:options];
+    
+    // Execute the original implementation.
+    callOriginalMethodIfAvailable();
+}

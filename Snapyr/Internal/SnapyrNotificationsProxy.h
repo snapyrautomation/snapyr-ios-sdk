@@ -38,3 +38,10 @@
 - (IMP)originalImplementationForSelector:(SEL)selector;
 + (SApplication *)sharedApplication;
 @end
+
+static void SnapyrSwizzleWillPresentNotificationWithHandler(id self, SEL cmd, id center, id notification, void (^handler)(NSUInteger));
+static void SnapyrSwizzleDidReceiveNotificationResponseWithHandler(id self, SEL cmd, id center, id response, void (^handler)(void));
+static void SnapyrSwizzleDidRegisteredForRemote(id self, SEL cmd, id application, id token);
+static void SnapyrSwizzleContinueUserActivity(id self, SEL cmd, id application, id userActivity, id handler);
+static void SnapyrSwizzleFailToRegisterForPN(id self, SEL cmd, id application, id error);
+static void SnapyrSwizzleOpenURL(id self, SEL cmd, id application, id url, id options);
