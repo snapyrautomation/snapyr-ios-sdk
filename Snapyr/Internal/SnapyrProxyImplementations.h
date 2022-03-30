@@ -24,8 +24,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface SnapyrProxyImplementations: NSObject
 
-+ (void)notificationCenterWillPresent:(NSDictionary *)info originalImp: (IMP) originalImp withCompletionHandler:(void (^)(UNNotificationPresentationOptions options)) completionHandler;
-+ (void)notificationCenterDidReceive:(UNNotificationResponse *)response originalImp: (IMP) originalImp withCompletionHandler:(void(^)(void))completionHandler;
++ (void)notificationCenterWillPresent:(NSDictionary *)info originalImp: (IMP) originalImp withCompletionHandler:(void (^)(UNNotificationPresentationOptions options)) completionHandler API_UNAVAILABLE(tvos);
++ (void)notificationCenterDidReceive:(UNNotificationResponse *)response originalImp: (IMP) originalImp withCompletionHandler:(void(^)(void))completionHandler API_UNAVAILABLE(tvos);
 + (void)application:(SApplication *)application appdelegateRegisteredToAPNSWithToken: (NSData *) token;
 + (void)application:(SApplication *)application continueUserActivity:(NSUserActivity *) userActivity;
 + (void)application:(SApplication *)application didFailToRegisterForRemoteNotificationsWithError:(NSError *) error;

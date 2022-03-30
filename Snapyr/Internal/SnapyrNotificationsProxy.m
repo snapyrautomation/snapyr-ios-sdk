@@ -134,11 +134,14 @@ static id SnapyrUserInfoFromNotification(id notification) {
 
 - (void)swizzleUserNotificationsCenter {
     if (!NSProcessInfo.processInfo.environment[@"XCTestConfigurationFilePath"]) {
-        Class notificationCenterClass = NSClassFromString(@"UNUserNotificationCenter");
-        if (notificationCenterClass) {
-            id notificationCenter = SnapyrPropertyNameForObject(notificationCenterClass, @"currentNotificationCenter", notificationCenterClass);
-            if (notificationCenter) {
-                [self listenForDelegateChangesInUserNotificationCenter:notificationCenter];
+        if (@available(tvOS 12, *)) {}
+        else {
+            Class notificationCenterClass = NSClassFromString(@"UNUserNotificationCenter");
+            if (notificationCenterClass) {
+                id notificationCenter = SnapyrPropertyNameForObject(notificationCenterClass, @"currentNotificationCenter", notificationCenterClass);
+                if (notificationCenter) {
+                    [self listenForDelegateChangesInUserNotificationCenter:notificationCenter];
+                }
             }
         }
     }
@@ -380,7 +383,9 @@ static void SnapyrSwizzleWillPresentNotificationWithHandler(id self, SEL cmd, id
         return;
     }
     
+#if !TARGET_OS_TV
     [SnapyrProxyImplementations notificationCenterWillPresent:notificationUserInfo originalImp:originalImp withCompletionHandler:handler];
+#endif
     // Execute the original implementation.
     callOriginalMethodIfAvailable();
 }
@@ -421,8 +426,9 @@ static void SnapyrSwizzleDidReceiveNotificationResponseWithHandler(id self, SEL 
         return;
     }
       
-    
+#if !TARGET_OS_TV
     [SnapyrProxyImplementations notificationCenterDidReceive:response originalImp:originalImp withCompletionHandler:handler];
+#endif
     // Execute the original implementation.
     callOriginalMethodIfAvailable();
 }
