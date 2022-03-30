@@ -127,15 +127,21 @@ static id SnapyrUserInfoFromNotification(id notification) {
     
     [self swizzleAppDelegate:[[SnapyrNotificationsProxy sharedApplication] delegate]];
     
-    Class notificationCenterClass = NSClassFromString(@"UNUserNotificationCenter");
-    if (notificationCenterClass) {
-        id notificationCenter = SnapyrPropertyNameForObject(notificationCenterClass, @"currentNotificationCenter", notificationCenterClass);
-        if (notificationCenter) {
-            [self listenForDelegateChangesInUserNotificationCenter:notificationCenter];
-        }
-    }
+    [self swizzleUserNotificationsCenter];
     
     self.didSwizzleMethods = YES;
+}
+
+- (void)swizzleUserNotificationsCenter {
+    if (!NSProcessInfo.processInfo.environment[@"XCTestConfigurationFilePath"]) {
+        Class notificationCenterClass = NSClassFromString(@"UNUserNotificationCenter");
+        if (notificationCenterClass) {
+            id notificationCenter = SnapyrPropertyNameForObject(notificationCenterClass, @"currentNotificationCenter", notificationCenterClass);
+            if (notificationCenter) {
+                [self listenForDelegateChangesInUserNotificationCenter:notificationCenter];
+            }
+        }
+    }
 }
 
 - (void)listenForDelegateChangesInUserNotificationCenter:(id)notificationCenter {
