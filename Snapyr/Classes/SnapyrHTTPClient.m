@@ -216,4 +216,11 @@ NSString * const kSnapyrAPIBaseHostStage = @"https://stage-engine.snapyrdev.net/
     return task;
 }
 
+- (nullable NSURLSessionUploadTask *)uploadLogData:(NSData*)batch forWriteKey:(NSString *)writeKey completionHandler:(void (^)(BOOL retry, NSInteger code, NSData *_Nullable data))completionHandler
+{
+    // server isn't prepared yet for logs, so call completion immediately
+    completionHandler(false, 0, batch);
+    return NULL;
+}
+
 @end
