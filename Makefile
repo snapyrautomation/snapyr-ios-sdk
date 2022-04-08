@@ -14,8 +14,8 @@ lint:
 carthage:
 	export XCODE_XCCONFIG_FILE=$(PWD)/tmp.xcconfig && carthage build --platform ios --no-skip-current
 
-archive: carthage
-	carthage archive Snapyr
+archive:
+	./buildxcframework.sh
 
 clean-ios:
 	set -o pipefail && xcodebuild $(IOS_XCARGS) -scheme Snapyr clean | xcpretty

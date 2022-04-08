@@ -544,8 +544,11 @@ NSString *const kSnapyrCachedSettingsFilename = @"sdk.settings.v2.plist";
                 if (actions) {
                     NSMutableArray<UNNotificationAction *> *categoryActions = [NSMutableArray array];
                     for (NSDictionary *actionDef in actions) {
+                        // Hard code option `UNNotificationActionOptionForeground` - makes taps on action buttons
+                        // open the app in the foreground if it wasn't already.
+                        // TODO: make this configurable on Snapyr push template, and check that here?
                         [categoryActions addObject: [UNNotificationAction actionWithIdentifier:actionDef[@"id"]
-                                                                                         title:actionDef[@"title"] options:UNNotificationActionOptionNone]];
+                                                                                         title:actionDef[@"title"] options:UNNotificationActionOptionForeground]];
                     }
                     // Push `categoryIdentifier` will always be set to Snapyr push template ID, to keep referencing simple
                     [notificationCategories addObject: [UNNotificationCategory categoryWithIdentifier:pushTemplate[@"id"] actions:categoryActions intentIdentifiers:@[] options:UNNotificationCategoryOptionNone]];
@@ -576,10 +579,10 @@ NSString *const kSnapyrCachedSettingsFilename = @"sdk.settings.v2.plist";
             if (success) {
                 [self setCachedSettings:settings];
                 [self parsePushTemplateData:settings];
-                if (@available(tvOS 12, *)) {} // tvOS 12 because deployment target is 12, just need to check if we're running not on tvOS to register push categories
-                else {
+//                if (@available(tvOS 12, *)) {} // tvOS 12 because deployment target is 12, just need to check if we're running not on tvOS to register push categories
+//                else {
                     [self registerPushCategories:settings];
-                }
+//                }
             }
             completionHandler(success, settings);
         }];
