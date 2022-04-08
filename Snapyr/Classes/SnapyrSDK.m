@@ -36,8 +36,12 @@ static SnapyrSDK *__sharedInstance = nil;
 + (void)setupWithConfiguration:(SnapyrSDKConfiguration *)configuration;
 {
     [SnapyrUtils setConfiguration:configuration];
-    SnapyrNotificationsProxy *proxy = [SnapyrNotificationsProxy sharedProxy];
-    [proxy swizzleMethodsIfPossible];
+	SnapyrNotificationsProxy *proxy = [SnapyrNotificationsProxy sharedProxy];
+	if (configuration.swizzleAppDelegateAndUserNotificationsDelegate) {
+		[proxy swizzleMethodsIfPossible];
+	} else {
+		[proxy unswizzleMethodsIfPossible];
+	}
     DLog(@"SnapyrSDK.setupWithConfiguration");
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{

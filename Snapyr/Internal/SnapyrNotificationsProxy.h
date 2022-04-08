@@ -19,6 +19,7 @@
 #define SUserActivityRestoring NSUserActivityRestoring
 #endif
 
+NS_SWIFT_NAME(NotificationsProxy)
 @interface SnapyrNotificationsProxy : NSObject
 
 @property(strong, nonatomic) NSMutableDictionary<NSString *, NSValue *> *originalAppDelegateImps;
@@ -32,16 +33,19 @@
 @property(strong, nonatomic) id userNotificationCenter;
 @property(strong, nonatomic) id currentUserNotificationCenterDelegate;
 
+@property(strong, nonatomic) SnapyrProxyImplementations* proxyImplementations;
+@property(strong, nonatomic) id customAppDelegate;
+
 + (instancetype)sharedProxy;
-+ (BOOL)canSwizzleMethods;
+- (void)unswizzleMethodsIfPossible;
 - (void)swizzleMethodsIfPossible;
 - (IMP)originalImplementationForSelector:(SEL)selector;
 + (SApplication *)sharedApplication;
+void SnapyrSwizzleWillPresentNotificationWithHandler(id self, SEL cmd, id center, id notification, void (^handler)(NSUInteger));
+void SnapyrSwizzleDidReceiveNotificationResponseWithHandler(id self, SEL cmd, id center, id response, void (^handler)(void));
+void SnapyrSwizzleDidRegisteredForRemote(id self, SEL cmd, id application, id token);
+void SnapyrSwizzleContinueUserActivity(id self, SEL cmd, id application, id userActivity, id handler);
+void SnapyrSwizzleFailToRegisterForPN(id self, SEL cmd, id application, id error);
+void SnapyrSwizzleOpenURL(id self, SEL cmd, id application, id url, id options);
 @end
 
-static void SnapyrSwizzleWillPresentNotificationWithHandler(id self, SEL cmd, id center, id notification, void (^handler)(NSUInteger));
-static void SnapyrSwizzleDidReceiveNotificationResponseWithHandler(id self, SEL cmd, id center, id response, void (^handler)(void));
-static void SnapyrSwizzleDidRegisteredForRemote(id self, SEL cmd, id application, id token);
-static void SnapyrSwizzleContinueUserActivity(id self, SEL cmd, id application, id userActivity, id handler);
-static void SnapyrSwizzleFailToRegisterForPN(id self, SEL cmd, id application, id error);
-static void SnapyrSwizzleOpenURL(id self, SEL cmd, id application, id url, id options);

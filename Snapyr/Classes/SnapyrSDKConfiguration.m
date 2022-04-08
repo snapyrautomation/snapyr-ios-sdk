@@ -92,6 +92,7 @@
         self.enableAdvertisingTracking = YES;
         self.shouldUseBluetooth = NO;
         self.flushAt = 20;
+		self.swizzleAppDelegateAndUserNotificationsDelegate = YES;
         self.flushInterval = 30;
         self.maxQueueSize = 1000;
         self.payloadFilters = @{
