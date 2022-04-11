@@ -114,6 +114,10 @@ NS_SWIFT_NAME(SnapyrConfiguration)
  */
 @property (nonatomic, assign) NSUInteger flushAt;
 
+
+// TODO: Docs
+@property (nonatomic, assign) BOOL swizzleAppDelegateAndUserNotificationsDelegate; // default is true
+
 /**
  * Handy for testing;  when set to true, the SDK will mock out network calls.
  */

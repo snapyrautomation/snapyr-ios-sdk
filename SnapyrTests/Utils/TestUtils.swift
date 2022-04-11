@@ -140,5 +140,35 @@ extension XCTestCase {
         }
         wait(for: [expectation], timeout: time)
     }
+	
+	func waitUntil(_ condition: @escaping @autoclosure () throws -> Bool, completion: @escaping ()->Void) {
+		DispatchQueue.global().async {
+			while (true) {
+				if try! condition() {
+					completion()
+					return
+				}
+				usleep(500) // try every half second
+			}
+		}
+	}
+	
+	func waitUntil(_ condition: @escaping @autoclosure () throws -> Bool, timeout: TimeInterval, completion: @escaping (Bool)->Void) {
+		DispatchQueue.global().async {
+			let startDate = Date()
+			while (true) {
+				if try! condition() {
+					completion(false)
+					return
+				}
+				let time = Date().timeIntervalSinceReferenceDate - startDate.timeIntervalSinceReferenceDate
+				if time > timeout {
+					completion(true)
+					return
+				}
+				usleep(500) // try every half second
+			}
+		}
+	}
 }
 

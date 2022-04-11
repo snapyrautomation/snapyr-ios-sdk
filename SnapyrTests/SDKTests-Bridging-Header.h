@@ -13,8 +13,10 @@
 #import <Snapyr/SnapyrIntegrationsManager.h>
 #import <Snapyr/SnapyrUtils.h>
 #import <Snapyr/SnapyrScreenReporting.h>
+#import <Snapyr/SnapyrNotificationsProxy.h>
 
 #import "NSData+SnapyrGUNZIPP.h"
 #import "UIViewController+SnapyrScreenTest.h"
 #import "ObjcUtils.h"
 #import "SnapyrMockHTTPClient.h"
+#import "SnapyrMockProxyImplementations.h"

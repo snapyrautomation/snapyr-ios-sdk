@@ -16,6 +16,7 @@
 #import "SnapyrIntegrationsManager.h"
 #import "SnapyrState.h"
 #import "SnapyrUtils.h"
+#import "SnapyrNotificationsProxy.h"
 
 static SnapyrSDK *__sharedInstance = nil;
 
@@ -35,6 +36,12 @@ static SnapyrSDK *__sharedInstance = nil;
 + (void)setupWithConfiguration:(SnapyrSDKConfiguration *)configuration;
 {
     [SnapyrUtils setConfiguration:configuration];
+	SnapyrNotificationsProxy *proxy = [SnapyrNotificationsProxy sharedProxy];
+	if (configuration.swizzleAppDelegateAndUserNotificationsDelegate) {
+		[proxy swizzleMethodsIfPossible];
+	} else {
+		[proxy unswizzleMethodsIfPossible];
+	}
     DLog(@"SnapyrSDK.setupWithConfiguration");
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
@@ -550,7 +557,7 @@ NSString *const SnapyrBuildKeyV2 = @"SnapyrBuildKeyV2";
 
 - (void)pushNotificationTappedWithNotification:(UNNotification*)notification
 {
-    [self pushNotificationTappedWithNotification:notification];
+    [self pushNotificationTappedWithNotification:notification actionId:nil];
 }
 
 - (void)pushNotificationTappedWithNotification:(UNNotification*)notification actionId:(NSString* _Nullable)actionId
