@@ -347,14 +347,6 @@ class SnapyrTests: XCTestCase {
         }
     }
     
-    func testGetDeepLinkForActionId() {
-        let key = "actionTestId"
-        let deepLink = "https://blah.com"
-        sdk.test_integrationsManager()?.test_setActionIdMap([key: deepLink])
-        let sdkGivenUrl = sdk.getDeepLink(forActionId: key)
-        XCTAssertEqual(sdkGivenUrl?.absoluteString, deepLink)
-    }
-    
     func testHandleNotificationImageSuccess() {
         let dummyRequest = getTestPayload()
         guard let payload = (dummyRequest.content.mutableCopy() as? UNMutableNotificationContent) else { XCTFail("No payload found in dummy request") ; return }
