@@ -53,6 +53,9 @@ extension IntegrationsManager {
     func test_integrations() -> [String: Integration]? {
         return self.value(forKey: "integrations") as? [String: Integration]
     }
+	func test_cachedSettings() -> NSDictionary? {
+		return self.value(forKey: "cachedSettings") as? NSDictionary
+	}
     func test_snapyrIntegration() -> SnapyrIntegration? {
         return self.test_integrations()?["Snapyr"] as? SnapyrIntegration
     }
@@ -62,9 +65,9 @@ extension IntegrationsManager {
     func test_setHttpClient(httpClient: HTTPClient) -> Void {
         self.setValue(httpClient, forKey:"httpClient")
     }
-    func test_setActionIdMap(_ data: NSMutableDictionary) {
-        self.setValue(data, forKey: "actionIdMap")
-    }
+	func test_refreshSettings() {
+		self.perform(Selector(("refreshSettings:")))
+	}
 }
 
 extension SnapyrIntegration {
