@@ -1,7 +1,30 @@
 import Snapyr
 import XCTest
 class IntegrationsManagerTest: XCTestCase {
+	var integration: IntegrationsManager!
     
+	override func setUpWithError() throws {
+		let sdk = getUnitTestSDK(application: nil, sourceMiddleware: [], destinationMiddleware: [])
+		let client = MockHTTPClient()
+		
+		integration = IntegrationsManager(sdk: sdk)
+		integration.test_setHttpClient(httpClient: client)
+		integration.test_setCachedSettings(settings: [:])
+	}
+	
+	func testNotificationAction() {
+		let expectation = expectation(description: "testNotificationAction")
+		integration.refreshSettings()
+		waitUntil(self.integration.test_cachedSettings() != [:]) {
+			// "notification tapped"
+			let notifAction = "22c6d726-42d4-4339-860d-59714d3bcd46"
+			let deepLink = self.integration.getDeepLink(forActionId: notifAction)
+			XCTAssertEqual(deepLink?.absoluteString, "http://snooze.com")
+			expectation.fulfill()
+		}
+		wait(for: [expectation], timeout: 10)
+	}
+	
     func testValidValueTypesInIntegrationEnablementFlags() {
         let exception = objc_tryCatch {
             IntegrationsManager.isIntegration("comScore", enabledInOptions: ["comScore": ["blah": 1]])

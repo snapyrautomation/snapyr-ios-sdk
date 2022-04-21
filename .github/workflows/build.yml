@@ -9,13 +9,13 @@ on:
 jobs:
   build:
 
-    runs-on: macos-10.15
+    runs-on: macos-12
 
     steps:
       - uses: actions/checkout@v2
-      - run: echo "configuring to use Xcode 12.4"
+      - run: echo "configuring to use Xcode 13.2.1"
         env:
-          DEVELOPER_DIR: /Applications/Xcode_12.4.app/Contents/Developer
+          DEVELOPER_DIR: /Applications/Xcode_13.2.1.app/Contents/Developer
       - run: make clean
       - run: make build-ios
       - run: make test-ios
