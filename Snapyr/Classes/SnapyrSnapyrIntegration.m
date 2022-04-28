@@ -317,6 +317,7 @@ NSUInteger const kSnapyrBackgroundTaskInvalid = 0;
 - (void)queuePayload:(NSDictionary *)payload
 {
     @try {
+		_queue = [self storedQueue];
         SLog(@"Queue is at max capacity (%tu), removing oldest payload.", self.queue.count);
         // Trim the queue to maxQueueSize - 1 before we add a new element.
         trimQueue(self.queue, self.sdk.oneTimeConfiguration.maxQueueSize - 1);
@@ -526,10 +527,15 @@ NSUInteger const kSnapyrBackgroundTaskInvalid = 0;
 - (NSMutableArray *)queue
 {
     if (!_queue) {
-        _queue = [[self.fileStorage arrayForKey:kSnapyrQueueFilename] ?: @[] mutableCopy];
+        _queue = [self storedQueue];
     }
 
     return _queue;
+}
+
+- (NSMutableArray *)storedQueue
+{
+	return [[self.fileStorage arrayForKey:kSnapyrQueueFilename] ?: @[] mutableCopy];
 }
 
 - (void)loadTraits
