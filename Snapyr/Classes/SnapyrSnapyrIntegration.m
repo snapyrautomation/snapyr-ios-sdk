@@ -27,6 +27,7 @@ NSString *const SnapyrTraitsKey = @"snapyrTraits";
 
 NSString *const kSnapyrUserIdFilename = @"snapyr.userId";
 NSString *const kSnapyrQueueFilename = @"snapyr.queue.plist";
+NSString *const kSnapyrExtensionQueueFilename = @"snapyr.serviceextension.queue.plist";
 NSString *const kSnapyrTraitsFilename = @"snapyr.traits.plist";
 
 // Equiv to UIBackgroundTaskInvalid.
@@ -35,6 +36,7 @@ NSUInteger const kSnapyrBackgroundTaskInvalid = 0;
 @interface SnapyrSnapyrIntegration ()
 
 @property (nonatomic, strong) NSMutableArray *queue;
+@property (nonatomic) BOOL isInAppExtension;
 @property (nonatomic, strong) NSURLSessionUploadTask *batchRequest;
 @property (nonatomic, strong) SnapyrReachability *reachability;
 @property (nonatomic, strong) NSTimer *flushTimer;
@@ -69,6 +71,7 @@ NSUInteger const kSnapyrBackgroundTaskInvalid = 0;
     if (self = [super init]) {
         self.sdk = sdk;
         self.configuration = sdk.oneTimeConfiguration;
+        self.isInAppExtension = self.configuration.isInServiceExtension;
         self.meta = [settings[@"metadata"] copy];
         DLog(@"SnapyrSnapyrIntegration.initwithsdk: meta is [%@]", self.meta);
         self.httpClient = httpClient;
@@ -317,13 +320,18 @@ NSUInteger const kSnapyrBackgroundTaskInvalid = 0;
 - (void)queuePayload:(NSDictionary *)payload
 {
     @try {
-		_queue = [self storedQueue];
+        _queue = [self storedQueueWithExtensionQueue]
+        [self clearStoredExtensionQueue];
         SLog(@"Queue is at max capacity (%tu), removing oldest payload.", self.queue.count);
         // Trim the queue to maxQueueSize - 1 before we add a new element.
         trimQueue(self.queue, self.sdk.oneTimeConfiguration.maxQueueSize - 1);
         [self.queue addObject:payload];
-        [self persistQueue];
-        [self flushQueueByLength];
+        if (self.isInAppExtension) {
+            [self persistExtensionQueue];
+        } else {
+            [self persistQueue];
+            [self flushQueueByLength];
+        }
     }
     @catch (NSException *exception) {
         SLog(@"%@ Error writing payload: %@", self, exception);
@@ -332,6 +340,8 @@ NSUInteger const kSnapyrBackgroundTaskInvalid = 0;
 
 - (void)flush
 {
+    _queue = [self storedQueueWithExtensionQueue];
+    [self clearStoredExtensionQueue];
     [self flushWithMaxSize:self.maxBatchSize];
 }
 
@@ -517,8 +527,9 @@ NSUInteger const kSnapyrBackgroundTaskInvalid = 0;
 - (void)applicationWillTerminate
 {
     [self dispatchBackgroundAndWait:^{
-        if (self.queue.count)
+        if (self.queue.count && !self.isInAppExtension) {
             [self persistQueue];
+        }
     }];
 }
 
@@ -536,6 +547,16 @@ NSUInteger const kSnapyrBackgroundTaskInvalid = 0;
 - (NSMutableArray *)storedQueue
 {
 	return [[self.fileStorage arrayForKey:kSnapyrQueueFilename] ?: @[] mutableCopy];
+}
+
+- (NSMutableArray *)storedExtensionQueue
+{
+    return [[self.fileStorage arrayForKey:kSnapyrExtensionQueueFilename] ?: @[] mutableCopy];
+}
+
+- (NSMutableArray *)storedQueueWithExtensionQueue
+{
+    return self.isInAppExtension ? [self storedExtensionQueue] : [[[self storedQueue] arrayByAddingObjectsFromArray:[self storedExtensionQueue]] mutableCopy];
 }
 
 - (void)loadTraits
@@ -570,6 +591,16 @@ NSUInteger const kSnapyrBackgroundTaskInvalid = 0;
 - (void)persistQueue
 {
     [self.fileStorage setArray:[self.queue copy] forKey:kSnapyrQueueFilename];
+}
+
+- (void)persistExtensionQueue
+{
+    [self.fileStorage setArray:[self.queue copy] forKey:kSnapyrExtensionQueueFilename];
+}
+
+- (void)clearStoredExtensionQueue
+{
+    [self.fileStorage setArray:@[] forKey:kSnapyrExtensionQueueFilename];
 }
 
 @end

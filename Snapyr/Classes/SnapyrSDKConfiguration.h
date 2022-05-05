@@ -277,6 +277,8 @@ NS_SWIFT_NAME(SnapyrConfiguration)
  */
 @property (nonatomic, strong, nullable) SnapyrAdSupportBlock adSupportBlock;
 
+@property (nonatomic, assign) BOOL isInServiceExtension;
+
 /**
  Enable experimental features.
  */

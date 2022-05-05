@@ -87,6 +87,7 @@ static SnapyrSDK *__sharedInstance = nil;
     }
     
     SnapyrSDKConfiguration *config = [SnapyrUtils getSavedConfigurationWithEnvironment:snapyrEnvironment];
+	config.isInServiceExtension = YES;
     SnapyrSDK *sdk = [[SnapyrSDK alloc] initWithConfiguration:config];
     [sdk pushNotificationReceived:originalRequest.content.userInfo];
     

@@ -102,7 +102,7 @@ NSString *const kSnapyrCachedSettingsFilename = @"sdk.settings.v2.plist";
     
     DLog(@"SnapyrIntegrationsManager.initWithSDK");
     if (self = [super init]) {
-        self.isServiceExtensionInstance = NO;
+        self.isServiceExtensionInstance = configuration.isInServiceExtension;
         self.sdk = sdk;
         self.configuration = configuration;
         self.serialQueue = snapyr_dispatch_queue_create_specific("com.snapyr.sdk", DISPATCH_QUEUE_SERIAL);
@@ -452,12 +452,6 @@ NSString *const kSnapyrCachedSettingsFilename = @"sdk.settings.v2.plist";
         [SnapyrUtils saveAPIHost:apiHost];
     }
     
-    if (self.isServiceExtensionInstance) {
-        // For service extension, we only want to update base settings; NOT boot up integration factories
-        // (those are used to send batch requests and listen to app events - N/A in this context)
-        self.initialized = true;
-        return;
-    }
     snapyr_dispatch_specific_sync(_serialQueue, ^{
         if (self.initialized) {
             DLog(@"SnapyrIntegrationsManager.updateIntegrationsWithSettings: already initialized, returning");
