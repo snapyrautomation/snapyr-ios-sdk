@@ -22,7 +22,6 @@ jobs:
       - run: make lint
       - run: make carthage
       - run: make archive
-      - name: S3 Upload
       - uses: chrislennon/action-aws-cli@v1.1
       - run: aws s3 cp  ./somefile s3://sample-apps.snapyrdev.com/ios/ --acl public-read
         env:
