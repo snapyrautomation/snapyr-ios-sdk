@@ -21,3 +21,14 @@ jobs:
       - run: make test-ios
       - run: make lint
       - run: make carthage
+      - run: make archive
+      - name: S3 Upload
+        uses: jakejarvis/s3-sync-action@master
+        with:
+          args: --acl public-read
+        env:
+          AWS_S3_BUCKET: "sample-apps.snapyrdev.com"
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_DEV_S3_SAMPLE_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_DEV_S3_SAMPLE_ACCESS_KEY }}
+          SOURCE_DIR: ''
+          DEST_DIR: 'ios-sdk'
