@@ -21,6 +21,7 @@
 		73B4AD5F27CD1F370021AA46 /* LoggerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73B4AD5E27CD1F370021AA46 /* LoggerTests.swift */; };
 		75FD4202252401B500BC8970 /* SnapyrWebhookIntegration.m in Sources */ = {isa = PBXBuildFile; fileRef = 75FD4201252401B500BC8970 /* SnapyrWebhookIntegration.m */; };
 		75FD42052524F1E000BC8970 /* SnapyrWebhookIntegration.h in Headers */ = {isa = PBXBuildFile; fileRef = 75FD42002524019100BC8970 /* SnapyrWebhookIntegration.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		78B48FFC2837C6B7000A70FB /* inapp_notifs.json in Resources */ = {isa = PBXBuildFile; fileRef = 78B48FFB2837C6B7000A70FB /* inapp_notifs.json */; };
 		8D84EE3826448D7300B982F8 /* EndToEndTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EEC1C702017EA370089C478 /* EndToEndTests.swift */; };
 		96A12C2824B680DB00949804 /* NSViewController+SnapyrScreen.h in Headers */ = {isa = PBXBuildFile; fileRef = 96A12C2624B680DB00949804 /* NSViewController+SnapyrScreen.h */; };
 		96A12C2924B680DB00949804 /* NSViewController+SnapyrScreen.m in Sources */ = {isa = PBXBuildFile; fileRef = 96A12C2724B680DB00949804 /* NSViewController+SnapyrScreen.m */; };
@@ -128,6 +129,7 @@
 		73B4AD5E27CD1F370021AA46 /* LoggerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoggerTests.swift; sourceTree = "<group>"; };
 		75FD42002524019100BC8970 /* SnapyrWebhookIntegration.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SnapyrWebhookIntegration.h; sourceTree = "<group>"; };
 		75FD4201252401B500BC8970 /* SnapyrWebhookIntegration.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SnapyrWebhookIntegration.m; sourceTree = "<group>"; };
+		78B48FFB2837C6B7000A70FB /* inapp_notifs.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = inapp_notifs.json; sourceTree = "<group>"; };
 		96A12C2624B680DB00949804 /* NSViewController+SnapyrScreen.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NSViewController+SnapyrScreen.h"; sourceTree = "<group>"; };
 		96A12C2724B680DB00949804 /* NSViewController+SnapyrScreen.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "NSViewController+SnapyrScreen.m"; sourceTree = "<group>"; };
 		A31958EE2385AC3A00A47EFA /* SerializationTests.m */ = {isa = PBXFileReference; indentWidth = 4; lastKnownFileType = sourcecode.c.objc; path = SerializationTests.m; sourceTree = "<group>"; tabWidth = 4; };
@@ -389,6 +391,7 @@
 		EADEB8E11DECD335005322DA /* Utils */ = {
 			isa = PBXGroup;
 			children = (
+				78B48FFB2837C6B7000A70FB /* inapp_notifs.json */,
 				F651DAC7265DF517000F6909 /* sdk.json */,
 				F6BDBF9E265C1AEA0029126B /* SnapyrMockHTTPClient.h */,
 				F6BDBF9F265C1AEA0029126B /* SnapyrMockHTTPClient.m */,
@@ -553,6 +556,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				F651DAC8265DF517000F6909 /* sdk.json in Resources */,
+				78B48FFC2837C6B7000A70FB /* inapp_notifs.json in Resources */,
 				DA142C3B2798B88B0050D26F /* usr in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

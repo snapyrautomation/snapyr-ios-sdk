@@ -401,5 +401,15 @@ class SnapyrTests: XCTestCase {
         sdk.disable()
         XCTAssertEqual(sdk.test_enabled(), false)
     }
+    
+    func testInAppNotificationsReceive() {
+        let expectation = expectation(description: "testInAppNotificationsReceive()")
+        let config = SnapyrConfiguration(writeKey: "test")
+        config.inAppNotificationHandler = { _ in
+            expectation.fulfill()
+        }
+        _ = Snapyr(configuration: config)
+        wait(for: [expectation], timeout: 10)
+    }
 }
 

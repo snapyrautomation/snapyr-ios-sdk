@@ -43,6 +43,8 @@ NS_SWIFT_NAME(IntegrationsManager)
 - (void)refreshSettings;
 - (void)refreshSettingsWithCompletionHandler:(void (^_Nonnull)(BOOL success, JSON_DICT _Nullable settings))completionHandler;
 
+- (void)loadInAppNotifications;
+
 @end
 
 

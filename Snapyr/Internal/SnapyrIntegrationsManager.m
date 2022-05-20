@@ -616,6 +616,15 @@ NSString *const kSnapyrCachedSettingsFilename = @"sdk.settings.v2.plist";
     }];
 }
 
+- (void)loadInAppNotifications
+{
+    [self.httpClient inAppNotificationsWithCompletionHandler:^(BOOL success, NSDictionary<NSString *,id> * _Nonnull notifications) {
+        if (self.configuration.inAppNotificationHandler) {
+            self.configuration.inAppNotificationHandler(notifications);
+        }
+    }];
+}
+
 #pragma mark - Private
 
 + (BOOL)isIntegration:(NSString *)key enabledInOptions:(NSDictionary *)options

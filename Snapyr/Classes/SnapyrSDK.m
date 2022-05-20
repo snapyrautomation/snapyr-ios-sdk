@@ -272,6 +272,7 @@ static SnapyrSDK *__sharedInstance = nil;
         
         [SnapyrState sharedInstance].configuration = configuration;
         [[SnapyrState sharedInstance].context updateStaticContext];
+        [self.integrationsManager loadInAppNotifications];
     }
     return self;
 }

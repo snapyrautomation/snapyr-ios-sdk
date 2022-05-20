@@ -223,4 +223,21 @@ NSString * const kSnapyrAPIBaseHostStage = @"https://stage-engine.snapyrdev.net/
     return NULL;
 }
 
+- (void)inAppNotificationsWithCompletionHandler:(void (^)(BOOL success, JSON_DICT _Nonnull notifications))completionHandler
+{
+    NSBundle *bundle = [NSBundle bundleForClass:[self class]];
+    NSString *path = [bundle pathForResource:@"inapp_notifs" ofType:@"json"];
+    NSData *jsonData = [NSData dataWithContentsOfFile:path];
+    SLog(@"loaded json [%@]", jsonData);
+    
+    NSError* error = nil;
+    id dict = [NSJSONSerialization JSONObjectWithData:jsonData options:0 error:&error];
+    if (dict != nil) {
+        SLog(@"dict from json: %@", dict);
+    } else {
+        SLog(@"json error: %@", error);
+    }
+    completionHandler(true, dict);
+}
+
 @end

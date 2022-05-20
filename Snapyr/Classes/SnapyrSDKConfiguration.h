@@ -40,6 +40,7 @@ typedef NS_ENUM(NSInteger, SnapyrEnvironment);
 typedef NSMutableURLRequest *_Nonnull (^SnapyrRequestFactory)(NSURL *_Nonnull);
 typedef NSString *_Nonnull (^SnapyrAdSupportBlock)(void);
 
+typedef void(^SnapyrInAppNotificationHandlerBlock)(NSDictionary*_Nonnull notification);
 typedef void(^SnapyrActionHandlerBlock)(NSDictionary*_Nonnull action);
 typedef void(^SnapyrErrorHandlerBlock)(NSInteger code, NSString *_Nonnull message, NSData *_Nullable data);
 
@@ -253,6 +254,11 @@ NS_SWIFT_NAME(SnapyrConfiguration)
  * An optional delegate that handles NSURLSessionDelegate callbacks
  */
 @property (nonatomic, strong, nullable) id<NSURLSessionDelegate> httpSessionDelegate;
+
+/**
+ * Snapyr in-app notification handler callback block
+ */
+@property (nonatomic, strong, nullable) SnapyrInAppNotificationHandlerBlock inAppNotificationHandler;
 
 /**
  * Snapyr action handler callback block
