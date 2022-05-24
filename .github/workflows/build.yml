@@ -21,3 +21,10 @@ jobs:
       - run: make test-ios
       - run: make lint
       - run: make carthage
+      - run: make archive
+      - uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_DEV_S3_SAMPLE_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_DEV_S3_SAMPLE_ACCESS_KEY }}
+          aws-region: us-east-1
+      - run: aws s3 cp  ./builtframework/Snapyr.xcframework.zip s3://sample-apps.snapyrdev.com/ios/ --acl public-read
