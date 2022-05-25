@@ -266,6 +266,8 @@ NS_SWIFT_NAME(Snapyr)
 
 - (void)refreshSettings;
 
+- (void)fetchInAppNotifications;
+
 /** Returns the anonymous ID of the current user. */
 - (NSString *)getAnonymousId;
 

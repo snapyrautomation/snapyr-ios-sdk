@@ -223,8 +223,9 @@ NSString * const kSnapyrAPIBaseHostStage = @"https://stage-engine.snapyrdev.net/
     return NULL;
 }
 
-- (void)inAppNotificationsWithCompletionHandler:(void (^)(BOOL success, JSON_DICT _Nonnull notifications))completionHandler
+- (nullable NSURLSessionDataTask *)inAppNotificationsWithCompletionHandler:(void (^)(BOOL success, JSON_DICT _Nonnull notifications))completionHandler
 {
+    // server isn't prepared yet, so parse "inapp_notifs.json"
     NSBundle *bundle = [NSBundle bundleForClass:[self class]];
     NSString *path = [bundle pathForResource:@"inapp_notifs" ofType:@"json"];
     NSData *jsonData = [NSData dataWithContentsOfFile:path];
@@ -238,6 +239,8 @@ NSString * const kSnapyrAPIBaseHostStage = @"https://stage-engine.snapyrdev.net/
         SLog(@"json error: %@", error);
     }
     completionHandler(true, dict);
+    
+    return NULL;
 }
 
 @end

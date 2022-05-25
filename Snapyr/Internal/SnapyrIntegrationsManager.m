@@ -76,6 +76,7 @@ NSString *const kSnapyrCachedSettingsFilename = @"sdk.settings.v2.plist";
 @property (nonatomic, copy) NSString *cachedAnonymousId;
 @property (nonatomic, strong) SnapyrHTTPClient *httpClient;
 @property (nonatomic, strong) NSURLSessionDataTask *settingsRequest;
+@property (nonatomic, strong) NSURLSessionDataTask *inAppNotificationsRequest;
 @property (nonatomic, strong) id<SnapyrStorage> userDefaultsStorage;
 @property (nonatomic, strong) id<SnapyrStorage> fileStorage;
 @property (nonatomic, strong) NSMutableDictionary *actionIdMap;
@@ -618,11 +619,18 @@ NSString *const kSnapyrCachedSettingsFilename = @"sdk.settings.v2.plist";
 
 - (void)loadInAppNotifications
 {
-    [self.httpClient inAppNotificationsWithCompletionHandler:^(BOOL success, NSDictionary<NSString *,id> * _Nonnull notifications) {
-        if (self.configuration.inAppNotificationHandler) {
-            self.configuration.inAppNotificationHandler(notifications);
+    snapyr_dispatch_specific_async(_serialQueue, ^{
+        DLog(@"SnapyrIntegrationsManager.loadInAppNotifications: fetching new inapp notifications");
+        if (self.inAppNotificationsRequest) {
+            return;
         }
-    }];
+        self.inAppNotificationsRequest = [self.httpClient inAppNotificationsWithCompletionHandler:^(BOOL success, NSDictionary<NSString *,id> * _Nonnull notifications) {
+            self.inAppNotificationsRequest = nil;
+            if (self.configuration.inAppNotificationHandler) {
+                self.configuration.inAppNotificationHandler(notifications);
+            }
+        }];
+    });
 }
 
 #pragma mark - Private

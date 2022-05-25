@@ -16,6 +16,7 @@
 		7304B26027DB4A75008FB718 /* SnapyrProxyImplementations.m in Sources */ = {isa = PBXBuildFile; fileRef = 7304B25E27DB4A75008FB718 /* SnapyrProxyImplementations.m */; };
 		734E283B27FEF092003BA9CB /* SwizzlingTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 734E283A27FEF092003BA9CB /* SwizzlingTests.swift */; };
 		734E283E27FEF152003BA9CB /* SnapyrMockProxyImplementations.m in Sources */ = {isa = PBXBuildFile; fileRef = 734E283D27FEF152003BA9CB /* SnapyrMockProxyImplementations.m */; };
+		735D9AA8283E19C700024557 /* inapp_notifs.json in Resources */ = {isa = PBXBuildFile; fileRef = 78B48FFB2837C6B7000A70FB /* inapp_notifs.json */; };
 		73B4AD5C27CD1EC50021AA46 /* SnapyrLogger.h in Headers */ = {isa = PBXBuildFile; fileRef = 73B4AD5A27CD1EC40021AA46 /* SnapyrLogger.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		73B4AD5D27CD1EC50021AA46 /* SnapyrLogger.m in Sources */ = {isa = PBXBuildFile; fileRef = 73B4AD5B27CD1EC40021AA46 /* SnapyrLogger.m */; };
 		73B4AD5F27CD1F370021AA46 /* LoggerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73B4AD5E27CD1F370021AA46 /* LoggerTests.swift */; };
@@ -548,6 +549,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				735D9AA8283E19C700024557 /* inapp_notifs.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

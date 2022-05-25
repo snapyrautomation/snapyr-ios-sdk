@@ -164,6 +164,11 @@ NS_SWIFT_NAME(SnapyrConfiguration)
 @property (nonatomic, assign) BOOL trackPushNotifications;
 
 /**
+ * Whether the sdk should automatically load in-app notifications at sdk start. By default is `true`
+ */
+@property (nonatomic, assign) BOOL fetchInAppNotificationsAtStart;
+
+/**
  * Whether the sdk should automatically track deep links. You'll still need to call the continueUserActivity and openURL methods on the sdk.
  */
 @property (nonatomic, assign) BOOL trackDeepLinks;

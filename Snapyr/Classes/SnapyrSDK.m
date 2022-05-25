@@ -272,7 +272,9 @@ static SnapyrSDK *__sharedInstance = nil;
         
         [SnapyrState sharedInstance].configuration = configuration;
         [[SnapyrState sharedInstance].context updateStaticContext];
-        [self.integrationsManager loadInAppNotifications];
+        if (configuration.fetchInAppNotificationsAtStart) {
+            [self fetchInAppNotifications];
+        }
     }
     return self;
 }
@@ -800,6 +802,11 @@ NSString *const SnapyrBuildKeyV2 = @"SnapyrBuildKeyV2";
 - (void)refreshSettings
 {
     return [self.integrationsManager refreshSettings];
+}
+
+- (void)fetchInAppNotifications
+{
+    return [self.integrationsManager loadInAppNotifications];
 }
 
 #pragma mark - Class Methods

@@ -49,7 +49,7 @@ class SnapyrTests: XCTestCase {
     
     override func tearDown() {
         super.tearDown()
-        sdk.reset()
+        sdk?.reset()
     }
     
 //    func testInitializedCorrectly() {
@@ -403,12 +403,23 @@ class SnapyrTests: XCTestCase {
     }
     
     func testInAppNotificationsReceive() {
+        let imageURL = "https://images-na.ssl-images-amazon.com/images/S/pv-target-images/fb1fd46fbac48892ef9ba8c78f1eb6fa7d005de030b2a3d17b50581b2935832f._RI_.jpg"
         let expectation = expectation(description: "testInAppNotificationsReceive()")
         let config = SnapyrConfiguration(writeKey: "test")
-        config.inAppNotificationHandler = { _ in
+        config.fetchInAppNotificationsAtStart = false
+        config.inAppNotificationHandler = { dict in
+            if let image = dict["image"] as? String {
+                XCTAssertTrue(image == imageURL)
+            } else {
+                XCTFail("No `image` in fetched notification")
+            }
             expectation.fulfill()
         }
-        _ = Snapyr(configuration: config)
+        let sdk2 = Snapyr(configuration: config)
+        let integrationManager = sdk2.test_integrationsManager()
+        let mockHttpClient = MockHTTPClient()
+        integrationManager?.test_setHttpClient(httpClient:mockHttpClient)
+        sdk2.fetchInAppNotifications()
         wait(for: [expectation], timeout: 10)
     }
 }
