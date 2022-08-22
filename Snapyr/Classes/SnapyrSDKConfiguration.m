@@ -94,6 +94,7 @@
         self.flushAt = 20;
 		self.swizzleAppDelegateAndUserNotificationsDelegate = YES;
         self.flushInterval = 30;
+        self.actionPollInterval = 30;
         self.maxQueueSize = 1000;
         self.payloadFilters = @{
             @"(fb\\d+://authorize#access_token=)([^ ]+)": @"$1((redacted/fb-auth-token))"

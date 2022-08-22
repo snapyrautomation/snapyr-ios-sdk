@@ -3,6 +3,7 @@
 #import "SnapyrSDK.h"
 #import "SnapyrUtils.h"
 #import "SnapyrSnapyrIntegration.h"
+#import "SnapyrActionProcessor.h"
 #import "SnapyrReachability.h"
 #import "SnapyrHTTPClient.h"
 #import "SnapyrStorage.h"
@@ -50,6 +51,9 @@ NSUInteger const kSnapyrBackgroundTaskInvalid = 0;
 @property (nonatomic, strong) id<SnapyrStorage> fileStorage;
 @property (nonatomic, strong) id<SnapyrStorage> userDefaultsStorage;
 
+
+@property (nonatomic, strong) SnapyrActionProcessor *actionProcessor;
+
 #if TARGET_OS_IPHONE
 @property (nonatomic, assign) UIBackgroundTaskIdentifier flushTaskID;
 #else
@@ -77,8 +81,12 @@ NSUInteger const kSnapyrBackgroundTaskInvalid = 0;
         self.userDefaultsStorage = userDefaultsStorage;
         self.reachability = [SnapyrReachability reachabilityWithHostname:@"google.com"];
         [self.reachability startNotifier];
+        
         self.serialQueue = snapyr_dispatch_queue_create_specific("com.snapyr.sdk.snapyr", DISPATCH_QUEUE_SERIAL);
+        
         self.backgroundTaskQueue = snapyr_dispatch_queue_create_specific("com.snapyr.sdk.backgroundTask", DISPATCH_QUEUE_SERIAL);
+        
+        self.actionProcessor = [[SnapyrActionProcessor alloc] initWithSDK:sdk httpClient:httpClient];
 #if TARGET_OS_IPHONE
         self.flushTaskID = UIBackgroundTaskInvalid;
 #else
@@ -466,6 +474,9 @@ NSUInteger const kSnapyrBackgroundTaskInvalid = 0;
 - (void)processResponseData:(NSData *)data
 {
     NSError* dataParsingError = nil;
+    NSString *responseString = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+    DLog(@"SnapyrSnapyrIntegration.processResponseData: response is [%@]", responseString);
+    
     id dataObj = [NSJSONSerialization
                   JSONObjectWithData:data
                   options:NSJSONReadingAllowFragments
@@ -484,24 +495,44 @@ NSUInteger const kSnapyrBackgroundTaskInvalid = 0;
         DLog(@"response received (array) = %@", deserializedArray);
         for (int i = 0; i < [deserializedArray count]; i++) {
             NSDictionary *eventData = (NSDictionary*)[deserializedArray objectAtIndex:i];
-            [self handleEventActions:eventData];
+            
+            NSMutableDictionary *mutableEventData = [NSMutableDictionary dictionaryWithDictionary:eventData];
+            if ([mutableEventData objectForKey:@"actions"] == nil) {
+                NSDictionary *sampleActionsDict = @[
+                    @{
+                        @"workspaceId": @"d00f0649-c6a4-475c-8eeb-518ae5f29768",
+                        @"actionToken": @"c2dc333a-aa8c-4b2a-abf2-49d622cc9f42",
+                        @"userId": @"colleen",
+                        @"payload": @"my badass payload2",
+                        @"timestamp": @"2022-08-16T16:35:09.350908-04:00",
+                        @"status": @"pending"
+                    },
+                    @{
+                        @"workspaceId": @"d00f0649-c6a4-475c-8eeb-518ae5f29768",
+                        @"actionToken": @"563bdd12-4b54-4ae1-9a3e-bc86a08279f6",
+                        @"userId": @"colleen",
+                        @"payload": @"my badass payload1",
+                        @"timestamp": @"2022-08-16T16:35:09.350883-04:00",
+                        @"status": @"pending"
+                    }
+                ];
+//                [mutableEventData setObject:sampleActionsDict forKey:@"actions"];
+            }
+        
+            
+            [self handleEventActions:mutableEventData];
         }
     }
 }
 
 - (void)handleEventActions:(NSDictionary*) eventData
 {
-    if ([eventData objectForKey:@"actions"] != [NSNull null]) {
+    if ([eventData objectForKey:@"actions"] != nil) {
         NSArray* actions = [eventData objectForKey:@"actions"];
         for (int i = 0; i < [actions count]; i++) {
             NSDictionary* actionData = (NSDictionary*)[actions objectAtIndex:i];
-            if (self.configuration.actionHandler != nil) {
-                [[NSOperationQueue mainQueue] addOperationWithBlock:^{
-                    self.configuration.actionHandler(actionData);
-                }];
-            } else {
-                SLog(@"action received, but no handler is configured");
-            }
+            
+            [self.actionProcessor processAction:actionData];
         }
     }
 }
