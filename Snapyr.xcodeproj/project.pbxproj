@@ -272,6 +272,7 @@
 		EADEB85D1DECD080005322DA /* SDK */ = {
 			isa = PBXGroup;
 			children = (
+				EADEB85E1DECD080005322DA /* Snapyr.h */,
 				EADEB8751DECD12B005322DA /* Classes */,
 				EADEB85F1DECD080005322DA /* Info.plist */,
 				EADEB88C1DECD12B005322DA /* Internal */,
@@ -315,7 +316,6 @@
 			children = (
 				DA66EF5D28B0111B006C0AE0 /* SnapyrActionProcessor.h */,
 				DA66EF5C28B0111B006C0AE0 /* SnapyrActionProcessor.m */,
-				EADEB85E1DECD080005322DA /* Snapyr.h */,
 				EADEB87C1DECD12B005322DA /* SnapyrAliasPayload.h */,
 				EADEB87D1DECD12B005322DA /* SnapyrAliasPayload.m */,
 				EADEB8A91DECD12B005322DA /* SnapyrSDK.h */,
