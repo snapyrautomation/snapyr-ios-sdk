@@ -26,6 +26,9 @@
 @property (nonatomic, assign) SnapyrSDKConfiguration *configuration;
 @property (nonatomic, copy) NSString *userId;
 @property (nonatomic, strong) SnapyrHTTPClient *httpClient;
+#if !TARGET_OS_OSX
+@property (nonatomic, strong) SnapyrActionViewController *inAppViewController;
+#endif
 
 @end
 
@@ -77,9 +80,9 @@
 {
 #if !TARGET_OS_OSX
     dispatch_async(dispatch_get_main_queue(), ^{
-        _inAppViewController = [[SnapyrActionViewController alloc] initWithHtml:htmlContent];
-        _inAppViewController.actionHandler = self.configuration.actionHandler;
-        [_inAppViewController showHtmlMessage];
+        [self setInAppViewController:[[SnapyrActionViewController alloc] initWithHtml:htmlContent]];
+        [self.inAppViewController setActionHandler:self.configuration.actionHandler];
+        [self.inAppViewController showHtmlMessage];
     });
 #endif
 }
