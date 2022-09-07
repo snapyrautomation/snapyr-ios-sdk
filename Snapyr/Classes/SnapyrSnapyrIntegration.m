@@ -44,15 +44,13 @@ NSUInteger const kSnapyrBackgroundTaskInvalid = 0;
 @property (nonatomic, strong) NSDictionary *traits;
 @property (nonatomic, assign) SnapyrSDK *sdk;
 @property (nonatomic, assign) SnapyrSDKConfiguration *configuration;
+@property (nonatomic, strong) SnapyrActionProcessor *actionProcessor;
 @property (nonatomic, strong) NSDictionary *meta;
 @property (atomic, copy) NSDictionary *referrer;
 @property (nonatomic, copy) NSString *userId;
 @property (nonatomic, strong) SnapyrHTTPClient *httpClient;
 @property (nonatomic, strong) id<SnapyrStorage> fileStorage;
 @property (nonatomic, strong) id<SnapyrStorage> userDefaultsStorage;
-
-
-@property (nonatomic, strong) SnapyrActionProcessor *actionProcessor;
 
 #if TARGET_OS_IPHONE
 @property (nonatomic, assign) UIBackgroundTaskIdentifier flushTaskID;
@@ -81,11 +79,8 @@ NSUInteger const kSnapyrBackgroundTaskInvalid = 0;
         self.userDefaultsStorage = userDefaultsStorage;
         self.reachability = [SnapyrReachability reachabilityWithHostname:@"google.com"];
         [self.reachability startNotifier];
-        
         self.serialQueue = snapyr_dispatch_queue_create_specific("com.snapyr.sdk.snapyr", DISPATCH_QUEUE_SERIAL);
-        
         self.backgroundTaskQueue = snapyr_dispatch_queue_create_specific("com.snapyr.sdk.backgroundTask", DISPATCH_QUEUE_SERIAL);
-        
         self.actionProcessor = [[SnapyrActionProcessor alloc] initWithSDK:sdk httpClient:httpClient];
 #if TARGET_OS_IPHONE
         self.flushTaskID = UIBackgroundTaskInvalid;
@@ -495,9 +490,7 @@ NSUInteger const kSnapyrBackgroundTaskInvalid = 0;
         DLog(@"response received (array) = %@", deserializedArray);
         for (int i = 0; i < [deserializedArray count]; i++) {
             NSDictionary *eventData = (NSDictionary*)[deserializedArray objectAtIndex:i];
-            
-            NSMutableDictionary *mutableEventData = [NSMutableDictionary dictionaryWithDictionary:eventData];
-            [self handleEventActions:mutableEventData];
+            [self handleEventActions:eventData];
         }
     }
 }
@@ -508,7 +501,6 @@ NSUInteger const kSnapyrBackgroundTaskInvalid = 0;
         NSArray* actions = [eventData objectForKey:@"actions"];
         for (int i = 0; i < [actions count]; i++) {
             NSDictionary* actionData = (NSDictionary*)[actions objectAtIndex:i];
-            
             [self.actionProcessor processAction:actionData];
         }
     }

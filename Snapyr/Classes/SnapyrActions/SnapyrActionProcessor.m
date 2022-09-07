@@ -3,9 +3,7 @@
 #import "SnapyrSDK.h"
 #import "SnapyrUtils.h"
 #import "SnapyrActionProcessor.h"
-#import "SnapyrReachability.h"
 #import "SnapyrHTTPClient.h"
-#import "SnapyrStorage.h"
 #import "SnapyrMacros.h"
 #import "SnapyrState.h"
 #import <pthread.h>
@@ -14,31 +12,19 @@
 #import <UIKit/UIKit.h>
 #endif
 
-//dispatch_once_t onlyOnce;
-//pthread_mutex_t mutex;
-
 @interface SnapyrActionProcessor ()
 
-//@property (nonatomic, strong) NSMutableArray *queue;
-@property (nonatomic, strong) NSURLSessionUploadTask *batchRequest;
-@property (nonatomic, strong) SnapyrReachability *reachability;
 @property (nonatomic, strong) NSTimer *actionPollTimer;
 @property (nonatomic, strong) dispatch_queue_t serialQueue;
 @property (nonatomic, strong) dispatch_queue_t backgroundTaskQueue;
 
-
 @property (nonatomic, strong) NSMutableDictionary *actionProcessedData;
 @property (nonatomic, assign) NSUInteger lastActionTimestamp;
 
-
 @property (nonatomic, assign) SnapyrSDK *sdk;
 @property (nonatomic, assign) SnapyrSDKConfiguration *configuration;
-//@property (nonatomic, strong) NSDictionary *meta;
-//@property (atomic, copy) NSDictionary *referrer;
 @property (nonatomic, copy) NSString *userId;
 @property (nonatomic, strong) SnapyrHTTPClient *httpClient;
-//@property (nonatomic, strong) id<SnapyrStorage> fileStorage;
-//@property (nonatomic, strong) id<SnapyrStorage> userDefaultsStorage;
 
 @end
 
@@ -53,13 +39,9 @@
     if (self = [super init]) {
         self.sdk = sdk;
         self.configuration = sdk.oneTimeConfiguration;
-//        DLog(@"SnapyrActionProcessor.initwithsdk: meta is [%@]", self.meta);
         self.httpClient = httpClient;
         self.httpClient.httpSessionDelegate = sdk.oneTimeConfiguration.httpSessionDelegate;
-//        self.fileStorage = fileStorage;
-//        self.userDefaultsStorage = userDefaultsStorage;
         self.serialQueue = snapyr_dispatch_queue_create_specific("com.snapyr.sdk.snapyr", DISPATCH_QUEUE_SERIAL);
-        self.backgroundTaskQueue = snapyr_dispatch_queue_create_specific("com.snapyr.sdk.backgroundTask", DISPATCH_QUEUE_SERIAL);
         
         self.actionProcessedData = [[NSMutableDictionary alloc] init];
         self.lastActionTimestamp = 0;
@@ -83,11 +65,6 @@
 - (void)dispatchBackground:(void (^)(void))block
 {
     snapyr_dispatch_specific_async(_serialQueue, block);
-}
-
-- (void)dispatchBackgroundAndWait:(void (^)(void))block
-{
-    snapyr_dispatch_specific_sync(_serialQueue, block);
 }
 
 - (NSString *)userId
@@ -171,7 +148,7 @@
     NSDictionary *payloadDict = [NSJSONSerialization JSONObjectWithData:payloadData
                                                                  options:kNilOptions
                                                                    error:&jsonError];
-    if (error != jsonError) {
+    if (jsonError != nil) {
         DLog(@"SnapyrActionProcessor.processAction: error deserializing response body: [%@]", jsonError);
         return;
     }

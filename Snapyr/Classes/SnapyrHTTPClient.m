@@ -163,10 +163,6 @@ NSString * const kSnapyrAPIBaseHostStage = @"https://stage-engine.snapyrdev.net/
     return task;
 }
 
-
-
-
-
 - (nullable NSURLSessionUploadTask *)markActionDelivered:(NSString *)actionToken forUserId:(NSString *)userId forWriteKey:(NSString *)writeKey completionHandler:(void (^)(BOOL retry, NSInteger code, NSData *_Nullable data))completionHandler
 {
     NSURLSession *session = [self sessionForWriteKey:writeKey];
@@ -182,8 +178,6 @@ NSString * const kSnapyrAPIBaseHostStage = @"https://stage-engine.snapyrdev.net/
     
     [request setHTTPMethod:@"POST"];
     NSData *blankData = [NSData new]; // uploadTaskWithRequest requires non-null `fromData` - use empty NSData here
-    
-//    [session data]
     
     NSURLSessionUploadTask *task = [session uploadTaskWithRequest:request fromData:blankData completionHandler:^(NSData *_Nullable data, NSURLResponse *_Nullable response, NSError *_Nullable error) {
         
@@ -230,9 +224,6 @@ NSString * const kSnapyrAPIBaseHostStage = @"https://stage-engine.snapyrdev.net/
     return task;
 }
 
-
-
-
 - (NSURLSessionDataTask *)fetchActionsForUser:(NSString *)userId forWriteKey:(NSString *)writeKey completionHandler:(void (^)(BOOL success, NSArray *actions))completionHandler
 {
     NSURLSession *session = [self sessionForWriteKey:writeKey];
@@ -273,10 +264,6 @@ NSString * const kSnapyrAPIBaseHostStage = @"https://stage-engine.snapyrdev.net/
     [task resume];
     return task;
 }
-
-
-
-
 
 - (NSURLSessionDataTask *)settingsForWriteKey:(NSString *)writeKey completionHandler:(void (^)(BOOL success, JSON_DICT _Nullable settings))completionHandler
 {
