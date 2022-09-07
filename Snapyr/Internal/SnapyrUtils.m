@@ -680,6 +680,23 @@ NSUserDefaults* getGroupUserDefaults(void)
     }
 }
 
+#if !TARGET_OS_OSX
+/**
+ * Get the shared application, if available. Equivalent to calling `[UIApplication sharedApplication]` but prevents errors building for app extensions.
+ * Should never be used from within extension context, but if it is, it will return nil.
+ */
+UIApplication* getSharedUIApplication(void)
+{
+    UIApplication *sharedApp = nil;
+    if ([UIApplication respondsToSelector:@selector(sharedApplication)]) {
+        // sharedApplication is not available in App Extension context. Checking and running by selector
+        // ensures we don't attempt this if in that context, and prevents build errors.
+        sharedApp = [UIApplication performSelector:@selector(sharedApplication)];
+    }
+    return sharedApp;
+}
+#endif
+
 
 @interface SnapyrISO8601NanosecondDateFormatter: NSDateFormatter
 @end

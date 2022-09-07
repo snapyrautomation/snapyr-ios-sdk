@@ -1,3 +1,5 @@
+#if !TARGET_OS_OSX
+
 #import <Foundation/Foundation.h>
 #import "SnapyrSDKConfiguration.h"
 #import "SnapyrActionMessageView.h"
@@ -17,3 +19,5 @@ NS_ASSUME_NONNULL_BEGIN
 @end
 
 NS_ASSUME_NONNULL_END
+
+#endif

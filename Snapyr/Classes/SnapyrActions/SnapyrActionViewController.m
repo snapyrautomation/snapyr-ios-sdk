@@ -1,7 +1,12 @@
+#import <TargetConditionals.h>
+#if !TARGET_OS_OSX
+
 #import <Foundation/Foundation.h>
 #import "SnapyrActionViewController.h"
 #import "SnapyrActionMessageView.h"
-#import "SnapyrSDKUtils.h"
+#import "SnapyrUtils.h"
+#import <UIKit/UIKit.h>
+
 
 @implementation SnapyrActionViewController
 
@@ -38,13 +43,7 @@
     // Setting self to be window's rootViewController is what attaches our views to the window
     _uiWindow.rootViewController = self;
     
-    UIApplication *sharedApp = nil;
-    if ([UIApplication respondsToSelector:@selector(sharedApplication)]) {
-        // sharedApplication is not available in App Extension context. Checking and running by selector
-        // ensures we don't attempt this if in that context, and prevents build errors.
-        sharedApp = [UIApplication performSelector:@selector(sharedApplication)];
-    }
-    
+    UIApplication *sharedApp = getSharedUIApplication();
     if (@available(iOS 13.0, *)) {
         if (sharedApp != nil) {
             // scene is required in iOS 13+ - without it, the window won't display with `makeKeyAndVisible`
@@ -121,3 +120,5 @@
 }
 
 @end
+
+#endif

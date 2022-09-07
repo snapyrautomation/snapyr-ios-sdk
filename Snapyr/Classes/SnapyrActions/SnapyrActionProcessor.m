@@ -75,11 +75,13 @@
 
 - (void)triggerInAppPopupWithHtml:(NSString *)htmlContent
 {
+#if !TARGET_OS_OSX
     dispatch_async(dispatch_get_main_queue(), ^{
         _inAppViewController = [[SnapyrActionViewController alloc] initWithHtml:htmlContent];
         _inAppViewController.actionHandler = self.configuration.actionHandler;
         [_inAppViewController showHtmlMessage];
     });
+#endif
 }
 
 - (void)pollForActions

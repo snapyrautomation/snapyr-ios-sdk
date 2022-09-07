@@ -1,4 +1,7 @@
-#import "SnapyrSDKUtils.h"
+#import <TargetConditionals.h>
+#if !TARGET_OS_OSX
+
+#import "SnapyrUtils.h"
 #import <Foundation/Foundation.h>
 #import <WebKit/WebKit.h>
 
@@ -29,10 +32,13 @@
         bounds.size.height -= (2 * defaultMargin);
         
         if (@available(iOS 11.0, *)) {
-            // ... minus safe area insets, if applicable (safe area accounts for notches and such)
-            UIEdgeInsets safeAreaInsets = [UIApplication sharedApplication].keyWindow.safeAreaInsets;
-            bounds.size.height -= (safeAreaInsets.top + safeAreaInsets.bottom);
-            bounds.size.width  -= (safeAreaInsets.left + safeAreaInsets.right);
+            UIApplication *sharedApp = getSharedUIApplication();
+            if (sharedApp != nil) {
+                // ... minus safe area insets, if applicable (safe area accounts for notches and such)
+                UIEdgeInsets safeAreaInsets = sharedApp.keyWindow.safeAreaInsets;
+                bounds.size.height -= (safeAreaInsets.top + safeAreaInsets.bottom);
+                bounds.size.width  -= (safeAreaInsets.left + safeAreaInsets.right);
+            }
         }
         
         _wkWebView = [[WKWebView alloc] initWithFrame:bounds configuration:configuration];
@@ -65,3 +71,5 @@
 }
 
 @end
+
+#endif

@@ -29,20 +29,24 @@ static SnapyrSDK *__sharedInstance = nil;
 @property (nonatomic, strong) SnapyrStoreKitTracker *storeKitTracker;
 @property (nonatomic, strong) SnapyrIntegrationsManager *integrationsManager;
 @property (nonatomic, strong) SnapyrMiddlewareRunner *runner;
+#if !TARGET_OS_OSX
 @property (nonatomic, strong) SnapyrActionViewController *inAppViewController;
+#endif
 @end
 
 
 @implementation SnapyrSDK
 
+#if !TARGET_OS_OSX
 - (void)triggerTestInAppPopupWithHtml:(NSString *)htmlContent
 {
     _inAppViewController = [[SnapyrActionViewController alloc] initWithHtml:htmlContent];
     
     dispatch_async(dispatch_get_main_queue(), ^{
-        [_inAppViewController showHtmlMessage];
+        [self.inAppViewController showHtmlMessage];
     });
 }
+#endif
 
 + (void)setupWithConfiguration:(SnapyrSDKConfiguration *)configuration;
 {
