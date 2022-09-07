@@ -3,6 +3,7 @@
 #import "SnapyrSDK.h"
 #import "SnapyrUtils.h"
 #import "SnapyrActionProcessor.h"
+#import "SnapyrInAppMessage.h"
 #import "SnapyrHTTPClient.h"
 #import "SnapyrMacros.h"
 #import "SnapyrState.h"
@@ -74,9 +75,8 @@
 
 - (void)triggerInAppPopupWithHtml:(NSString *)htmlContent
 {
-    _inAppViewController = [[SnapyrActionViewController alloc] initWithHtml:htmlContent];
-    
     dispatch_async(dispatch_get_main_queue(), ^{
+        _inAppViewController = [[SnapyrActionViewController alloc] initWithHtml:htmlContent];
         _inAppViewController.actionHandler = self.configuration.actionHandler;
         [_inAppViewController showHtmlMessage];
     });
@@ -130,48 +130,33 @@
     // 5. Mark as complete on "the list"
     // 6. ... after some amount of time? Clear from the list
     
-    NSDictionary *actionContent = actionData[@"content"];
-    
-    if (!actionContent) {
+    SnapyrInAppMessage *message = nil;
+    @try {
+        message = [[SnapyrInAppMessage alloc] initWithActionPayload:actionData];
+    } @catch (NSException *exception) {
+        DLog(@"SnapyrActionProcessor: Failed to init SnapyrInAppMessage: %@", exception);
         return;
     }
     
-    NSString *userId = actionData[@"userId"];
-    NSString *rawUserPayload = actionContent[@"payload"]; // stringified JSON - for now?
-    NSString *actionToken = actionData[@"actionToken"];
-    
-    NSString *actionType = actionData[@"actionType"];
-    NSString *payloadType = actionContent[@"payloadType"];
-    
-    NSError *jsonError = nil;
-    NSData *payloadData = [rawUserPayload dataUsingEncoding:NSUTF8StringEncoding];
-    NSDictionary *payloadDict = [NSJSONSerialization JSONObjectWithData:payloadData
-                                                                 options:kNilOptions
-                                                                   error:&jsonError];
-    if (jsonError != nil) {
-        DLog(@"SnapyrActionProcessor.processAction: error deserializing response body: [%@]", jsonError);
-        return;
-    }
-    
-    if ([self actionIdProcessed:actionToken]) {
+    if ([self actionIdProcessed:message.actionToken]) {
         // this action has already been processed; don't re-process
         return;
     }
     
-    self.actionProcessedData[actionToken] = @NO;
+    self.actionProcessedData[message.actionToken] = @NO;
     
-    [self markActionDelivered:actionToken userId:userId completionHandler:^(BOOL success) {
+    [self markActionDelivered:message.actionToken userId:message.userId completionHandler:^(BOOL success) {
         // Engine successfully marked this action as delivered; now respond here in the client.
-        self.actionProcessedData[actionToken] = @YES;
+        self.actionProcessedData[message.actionToken] = @YES;
         
-        if ([actionType isEqual:@"overlay"] && [payloadType isEqual: @"html"]) {
-            [self triggerInAppPopupWithHtml:rawUserPayload];
+        if ([message displaysOverlay]) {
+            [self triggerInAppPopupWithHtml:message.rawPayload];
         } else if (self.configuration.actionHandler != nil) {
             // NB: using `mainQueue` ensures client actionHandler callback is run on the main (UI) thread,
             // which is probably what the client expects. If they want to do things off the main thread they
             // can do so explicitly within the callback.
             [[NSOperationQueue mainQueue] addOperationWithBlock:^{
-                self.configuration.actionHandler(payloadDict);
+                self.configuration.actionHandler([message getContent]);
             }];
         } else {
             SLog(@"action received, but no handler is configured");
