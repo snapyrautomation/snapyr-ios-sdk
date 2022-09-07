@@ -2,7 +2,7 @@
 #import "SnapyrHTTPClient.h"
 #import "SnapyrStorage.h"
 
-#if !TARGET_OS_OSX
+#if !TARGET_OS_OSX && !TARGET_OS_TV
 #import "SnapyrActionViewController.h"
 #endif
 

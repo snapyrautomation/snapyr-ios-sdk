@@ -26,7 +26,7 @@
 @property (nonatomic, assign) SnapyrSDKConfiguration *configuration;
 @property (nonatomic, copy) NSString *userId;
 @property (nonatomic, strong) SnapyrHTTPClient *httpClient;
-#if !TARGET_OS_OSX
+#if !TARGET_OS_OSX && !TARGET_OS_TV
 @property (nonatomic, strong) SnapyrActionViewController *inAppViewController;
 #endif
 
@@ -78,7 +78,7 @@
 
 - (void)triggerInAppPopupWithHtml:(NSString *)htmlContent
 {
-#if !TARGET_OS_OSX
+#if !TARGET_OS_OSX && !TARGET_OS_TV
     dispatch_async(dispatch_get_main_queue(), ^{
         [self setInAppViewController:[[SnapyrActionViewController alloc] initWithHtml:htmlContent]];
         [self.inAppViewController setActionHandler:self.configuration.actionHandler];

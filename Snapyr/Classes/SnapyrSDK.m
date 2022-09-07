@@ -29,7 +29,7 @@ static SnapyrSDK *__sharedInstance = nil;
 @property (nonatomic, strong) SnapyrStoreKitTracker *storeKitTracker;
 @property (nonatomic, strong) SnapyrIntegrationsManager *integrationsManager;
 @property (nonatomic, strong) SnapyrMiddlewareRunner *runner;
-#if !TARGET_OS_OSX
+#if !TARGET_OS_OSX && !TARGET_OS_TV
 @property (nonatomic, strong) SnapyrActionViewController *inAppViewController;
 #endif
 @end
@@ -37,7 +37,7 @@ static SnapyrSDK *__sharedInstance = nil;
 
 @implementation SnapyrSDK
 
-#if !TARGET_OS_OSX
+#if !TARGET_OS_OSX && !TARGET_OS_TV
 - (void)triggerTestInAppPopupWithHtml:(NSString *)htmlContent
 {
     _inAppViewController = [[SnapyrActionViewController alloc] initWithHtml:htmlContent];

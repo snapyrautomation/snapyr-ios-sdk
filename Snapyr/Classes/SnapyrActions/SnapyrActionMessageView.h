@@ -1,4 +1,4 @@
-#if !TARGET_OS_OSX
+#if !TARGET_OS_OSX && !TARGET_OS_TV
 
 #import <UIKit/UIKit.h>
 #import <WebKit/WebKit.h>
