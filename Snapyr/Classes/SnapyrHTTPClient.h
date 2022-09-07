@@ -33,6 +33,10 @@ NS_SWIFT_NAME(HTTPClient)
  */
 - (nullable NSURLSessionUploadTask *)upload:(JSON_DICT)batch forWriteKey:(NSString *)writeKey completionHandler:(void (^)(BOOL retry, NSInteger code, NSData *_Nullable data))completionHandler;
 
+- (nullable NSURLSessionUploadTask *)markActionDelivered:(NSString *)actionToken forUserId:(NSString *)userId forWriteKey:(NSString *)writeKey completionHandler:(void (^)(BOOL retry, NSInteger code, NSData *_Nullable data))completionHandler;
+
+- (NSURLSessionDataTask *)fetchActionsForUser:(NSString *)userId forWriteKey:(NSString *)writeKey completionHandler:(void (^)(BOOL success, NSArray *actions))completionHandler;
+
 - (NSURLSessionDataTask *)settingsForWriteKey:(NSString *)writeKey completionHandler:(void (^)(BOOL success, JSON_DICT _Nonnull settings))completionHandler;
 
 - (nullable NSURLSessionUploadTask *)uploadLogData:(NSData*)batch forWriteKey:(NSString *)writeKey completionHandler:(void (^)(BOOL retry, NSInteger code, NSData *_Nullable data))completionHandler;

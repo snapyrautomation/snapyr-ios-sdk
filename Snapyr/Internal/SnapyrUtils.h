@@ -6,6 +6,9 @@
 #import <Foundation/Foundation.h>
 #import "SnapyrSDKUtils.h"
 #import "SnapyrSerializableValue.h"
+#if !TARGET_OS_OSX
+#import <UIKit/UIKit.h>
+#endif
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -42,6 +45,9 @@ NSDictionary *getStaticContext(SnapyrSDKConfiguration *configuration, NSString *
 NSDictionary *getLiveContext(SnapyrReachability *reachability, NSDictionary * _Nullable referrer, NSDictionary * _Nullable traits);
 NSString* getAppGroupName(void);
 NSUserDefaults* getGroupUserDefaults(void);
+#if !TARGET_OS_OSX
+UIApplication* getSharedUIApplication(void);
+#endif
 
 NSString *GenerateUUIDString(void);
 

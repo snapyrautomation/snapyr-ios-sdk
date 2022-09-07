@@ -17,6 +17,7 @@
 #import "SnapyrState.h"
 #import "SnapyrUtils.h"
 #import "SnapyrNotificationsProxy.h"
+#import "SnapyrActions/SnapyrActionViewController.h"
 
 static SnapyrSDK *__sharedInstance = nil;
 
@@ -28,10 +29,24 @@ static SnapyrSDK *__sharedInstance = nil;
 @property (nonatomic, strong) SnapyrStoreKitTracker *storeKitTracker;
 @property (nonatomic, strong) SnapyrIntegrationsManager *integrationsManager;
 @property (nonatomic, strong) SnapyrMiddlewareRunner *runner;
+#if !TARGET_OS_OSX && !TARGET_OS_TV
+@property (nonatomic, strong) SnapyrActionViewController *inAppViewController;
+#endif
 @end
 
 
 @implementation SnapyrSDK
+
+#if !TARGET_OS_OSX && !TARGET_OS_TV
+- (void)triggerTestInAppPopupWithHtml:(NSString *)htmlContent
+{
+    _inAppViewController = [[SnapyrActionViewController alloc] initWithHtml:htmlContent];
+    
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self.inAppViewController showHtmlMessage];
+    });
+}
+#endif
 
 + (void)setupWithConfiguration:(SnapyrSDKConfiguration *)configuration;
 {

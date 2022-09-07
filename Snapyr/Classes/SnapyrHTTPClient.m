@@ -163,6 +163,108 @@ NSString * const kSnapyrAPIBaseHostStage = @"https://stage-engine.snapyrdev.net/
     return task;
 }
 
+- (nullable NSURLSessionUploadTask *)markActionDelivered:(NSString *)actionToken forUserId:(NSString *)userId forWriteKey:(NSString *)writeKey completionHandler:(void (^)(BOOL retry, NSInteger code, NSData *_Nullable data))completionHandler
+{
+    NSURLSession *session = [self sessionForWriteKey:writeKey];
+    // e.g. /v1/actions/user123
+    NSString *actionsPath = [NSString stringWithFormat:@"actions/%@", userId];
+    NSURL *baseUrl = [[SnapyrUtils getAPIHostURL:self.configuration.snapyrEnvironment] URLByAppendingPathComponent:actionsPath];
+    NSURLComponents *urlComponents = [NSURLComponents componentsWithURL:baseUrl resolvingAgainstBaseURL:NO];
+    urlComponents.queryItems = @[
+        [NSURLQueryItem queryItemWithName:@"actionToken" value:actionToken],
+        [NSURLQueryItem queryItemWithName:@"status" value:@"delivered"]
+    ];
+    NSMutableURLRequest *request = self.requestFactory(urlComponents.URL);
+    
+    [request setHTTPMethod:@"POST"];
+    NSData *blankData = [NSData new]; // uploadTaskWithRequest requires non-null `fromData` - use empty NSData here
+    
+    NSURLSessionUploadTask *task = [session uploadTaskWithRequest:request fromData:blankData completionHandler:^(NSData *_Nullable data, NSURLResponse *_Nullable response, NSError *_Nullable error) {
+        
+        if (error) {
+            // Network error. Retry.
+            SLog(@"Error uploading request %@.", error);
+            completionHandler(YES, -1, nil);
+            return;
+        }
+        
+        NSInteger code = ((NSHTTPURLResponse *)response).statusCode;
+        if (code < 300) {
+            // 2xx response codes. Don't retry.
+            completionHandler(NO, code, data);
+            return;
+        }
+        if (code < 400) {
+            // 3xx response codes. Retry.
+            SLog(@"Server responded with unexpected HTTP code %d.", code);
+            completionHandler(YES, code, nil);
+            return;
+        }
+        if (code == 429) {
+            // 429 response codes. Retry.
+            SLog(@"Server limited client with response code %d.", code);
+            completionHandler(YES, code, nil);
+            return;
+        }
+        if (code < 500) {
+            // non-429 4xx response codes. Don't retry.
+            SLog(@"Server rejected payload with HTTP code %d.", code);
+            completionHandler(NO, code, nil);
+            if (self.configuration.errorHandler != NULL) {
+                self.configuration.errorHandler(code, @"error in httpclient", data);
+            }
+            return;
+        }
+        
+        // 5xx response codes. Retry.
+        SLog(@"Server error with HTTP code %d.", code);
+        completionHandler(YES, code, nil);
+    }];
+    [task resume];
+    return task;
+}
+
+- (NSURLSessionDataTask *)fetchActionsForUser:(NSString *)userId forWriteKey:(NSString *)writeKey completionHandler:(void (^)(BOOL success, NSArray *actions))completionHandler
+{
+    NSURLSession *session = [self sessionForWriteKey:writeKey];
+    // e.g. /v1/actions/user123
+    NSString *actionsPath = [NSString stringWithFormat:@"actions/%@", userId];
+    NSURL *url = [[SnapyrUtils getAPIHostURL:self.configuration.snapyrEnvironment] URLByAppendingPathComponent:actionsPath];
+
+    NSMutableURLRequest *request = self.requestFactory(url);
+    [request setHTTPMethod:@"GET"];
+    
+    NSURLSessionDataTask *task = [session dataTaskWithRequest:request completionHandler:^(NSData *_Nullable data, NSURLResponse *_Nullable response, NSError *_Nullable error) {
+        if (error != nil) {
+            DLog(@"error fetching actions: %@.", error);
+            completionHandler(NO, @[]);
+            return;
+        }
+        NSInteger code = ((NSHTTPURLResponse *)response).statusCode;
+        if (code >= 300) {
+            DLog(@"SnapyrHTTPClient.fetchActionsForUser: server responded with unexpected HTTP code [%li]", code);
+            
+            completionHandler(NO, @[]);
+            return;
+        }
+        
+        NSError *jsonError = nil;
+        NSDictionary *responseJson = [NSJSONSerialization JSONObjectWithData:data options:0 error:&jsonError];
+        if (jsonError != nil) {
+            DLog(@"SnapyrHTTPClient.fetchActionsForUser: error deserializing response body: [%@]", jsonError);
+            completionHandler(NO, @[]);
+            return;
+        }
+        if ([responseJson objectForKey:@"actions"] != nil) {
+            NSArray* actions = [responseJson objectForKey:@"actions"];
+            completionHandler(YES, actions);
+        }
+    }];
+    
+    [task resume];
+    return task;
+}
+
 - (NSURLSessionDataTask *)settingsForWriteKey:(NSString *)writeKey completionHandler:(void (^)(BOOL success, JSON_DICT _Nullable settings))completionHandler
 {
     

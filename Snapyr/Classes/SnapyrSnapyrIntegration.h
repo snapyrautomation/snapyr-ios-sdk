@@ -1,5 +1,6 @@
 #import <Foundation/Foundation.h>
 #import "SnapyrIntegration.h"
+#import "SnapyrActionProcessor.h"
 #import "SnapyrHTTPClient.h"
 #import "SnapyrStorage.h"
 

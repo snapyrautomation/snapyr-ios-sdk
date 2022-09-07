@@ -3,6 +3,7 @@
 #import "SnapyrSDK.h"
 #import "SnapyrUtils.h"
 #import "SnapyrSnapyrIntegration.h"
+#import "SnapyrActions/SnapyrActionProcessor.h"
 #import "SnapyrReachability.h"
 #import "SnapyrHTTPClient.h"
 #import "SnapyrStorage.h"
@@ -43,6 +44,7 @@ NSUInteger const kSnapyrBackgroundTaskInvalid = 0;
 @property (nonatomic, strong) NSDictionary *traits;
 @property (nonatomic, assign) SnapyrSDK *sdk;
 @property (nonatomic, assign) SnapyrSDKConfiguration *configuration;
+@property (nonatomic, strong) SnapyrActionProcessor *actionProcessor;
 @property (nonatomic, strong) NSDictionary *meta;
 @property (atomic, copy) NSDictionary *referrer;
 @property (nonatomic, copy) NSString *userId;
@@ -79,6 +81,7 @@ NSUInteger const kSnapyrBackgroundTaskInvalid = 0;
         [self.reachability startNotifier];
         self.serialQueue = snapyr_dispatch_queue_create_specific("com.snapyr.sdk.snapyr", DISPATCH_QUEUE_SERIAL);
         self.backgroundTaskQueue = snapyr_dispatch_queue_create_specific("com.snapyr.sdk.backgroundTask", DISPATCH_QUEUE_SERIAL);
+        self.actionProcessor = [[SnapyrActionProcessor alloc] initWithSDK:sdk httpClient:httpClient];
 #if TARGET_OS_IPHONE
         self.flushTaskID = UIBackgroundTaskInvalid;
 #else
@@ -466,6 +469,9 @@ NSUInteger const kSnapyrBackgroundTaskInvalid = 0;
 - (void)processResponseData:(NSData *)data
 {
     NSError* dataParsingError = nil;
+    NSString *responseString = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+    DLog(@"SnapyrSnapyrIntegration.processResponseData: response is [%@]", responseString);
+    
     id dataObj = [NSJSONSerialization
                   JSONObjectWithData:data
                   options:NSJSONReadingAllowFragments
@@ -491,17 +497,11 @@ NSUInteger const kSnapyrBackgroundTaskInvalid = 0;
 
 - (void)handleEventActions:(NSDictionary*) eventData
 {
-    if ([eventData objectForKey:@"actions"] != [NSNull null]) {
+    if ([eventData objectForKey:@"actions"] != nil) {
         NSArray* actions = [eventData objectForKey:@"actions"];
         for (int i = 0; i < [actions count]; i++) {
             NSDictionary* actionData = (NSDictionary*)[actions objectAtIndex:i];
-            if (self.configuration.actionHandler != nil) {
-                [[NSOperationQueue mainQueue] addOperationWithBlock:^{
-                    self.configuration.actionHandler(actionData);
-                }];
-            } else {
-                SLog(@"action received, but no handler is configured");
-            }
+            [self.actionProcessor processAction:actionData];
         }
     }
 }
