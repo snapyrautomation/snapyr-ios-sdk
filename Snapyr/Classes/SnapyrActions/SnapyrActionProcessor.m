@@ -95,6 +95,16 @@
     return [SnapyrState sharedInstance].userInfo.userId;
 }
 
+- (void)triggerInAppPopupWithHtml:(NSString *)htmlContent
+{
+    _inAppViewController = [[SnapyrActionViewController alloc] initWithHtml:htmlContent];
+    
+    dispatch_async(dispatch_get_main_queue(), ^{
+        _inAppViewController.actionHandler = self.configuration.actionHandler;
+        [_inAppViewController showHtmlMessage];
+    });
+}
+
 - (void)pollForActions
 {
     [self dispatchBackground:^{
@@ -114,8 +124,6 @@
 
 - (void)markActionDelivered:(NSString *)actionToken userId:(NSString *)userId completionHandler:(void (^)(BOOL success))completionHandler
 {
-
-
     DLog(@"SnapyrActionProcessor.markActionDelivered: sending delivered update.");
     
     [self dispatchBackground:^{
@@ -123,28 +131,19 @@
         NSURLSessionUploadTask *markDeliveredRequest = [self.httpClient markActionDelivered:actionToken forUserId:userId forWriteKey:self.configuration.writeKey completionHandler:^(BOOL retry, NSInteger code, NSData *_Nullable data) {
             void (^completion)(void) = ^{
                 if (retry) {
-    //                [self notifyForName:SnapyrRequestDidFailNotification userInfo:batch];
-    //                self.batchRequest = nil;
-    //                [self endBackgroundTask];
                     completionHandler(NO);
                     return;
                 }
-
                 completionHandler(YES);
-                
-    //            [self endBackgroundTask];
             };
             
             [self dispatchBackground:completion];
         }];
-//        [markDeliveredRequest ]
     }];
-
-//    [self notifyForName:SnapyrDidSendRequestNotification userInfo:batch];
 }
                         
 
-- (void)processAction:(NSDictionary*) actionData
+- (void)processAction:(NSDictionary*)actionData
 {
     // 1. Check if action token (or message id?) already in "the list"
     //    - if so: return immediately
@@ -154,23 +153,28 @@
     // 5. Mark as complete on "the list"
     // 6. ... after some amount of time? Clear from the list
     
-    NSDictionary *actionPayload = actionData[@"Payload"];
-    if (!actionPayload) {
+    NSDictionary *actionContent = actionData[@"content"];
+    
+    if (!actionContent) {
         return;
     }
     
     NSString *userId = actionData[@"userId"];
-    NSString *rawUserPayload = actionPayload[@"payload"]; // stringified JSON - for now?
-    NSString *actionToken = actionPayload[@"actionToken"];
+    NSString *rawUserPayload = actionContent[@"payload"]; // stringified JSON - for now?
+    NSString *actionToken = actionData[@"actionToken"];
     
-    NSError *error;
+    NSString *actionType = actionData[@"actionType"];
+    NSString *payloadType = actionContent[@"payloadType"];
+    
+    NSError *jsonError = nil;
     NSData *payloadData = [rawUserPayload dataUsingEncoding:NSUTF8StringEncoding];
     NSDictionary *payloadDict = [NSJSONSerialization JSONObjectWithData:payloadData
                                                                  options:kNilOptions
-                                                                   error:&error];
-    
-    NSUInteger timestamp = actionPayload[@"Timestamp"]; // int format - for now?
-    
+                                                                   error:&jsonError];
+    if (error != jsonError) {
+        DLog(@"SnapyrActionProcessor.processAction: error deserializing response body: [%@]", jsonError);
+        return;
+    }
     
     if ([self actionIdProcessed:actionToken]) {
         // this action has already been processed; don't re-process
@@ -183,11 +187,9 @@
         // Engine successfully marked this action as delivered; now respond here in the client.
         self.actionProcessedData[actionToken] = @YES;
         
-        if (timestamp > self.lastActionTimestamp) {
-            self.lastActionTimestamp = timestamp;
-        }
-        
-        if (self.configuration.actionHandler != nil) {
+        if ([actionType isEqual:@"overlay"] && [payloadType isEqual: @"html"]) {
+            [self triggerInAppPopupWithHtml:rawUserPayload];
+        } else if (self.configuration.actionHandler != nil) {
             // NB: using `mainQueue` ensures client actionHandler callback is run on the main (UI) thread,
             // which is probably what the client expects. If they want to do things off the main thread they
             // can do so explicitly within the callback.

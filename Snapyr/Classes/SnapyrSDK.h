@@ -28,6 +28,13 @@ NS_SWIFT_NAME(Snapyr)
 - (instancetype)initWithConfiguration:(SnapyrSDKConfiguration *)configuration;
 
 /**
+ * DEV ONLY - remove before release
+ *
+ * Trigger an SDK-handled in-app message popup with the provided HTML string.
+ */
+- (void)triggerTestInAppPopupWithHtml:(NSString *)htmlContent;
+
+/**
  * Setup the sdk.
  *
  * @param configuration The configuration used to setup the client.

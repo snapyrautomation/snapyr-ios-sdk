@@ -3,7 +3,7 @@
 #import "SnapyrSDK.h"
 #import "SnapyrUtils.h"
 #import "SnapyrSnapyrIntegration.h"
-#import "SnapyrActionProcessor.h"
+#import "SnapyrActions/SnapyrActionProcessor.h"
 #import "SnapyrReachability.h"
 #import "SnapyrHTTPClient.h"
 #import "SnapyrStorage.h"
@@ -497,29 +497,6 @@ NSUInteger const kSnapyrBackgroundTaskInvalid = 0;
             NSDictionary *eventData = (NSDictionary*)[deserializedArray objectAtIndex:i];
             
             NSMutableDictionary *mutableEventData = [NSMutableDictionary dictionaryWithDictionary:eventData];
-            if ([mutableEventData objectForKey:@"actions"] == nil) {
-                NSDictionary *sampleActionsDict = @[
-                    @{
-                        @"workspaceId": @"d00f0649-c6a4-475c-8eeb-518ae5f29768",
-                        @"actionToken": @"c2dc333a-aa8c-4b2a-abf2-49d622cc9f42",
-                        @"userId": @"colleen",
-                        @"payload": @"my badass payload2",
-                        @"timestamp": @"2022-08-16T16:35:09.350908-04:00",
-                        @"status": @"pending"
-                    },
-                    @{
-                        @"workspaceId": @"d00f0649-c6a4-475c-8eeb-518ae5f29768",
-                        @"actionToken": @"563bdd12-4b54-4ae1-9a3e-bc86a08279f6",
-                        @"userId": @"colleen",
-                        @"payload": @"my badass payload1",
-                        @"timestamp": @"2022-08-16T16:35:09.350883-04:00",
-                        @"status": @"pending"
-                    }
-                ];
-//                [mutableEventData setObject:sampleActionsDict forKey:@"actions"];
-            }
-        
-            
             [self handleEventActions:mutableEventData];
         }
     }

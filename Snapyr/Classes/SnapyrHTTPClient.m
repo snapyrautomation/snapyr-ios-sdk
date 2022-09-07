@@ -258,14 +258,16 @@ NSString * const kSnapyrAPIBaseHostStage = @"https://stage-engine.snapyrdev.net/
         }
         
         NSError *jsonError = nil;
-        id responseJson = [NSJSONSerialization JSONObjectWithData:data options:0 error:&jsonError];
+        NSDictionary *responseJson = [NSJSONSerialization JSONObjectWithData:data options:0 error:&jsonError];
         if (jsonError != nil) {
             DLog(@"SnapyrHTTPClient.fetchActionsForUser: error deserializing response body: [%@]", jsonError);
             completionHandler(NO, @[]);
             return;
         }
-        DLog(@"SnapyrHTTPClient.fetchActionsForUser: successfully fetched actions");
-        completionHandler(YES, responseJson);
+        if ([responseJson objectForKey:@"actions"] != nil) {
+            NSArray* actions = [responseJson objectForKey:@"actions"];
+            completionHandler(YES, actions);
+        }
     }];
     
     [task resume];
