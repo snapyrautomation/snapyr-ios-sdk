@@ -39,6 +39,7 @@
 		DAA6194D28BD67C8006D2523 /* SnapyrActionMessageView.h in Headers */ = {isa = PBXBuildFile; fileRef = DAA6194C28BD67C2006D2523 /* SnapyrActionMessageView.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		DAA6194F28BD6F4A006D2523 /* SnapyrActionViewController.h in Headers */ = {isa = PBXBuildFile; fileRef = DAA6194E28BD6F4A006D2523 /* SnapyrActionViewController.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		DAA6195128BD72D0006D2523 /* SnapyrActionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DAA6195028BD72D0006D2523 /* SnapyrActionViewController.m */; };
+		DAD5844A28C8FFE1002DEDCE /* libOCMock.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F6B8134C264DE0CC00B12EFA /* libOCMock.a */; };
 		EA88A5981DED7608009FB66A /* SnapyrSerializableValue.h in Headers */ = {isa = PBXBuildFile; fileRef = EA88A5971DED7608009FB66A /* SnapyrSerializableValue.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		EA8F09741E24C5C600B8B93F /* MiddlewareTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA8F09731E24C5C600B8B93F /* MiddlewareTests.swift */; };
 		EAA542771EB4035400945DA7 /* TrackingTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAA542761EB4035400945DA7 /* TrackingTests.swift */; };
@@ -102,7 +103,6 @@
 		EADEB8F41DECD335005322DA /* ContextTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = EADEB8E81DECD335005322DA /* ContextTest.swift */; };
 		EADEB8F51DECD335005322DA /* CryptoTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = EADEB8E91DECD335005322DA /* CryptoTest.swift */; };
 		F61EB4AF1F996DEF0038C8C0 /* SDKUtilTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F61EB4AE1F996DEF0038C8C0 /* SDKUtilTests.swift */; };
-		F6309C7A265C091A009D8A84 /* libOCMock.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F6B8134C264DE0CC00B12EFA /* libOCMock.a */; };
 		F651DAC8265DF517000F6909 /* sdk.json in Resources */ = {isa = PBXBuildFile; fileRef = F651DAC7265DF517000F6909 /* sdk.json */; };
 		F68AD013264DB3DE00FE6513 /* SnapyrTestUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = F68AD012264DB3DE00FE6513 /* SnapyrTestUtils.swift */; };
 		F6BDBFA0265C1AEA0029126B /* SnapyrMockHTTPClient.m in Sources */ = {isa = PBXBuildFile; fileRef = F6BDBF9F265C1AEA0029126B /* SnapyrMockHTTPClient.m */; };
@@ -244,7 +244,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				F6309C7A265C091A009D8A84 /* libOCMock.a in Frameworks */,
+				DAD5844A28C8FFE1002DEDCE /* libOCMock.a in Frameworks */,
 				A3B6E29925116B3A00609A13 /* Snapyr.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
