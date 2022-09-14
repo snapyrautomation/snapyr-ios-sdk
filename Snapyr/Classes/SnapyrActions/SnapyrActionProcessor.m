@@ -90,7 +90,11 @@
 - (void)pollForActions
 {
     [self dispatchBackground:^{
-        [self.httpClient fetchActionsForUser:[self userId] forWriteKey:self.configuration.writeKey completionHandler:^(BOOL success, NSArray *pendingActions) {
+        NSString *userId = [self userId];
+        if (!userId) {
+            return;
+        }
+        [self.httpClient fetchActionsForUser:userId forWriteKey:self.configuration.writeKey completionHandler:^(BOOL success, NSArray *pendingActions) {
             if (!success) {
                 return;
             }
@@ -161,7 +165,7 @@
             // which is probably what the client expects. If they want to do things off the main thread they
             // can do so explicitly within the callback.
             [[NSOperationQueue mainQueue] addOperationWithBlock:^{
-                self.configuration.actionHandler([message getContent]);
+                self.configuration.actionHandler(message);
             }];
         } else {
             SLog(@"action received, but no handler is configured");

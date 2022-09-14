@@ -1,8 +1,8 @@
 NS_ASSUME_NONNULL_BEGIN
 
 typedef NS_ENUM(NSInteger, SnapyrInAppActionType) {
+    SnapyrInAppActionTypeCustom,
     SnapyrInAppActionTypeOverlay,
-    SnapyrInAppActionTypeCustom
 } NS_SWIFT_NAME(SnapyrInAppActionTypeCustom);
 
 typedef NS_ENUM(NSInteger, SnapyrInAppContentType) {
@@ -14,6 +14,7 @@ typedef NS_ENUM(NSInteger, SnapyrInAppContentType) {
 
 @property (strong, readonly) NSString *actionToken;
 @property (strong, readonly) NSString *userId;
+@property (readonly) NSDate *timestamp;
 @property (readonly) SnapyrInAppActionType actionType;
 @property (readonly) SnapyrInAppContentType contentType;
 @property (strong, readonly) NSString *rawPayload;
@@ -21,6 +22,8 @@ typedef NS_ENUM(NSInteger, SnapyrInAppContentType) {
 - (instancetype)initWithActionPayload:(NSDictionary * _Nonnull)rawAction;
 - (BOOL)displaysOverlay;
 - (NSDictionary *)getContent;
+- (NSDictionary *)asDict;
+- (NSString *)asJson;
 
 @end
 

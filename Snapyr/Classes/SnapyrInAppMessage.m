@@ -74,6 +74,14 @@ NSString *const kContentTypeHtml  = @"html";
         }
         _actionToken = [actionToken copy];
         
+        NSString *timestamp = rawAction[@"timestamp"];
+        if ([timestamp length] == 0) {
+            @throw [NSException exceptionWithName:@"Bad Initialization"
+                                           reason:@"Missing `timestamp`."
+                                         userInfo:nil];
+        }
+        _timestamp = iso8601TimestampToDate(timestamp);
+        
     }
     
     return self;
@@ -91,6 +99,33 @@ NSString *const kContentTypeHtml  = @"html";
     } else {
         return @{@"payloadType": kContentTypeHtml, @"payload": _rawPayload};
     }
+}
+
+- (NSDictionary *)asDict
+{
+    NSDictionary *dict = @{
+        @"timestamp": iso8601FormattedString(_timestamp),
+        @"userId": [_userId copy],
+        @"actionToken": [_actionToken copy],
+        @"actionType": (_actionType == SnapyrInAppActionTypeCustom) ? kActionTypeCustom : kActionTypeOverlay,
+        @"content": @{
+            @"payloadType": (_contentType == SnapyrInAppContentTypeJson) ? kContentTypeJson : kContentTypeJson,
+            @"payload": [_rawPayload copy],
+        },
+    };
+    
+    return dict;
+}
+
+- (NSString *)asJson
+{
+    NSDictionary *dict = [self asDict];
+    NSError *error;
+    NSData *jsonData = [NSJSONSerialization dataWithJSONObject:dict
+                                                       options:NSJSONWritingPrettyPrinted error:&error];
+    NSString *jsonString = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
+    
+    return jsonString;
 }
 
 @end

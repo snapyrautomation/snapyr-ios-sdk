@@ -769,6 +769,29 @@ NSString *iso8601FormattedString(NSDate *date)
     return [dateFormatter stringFromDate:date];
 }
 
+NSDate *iso8601TimestampToDate(NSString *timestamp) {
+    static NSDateFormatter *defaultDateFormatter;
+    static NSDateFormatter *fractionalDateFormatter;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        defaultDateFormatter = [[NSDateFormatter alloc] init];
+        defaultDateFormatter.locale = [NSLocale localeWithLocaleIdentifier:@"en_US_POSIX"];
+        defaultDateFormatter.dateFormat = @"yyyy'-'MM'-'dd'T'HH':'mm':'ss'Z'";
+        defaultDateFormatter.timeZone = [NSTimeZone timeZoneForSecondsFromGMT:0];
+
+        fractionalDateFormatter = [[NSDateFormatter alloc] init];
+        fractionalDateFormatter.locale = [NSLocale localeWithLocaleIdentifier:@"en_US_POSIX"];
+        fractionalDateFormatter.dateFormat = @"yyyy'-'MM'-'dd'T'HH':'mm':'ss.SSS'Z'";
+        fractionalDateFormatter.timeZone = [NSTimeZone timeZoneForSecondsFromGMT:0];
+    });
+
+    NSDate *result = [defaultDateFormatter dateFromString:timestamp];
+    if (result == nil) {
+        result = [fractionalDateFormatter dateFromString:timestamp];
+    }
+    return result;
+}
+
 
 /** trim the queue so that it contains only upto `max` number of elements. */
 void trimQueue(NSMutableArray *queue, NSUInteger max)

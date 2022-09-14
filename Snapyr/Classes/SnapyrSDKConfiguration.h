@@ -7,6 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "SnapyrInAppMessage.h"
 
 #if TARGET_OS_IPHONE
 #import <UIKit/UIKit.h>
@@ -40,7 +41,7 @@ typedef NS_ENUM(NSInteger, SnapyrEnvironment);
 typedef NSMutableURLRequest *_Nonnull (^SnapyrRequestFactory)(NSURL *_Nonnull);
 typedef NSString *_Nonnull (^SnapyrAdSupportBlock)(void);
 
-typedef void(^SnapyrActionHandlerBlock)(NSDictionary*_Nonnull action);
+typedef void(^SnapyrActionHandlerBlock)(SnapyrInAppMessage *_Nonnull action);
 typedef void(^SnapyrErrorHandlerBlock)(NSInteger code, NSString *_Nonnull message, NSData *_Nullable data);
 
 @protocol SnapyrIntegrationFactory;
