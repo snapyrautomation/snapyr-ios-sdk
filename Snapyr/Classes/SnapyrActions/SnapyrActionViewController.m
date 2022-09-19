@@ -51,6 +51,12 @@
         }
     }
     // Window not yet displayed at this point - that will happen when `finishDisplayingWebView` is called
+    
+    
+
+    
+    
+    [self addCloseButton];
 }
 
 - (void)finishDisplayingWebView
@@ -99,6 +105,44 @@
         DLog(@"SnapyrActionViewController.didReceiveScriptMessage: Other message type: %@", decodedMsg);
     }
     
+}
+
+- (void)addCloseButton
+{
+    CGFloat buttonSize = 32;
+    
+    UIButton *_button = [UIButton buttonWithType:UIButtonTypeCustom];
+    [_button setTitle:@"×" forState:UIControlStateNormal];
+    
+    // We'll be setting our own constraints later, disable auto ones as they make the button look wrong
+    _button.translatesAutoresizingMaskIntoConstraints = NO;
+    // Trigger close when button is tapped
+    [_button addTarget:self action:@selector(handleDismiss) forControlEvents:UIControlEventTouchUpInside];
+
+    // Make the button round and nice looking
+    [_button.layer setCornerRadius:(buttonSize / 2)];
+    [_button.layer setShadowColor:[[UIColor blackColor] CGColor]];
+    [_button.layer setShadowRadius:5];
+    [_button.layer setShadowOpacity:0.5];
+    [_button.layer setBorderColor:[[UIColor colorWithWhite:0.0 alpha:0.25] CGColor]];
+    [_button.layer setBorderWidth:1];
+
+    [_button setBackgroundColor:[UIColor blackColor]];
+    [_button setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    
+    // Add it to the actual view so it renders. NB we add the button to the outer controller view, rather than to _msgView,
+    // to ensure that taps on the outer edge of the button aren't clipped
+    [self.view addSubview:_button];
+    
+    // NB constraints relative to another view (in this case, _msgView) can only be applied after
+    // connecting the button to that view. i.e. be sure to add these AFTER adding button as subview
+
+    // Center the button around the left corner of the message view - it will partly overlap and partly overflow the message
+    [_button.centerYAnchor constraintEqualToAnchor:_msgView.topAnchor].active = YES;
+    [_button.centerXAnchor constraintEqualToAnchor:_msgView.leftAnchor].active = YES;
+    // Enforce button size to keep it round
+    [_button.widthAnchor constraintEqualToConstant:buttonSize].active = YES;
+    [_button.heightAnchor constraintEqualToConstant:buttonSize].active = YES;
 }
 
 - (void)viewWillDisappear:(BOOL)animated
