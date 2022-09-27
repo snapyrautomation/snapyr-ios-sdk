@@ -52,10 +52,6 @@
     }
     // Window not yet displayed at this point - that will happen when `finishDisplayingWebView` is called
     
-    
-
-    
-    
     [self addCloseButton];
 }
 
