@@ -59,8 +59,11 @@
     [self addCloseButton];
 }
 
-- (void)finishDisplayingWebView
+- (void)finishDisplayingWebViewWithHeight:(NSNumber *)height
 {
+    if (height) {
+        [_msgView reportContentHeight:height];
+    }
     [_uiWindow makeKeyAndVisible];
 }
 
@@ -98,7 +101,7 @@
         DLog(@"SnapyrActionViewController.didReceiveScriptMessage: Closing...");
         [self handleDismiss];
     } else if ([decodedMsg[@"type"] isEqual:@"loaded"]) {
-        [self finishDisplayingWebView];
+        [self finishDisplayingWebViewWithHeight:decodedMsg[@"height"]];
     } else if ([decodedMsg[@"type"] isEqual:@"click"]) {
         [self handleClickWithPayload:decodedMsg];
     } else {

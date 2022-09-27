@@ -25,21 +25,7 @@
         WKWebViewConfiguration *configuration = [[WKWebViewConfiguration alloc] init];
         [configuration.userContentController addScriptMessageHandler:messageHandler name:@"snapyrMessageHandler"];
         
-        CGFloat defaultMargin = 20.0;
-        // Full screen in-app modal: webview size is ~ screen size minus margins...
-        CGRect bounds = UIScreen.mainScreen.bounds;
-        bounds.size.width -= (2 * defaultMargin);
-        bounds.size.height -= (2 * defaultMargin);
-        
-        if (@available(iOS 11.0, *)) {
-            UIApplication *sharedApp = getSharedUIApplication();
-            if (sharedApp != nil) {
-                // ... minus safe area insets, if applicable (safe area accounts for notches and such)
-                UIEdgeInsets safeAreaInsets = sharedApp.keyWindow.safeAreaInsets;
-                bounds.size.height -= (safeAreaInsets.top + safeAreaInsets.bottom);
-                bounds.size.width  -= (safeAreaInsets.left + safeAreaInsets.right);
-            }
-        }
+        CGRect bounds = [self getStartingBounds];
         
         _wkWebView = [[WKWebView alloc] initWithFrame:bounds configuration:configuration];
 
@@ -61,6 +47,38 @@
     }
     
     return self;
+}
+
+
+- (CGRect)getStartingBounds {
+    CGFloat defaultMargin = 20.0;
+    // Full screen in-app modal: webview size is ~ screen size minus margins...
+    CGRect bounds = [UIScreen mainScreen].bounds;
+    bounds.size.width -= (2 * defaultMargin);
+    bounds.size.height -= (2 * defaultMargin);
+    
+    if (@available(iOS 11.0, *)) {
+        UIApplication *sharedApp = getSharedUIApplication();
+        if (sharedApp != nil) {
+            // ... minus safe area insets, if applicable (safe area accounts for notches and such)
+            UIEdgeInsets safeAreaInsets = sharedApp.keyWindow.safeAreaInsets;
+            bounds.size.height -= (safeAreaInsets.top + safeAreaInsets.bottom);
+            bounds.size.width  -= (safeAreaInsets.left + safeAreaInsets.right);
+        }
+    }
+    return bounds;
+}
+
+- (void)reportContentHeight:(NSNumber *)height {
+    float scaledHeight = [height floatValue] / [UIScreen mainScreen].scale;
+    CGRect bounds = _wkWebView.bounds;
+    bounds.size.height = scaledHeight + 8;
+    CGRect maximumBounds = [self getStartingBounds];
+    if (bounds.size.height > maximumBounds.size.height) {
+        return;
+    }
+    
+    [_wkWebView setFrame:bounds];
 }
 
 - (void)doCleanup {
