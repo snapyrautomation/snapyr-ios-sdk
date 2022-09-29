@@ -8,6 +8,7 @@ NS_ASSUME_NONNULL_BEGIN
 @interface SnapyrActionMessageView : UIView <WKNavigationDelegate>
 
 - (instancetype _Nonnull)initWithHTML:(NSString *)htmlPayload withMessageHandler:(id <WKScriptMessageHandler>)scriptMessageHandler;
+- (void)reportContentHeight:(NSNumber *)height;
 - (void)doCleanup;
 
 @end

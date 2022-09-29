@@ -35,3 +35,6 @@ Carthage
 Pods/
 .clang-format
 .idea
+
+# Custom build artifacts
+builtframework/

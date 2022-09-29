@@ -33,7 +33,7 @@
 		DA142C3B2798B88B0050D26F /* usr in Resources */ = {isa = PBXBuildFile; fileRef = F6B81350264DE26A00B12EFA /* usr */; };
 		DA66EF5E28B0111B006C0AE0 /* SnapyrActionProcessor.m in Sources */ = {isa = PBXBuildFile; fileRef = DA66EF5C28B0111B006C0AE0 /* SnapyrActionProcessor.m */; };
 		DA66EF5F28B0111B006C0AE0 /* SnapyrActionProcessor.h in Headers */ = {isa = PBXBuildFile; fileRef = DA66EF5D28B0111B006C0AE0 /* SnapyrActionProcessor.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		DA909C6D28C8DB1900408FC3 /* SnapyrInAppMessage.h in Headers */ = {isa = PBXBuildFile; fileRef = DA909C6B28C8DB1900408FC3 /* SnapyrInAppMessage.h */; };
+		DA909C6D28C8DB1900408FC3 /* SnapyrInAppMessage.h in Headers */ = {isa = PBXBuildFile; fileRef = DA909C6B28C8DB1900408FC3 /* SnapyrInAppMessage.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		DA909C6E28C8DB1900408FC3 /* SnapyrInAppMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = DA909C6C28C8DB1900408FC3 /* SnapyrInAppMessage.m */; };
 		DAA6194B28BD6780006D2523 /* SnapyrActionMessageView.m in Sources */ = {isa = PBXBuildFile; fileRef = DAA6194A28BD6780006D2523 /* SnapyrActionMessageView.m */; };
 		DAA6194D28BD67C8006D2523 /* SnapyrActionMessageView.h in Headers */ = {isa = PBXBuildFile; fileRef = DAA6194C28BD67C2006D2523 /* SnapyrActionMessageView.h */; settings = {ATTRIBUTES = (Public, ); }; };
