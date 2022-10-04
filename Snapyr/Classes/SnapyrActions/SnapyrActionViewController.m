@@ -21,13 +21,10 @@
     return self;
 }
 
-- (void)viewDidLoad {
-    [super viewDidLoad];
-}
-
 - (void)showHtmlMessage
 {
     _msgView = [[SnapyrActionMessageView alloc] initWithHTML:_htmlPayload withMessageHandler:self];
+    self.view.alpha = 0;
     [self.view addSubview:_msgView];
     // Center the modal both horizontally and vertically
     [_msgView.centerXAnchor constraintEqualToAnchor:self.view.centerXAnchor].active = YES;
@@ -35,6 +32,7 @@
 
     // Create new window with size set to match that of the device screen
     _uiWindow = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
+    _uiWindow.alpha = 0;
     // Place it in front
     _uiWindow.windowLevel = UIWindowLevelAlert;
     // 50% transparent black - shadow background
@@ -55,12 +53,29 @@
     [self addCloseButton];
 }
 
-- (void)finishDisplayingWebViewWithHeight:(NSNumber *)height
+- (void)onWebViewDidFinishNavigation
+{
+    [self finishDisplayingWebViewIfReady];
+}
+
+- (void)onJsLoadedEvent:(NSNumber *)height
 {
     if (height) {
         [_msgView reportContentHeight:height];
     }
+}
+
+- (void)finishDisplayingWebViewIfReady
+{
+    [self.view layoutIfNeeded];
+    self.uiWindow.alpha = 1.0;
     [_uiWindow makeKeyAndVisible];
+    self.view.transform = CGAffineTransformMakeScale(0.7, 0.7);
+    [UIView animateWithDuration:0.3f animations:^{
+        self.view.transform = CGAffineTransformMakeScale(1.0, 1.0);
+        self.view.alpha = 1.0;
+        [self.view layoutIfNeeded];
+    }];
 }
 
 - (void)handleClickWithPayload:(NSDictionary *)payload
@@ -97,7 +112,7 @@
         DLog(@"SnapyrActionViewController.didReceiveScriptMessage: Closing...");
         [self handleDismiss];
     } else if ([decodedMsg[@"type"] isEqual:@"loaded"]) {
-        [self finishDisplayingWebViewWithHeight:decodedMsg[@"height"]];
+        [self onJsLoadedEvent:decodedMsg[@"height"]];
     } else if ([decodedMsg[@"type"] isEqual:@"click"]) {
         [self handleClickWithPayload:decodedMsg];
     } else {
@@ -110,38 +125,38 @@
 {
     CGFloat buttonSize = 32;
     
-    UIButton *_button = [UIButton buttonWithType:UIButtonTypeCustom];
-    [_button setTitle:@"×" forState:UIControlStateNormal];
+    UIButton *_closeButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    [_closeButton setTitle:@"×" forState:UIControlStateNormal];
     
     // We'll be setting our own constraints later, disable auto ones as they make the button look wrong
-    _button.translatesAutoresizingMaskIntoConstraints = NO;
+    _closeButton.translatesAutoresizingMaskIntoConstraints = NO;
     // Trigger close when button is tapped
-    [_button addTarget:self action:@selector(handleDismiss) forControlEvents:UIControlEventTouchUpInside];
+    [_closeButton addTarget:self action:@selector(handleDismiss) forControlEvents:UIControlEventTouchUpInside];
 
     // Make the button round and nice looking
-    [_button.layer setCornerRadius:(buttonSize / 2)];
-    [_button.layer setShadowColor:[[UIColor blackColor] CGColor]];
-    [_button.layer setShadowRadius:5];
-    [_button.layer setShadowOpacity:0.5];
-    [_button.layer setBorderColor:[[UIColor colorWithWhite:0.0 alpha:0.25] CGColor]];
-    [_button.layer setBorderWidth:1];
+    [_closeButton.layer setCornerRadius:(buttonSize / 2)];
+    [_closeButton.layer setShadowColor:[[UIColor blackColor] CGColor]];
+    [_closeButton.layer setShadowRadius:5];
+    [_closeButton.layer setShadowOpacity:0.5];
+    [_closeButton.layer setBorderColor:[[UIColor colorWithWhite:0.0 alpha:0.25] CGColor]];
+    [_closeButton.layer setBorderWidth:1];
 
-    [_button setBackgroundColor:[UIColor blackColor]];
-    [_button setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    [_closeButton setBackgroundColor:[UIColor blackColor]];
+    [_closeButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     
     // Add it to the actual view so it renders. NB we add the button to the outer controller view, rather than to _msgView,
     // to ensure that taps on the outer edge of the button aren't clipped
-    [self.view addSubview:_button];
+    [self.view addSubview:_closeButton];
     
     // NB constraints relative to another view (in this case, _msgView) can only be applied after
     // connecting the button to that view. i.e. be sure to add these AFTER adding button as subview
 
-    // Center the button around the left corner of the message view - it will partly overlap and partly overflow the message
-    [_button.centerYAnchor constraintEqualToAnchor:_msgView.topAnchor].active = YES;
-    [_button.centerXAnchor constraintEqualToAnchor:_msgView.leftAnchor].active = YES;
+    // Center the button around the right corner of the message view - it will partly overlap and partly overflow the message
+    [_closeButton.centerYAnchor constraintEqualToAnchor:_msgView.topAnchor].active = YES;
+    [_closeButton.centerXAnchor constraintEqualToAnchor:_msgView.rightAnchor].active = YES;
     // Enforce button size to keep it round
-    [_button.widthAnchor constraintEqualToConstant:buttonSize].active = YES;
-    [_button.heightAnchor constraintEqualToConstant:buttonSize].active = YES;
+    [_closeButton.widthAnchor constraintEqualToConstant:buttonSize].active = YES;
+    [_closeButton.heightAnchor constraintEqualToConstant:buttonSize].active = YES;
 }
 
 - (void)viewWillDisappear:(BOOL)animated
