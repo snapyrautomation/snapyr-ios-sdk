@@ -2,25 +2,29 @@
 #if !TARGET_OS_OSX && !TARGET_OS_TV
 
 #import "SnapyrUtils.h"
+#import "SnapyrActionViewHandler.h"
+#import "SnapyrActionMessageView.h"
 #import <Foundation/Foundation.h>
 #import <WebKit/WebKit.h>
 
 
-@interface SnapyrActionMessageView : UIView <WKNavigationDelegate, WKUIDelegate>
+@interface SnapyrActionMessageView ()
 
 @property (strong, nonatomic, nonnull) NSString *htmlPayload;
 @property (strong, nonatomic) WKWebView *wkWebView;
+@property (weak) id <SnapyrActionViewHandler> snapyrVC;
 
 @end
 
 
 @implementation SnapyrActionMessageView
 
-- (instancetype _Nonnull)initWithHTML:(NSString *)htmlPayload withMessageHandler:(id <WKScriptMessageHandler>)messageHandler {
+- (instancetype _Nonnull)initWithHTML:(NSString *)htmlPayload withMessageHandler:(id <WKScriptMessageHandler, SnapyrActionViewHandler>)messageHandler {
     if (self = [super init]) {
         self.translatesAutoresizingMaskIntoConstraints = false;
     
         self.htmlPayload = htmlPayload;
+        self.snapyrVC = messageHandler;
         
         WKWebViewConfiguration *configuration = [[WKWebViewConfiguration alloc] init];
         [configuration.userContentController addScriptMessageHandler:messageHandler name:@"snapyrMessageHandler"];
@@ -49,6 +53,10 @@
     return self;
 }
 
+- (void)webView:(WKWebView *)webView didFinishNavigation:(WKNavigation *)navigation
+{
+    [_snapyrVC onWebViewDidFinishNavigation];
+}
 
 - (CGRect)getStartingBounds {
     CGFloat defaultMargin = 20.0;
