@@ -42,6 +42,14 @@
 @property (nonatomic, copy, readwrite) NSString *writeKey;
 @property (nonatomic, strong, readonly) NSMutableArray *factories;
 @property (nonatomic, strong) SnapyrSDKExperimental *experimental;
+/**
+ * The SDK will fetch on startup, then regularly poll for, queued in-app actions that may not have been received in the response of a regular batch request.
+ * 30 seconds by default.
+ * If set to 0, polling will be disabled (not recommended).
+ *
+ * NB: PRIVATE FOR v1.0.2. MOVE BACK TO .h FILE FOR v1.1.0 RELEASE!
+ */
+@property (nonatomic, assign) NSTimeInterval actionPollInterval;
 
 - (instancetype)initWithWriteKey:(NSString *)writeKey defaultAPIHost:(NSURL * _Nullable)defaultAPIHost;
 
@@ -94,7 +102,7 @@
         self.flushAt = 20;
 		self.swizzleAppDelegateAndUserNotificationsDelegate = YES;
         self.flushInterval = 30;
-        self.actionPollInterval = 30;
+        self.actionPollInterval = 0; // default to disabled for v1.0.2 - to be upated with v1.1.0
         self.maxQueueSize = 1000;
         self.payloadFilters = @{
             @"(fb\\d+://authorize#access_token=)([^ ]+)": @"$1((redacted/fb-auth-token))"

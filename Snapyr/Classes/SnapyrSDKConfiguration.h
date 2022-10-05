@@ -138,13 +138,6 @@ NS_SWIFT_NAME(SnapyrConfiguration)
 @property (nonatomic, assign) NSUInteger maxQueueSize;
 
 /**
- * The SDK will fetch on startup, then regularly poll for, queued in-app actions that may not have been received in the response of a regular batch request.
- * 30 seconds by default.
- * If set to 0, polling will be disabled (not recommended).
- */
-@property (nonatomic, assign) NSTimeInterval actionPollInterval;
-
-/**
  * Whether the sdk should automatically make a track call for application lifecycle events, such as "Application Installed", "Application Updated" and "Application Opened".
  */
 @property (nonatomic, assign) BOOL trackApplicationLifecycleEvents;

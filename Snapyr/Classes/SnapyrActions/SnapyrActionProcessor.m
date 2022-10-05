@@ -49,19 +49,6 @@
         
         self.actionProcessedData = [[NSMutableDictionary alloc] init];
         self.lastActionTimestamp = 0;
-
-        if (self.configuration.actionPollInterval > 0) {
-            // Check for queued actions immediately, then poll on a timer
-            [self pollForActions];
-            self.actionPollTimer = [NSTimer timerWithTimeInterval:self.configuration.actionPollInterval
-                                                      target:self
-                                                    selector:@selector(pollForActions)
-                                                    userInfo:nil
-                                                     repeats:YES];
-
-            [NSRunLoop.mainRunLoop addTimer:self.actionPollTimer
-                                    forMode:NSDefaultRunLoopMode];
-        }
     }
     return self;
 }
