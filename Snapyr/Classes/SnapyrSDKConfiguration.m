@@ -87,7 +87,6 @@
     if (self = [super init]) {
         self.experimental = [[SnapyrSDKExperimental alloc] init];
         self.shouldUseLocationServices = NO;
-        self.enableDevEnvironment = NO;
         self.snapyrEnvironment = SnapyrEnvironmentDefault;
         self.enableAdvertisingTracking = YES;
         self.shouldUseBluetooth = NO;

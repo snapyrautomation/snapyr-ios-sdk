@@ -88,14 +88,9 @@ NS_SWIFT_NAME(SnapyrConfiguration)
 @property (nonatomic, copy, readonly, nullable) NSURL *apiHost;
 
 /**
- * Whether to use dev endpoints for API config and engine. `NO` by default.
- * If `NO`, uses production endpoints (`api.snapyr.com` and `engine.snapyr.com`)
- * If `YES`, uses dev endpoints (`api.snapyrdev.net` and `dev-engine.snapyrdev.net`)
- *
- * This is deprecated. Use `snapyrEnvironment` instead.
+ * Snapyr internal use only: The Snapyr environment to use (engine and configs).
+ * Defaults to production if not set.
  */
-@property (nonatomic, assign) BOOL enableDevEnvironment DEPRECATED_MSG_ATTRIBUTE("Use .snapyrEnvironment instead.");
-
 @property (nonatomic, assign) SnapyrEnvironment snapyrEnvironment;
 
 /**
