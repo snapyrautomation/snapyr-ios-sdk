@@ -1,5 +1,5 @@
 XC_ARGS := -project Snapyr.xcodeproj GCC_INSTRUMENT_PROGRAM_FLOW_ARCS=YES
-IOS_XCARGS := $(XC_ARGS) -destination "platform=iOS Simulator,name=iPhone 11" -sdk iphonesimulator
+IOS_XCARGS := $(XC_ARGS) -destination "platform=iOS Simulator,name=iPhone 12" -sdk iphonesimulator
 TVOS_XCARGS := $(XC_ARGS) -destination "platform=tvOS Simulator,name=Apple TV"
 MACOS_XCARGS := $(XC_ARGS) -destination "platform=macOS"
 XC_BUILD_ARGS := -scheme Snapyr ONLY_ACTIVE_ARCH=NO
