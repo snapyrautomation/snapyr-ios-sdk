@@ -123,26 +123,35 @@
 
 - (void)addCloseButton
 {
-    CGFloat buttonSize = 32;
+    CGFloat buttonSize = DEFAULT_MARGIN * 1.8;
     
     UIButton *_closeButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    [_closeButton setTitle:@"×" forState:UIControlStateNormal];
+    // Note for future updates: `overlay_close` image is stored in the Asset Catalog, `Media.xcassets` - open this in the top level of this Xcode project. To change, must update the item in the Asset Catalog. It needs to be a PDF - you can use an SVG to PDF converter (this worked the first time: https://cloudconvert.com/svg-to-pdf). After adding to Asset Catalog, rename to `overlay_close` (or change name below), select the image and open the Attributes Inspector. Check `Resizing -> Preserve Vector Data`, and select `Single Scale` under `Scales`. Leave other settings at defaults.
+    
+    // NB by default iOS will look for the image in the customer app's bundle, even though this code is running from within our SDK framework. The following line gets the bundle for the SDK framework so it can find the included assets.
+    NSBundle *bundle = [NSBundle bundleForClass:[self class]];
+    UIImage *buttonImg = [UIImage imageNamed:@"overlay_close" inBundle:bundle compatibleWithTraitCollection:nil];
+    if (buttonImg != nil) {
+        CGFloat scaleFactor = buttonSize / buttonImg.size.width;
+        [_closeButton setImage:buttonImg forState:UIControlStateNormal];
+        _closeButton.imageEdgeInsets = UIEdgeInsetsMake(buttonSize, buttonSize, buttonSize, buttonSize);
+    } else {
+        // Shouldn't happen, but fall back to basic text-based button if image couldn't be loaded
+        [_closeButton setTitle:@"×" forState:UIControlStateNormal];
+        // Make the button round and nice looking
+        [_closeButton.layer setCornerRadius:(buttonSize / 2)];
+        [_closeButton.layer setBorderColor:[[UIColor whiteColor] CGColor]];
+        [_closeButton.layer setBorderWidth:buttonSize * 0.1];
+
+        [_closeButton setBackgroundColor:[UIColor blackColor]];
+        [_closeButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+        _closeButton.titleLabel.font = [UIFont boldSystemFontOfSize:buttonSize * 0.8];
+    }
     
     // We'll be setting our own constraints later, disable auto ones as they make the button look wrong
     _closeButton.translatesAutoresizingMaskIntoConstraints = NO;
     // Trigger close when button is tapped
     [_closeButton addTarget:self action:@selector(handleDismiss) forControlEvents:UIControlEventTouchUpInside];
-
-    // Make the button round and nice looking
-    [_closeButton.layer setCornerRadius:(buttonSize / 2)];
-    [_closeButton.layer setShadowColor:[[UIColor blackColor] CGColor]];
-    [_closeButton.layer setShadowRadius:5];
-    [_closeButton.layer setShadowOpacity:0.5];
-    [_closeButton.layer setBorderColor:[[UIColor colorWithWhite:0.0 alpha:0.25] CGColor]];
-    [_closeButton.layer setBorderWidth:1];
-
-    [_closeButton setBackgroundColor:[UIColor blackColor]];
-    [_closeButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     
     // Add it to the actual view so it renders. NB we add the button to the outer controller view, rather than to _msgView,
     // to ensure that taps on the outer edge of the button aren't clipped

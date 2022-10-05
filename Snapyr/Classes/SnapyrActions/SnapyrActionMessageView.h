@@ -6,6 +6,8 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+extern CGFloat const DEFAULT_MARGIN;
+
 @interface SnapyrActionMessageView : UIView <WKNavigationDelegate, WKUIDelegate>
 
 - (instancetype _Nonnull)initWithHTML:(NSString *)htmlPayload withMessageHandler:(id <WKScriptMessageHandler, SnapyrActionViewHandler>)scriptMessageHandler;

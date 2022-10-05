@@ -31,6 +31,8 @@
 		A3B6E29925116B3A00609A13 /* Snapyr.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EADEB85B1DECD080005322DA /* Snapyr.framework */; };
 		A3BECDD024BCE1E3009E2BD3 /* ObjcUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = A3BECDCF24BCE1E3009E2BD3 /* ObjcUtils.m */; };
 		DA142C3B2798B88B0050D26F /* usr in Resources */ = {isa = PBXBuildFile; fileRef = F6B81350264DE26A00B12EFA /* usr */; };
+		DA4B565F28EBAA74001AE052 /* SnapyrActionViewHandler.h in Headers */ = {isa = PBXBuildFile; fileRef = DA4B565E28EBAA74001AE052 /* SnapyrActionViewHandler.h */; };
+		DA4B566328EBF2F5001AE052 /* Media.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = DA4B566228EBF2F5001AE052 /* Media.xcassets */; };
 		DA66EF5E28B0111B006C0AE0 /* SnapyrActionProcessor.m in Sources */ = {isa = PBXBuildFile; fileRef = DA66EF5C28B0111B006C0AE0 /* SnapyrActionProcessor.m */; };
 		DA66EF5F28B0111B006C0AE0 /* SnapyrActionProcessor.h in Headers */ = {isa = PBXBuildFile; fileRef = DA66EF5D28B0111B006C0AE0 /* SnapyrActionProcessor.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		DA909C6D28C8DB1900408FC3 /* SnapyrInAppMessage.h in Headers */ = {isa = PBXBuildFile; fileRef = DA909C6B28C8DB1900408FC3 /* SnapyrInAppMessage.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -144,6 +146,8 @@
 		A352175F23AD5825005B07F6 /* SnapyrMacros.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SnapyrMacros.h; sourceTree = "<group>"; };
 		A3BECDCE24BCE1E3009E2BD3 /* ObjcUtils.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ObjcUtils.h; sourceTree = "<group>"; };
 		A3BECDCF24BCE1E3009E2BD3 /* ObjcUtils.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ObjcUtils.m; sourceTree = "<group>"; };
+		DA4B565E28EBAA74001AE052 /* SnapyrActionViewHandler.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SnapyrActionViewHandler.h; sourceTree = "<group>"; };
+		DA4B566228EBF2F5001AE052 /* Media.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Media.xcassets; sourceTree = "<group>"; };
 		DA66EF5C28B0111B006C0AE0 /* SnapyrActionProcessor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SnapyrActionProcessor.m; sourceTree = "<group>"; };
 		DA66EF5D28B0111B006C0AE0 /* SnapyrActionProcessor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SnapyrActionProcessor.h; sourceTree = "<group>"; };
 		DA909C6B28C8DB1900408FC3 /* SnapyrInAppMessage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SnapyrInAppMessage.h; sourceTree = "<group>"; };
@@ -269,6 +273,7 @@
 				DAA6194C28BD67C2006D2523 /* SnapyrActionMessageView.h */,
 				DAA6194E28BD6F4A006D2523 /* SnapyrActionViewController.h */,
 				DAA6195028BD72D0006D2523 /* SnapyrActionViewController.m */,
+				DA4B565E28EBAA74001AE052 /* SnapyrActionViewHandler.h */,
 			);
 			path = SnapyrActions;
 			sourceTree = "<group>";
@@ -276,6 +281,7 @@
 		EADEB8511DECD080005322DA = {
 			isa = PBXGroup;
 			children = (
+				DA4B566228EBF2F5001AE052 /* Media.xcassets */,
 				F6B81350264DE26A00B12EFA /* usr */,
 				EADEB85D1DECD080005322DA /* SDK */,
 				EADEB86B1DECD0EF005322DA /* SDKTests */,
@@ -481,6 +487,7 @@
 				7304B25A27DB3F67008FB718 /* SnapyrNotificationsProxy.h in Headers */,
 				A352176023AD5825005B07F6 /* SnapyrMacros.h in Headers */,
 				EADEB8D21DECD12B005322DA /* SnapyrUserDefaultsStorage.h in Headers */,
+				DA4B565F28EBAA74001AE052 /* SnapyrActionViewHandler.h in Headers */,
 				EADEB8D01DECD12B005322DA /* SnapyrStoreKitTracker.h in Headers */,
 				EADEB8D41DECD12B005322DA /* SnapyrUtils.h in Headers */,
 				EADEB8601DECD080005322DA /* Snapyr.h in Headers */,
@@ -581,6 +588,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				DA4B566328EBF2F5001AE052 /* Media.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
