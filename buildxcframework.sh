@@ -1,6 +1,6 @@
 #!/bin/bash
 echo "Creating directory 'builtframework' where XCFramework will be stored"
-mkdir builtframework/.archives
+mkdir -p builtframework/.archives
 
 rm -r builtframework/Snapyr.xcframework.zip
 rm -r builtframework/Snapyr.xcframework
@@ -62,6 +62,6 @@ cd builtframework
 zip -vr Snapyr.xcframework.zip Snapyr.xcframework/
 
 rm -r .archives
-rm -r builtframework/Snapyr.xcframework
+rm -r Snapyr.xcframework
 
 echo "Archive finished"

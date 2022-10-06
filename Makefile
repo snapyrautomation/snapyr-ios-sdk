@@ -11,6 +11,12 @@ bootstrap:
 lint:
 	pod lib lint --allow-warnings
 
+# NOTE: as of 2022-10-06 we no longer use/support carthage. We now use/support XCFrameworks instead.
+# Use `make archive` instead to build the XCFramework.
+# Leaving this here temporarily in case it's needed for some reason; will remove in a future update.
+# At present running `make carthage` will encounter errors if run from an arm64 machine (i.e. M1 or newer
+# Mac). There are hacks available to address this but not bothering to implement those now - see
+# https://github.com/Carthage/Carthage/blob/master/Documentation/Xcode12Workaround.md#workaround-script
 carthage:
 	export XCODE_XCCONFIG_FILE=$(PWD)/tmp.xcconfig && carthage build --platform ios --no-skip-current
 
