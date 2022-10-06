@@ -55,7 +55,7 @@
 
 - (void)onWebViewDidFinishNavigation
 {
-    [self finishDisplayingWebViewIfReady];
+    [self finishDisplayingWebView];
 }
 
 - (void)onJsLoadedEvent:(NSNumber *)height
@@ -65,7 +65,7 @@
     }
 }
 
-- (void)finishDisplayingWebViewIfReady
+- (void)finishDisplayingWebView
 {
     [self.view layoutIfNeeded];
     self.uiWindow.alpha = 1.0;
