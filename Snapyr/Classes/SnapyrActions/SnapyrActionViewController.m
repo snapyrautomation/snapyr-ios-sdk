@@ -80,8 +80,11 @@
 
 - (void)handleClickWithPayload:(NSDictionary *)payload
 {
-    if (self.actionHandler != nil) {
-        self.actionHandler(payload);
+    [self handleDismiss];
+    UIApplication *sharedApp = getSharedUIApplication();
+    if (sharedApp != nil && [payload[@"url"] isKindOfClass:[NSString class]]) {
+        NSURL *url = [NSURL URLWithString:payload[@"url"]];
+        [sharedApp openURL:url options:@{} completionHandler:nil];
     }
 }
 
