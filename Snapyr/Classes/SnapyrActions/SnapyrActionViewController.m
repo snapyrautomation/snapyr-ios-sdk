@@ -7,14 +7,18 @@
 #import "SnapyrUtils.h"
 #import <UIKit/UIKit.h>
 
+@interface SnapyrActionViewController ()
+@property (nonatomic, assign) SnapyrSDK *sdk;
+@end
 
 @implementation SnapyrActionViewController
 
-- (instancetype)initWithHtml:(NSString *)htmlPayload
+- (instancetype)initWithSDK:(SnapyrSDK *)sdk withMessage:(SnapyrInAppMessage *)message
 {
     if (self = [super init]) {
         NSLog(@"Controller INIT!!!");
-        _htmlPayload = htmlPayload;
+        _sdk = sdk;
+        _message = message;
     }
     [self.view setNeedsLayout];
     
@@ -23,7 +27,7 @@
 
 - (void)showHtmlMessage
 {
-    _msgView = [[SnapyrActionMessageView alloc] initWithHTML:_htmlPayload withMessageHandler:self];
+    _msgView = [[SnapyrActionMessageView alloc] initWithHTML:_message.rawPayload withMessageHandler:self];
     self.view.alpha = 0;
     [self.view addSubview:_msgView];
     // Center the modal both horizontally and vertically

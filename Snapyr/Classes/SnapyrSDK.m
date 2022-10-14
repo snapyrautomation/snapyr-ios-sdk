@@ -40,7 +40,18 @@ static SnapyrSDK *__sharedInstance = nil;
 #if !TARGET_OS_OSX && !TARGET_OS_TV
 - (void)triggerTestInAppPopupWithHtml:(NSString *)htmlContent
 {
-    _inAppViewController = [[SnapyrActionViewController alloc] initWithHtml:htmlContent];
+    NSDictionary *samplePayload = @{
+        @"content": @{
+            @"payload": htmlContent,
+            @"payloadType": @"html",
+        },
+        @"actionType": @"overlay",
+        @"userId": @"user123",
+        @"actionToken": @"abcdef123456",
+        @"timestamp": @"2022-01-02T12:34:56Z",
+    };
+    SnapyrInAppMessage *message = [[SnapyrInAppMessage alloc] initWithActionPayload:samplePayload];
+    _inAppViewController = [[SnapyrActionViewController alloc] initWithSDK:self withMessage:message];
     
     dispatch_async(dispatch_get_main_queue(), ^{
         [self.inAppViewController showHtmlMessage];

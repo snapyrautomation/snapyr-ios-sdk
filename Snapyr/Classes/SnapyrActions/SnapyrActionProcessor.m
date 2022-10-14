@@ -76,11 +76,11 @@
     return [SnapyrState sharedInstance].userInfo.userId;
 }
 
-- (void)triggerInAppPopupWithHtml:(NSString *)htmlContent
+- (void)triggerInAppPopupWithMessage:(SnapyrInAppMessage *)message
 {
 #if !TARGET_OS_OSX && !TARGET_OS_TV
     dispatch_async(dispatch_get_main_queue(), ^{
-        [self setInAppViewController:[[SnapyrActionViewController alloc] initWithHtml:htmlContent]];
+        [self setInAppViewController:[[SnapyrActionViewController alloc] initWithSDK:self.sdk withMessage:message]];
         [self.inAppViewController setActionHandler:self.configuration.actionHandler];
         [self.inAppViewController showHtmlMessage];
     });
@@ -155,7 +155,7 @@
         self.actionProcessedData[message.actionToken] = @YES;
         
         if ([message displaysOverlay]) {
-            [self triggerInAppPopupWithHtml:message.rawPayload];
+            [self triggerInAppPopupWithMessage:message];
         } else if (self.configuration.actionHandler != nil) {
             // NB: using `mainQueue` ensures client actionHandler callback is run on the main (UI) thread,
             // which is probably what the client expects. If they want to do things off the main thread they
