@@ -25,7 +25,6 @@ let package = Package(
             name: "Snapyr",
             dependencies: [],
             path: "Snapyr/",
-            exclude: ["SwiftSources"],
             sources: ["Classes", "Internal"],
             publicHeadersPath: "Classes",
             cSettings: [
