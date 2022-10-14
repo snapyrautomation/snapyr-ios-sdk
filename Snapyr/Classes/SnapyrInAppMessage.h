@@ -17,6 +17,7 @@ typedef NS_ENUM(NSInteger, SnapyrInAppContentType) {
 @property (readonly) SnapyrInAppActionType actionType;
 @property (readonly) SnapyrInAppContentType contentType;
 @property (strong, readonly) NSString *rawPayload;
+@property (readonly) NSDate *timestamp;
 
 - (instancetype)initWithActionPayload:(NSDictionary * _Nonnull)rawAction;
 - (BOOL)displaysOverlay;

@@ -1,4 +1,5 @@
 #import <Foundation/Foundation.h>
+#import "SnapyrUtils.h"
 #import "SnapyrInAppMessage.h"
 
 NSString *const kActionTypeOverlay = @"overlay";
@@ -73,6 +74,19 @@ NSString *const kContentTypeHtml  = @"html";
                                          userInfo:nil];
         }
         _actionToken = [actionToken copy];
+        
+        NSString *rawTimestamp = rawAction[@"timestamp"];
+        if ([rawTimestamp length] == 0) {
+            @throw [NSException exceptionWithName:@"Bad Initialization"
+                                           reason:@"Missing `timestamp`."
+                                         userInfo:nil];
+        }
+        _timestamp = dateFromIso8601String(rawTimestamp);
+        if (_timestamp == nil) {
+            @throw [NSException exceptionWithName:@"Bad Initialization"
+                                           reason:@"Invalid `timestamp`."
+                                         userInfo:nil];
+        }
         
     }
     

@@ -61,6 +61,7 @@ NSString *getMacUUID(void);
 // Date Utils
 NSString *iso8601FormattedString(NSDate *date);
 NSString *iso8601NanoFormattedString(NSDate *date);
+NSDate *dateFromIso8601String(NSString *string);
 
 void trimQueue(NSMutableArray *array, NSUInteger size);
 
