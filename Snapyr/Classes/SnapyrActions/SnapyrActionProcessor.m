@@ -90,7 +90,11 @@
 - (void)pollForActions
 {
     [self dispatchBackground:^{
-        [self.httpClient fetchActionsForUser:[self userId] forWriteKey:self.configuration.writeKey completionHandler:^(BOOL success, NSArray *pendingActions) {
+        NSString *userId = [self userId];
+        if (!userId) {
+            return;
+        }
+        [self.httpClient fetchActionsForUser:userId forWriteKey:self.configuration.writeKey completionHandler:^(BOOL success, NSArray *pendingActions) {
             if (!success) {
                 return;
             }

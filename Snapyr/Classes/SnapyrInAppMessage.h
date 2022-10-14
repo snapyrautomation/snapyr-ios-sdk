@@ -22,6 +22,7 @@ typedef NS_ENUM(NSInteger, SnapyrInAppContentType) {
 - (instancetype)initWithActionPayload:(NSDictionary * _Nonnull)rawAction;
 - (BOOL)displaysOverlay;
 - (NSDictionary *)asDict;
+- (NSString *)asJson;
 - (NSDictionary *)getContent;
 
 @end

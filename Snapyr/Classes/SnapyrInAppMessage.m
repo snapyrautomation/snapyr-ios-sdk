@@ -98,17 +98,6 @@ NSString *const kContentTypeHtml  = @"html";
     return (_actionType == SnapyrInAppActionTypeOverlay && _contentType == SnapyrInAppContentTypeHtml);
 }
 
-- (NSDictionary *)asDict
-{
-    return @{
-        @"timestamp": iso8601FormattedString(_timestamp),
-        @"userId": _userId,
-        @"actionToken": _actionToken,
-        @"actionType": (_actionType == SnapyrInAppActionTypeCustom) ? kActionTypeCustom : kActionTypeOverlay,
-        @"content": [self getContent],
-    };
-}
-
 - (NSDictionary *)getContent
 {
     if (_contentType == SnapyrInAppContentTypeJson) {
@@ -116,6 +105,30 @@ NSString *const kContentTypeHtml  = @"html";
     } else {
         return @{@"payloadType": kContentTypeHtml, @"payload": _rawPayload};
     }
+}
+
+- (NSDictionary *)asDict
+{
+    NSDictionary *dict = @{
+        @"timestamp": iso8601FormattedString(_timestamp),
+        @"userId": [_userId copy],
+        @"actionToken": [_actionToken copy],
+        @"actionType": (_actionType == SnapyrInAppActionTypeCustom) ? kActionTypeCustom : kActionTypeOverlay,
+        @"content": [self getContent],
+    };
+
+    return dict;
+}
+
+- (NSString *)asJson
+{
+    NSDictionary *dict = [self asDict];
+    NSError *error;
+    NSData *jsonData = [NSJSONSerialization dataWithJSONObject:dict
+                                                       options:NSJSONWritingPrettyPrinted error:&error];
+    NSString *jsonString = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
+    
+    return jsonString;
 }
 
 @end
