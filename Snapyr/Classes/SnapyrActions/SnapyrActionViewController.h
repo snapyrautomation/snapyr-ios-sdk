@@ -6,7 +6,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface SnapyrActionViewController : UIViewController <WKScriptMessageHandler>
+@interface SnapyrActionViewController : UIViewController <WKScriptMessageHandler, SnapyrActionViewHandler>
 
 @property (strong, nonatomic, nonnull) NSString *htmlPayload;
 @property (strong, atomic, nullable) SnapyrActionMessageView *msgView;
@@ -15,6 +15,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (instancetype)initWithHtml:(NSString *)htmlPayload;
 - (void)showHtmlMessage;
+- (void)onWebViewDidFinishNavigation;
 
 @end
 

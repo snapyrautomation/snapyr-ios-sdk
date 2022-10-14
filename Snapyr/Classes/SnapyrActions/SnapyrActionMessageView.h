@@ -2,12 +2,15 @@
 
 #import <UIKit/UIKit.h>
 #import <WebKit/WebKit.h>
+#import "SnapyrActionViewHandler.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface SnapyrActionMessageView : UIView <WKNavigationDelegate>
+extern CGFloat const DEFAULT_MARGIN;
 
-- (instancetype _Nonnull)initWithHTML:(NSString *)htmlPayload withMessageHandler:(id <WKScriptMessageHandler>)scriptMessageHandler;
+@interface SnapyrActionMessageView : UIView <WKNavigationDelegate, WKUIDelegate>
+
+- (instancetype _Nonnull)initWithHTML:(NSString *)htmlPayload withMessageHandler:(id <WKScriptMessageHandler, SnapyrActionViewHandler>)scriptMessageHandler;
 - (void)reportContentHeight:(NSNumber *)height;
 - (void)doCleanup;
 

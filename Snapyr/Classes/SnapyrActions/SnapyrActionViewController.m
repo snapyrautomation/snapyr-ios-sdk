@@ -21,13 +21,10 @@
     return self;
 }
 
-- (void)viewDidLoad {
-    [super viewDidLoad];
-}
-
 - (void)showHtmlMessage
 {
     _msgView = [[SnapyrActionMessageView alloc] initWithHTML:_htmlPayload withMessageHandler:self];
+    self.view.alpha = 0;
     [self.view addSubview:_msgView];
     // Center the modal both horizontally and vertically
     [_msgView.centerXAnchor constraintEqualToAnchor:self.view.centerXAnchor].active = YES;
@@ -35,6 +32,7 @@
 
     // Create new window with size set to match that of the device screen
     _uiWindow = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
+    _uiWindow.alpha = 0;
     // Place it in front
     _uiWindow.windowLevel = UIWindowLevelAlert;
     // 50% transparent black - shadow background
@@ -55,12 +53,29 @@
     [self addCloseButton];
 }
 
-- (void)finishDisplayingWebViewWithHeight:(NSNumber *)height
+- (void)onWebViewDidFinishNavigation
+{
+    [self finishDisplayingWebView];
+}
+
+- (void)onJsLoadedEvent:(NSNumber *)height
 {
     if (height) {
         [_msgView reportContentHeight:height];
     }
+}
+
+- (void)finishDisplayingWebView
+{
+    [self.view layoutIfNeeded];
+    self.uiWindow.alpha = 1.0;
     [_uiWindow makeKeyAndVisible];
+    self.view.transform = CGAffineTransformMakeScale(0.7, 0.7);
+    [UIView animateWithDuration:0.3f animations:^{
+        self.view.transform = CGAffineTransformMakeScale(1.0, 1.0);
+        self.view.alpha = 1.0;
+        [self.view layoutIfNeeded];
+    }];
 }
 
 - (void)handleClickWithPayload:(NSDictionary *)payload
@@ -97,7 +112,7 @@
         DLog(@"SnapyrActionViewController.didReceiveScriptMessage: Closing...");
         [self handleDismiss];
     } else if ([decodedMsg[@"type"] isEqual:@"loaded"]) {
-        [self finishDisplayingWebViewWithHeight:decodedMsg[@"height"]];
+        [self onJsLoadedEvent:decodedMsg[@"height"]];
     } else if ([decodedMsg[@"type"] isEqual:@"click"]) {
         [self handleClickWithPayload:decodedMsg];
     } else {
@@ -108,40 +123,49 @@
 
 - (void)addCloseButton
 {
-    CGFloat buttonSize = 32;
+    CGFloat buttonSize = DEFAULT_MARGIN * 1.8;
     
-    UIButton *_button = [UIButton buttonWithType:UIButtonTypeCustom];
-    [_button setTitle:@"×" forState:UIControlStateNormal];
+    UIButton *_closeButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    // Note for future updates: `overlay_close` image is stored in the Asset Catalog, `Media.xcassets` - open this in the top level of this Xcode project. To change, must update the item in the Asset Catalog. It needs to be a PDF - you can use an SVG to PDF converter (this worked the first time: https://cloudconvert.com/svg-to-pdf). After adding to Asset Catalog, rename to `overlay_close` (or change name below), select the image and open the Attributes Inspector. Check `Resizing -> Preserve Vector Data`, and select `Single Scale` under `Scales`. Leave other settings at defaults.
+    
+    // NB by default iOS will look for the image in the customer app's bundle, even though this code is running from within our SDK framework. The following line gets the bundle for the SDK framework so it can find the included assets.
+    NSBundle *bundle = [NSBundle bundleForClass:[self class]];
+    UIImage *buttonImg = [UIImage imageNamed:@"overlay_close" inBundle:bundle compatibleWithTraitCollection:nil];
+    if (buttonImg != nil) {
+        CGFloat scaleFactor = buttonSize / buttonImg.size.width;
+        [_closeButton setImage:buttonImg forState:UIControlStateNormal];
+        _closeButton.imageEdgeInsets = UIEdgeInsetsMake(buttonSize, buttonSize, buttonSize, buttonSize);
+    } else {
+        // Shouldn't happen, but fall back to basic text-based button if image couldn't be loaded
+        [_closeButton setTitle:@"×" forState:UIControlStateNormal];
+        // Make the button round and nice looking
+        [_closeButton.layer setCornerRadius:(buttonSize / 2)];
+        [_closeButton.layer setBorderColor:[[UIColor whiteColor] CGColor]];
+        [_closeButton.layer setBorderWidth:buttonSize * 0.1];
+
+        [_closeButton setBackgroundColor:[UIColor blackColor]];
+        [_closeButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+        _closeButton.titleLabel.font = [UIFont boldSystemFontOfSize:buttonSize * 0.8];
+    }
     
     // We'll be setting our own constraints later, disable auto ones as they make the button look wrong
-    _button.translatesAutoresizingMaskIntoConstraints = NO;
+    _closeButton.translatesAutoresizingMaskIntoConstraints = NO;
     // Trigger close when button is tapped
-    [_button addTarget:self action:@selector(handleDismiss) forControlEvents:UIControlEventTouchUpInside];
-
-    // Make the button round and nice looking
-    [_button.layer setCornerRadius:(buttonSize / 2)];
-    [_button.layer setShadowColor:[[UIColor blackColor] CGColor]];
-    [_button.layer setShadowRadius:5];
-    [_button.layer setShadowOpacity:0.5];
-    [_button.layer setBorderColor:[[UIColor colorWithWhite:0.0 alpha:0.25] CGColor]];
-    [_button.layer setBorderWidth:1];
-
-    [_button setBackgroundColor:[UIColor blackColor]];
-    [_button setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    [_closeButton addTarget:self action:@selector(handleDismiss) forControlEvents:UIControlEventTouchUpInside];
     
     // Add it to the actual view so it renders. NB we add the button to the outer controller view, rather than to _msgView,
     // to ensure that taps on the outer edge of the button aren't clipped
-    [self.view addSubview:_button];
+    [self.view addSubview:_closeButton];
     
     // NB constraints relative to another view (in this case, _msgView) can only be applied after
     // connecting the button to that view. i.e. be sure to add these AFTER adding button as subview
 
-    // Center the button around the left corner of the message view - it will partly overlap and partly overflow the message
-    [_button.centerYAnchor constraintEqualToAnchor:_msgView.topAnchor].active = YES;
-    [_button.centerXAnchor constraintEqualToAnchor:_msgView.leftAnchor].active = YES;
+    // Center the button around the right corner of the message view - it will partly overlap and partly overflow the message
+    [_closeButton.centerYAnchor constraintEqualToAnchor:_msgView.topAnchor].active = YES;
+    [_closeButton.centerXAnchor constraintEqualToAnchor:_msgView.rightAnchor].active = YES;
     // Enforce button size to keep it round
-    [_button.widthAnchor constraintEqualToConstant:buttonSize].active = YES;
-    [_button.heightAnchor constraintEqualToConstant:buttonSize].active = YES;
+    [_closeButton.widthAnchor constraintEqualToConstant:buttonSize].active = YES;
+    [_closeButton.heightAnchor constraintEqualToConstant:buttonSize].active = YES;
 }
 
 - (void)viewWillDisappear:(BOOL)animated

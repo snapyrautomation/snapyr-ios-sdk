@@ -110,7 +110,7 @@
     
     [self dispatchBackground:^{
         NSLog(@"PAUL: dispatchBackground");
-        NSURLSessionUploadTask *markDeliveredRequest = [self.httpClient markActionDelivered:actionToken forUserId:userId forWriteKey:self.configuration.writeKey completionHandler:^(BOOL retry, NSInteger code, NSData *_Nullable data) {
+        [self.httpClient markActionDelivered:actionToken forUserId:userId forWriteKey:self.configuration.writeKey completionHandler:^(BOOL retry, NSInteger code, NSData *_Nullable data) {
             void (^completion)(void) = ^{
                 if (retry) {
                     completionHandler(NO);
@@ -161,7 +161,7 @@
             // which is probably what the client expects. If they want to do things off the main thread they
             // can do so explicitly within the callback.
             [[NSOperationQueue mainQueue] addOperationWithBlock:^{
-                self.configuration.actionHandler([message getContent]);
+                self.configuration.actionHandler(message);
             }];
         } else {
             SLog(@"action received, but no handler is configured");
