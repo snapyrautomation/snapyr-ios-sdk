@@ -40,7 +40,18 @@ static SnapyrSDK *__sharedInstance = nil;
 #if !TARGET_OS_OSX && !TARGET_OS_TV
 - (void)triggerTestInAppPopupWithHtml:(NSString *)htmlContent
 {
-    _inAppViewController = [[SnapyrActionViewController alloc] initWithHtml:htmlContent];
+    NSDictionary *samplePayload = @{
+        @"content": @{
+            @"payload": htmlContent,
+            @"payloadType": @"html",
+        },
+        @"actionType": @"overlay",
+        @"userId": @"user123",
+        @"actionToken": @"abcdef123456",
+        @"timestamp": @"2022-01-02T12:34:56Z",
+    };
+    SnapyrInAppMessage *message = [[SnapyrInAppMessage alloc] initWithActionPayload:samplePayload];
+    _inAppViewController = [[SnapyrActionViewController alloc] initWithSDK:self withMessage:message];
     
     dispatch_async(dispatch_get_main_queue(), ^{
         [self.inAppViewController showHtmlMessage];
@@ -600,6 +611,41 @@ NSString *const SnapyrBuildKeyV2 = @"SnapyrBuildKeyV2";
     properties[@"actionId"] = actionId;
     
     [self track:@"snapyr.observation.event.Behavior" properties:properties];
+}
+
+- (void)trackInAppMessageImpressionWithActionToken:(NSString *)actionToken
+{
+    NSMutableDictionary *properties = [NSMutableDictionary dictionary];
+
+    properties[@"actionToken"] = actionToken;
+    properties[@"platform"] = @"ios";
+    
+    [self track:@"snapyr.observation.event.Impression" properties:properties];
+    [self track:@"test_impression" properties:properties];
+}
+
+- (void)trackInAppMessageClickWithActionToken:(NSString *)actionToken withParameters:(NSDictionary *)parameters
+{
+    NSMutableDictionary *properties = [NSMutableDictionary dictionaryWithDictionary:parameters];
+
+    properties[@"actionToken"] = actionToken;
+    properties[@"platform"] = @"ios";
+    properties[@"interactionType"] = @"click";
+    
+    [self track:@"snapyr.observation.event.Behavior" properties:properties];
+    [self track:@"test_behavior" properties:properties];
+}
+
+- (void)trackInAppMessageDismissWithActionToken:(NSString *)actionToken
+{
+    NSMutableDictionary *properties = [NSMutableDictionary dictionary];
+
+    properties[@"actionToken"] = actionToken;
+    properties[@"platform"] = @"ios";
+    properties[@"interactionType"] = @"dismiss";
+    
+    [self track:@"snapyr.observation.event.Behavior" properties:properties];
+    [self track:@"test_behavior" properties:properties];
 }
 
 

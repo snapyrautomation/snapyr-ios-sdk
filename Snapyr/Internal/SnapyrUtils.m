@@ -756,6 +756,27 @@ NSString *iso8601NanoFormattedString(NSDate *date)
     return [dateFormatter stringFromDate:date];
 }
 
+NSDate *dateFromIso8601String(NSString *string)
+{
+    static NSDateFormatter *wholeSecondsFormatter;
+    static NSDateFormatter *fractionalSecondsFormatter;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        wholeSecondsFormatter = [[NSDateFormatter alloc] init];
+        [wholeSecondsFormatter setDateFormat:@"yyyy-MM-dd'T'HH:mm:ssZ"];
+        [wholeSecondsFormatter setLocale:[NSLocale localeWithLocaleIdentifier:@"en_US_POSIX"]];
+        
+        fractionalSecondsFormatter = [[NSDateFormatter alloc] init];
+        [fractionalSecondsFormatter setDateFormat:@"yyyy-MM-dd'T'HH:mm:ss.SSSSSSZ"];
+        [fractionalSecondsFormatter setLocale:[NSLocale localeWithLocaleIdentifier:@"en_US_POSIX"]];
+    });
+    NSDate *result = [wholeSecondsFormatter dateFromString:string];
+    if (result != nil) {
+        return result;
+    }
+    return [fractionalSecondsFormatter dateFromString:string];
+}
+
 NSString *iso8601FormattedString(NSDate *date)
 {
     static NSDateFormatter *dateFormatter;

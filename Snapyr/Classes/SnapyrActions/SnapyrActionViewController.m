@@ -7,14 +7,20 @@
 #import "SnapyrUtils.h"
 #import <UIKit/UIKit.h>
 
+@interface SnapyrActionViewController ()
+@property (nonatomic, assign) SnapyrSDK *sdk;
+@property (nonatomic, assign) BOOL interactedWith;
+@end
 
 @implementation SnapyrActionViewController
 
-- (instancetype)initWithHtml:(NSString *)htmlPayload
+- (instancetype)initWithSDK:(SnapyrSDK *)sdk withMessage:(SnapyrInAppMessage *)message
 {
     if (self = [super init]) {
         NSLog(@"Controller INIT!!!");
-        _htmlPayload = htmlPayload;
+        _sdk = sdk;
+        _message = message;
+        _interactedWith = NO;
     }
     [self.view setNeedsLayout];
     
@@ -23,7 +29,7 @@
 
 - (void)showHtmlMessage
 {
-    _msgView = [[SnapyrActionMessageView alloc] initWithHTML:_htmlPayload withMessageHandler:self];
+    _msgView = [[SnapyrActionMessageView alloc] initWithHTML:_message.rawPayload withMessageHandler:self];
     self.view.alpha = 0;
     [self.view addSubview:_msgView];
     // Center the modal both horizontally and vertically
@@ -76,12 +82,27 @@
         self.view.alpha = 1.0;
         [self.view layoutIfNeeded];
     }];
+    
+    [self.sdk trackInAppMessageImpressionWithActionToken:_message.actionToken];
 }
 
 - (void)handleClickWithPayload:(NSDictionary *)payload
 {
-    if (self.actionHandler != nil) {
-        self.actionHandler(payload);
+    _interactedWith = YES;
+    [self handleDismiss];
+    
+    NSDictionary *parameters;
+    if ([[payload valueForKey:@"parameters"] isKindOfClass:[NSDictionary class]]) {
+        parameters = payload[@"parameters"];
+    } else {
+        parameters = [NSDictionary dictionary];
+    }
+    [self.sdk trackInAppMessageClickWithActionToken:_message.actionToken withParameters:parameters];
+
+    UIApplication *sharedApp = getSharedUIApplication();
+    if (sharedApp != nil && [payload[@"url"] isKindOfClass:[NSString class]]) {
+        NSURL *url = [NSURL URLWithString:payload[@"url"]];
+        [sharedApp openURL:url options:@{} completionHandler:nil];
     }
 }
 
@@ -184,6 +205,9 @@
         self.uiWindow.rootViewController = nil;
         self.uiWindow = nil;
     }];
+    if (!_interactedWith) {
+        [self.sdk trackInAppMessageDismissWithActionToken:_message.actionToken];
+    }
 }
 
 @end

@@ -145,6 +145,10 @@ NS_SWIFT_NAME(Snapyr)
 - (void)pushNotificationTapped:(SERIALIZABLE_DICT _Nullable)info;
 - (void)pushNotificationTapped:(SERIALIZABLE_DICT _Nullable)info actionId:(NSString* _Nullable)actionId;
 
+- (void)trackInAppMessageImpressionWithActionToken:(NSString *)actionToken;
+- (void)trackInAppMessageClickWithActionToken:(NSString *)actionToken withParameters:(NSDictionary *)parameters;
+- (void)trackInAppMessageDismissWithActionToken:(NSString *)actionToken;
+
 /*!
  @method
 
