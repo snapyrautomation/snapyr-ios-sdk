@@ -613,6 +613,41 @@ NSString *const SnapyrBuildKeyV2 = @"SnapyrBuildKeyV2";
     [self track:@"snapyr.observation.event.Behavior" properties:properties];
 }
 
+- (void)trackInAppMessageImpressionWithActionToken:(NSString *)actionToken
+{
+    NSMutableDictionary *properties = [NSMutableDictionary dictionary];
+
+    properties[@"actionToken"] = actionToken;
+    properties[@"platform"] = @"ios";
+    
+    [self track:@"snapyr.observation.event.Impression" properties:properties];
+    [self track:@"test_impression" properties:properties];
+}
+
+- (void)trackInAppMessageClickWithActionToken:(NSString *)actionToken withParameters:(NSDictionary *)parameters
+{
+    NSMutableDictionary *properties = [NSMutableDictionary dictionaryWithDictionary:parameters];
+
+    properties[@"actionToken"] = actionToken;
+    properties[@"platform"] = @"ios";
+    properties[@"interactionType"] = @"click";
+    
+    [self track:@"snapyr.observation.event.Behavior" properties:properties];
+    [self track:@"test_behavior" properties:properties];
+}
+
+- (void)trackInAppMessageDismissWithActionToken:(NSString *)actionToken
+{
+    NSMutableDictionary *properties = [NSMutableDictionary dictionary];
+
+    properties[@"actionToken"] = actionToken;
+    properties[@"platform"] = @"ios";
+    properties[@"interactionType"] = @"dismiss";
+    
+    [self track:@"snapyr.observation.event.Behavior" properties:properties];
+    [self track:@"test_behavior" properties:properties];
+}
+
 
 #pragma mark - Screen
 

@@ -9,6 +9,7 @@
 
 @interface SnapyrActionViewController ()
 @property (nonatomic, assign) SnapyrSDK *sdk;
+@property (nonatomic, assign) BOOL interactedWith;
 @end
 
 @implementation SnapyrActionViewController
@@ -19,6 +20,7 @@
         NSLog(@"Controller INIT!!!");
         _sdk = sdk;
         _message = message;
+        _interactedWith = NO;
     }
     [self.view setNeedsLayout];
     
@@ -80,11 +82,23 @@
         self.view.alpha = 1.0;
         [self.view layoutIfNeeded];
     }];
+    
+    [self.sdk trackInAppMessageImpressionWithActionToken:_message.actionToken];
 }
 
 - (void)handleClickWithPayload:(NSDictionary *)payload
 {
+    _interactedWith = YES;
     [self handleDismiss];
+    
+    NSDictionary *parameters;
+    if ([[payload valueForKey:@"parameters"] isKindOfClass:[NSDictionary class]]) {
+        parameters = payload[@"parameters"];
+    } else {
+        parameters = [NSDictionary dictionary];
+    }
+    [self.sdk trackInAppMessageClickWithActionToken:_message.actionToken withParameters:parameters];
+
     UIApplication *sharedApp = getSharedUIApplication();
     if (sharedApp != nil && [payload[@"url"] isKindOfClass:[NSString class]]) {
         NSURL *url = [NSURL URLWithString:payload[@"url"]];
@@ -191,6 +205,9 @@
         self.uiWindow.rootViewController = nil;
         self.uiWindow = nil;
     }];
+    if (!_interactedWith) {
+        [self.sdk trackInAppMessageDismissWithActionToken:_message.actionToken];
+    }
 }
 
 @end
