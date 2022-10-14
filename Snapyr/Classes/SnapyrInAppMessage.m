@@ -98,6 +98,17 @@ NSString *const kContentTypeHtml  = @"html";
     return (_actionType == SnapyrInAppActionTypeOverlay && _contentType == SnapyrInAppContentTypeHtml);
 }
 
+- (NSDictionary *)asDict
+{
+    return @{
+        @"timestamp": iso8601FormattedString(_timestamp),
+        @"userId": _userId,
+        @"actionToken": _actionToken,
+        @"actionType": (_actionType == SnapyrInAppActionTypeCustom) ? kActionTypeCustom : kActionTypeOverlay,
+        @"content": [self getContent],
+    };
+}
+
 - (NSDictionary *)getContent
 {
     if (_contentType == SnapyrInAppContentTypeJson) {
