@@ -20,4 +20,4 @@ jobs:
       - run: make build-ios
       - run: make test-ios
       - run: make lint
-      - run: make carthage
+      - run: make archive

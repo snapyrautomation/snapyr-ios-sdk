@@ -1,5 +1,5 @@
 XC_ARGS := -project Snapyr.xcodeproj GCC_INSTRUMENT_PROGRAM_FLOW_ARCS=YES
-IOS_XCARGS := $(XC_ARGS) -destination "platform=iOS Simulator,name=iPhone 11" -sdk iphonesimulator
+IOS_XCARGS := $(XC_ARGS) -destination "platform=iOS Simulator,name=iPhone 12" -sdk iphonesimulator
 TVOS_XCARGS := $(XC_ARGS) -destination "platform=tvOS Simulator,name=Apple TV"
 MACOS_XCARGS := $(XC_ARGS) -destination "platform=macOS"
 XC_BUILD_ARGS := -scheme Snapyr ONLY_ACTIVE_ARCH=NO
@@ -11,6 +11,12 @@ bootstrap:
 lint:
 	pod lib lint --allow-warnings
 
+# NOTE: as of 2022-10-06 we no longer use/support carthage. We now use/support XCFrameworks instead.
+# Use `make archive` instead to build the XCFramework.
+# Leaving this here temporarily in case it's needed for some reason; will remove in a future update.
+# At present running `make carthage` will encounter errors if run from an arm64 machine (i.e. M1 or newer
+# Mac). There are hacks available to address this but not bothering to implement those now - see
+# https://github.com/Carthage/Carthage/blob/master/Documentation/Xcode12Workaround.md#workaround-script
 carthage:
 	export XCODE_XCCONFIG_FILE=$(PWD)/tmp.xcconfig && carthage build --platform ios --no-skip-current
 

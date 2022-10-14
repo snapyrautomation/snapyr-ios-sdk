@@ -14,19 +14,18 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2
-      - run: echo "configuring to use Xcode 11.7"
+      - run: echo "configuring to use Xcode 13.2.1"
         env:
-          DEVELOPER_DIR: /Applications/Xcode_11.7.app/Contents/Developer
+          DEVELOPER_DIR: /Applications/Xcode_13.2.1.app/Contents/Developer
       - run: make build-ios
       - run: make test-ios
       - run: make lint
-      - run: make carthage
       - run: make archive
       - name: Release
         uses: softprops/action-gh-release@v1
         with:
-          files: Snapyr.framework.zip 
-          name: Snapyr.framework.${{ github.event.inputs.version }}.zip
+          files: Snapyr.xcframework.zip 
+          name: Snapyr.xcframework.${{ github.event.inputs.version }}.zip
           fail_on_unmatched_files: true
           target_commitish: main
           tag_name: ${{ github.event.inputs.version }}
