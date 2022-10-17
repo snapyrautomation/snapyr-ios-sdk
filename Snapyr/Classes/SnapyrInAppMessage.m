@@ -4,8 +4,8 @@
 
 NSString *const kActionTypeOverlay = @"overlay";
 NSString *const kActionTypeCustom  = @"custom";
-NSString *const kContentTypeJson  = @"json";
-NSString *const kContentTypeHtml  = @"html";
+NSString *const kPayloadTypeJson  = @"json";
+NSString *const kPayloadTypeHtml  = @"html";
 
 @interface SnapyrInAppMessage ()
 @property (readonly) NSDictionary *jsonPayload;
@@ -16,14 +16,6 @@ NSString *const kContentTypeHtml  = @"html";
 
 - (SnapyrInAppMessage *) initWithActionPayload:(NSDictionary * _Nonnull)rawAction {    
     if (self = [super init]) {
-    
-        NSString *rawPayload = [rawAction valueForKeyPath:@"content.payload"];
-        if ([rawPayload length] == 0) {
-            @throw [NSException exceptionWithName:@"Bad Initialization"
-                                           reason:@"Missing `content.payload`."
-                                         userInfo:nil];
-        }
-        _rawPayload = [rawPayload copy];
         
         NSString *type = rawAction[@"actionType"];
         if ([type isEqualToString:kActionTypeOverlay]) {
@@ -33,29 +25,6 @@ NSString *const kContentTypeHtml  = @"html";
         } else {
             @throw [NSException exceptionWithName:@"Bad Initialization"
                                            reason:@"Invalid or missing `actionType`."
-                                         userInfo:nil];
-        }
-        
-        NSString *payloadType = [rawAction valueForKeyPath:@"content.payloadType"];
-        if ([payloadType isEqualToString:kContentTypeJson]) {
-            _contentType = SnapyrInAppContentTypeJson;
-            
-            NSError *jsonError = nil;
-            NSData *payloadData = [_rawPayload dataUsingEncoding:NSUTF8StringEncoding];
-            NSDictionary *payloadDict = [NSJSONSerialization JSONObjectWithData:payloadData
-                                                                         options:kNilOptions
-                                                                           error:&jsonError];
-            if (jsonError != nil) {
-                @throw [NSException exceptionWithName:@"Bad Initialization"
-                                               reason:@"`content.payload` could not be parsed as JSON."
-                                             userInfo:nil];
-            }
-            _jsonPayload = payloadDict;
-        } else if ([payloadType isEqualToString:kContentTypeHtml]) {
-            _contentType = SnapyrInAppContentTypeHtml;
-        } else {
-            @throw [NSException exceptionWithName:@"Bad Initialization"
-                                           reason:@"Invalid or missing `content.payloadType`."
                                          userInfo:nil];
         }
         
@@ -88,6 +57,14 @@ NSString *const kContentTypeHtml  = @"html";
                                          userInfo:nil];
         }
         
+        NSDictionary *rawContent = rawAction[@"content"];
+        if (rawContent == nil) {
+            @throw [NSException exceptionWithName:@"Bad Initialization"
+                                           reason:@"Missing `content` subobject."
+                                         userInfo:nil];
+        }
+        _content = [[SnapyrInAppContent alloc] initWithRawContent:rawContent];
+        
     }
     
     return self;
@@ -95,16 +72,7 @@ NSString *const kContentTypeHtml  = @"html";
 
 - (BOOL)displaysOverlay
 {
-    return (_actionType == SnapyrInAppActionTypeOverlay && _contentType == SnapyrInAppContentTypeHtml);
-}
-
-- (NSDictionary *)getContent
-{
-    if (_contentType == SnapyrInAppContentTypeJson) {
-        return @{@"payloadType": kContentTypeJson, @"payload": _jsonPayload};
-    } else {
-        return @{@"payloadType": kContentTypeHtml, @"payload": _rawPayload};
-    }
+    return (_actionType == SnapyrInAppActionTypeOverlay && _content.payloadType == SnapyrInAppPayloadTypeHtml);
 }
 
 - (NSDictionary *)asDict
@@ -114,7 +82,7 @@ NSString *const kContentTypeHtml  = @"html";
         @"userId": [_userId copy],
         @"actionToken": [_actionToken copy],
         @"actionType": (_actionType == SnapyrInAppActionTypeCustom) ? kActionTypeCustom : kActionTypeOverlay,
-        @"content": [self getContent],
+        @"content": [_content asDict],
     };
 
     return dict;

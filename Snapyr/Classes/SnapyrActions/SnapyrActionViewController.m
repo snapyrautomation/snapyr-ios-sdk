@@ -29,7 +29,7 @@
 
 - (void)showHtmlMessage
 {
-    _msgView = [[SnapyrActionMessageView alloc] initWithHTML:_message.rawPayload withMessageHandler:self];
+    _msgView = [[SnapyrActionMessageView alloc] initWithHTML:[_message.content getHtmlPayload] withMessageHandler:self];
     self.view.alpha = 0;
     [self.view addSubview:_msgView];
     // Center the modal both horizontally and vertically
@@ -153,7 +153,6 @@
     NSBundle *bundle = [NSBundle bundleForClass:[self class]];
     UIImage *buttonImg = [UIImage imageNamed:@"overlay_close" inBundle:bundle compatibleWithTraitCollection:nil];
     if (buttonImg != nil) {
-        CGFloat scaleFactor = buttonSize / buttonImg.size.width;
         [_closeButton setImage:buttonImg forState:UIControlStateNormal];
         _closeButton.imageEdgeInsets = UIEdgeInsetsMake(buttonSize, buttonSize, buttonSize, buttonSize);
     } else {
