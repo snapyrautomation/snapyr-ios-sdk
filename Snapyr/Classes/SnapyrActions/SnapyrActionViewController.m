@@ -97,7 +97,7 @@
     } else {
         parameters = [NSDictionary dictionary];
     }
-    [self.sdk trackInAppMessageClickWithActionToken:_message.actionToken withParameters:parameters];
+    [self.sdk trackInAppMessageClickWithActionToken:_message.actionToken withProperties:parameters];
 
     UIApplication *sharedApp = getSharedUIApplication();
     if (sharedApp != nil && [payload[@"url"] isKindOfClass:[NSString class]]) {
