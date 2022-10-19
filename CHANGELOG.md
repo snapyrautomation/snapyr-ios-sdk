@@ -1,5 +1,9 @@
 Change Log
 ==========
+Version 1.1.1
+----------------------------
+* Adds compiler flag to prevent errors when including Snapyr SDK in an app extension
+
 Version 1.1.0
 ----------------------------
 * Adds in-app messaging support
