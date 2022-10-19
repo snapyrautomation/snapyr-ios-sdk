@@ -1,5 +1,9 @@
 Change Log
 ==========
+Version 1.1.0
+----------------------------
+* Adds in-app messaging support
+
 Version 1.0.1
 ----------------------------
 * Fix build warnings, tweaks for Cocoapods updates 
