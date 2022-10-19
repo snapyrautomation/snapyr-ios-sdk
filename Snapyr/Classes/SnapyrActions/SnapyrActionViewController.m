@@ -102,7 +102,26 @@
     UIApplication *sharedApp = getSharedUIApplication();
     if (sharedApp != nil && [payload[@"url"] isKindOfClass:[NSString class]]) {
         NSURL *url = [NSURL URLWithString:payload[@"url"]];
-        [sharedApp openURL:url options:@{} completionHandler:nil];
+        // We want to call [sharedApp openURL:url options:@{} completionHandler:nil];
+        // If the compiler complains about app extension safety, we can work around it by checking if the selector works
+        // (which will only be true in a non-app-extension context), and if so, calling the selector directly.
+        //
+        // We use `performSelector` in a similar case in the `getSharedUIApplication()` util function, but
+        // `performSelector` only supports selectors with a maximum of 2 arguments, and we need to use a selector
+        // with 3 arguments. The code below using `methodForSelector` is a workaround-around-a-workaround that gets the
+        // method off the sharedApp object, then calls it directly with the appropriate parameters. (fun times)
+        SEL openUrlSelector = @selector(openURL:options:completionHandler:);
+        
+        if ([sharedApp respondsToSelector:openUrlSelector]) {
+            NSDictionary *options = [NSDictionary dictionary];
+            // Get the method IMP from `sharedApp` - `openUrlMethod` is a function pointer
+            id (*openUrlMethod)(id, SEL, id, id, id) = (void *)[sharedApp methodForSelector:openUrlSelector];
+            // Call the function directly. The first 2 parameters must be the receiver (object), then selector;
+            // then we apply the original parameters after that (openURL, options, completionHandler)
+            id returnValue = openUrlMethod(sharedApp, openUrlSelector, url, options, nil);
+        } else {
+            DLog(@"SnapyrActionViewController.handleClickWithPayload: could not call openURL:options:completionHandler:");
+        }
     }
 }
 
