@@ -86,7 +86,7 @@
     [self.sdk trackInAppMessageImpressionWithActionToken:_message.actionToken];
 }
 
-- (void)handleClickWithPayload:(NSDictionary *)payload
+- (void)handleClickWithPayload:(NSDictionary *)payload NS_EXTENSION_UNAVAILABLE("Cannot be used from within app extensions.")
 {
     _interactedWith = YES;
     [self handleDismiss];
