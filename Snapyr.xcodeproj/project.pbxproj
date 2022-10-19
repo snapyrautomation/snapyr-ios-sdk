@@ -41,6 +41,8 @@
 		DAA6194D28BD67C8006D2523 /* SnapyrActionMessageView.h in Headers */ = {isa = PBXBuildFile; fileRef = DAA6194C28BD67C2006D2523 /* SnapyrActionMessageView.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		DAA6194F28BD6F4A006D2523 /* SnapyrActionViewController.h in Headers */ = {isa = PBXBuildFile; fileRef = DAA6194E28BD6F4A006D2523 /* SnapyrActionViewController.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		DAA6195128BD72D0006D2523 /* SnapyrActionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DAA6195028BD72D0006D2523 /* SnapyrActionViewController.m */; };
+		DAA69D8328FDBA07003F8712 /* SnapyrInAppContent.h in Headers */ = {isa = PBXBuildFile; fileRef = DAA69D8128FDBA07003F8712 /* SnapyrInAppContent.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		DAA69D8428FDBA07003F8712 /* SnapyrInAppContent.m in Sources */ = {isa = PBXBuildFile; fileRef = DAA69D8228FDBA07003F8712 /* SnapyrInAppContent.m */; };
 		DAD5844A28C8FFE1002DEDCE /* libOCMock.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F6B8134C264DE0CC00B12EFA /* libOCMock.a */; };
 		EA88A5981DED7608009FB66A /* SnapyrSerializableValue.h in Headers */ = {isa = PBXBuildFile; fileRef = EA88A5971DED7608009FB66A /* SnapyrSerializableValue.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		EA8F09741E24C5C600B8B93F /* MiddlewareTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA8F09731E24C5C600B8B93F /* MiddlewareTests.swift */; };
@@ -156,6 +158,8 @@
 		DAA6194C28BD67C2006D2523 /* SnapyrActionMessageView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SnapyrActionMessageView.h; sourceTree = "<group>"; };
 		DAA6194E28BD6F4A006D2523 /* SnapyrActionViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SnapyrActionViewController.h; sourceTree = "<group>"; };
 		DAA6195028BD72D0006D2523 /* SnapyrActionViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SnapyrActionViewController.m; sourceTree = "<group>"; };
+		DAA69D8128FDBA07003F8712 /* SnapyrInAppContent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SnapyrInAppContent.h; sourceTree = "<group>"; };
+		DAA69D8228FDBA07003F8712 /* SnapyrInAppContent.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SnapyrInAppContent.m; sourceTree = "<group>"; };
 		EA88A5971DED7608009FB66A /* SnapyrSerializableValue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SnapyrSerializableValue.h; sourceTree = "<group>"; };
 		EA8F09731E24C5C600B8B93F /* MiddlewareTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MiddlewareTests.swift; sourceTree = "<group>"; };
 		EAA542761EB4035400945DA7 /* TrackingTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TrackingTests.swift; sourceTree = "<group>"; };
@@ -345,6 +349,8 @@
 		EADEB8751DECD12B005322DA /* Classes */ = {
 			isa = PBXGroup;
 			children = (
+				DAA69D8128FDBA07003F8712 /* SnapyrInAppContent.h */,
+				DAA69D8228FDBA07003F8712 /* SnapyrInAppContent.m */,
 				DA909C6B28C8DB1900408FC3 /* SnapyrInAppMessage.h */,
 				DA909C6C28C8DB1900408FC3 /* SnapyrInAppMessage.m */,
 				DAA6194928BD6722006D2523 /* SnapyrActions */,
@@ -500,6 +506,7 @@
 				DAA6194F28BD6F4A006D2523 /* SnapyrActionViewController.h in Headers */,
 				EAA5427D1EB42B8C00945DA7 /* SnapyrReachability.h in Headers */,
 				EADEB8C11DECD12B005322DA /* NSData+SnapyrGZIP.h in Headers */,
+				DAA69D8328FDBA07003F8712 /* SnapyrInAppContent.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -619,6 +626,7 @@
 				75FD4202252401B500BC8970 /* SnapyrWebhookIntegration.m in Sources */,
 				EADEB8CC1DECD12B005322DA /* SnapyrSnapyrIntegration.m in Sources */,
 				EADEB8B21DECD12B005322DA /* SnapyrAliasPayload.m in Sources */,
+				DAA69D8428FDBA07003F8712 /* SnapyrInAppContent.m in Sources */,
 				EADEB8BA1DECD12B005322DA /* SnapyrIntegrationsManager.m in Sources */,
 				EADEB8C41DECD12B005322DA /* SnapyrSDKUtils.m in Sources */,
 				EADEB8C61DECD12B005322DA /* SnapyrFileStorage.m in Sources */,

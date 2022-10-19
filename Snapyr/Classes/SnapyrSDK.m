@@ -624,9 +624,15 @@ NSString *const SnapyrBuildKeyV2 = @"SnapyrBuildKeyV2";
     [self track:@"test_impression" properties:properties];
 }
 
-- (void)trackInAppMessageClickWithActionToken:(NSString *)actionToken withParameters:(NSDictionary *)parameters
+- (void)trackInAppMessageClickWithActionToken:(NSString *)actionToken
 {
-    NSMutableDictionary *properties = [NSMutableDictionary dictionaryWithDictionary:parameters];
+    NSDictionary *properties = [NSDictionary dictionary];
+    [self trackInAppMessageClickWithActionToken:actionToken withProperties:properties];
+}
+
+- (void)trackInAppMessageClickWithActionToken:(NSString *)actionToken withProperties:(NSDictionary *)baseProperties
+{
+    NSMutableDictionary *properties = [NSMutableDictionary dictionaryWithDictionary:baseProperties];
 
     properties[@"actionToken"] = actionToken;
     properties[@"platform"] = @"ios";
