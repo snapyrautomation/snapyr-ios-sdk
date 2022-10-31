@@ -885,7 +885,7 @@ NSString *const SnapyrBuildKeyV2 = @"SnapyrBuildKeyV2";
 {
     // this has to match the actual version, NOT what's in info.plist
     // because Apple only accepts X.X.X as versions in the review process.
-    return @"1.1.0";
+    return @"1.1.1";
 }
 
 #pragma mark - Helpers
