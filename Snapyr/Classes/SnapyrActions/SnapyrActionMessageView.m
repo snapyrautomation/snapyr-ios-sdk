@@ -29,6 +29,10 @@ CGFloat const DEFAULT_MARGIN = 20.0;
         
         WKWebViewConfiguration *configuration = [[WKWebViewConfiguration alloc] init];
         [configuration.userContentController addScriptMessageHandler:messageHandler name:@"snapyrMessageHandler"];
+        // Allows videos to play within the overlay - without this, playing a video always triggers fullscreen
+        // NB fullscreen video playback from this overlay is buggy - overlay continues to render in front of it.
+        // TODO - fix this when we need to support video playback
+        configuration.allowsInlineMediaPlayback = true;
         
         CGRect bounds = [self getStartingBounds];
         
@@ -80,7 +84,7 @@ CGFloat const DEFAULT_MARGIN = 20.0;
 - (void)reportContentHeight:(NSNumber *)height {
     float scaledHeight = [height floatValue] / [UIScreen mainScreen].scale;
     CGRect bounds = _wkWebView.bounds;
-    bounds.size.height = scaledHeight + 8;
+    bounds.size.height = scaledHeight;
     CGRect maximumBounds = [self getStartingBounds];
     if (bounds.size.height > maximumBounds.size.height) {
         return;
