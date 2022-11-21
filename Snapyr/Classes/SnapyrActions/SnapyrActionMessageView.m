@@ -80,7 +80,7 @@ CGFloat const DEFAULT_MARGIN = 20.0;
 - (void)reportContentHeight:(NSNumber *)height {
     float scaledHeight = [height floatValue] / [UIScreen mainScreen].scale;
     CGRect bounds = _wkWebView.bounds;
-    bounds.size.height = scaledHeight + 8;
+    bounds.size.height = scaledHeight;
     CGRect maximumBounds = [self getStartingBounds];
     if (bounds.size.height > maximumBounds.size.height) {
         return;

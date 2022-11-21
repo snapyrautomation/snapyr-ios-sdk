@@ -41,7 +41,7 @@
     _uiWindow.alpha = 0;
     // Place it in front
     _uiWindow.windowLevel = UIWindowLevelAlert;
-    // 50% transparent black - shadow background
+    // 50% transparent black - modal backdrop
     _uiWindow.backgroundColor = [UIColor colorWithWhite:0.0 alpha:0.5];
 
     // Setting self to be window's rootViewController is what attaches our views to the window
@@ -74,8 +74,10 @@
 - (void)finishDisplayingWebView
 {
     [self.view layoutIfNeeded];
+    // Show the window immediately - the backdrop will cover the full screen, then content will animate in
     self.uiWindow.alpha = 1.0;
     [_uiWindow makeKeyAndVisible];
+    // Render the view (actual overlay content plus close button) with a quick scale-up and fade-in transition
     self.view.transform = CGAffineTransformMakeScale(0.7, 0.7);
     [UIView animateWithDuration:0.3f animations:^{
         self.view.transform = CGAffineTransformMakeScale(1.0, 1.0);
