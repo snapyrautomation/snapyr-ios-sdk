@@ -1,5 +1,9 @@
 Change Log
 ==========
+Version 1.1.2
+----------------------------
+* Fix: extraneous bottom padding on in-app overlays
+
 Version 1.1.1
 ----------------------------
 * Adds compiler flag to prevent errors when including Snapyr SDK in an app extension

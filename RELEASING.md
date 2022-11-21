@@ -3,7 +3,7 @@ Releasing
 
 1. Create a new branch called `release/X.Y.Z`
 1. Update the version in `SnapyrSDK.m` and `Snapyr.podspec` to the next release version.
-1. In Xcode, open the Build Settings for theh `Snapyr` target, and update the `Marketing Version` value to the next release version.
+1. In Xcode, open the Build Settings for the `Snapyr` target, and update the `Marketing Version` value to the next release version.
 1. Update the `CHANGELOG.md` for the impending release.
 1. `git commit -am "Prepare for release X.Y.Z."` (where X.Y.Z is the new version).
 1. `git tag -a X.Y.Z -m "Version X.Y.Z"` (where X.Y.Z is the new version).
