@@ -888,6 +888,19 @@ NSString *const SnapyrBuildKeyV2 = @"SnapyrBuildKeyV2";
     return @"1.1.1";
 }
 
+// Following 2 methods are for internal test use and intentionally excluded from header to make them non-public/non-documented
++ (NSString *)marketingVersion
+{
+    NSBundle *bundle = [NSBundle bundleForClass:[self class]];
+    return [bundle objectForInfoDictionaryKey:@"CFBundleShortVersionString"]; // "Marketing version" in project settings
+}
+
++ (NSDate *)buildDate
+{
+    NSBundle *bundle = [NSBundle bundleForClass:[self class]];
+    return [bundle objectForInfoDictionaryKey:@"SnapyrBuildDate"];
+}
+
 #pragma mark - Helpers
 
 - (void)run:(SnapyrEventType)eventType payload:(SnapyrPayload *)payload
