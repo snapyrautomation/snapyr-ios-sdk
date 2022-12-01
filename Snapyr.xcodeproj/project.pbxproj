@@ -521,6 +521,7 @@
 				EADEB8571DECD080005322DA /* Frameworks */,
 				EADEB8581DECD080005322DA /* Headers */,
 				EADEB8591DECD080005322DA /* Resources */,
+				DAC4B6A02935954E004172BC /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -609,6 +610,27 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		DAC4B6A02935954E004172BC /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 12;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				$BUILT_PRODUCTS_DIR/$INFOPLIST_PATH,
+			);
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# Adds current date as a \"build date\" value to Info.plist, which can be read by the SDK at runtime\ninfoplist=\"$BUILT_PRODUCTS_DIR/$INFOPLIST_PATH\"\nbuilddate=`date`\nif [[ -n \"$builddate\" ]]; then\n    echo \"Adding SnapyrBuildDate to Info.plist...\"\n    # if it doesn't exist, add it\n    /usr/libexec/PlistBuddy -c \"Add :SnapyrBuildDate date $builddate\" \"${infoplist}\"\n    # if it exists, update it\n    /usr/libexec/PlistBuddy -c \"Set :SnapyrBuildDate $builddate\" \"${infoplist}\"\nfi\n";
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		EADEB8561DECD080005322DA /* Sources */ = {
