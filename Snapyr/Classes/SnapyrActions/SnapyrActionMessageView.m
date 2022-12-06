@@ -82,7 +82,8 @@ CGFloat const DEFAULT_MARGIN = 20.0;
 }
 
 - (void)reportContentHeight:(NSNumber *)height {
-    float scaledHeight = [height floatValue] / [UIScreen mainScreen].scale;
+    // Dimensions are typically not whole numbers. Fractional pixel vals can result in an off-color, one-pixel "border" at the bottom of the message - round down to prevent this
+    float scaledHeight = floorf([height floatValue] / [UIScreen mainScreen].scale);
     CGRect bounds = _wkWebView.bounds;
     bounds.size.height = scaledHeight;
     CGRect maximumBounds = [self getStartingBounds];
