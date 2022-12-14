@@ -596,6 +596,22 @@ NSString *const SnapyrBuildKeyV2 = @"SnapyrBuildKeyV2";
         [__sharedInstance pushNotificationTapped:snapyrData];
     }
     
+    // If the notification from the Snapyr campaign has a deep link URL set, the following code will open it.
+    if (snapyrData[@"deepLinkUrl"] != nil) {
+        NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@", snapyrData[@"deepLinkUrl"]]];
+        UIApplication *sharedApp = getSharedUIApplication();
+        if (sharedApp != nil) {
+            if ([sharedApp canOpenURL:url]) {
+                DLog(@"SnapyrSDK.appDidReceiveNotificationResponse: opening deepLinkUrl: [%@]", url);
+                [sharedApp openURL:url options:@{} completionHandler:nil];
+            } else {
+                DLog(@"SnapyrSDK.appDidReceiveNotificationResponse: ERROR: unable to open deepLinkUrl (no app matches url scheme?) url: [%@] scheme: [%@]", url, [url scheme]);
+            }
+        } else {
+            DLog(@"SnapyrSDK.appDidReceiveNotificationResponse: ERROR: found deepLinkUrl, but couldn't get sharedApplication! [%@]", url);
+        }
+    }
+    
     // Notify any listeners for this event, e.g. React Native SDK
     NSString *actionIdentifier = response.actionIdentifier;
     [[NSNotificationCenter defaultCenter]
