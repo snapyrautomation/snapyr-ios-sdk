@@ -490,6 +490,7 @@ NSString *const SnapyrBuildKeyV2 = @"SnapyrBuildKeyV2";
         properties[@"token"] = [SnapyrState sharedInstance].context.deviceToken;
         [self track:@"snapyr.hidden.apnsTokenSet" properties:properties];
         [SnapyrState sharedInstance].userInfo.hasUnregisteredDeviceToken = NO;
+        DLog(@"SnapyrSDK.identify: registered push token: [%@]", [SnapyrState sharedInstance].context.deviceToken);
     }
 }
 
@@ -541,8 +542,10 @@ NSString *const SnapyrBuildKeyV2 = @"SnapyrBuildKeyV2";
         NSMutableDictionary *properties = [NSMutableDictionary dictionaryWithCapacity:1];
         properties[@"token"] = token;
         [self track:@"snapyr.hidden.apnsTokenSet" properties:properties];
+        DLog(@"SnapyrSDK.setPushNotificationToken: registered push token: [%@]", token);
     } else {
         [SnapyrState sharedInstance].userInfo.hasUnregisteredDeviceToken = YES;
+        DLog(@"SnapyrSDK.setPushNotificationToken: received push token, but no user yet: [%@]", token);
     }
 }
 
