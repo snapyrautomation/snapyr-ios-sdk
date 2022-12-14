@@ -597,21 +597,7 @@ NSString *const SnapyrBuildKeyV2 = @"SnapyrBuildKeyV2";
         [__sharedInstance pushNotificationTapped:snapyrData];
     }
     
-    // If the notification from the Snapyr campaign has a deep link URL set, the following code will open it.
-    if (snapyrData[@"deepLinkUrl"] != nil) {
-        NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@", snapyrData[@"deepLinkUrl"]]];
-        UIApplication *sharedApp = getSharedUIApplication();
-        if (sharedApp != nil) {
-            if ([sharedApp canOpenURL:url]) {
-                DLog(@"SnapyrSDK.appDidReceiveNotificationResponse: opening deepLinkUrl: [%@]", url);
-                [sharedApp openURL:url options:@{} completionHandler:nil];
-            } else {
-                DLog(@"SnapyrSDK.appDidReceiveNotificationResponse: ERROR: unable to open deepLinkUrl (no app matches url scheme?) url: [%@] scheme: [%@]", url, [url scheme]);
-            }
-        } else {
-            DLog(@"SnapyrSDK.appDidReceiveNotificationResponse: ERROR: found deepLinkUrl, but couldn't get sharedApplication! [%@]", url);
-        }
-    }
+    [self openNotificationDeeplinkUrl:snapyrNotif];
     
     // Notify any listeners for this event, e.g. React Native SDK
     NSString *actionIdentifier = response.actionIdentifier;
@@ -619,6 +605,23 @@ NSString *const SnapyrBuildKeyV2 = @"SnapyrBuildKeyV2";
      postNotificationName:@"snapyr.didReceiveNotificationResponse"
      object:nil
      userInfo:@{@"actionIdentifier": actionIdentifier, @"snapyrNotification": snapyrNotif}];
+}
+
++ (void)openNotificationDeeplinkUrl:(SnapyrNotification *)snapyrNotif NS_EXTENSION_UNAVAILABLE("Cannot be used from within app extensions.")
+{
+    if (snapyrNotif.deepLinkUrl != nil) {
+        UIApplication *sharedApp = getSharedUIApplication();
+        if (sharedApp != nil) {
+            if ([sharedApp canOpenURL:snapyrNotif.deepLinkUrl]) {
+                DLog(@"SnapyrSDK.appDidReceiveNotificationResponse: opening deepLinkUrl: [%@]", snapyrNotif.deepLinkUrl);
+                [sharedApp openURL:snapyrNotif.deepLinkUrl options:@{} completionHandler:nil];
+            } else {
+                DLog(@"SnapyrSDK.appDidReceiveNotificationResponse: ERROR: unable to open deepLinkUrl (no app matches url scheme?) url: [%@] scheme: [%@]", snapyrNotif.deepLinkUrl, [snapyrNotif.deepLinkUrl scheme]);
+            }
+        } else {
+            DLog(@"SnapyrSDK.appDidReceiveNotificationResponse: ERROR: found deepLinkUrl, but couldn't get sharedApplication! [%@]", snapyrNotif.deepLinkUrl);
+        }
+    }
 }
 
 + (void)appRegisteredForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken

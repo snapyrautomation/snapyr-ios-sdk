@@ -5,15 +5,15 @@ NS_ASSUME_NONNULL_BEGIN
 @property (readonly) UInt32 notificationId;
 @property (readonly) NSString *titleText;
 @property (readonly) NSString *contentText;
-@property (readonly) NSString *subtitleText;
+@property (readonly, nullable) NSString *subtitleText;
 
-@property (readonly) NSString *templateId;
-@property (readonly) NSDate *templateModified;
+@property (readonly, nullable) NSString *templateId;
+@property (readonly, nullable) NSDate *templateModified;
 
-@property (readonly) NSURL *deepLinkUrl;
-@property (readonly) NSString *imageUrl;
+@property (readonly, nullable) NSURL *deepLinkUrl;
+@property (readonly, nullable) NSString *imageUrl;
 
-@property (readonly) NSString *actionId;
+@property (readonly, nullable) NSString *actionId;
 @property (readonly) NSString *actionToken;
 
 - (instancetype)initWithNotifUserInfo:(NSDictionary * _Nonnull)userInfo;
