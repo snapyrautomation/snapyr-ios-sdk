@@ -88,6 +88,29 @@ NS_SWIFT_NAME(Snapyr)
  */
 + (instancetype)sharedSDK;
 
++ (void)appDidFinishLaunchingWithOptions:(NSDictionary<UIApplicationLaunchOptionsKey, id> *)launchOptions;
+
+/**
+ * Push: call from your App Delegate's `application:didReceiveRemoteNotification:fetchCompletionHandler:` method to wire up push-receive data.
+ * This is a static (class) method. If it is called before initializing the SDK instance, it will fire off internal events that may be used by consuming SDKs (e.g. React Native),
+ * but can only track message receipt after SDK initialization.
+ */
++ (void)appDidReceiveRemoteNotification:(NSDictionary *)userInfo;
+
+/**
+ * Push: call from your App Delegate's `userNotificationCenter:didReceiveNotificationResponse:withCompletionHandler:` method to wire up push-response data.
+ * This is a static (class) method. If it is called before initializing the SDK instance, it will fire off internal events that may be used by consuming SDKs (e.g. React Native),
+ * but can only track message receipt after SDK initialization.
+ */
++ (void)appDidReceiveNotificationResponse:(UNNotificationResponse *)response;
+
+/**
+ * Push: call from your App Delegate's `application:didRegisterForRemoteNotificationsWithDeviceToken:` method to wire up push-response data.
+ * This is a static (class) method. If it is called before initializing the SDK instance, it will fire off internal events that may be used by consuming SDKs (e.g. React Native),
+ * but can only track message receipt after SDK initialization.
+ */
++ (void)appRegisteredForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken;
+
 /*!
  @method
 

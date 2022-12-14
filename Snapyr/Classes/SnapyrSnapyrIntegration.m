@@ -434,7 +434,7 @@ NSUInteger const kSnapyrBackgroundTaskInvalid = 0;
     } else {
 #ifdef DEBUG
         NSString *jsonString = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
-        DLog(@"SnapyrSnapyrIntegration.batch: body is [%@]", jsonString);
+        DLog(@"SnapyrSnapyrIntegration.batch: body is:\n%@\n", jsonString);
 #endif
     }
     
@@ -470,7 +470,7 @@ NSUInteger const kSnapyrBackgroundTaskInvalid = 0;
 {
     NSError* dataParsingError = nil;
     NSString *responseString = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
-    DLog(@"SnapyrSnapyrIntegration.processResponseData: response is [%@]", responseString);
+    DLog(@"SnapyrSnapyrIntegration.processResponseData: response is:\n%@\n", responseString);
     
     id dataObj = [NSJSONSerialization
                   JSONObjectWithData:data
