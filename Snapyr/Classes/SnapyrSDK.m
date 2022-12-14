@@ -596,9 +596,9 @@ NSString *const SnapyrBuildKeyV2 = @"SnapyrBuildKeyV2";
     if (snapyrData) {
         [__sharedInstance pushNotificationTapped:snapyrData];
     }
-    
+#if !TARGET_OS_OSX
     [self openNotificationDeeplinkUrl:snapyrNotif];
-    
+#endif
     // Notify any listeners for this event, e.g. React Native SDK
     NSString *actionIdentifier = response.actionIdentifier;
     [[NSNotificationCenter defaultCenter]
@@ -607,6 +607,7 @@ NSString *const SnapyrBuildKeyV2 = @"SnapyrBuildKeyV2";
      userInfo:@{@"actionIdentifier": actionIdentifier, @"snapyrNotification": snapyrNotif}];
 }
 
+#if !TARGET_OS_OSX
 + (void)openNotificationDeeplinkUrl:(SnapyrNotification *)snapyrNotif NS_EXTENSION_UNAVAILABLE("Cannot be used from within app extensions.")
 {
     if (snapyrNotif.deepLinkUrl != nil) {
@@ -623,6 +624,7 @@ NSString *const SnapyrBuildKeyV2 = @"SnapyrBuildKeyV2";
         }
     }
 }
+#endif
 
 + (void)appRegisteredForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken
 {
