@@ -18,6 +18,7 @@
 #import "SnapyrUtils.h"
 #import "SnapyrNotificationsProxy.h"
 #import "SnapyrActions/SnapyrActionViewController.h"
+#import "SnapyrNotification.h"
 
 static SnapyrSDK *__sharedInstance = nil;
 
@@ -62,12 +63,13 @@ static SnapyrSDK *__sharedInstance = nil;
 + (void)setupWithConfiguration:(SnapyrSDKConfiguration *)configuration;
 {
     [SnapyrUtils setConfiguration:configuration];
-	SnapyrNotificationsProxy *proxy = [SnapyrNotificationsProxy sharedProxy];
-	if (configuration.swizzleAppDelegateAndUserNotificationsDelegate) {
-		[proxy swizzleMethodsIfPossible];
-	} else {
-		[proxy unswizzleMethodsIfPossible];
-	}
+    // TODO: fix up swizzling and re-enable
+//	SnapyrNotificationsProxy *proxy = [SnapyrNotificationsProxy sharedProxy];
+//	if (configuration.swizzleAppDelegateAndUserNotificationsDelegate) {
+//		[proxy swizzleMethodsIfPossible];
+//	} else {
+//		[proxy unswizzleMethodsIfPossible];
+//	}
     DLog(@"SnapyrSDK.setupWithConfiguration");
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
@@ -489,6 +491,7 @@ NSString *const SnapyrBuildKeyV2 = @"SnapyrBuildKeyV2";
         properties[@"token"] = [SnapyrState sharedInstance].context.deviceToken;
         [self track:@"snapyr.hidden.apnsTokenSet" properties:properties];
         [SnapyrState sharedInstance].userInfo.hasUnregisteredDeviceToken = NO;
+        DLog(@"SnapyrSDK.identify: registered push token: [%@]", [SnapyrState sharedInstance].context.deviceToken);
     }
 }
 
@@ -540,9 +543,102 @@ NSString *const SnapyrBuildKeyV2 = @"SnapyrBuildKeyV2";
         NSMutableDictionary *properties = [NSMutableDictionary dictionaryWithCapacity:1];
         properties[@"token"] = token;
         [self track:@"snapyr.hidden.apnsTokenSet" properties:properties];
+        DLog(@"SnapyrSDK.setPushNotificationToken: registered push token: [%@]", token);
     } else {
         [SnapyrState sharedInstance].userInfo.hasUnregisteredDeviceToken = YES;
+        DLog(@"SnapyrSDK.setPushNotificationToken: received push token, but no user yet: [%@]", token);
     }
+}
+
++ (void)appDidReceiveRemoteNotification:(NSDictionary *)userInfo
+{
+    SnapyrNotification *snapyrNotif;
+    @try {
+        snapyrNotif = [[SnapyrNotification alloc] initWithNotifUserInfo:userInfo];
+    } @catch (NSException *e) {
+        if ([e.name isEqualToString:@"nonSnapyrNotification"]) {
+            DLog(@"SnapyrSDK.appDidReceiveRemoteNotification: Received non-Snapyr notification; skipping");
+        } else {
+            DLog(@"SnapyrSDK.appDidReceiveRemoteNotification: Error parsing notification: [%@]", e);
+        }
+        return;
+    }
+    
+    // Track receipt (if SDK instance has been initialized)
+    NSDictionary<NSString *, NSObject *> *snapyrData = userInfo[@"snapyr"];
+    if (snapyrData) {
+        [__sharedInstance pushNotificationReceived:snapyrData];
+    }
+    
+    // Notify any listeners for this event, e.g. React Native SDK
+    [[NSNotificationCenter defaultCenter]
+     postNotificationName:@"snapyr.didReceiveNotification"
+     object:nil
+     userInfo:@{@"snapyrNotification": snapyrNotif}];
+}
+
++ (void)appDidReceiveNotificationResponse:(UNNotificationResponse *)response
+{
+    SnapyrNotification *snapyrNotif;
+    @try {
+        snapyrNotif = [[SnapyrNotification alloc] initWithNotifUserInfo:response.notification.request.content.userInfo];
+    } @catch (NSException *e) {
+        if ([e.name isEqualToString:@"nonSnapyrNotification"]) {
+            DLog(@"SnapyrSDK.appDidReceiveRemoteNotification: Received non-Snapyr notification; skipping");
+        } else {
+            DLog(@"SnapyrSDK.appDidReceiveRemoteNotification: Error parsing notification: [%@]", e);
+        }
+        return;
+    }
+    
+    // Track response (if SDK instance has been initialized)
+    NSDictionary<NSString *, NSObject *> *snapyrData = response.notification.request.content.userInfo[@"snapyr"];
+    if (snapyrData) {
+        [__sharedInstance pushNotificationTapped:snapyrData];
+    }
+#if !TARGET_OS_OSX
+    [self openNotificationDeeplinkUrl:snapyrNotif];
+#endif
+    // Notify any listeners for this event, e.g. React Native SDK
+    NSString *actionIdentifier = response.actionIdentifier;
+    [[NSNotificationCenter defaultCenter]
+     postNotificationName:@"snapyr.didReceiveNotificationResponse"
+     object:nil
+     userInfo:@{@"actionIdentifier": actionIdentifier, @"snapyrNotification": snapyrNotif}];
+}
+
+#if !TARGET_OS_OSX
++ (void)openNotificationDeeplinkUrl:(SnapyrNotification *)snapyrNotif NS_EXTENSION_UNAVAILABLE("Cannot be used from within app extensions.")
+{
+    if (snapyrNotif.deepLinkUrl != nil) {
+        UIApplication *sharedApp = getSharedUIApplication();
+        if (sharedApp != nil) {
+            if ([sharedApp canOpenURL:snapyrNotif.deepLinkUrl]) {
+                DLog(@"SnapyrSDK.appDidReceiveNotificationResponse: opening deepLinkUrl: [%@]", snapyrNotif.deepLinkUrl);
+                [sharedApp openURL:snapyrNotif.deepLinkUrl options:@{} completionHandler:nil];
+            } else {
+                DLog(@"SnapyrSDK.appDidReceiveNotificationResponse: ERROR: unable to open deepLinkUrl (no app matches url scheme?) url: [%@] scheme: [%@]", snapyrNotif.deepLinkUrl, [snapyrNotif.deepLinkUrl scheme]);
+            }
+        } else {
+            DLog(@"SnapyrSDK.appDidReceiveNotificationResponse: ERROR: found deepLinkUrl, but couldn't get sharedApplication! [%@]", snapyrNotif.deepLinkUrl);
+        }
+    }
+}
+#endif
+
++ (void)appRegisteredForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken
+{
+    NSParameterAssert(deviceToken != nil);
+    NSString *tokenString = deviceTokenToString(deviceToken);
+    
+    // Track token (if SDK instance has been initialized)
+    [__sharedInstance setPushNotificationToken:tokenString];
+    
+    // Notify any listeners for this event, e.g. React Native SDK
+    [[NSNotificationCenter defaultCenter]
+     postNotificationName:@"snapyr.registeredForRemoteNotificationsWithDeviceToken"
+     object:nil
+     userInfo:@{@"tokenString": tokenString}];
 }
 
 - (void)pushNotificationReceivedWithResponse:(UNNotificationResponse *)response

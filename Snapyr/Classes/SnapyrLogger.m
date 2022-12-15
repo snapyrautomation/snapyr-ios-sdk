@@ -86,14 +86,15 @@ SnapyrHTTPClient *httpClient = NULL;
 
 - (nullable NSData*) getLogData
 {
-    NSURL *logFileUrl = [self logFileUrl];
-    if (logFileUrl) {
-        @try {
-            NSData *data = [[NSData alloc] initWithContentsOfURL:logFileUrl];
-        } @catch (NSException *exception) {
-            return NULL;
-        }
-    }
+    // todo: return data when valid and uncomment? (or remove this)
+//    NSURL *logFileUrl = [self logFileUrl];
+//    if (logFileUrl) {
+//        @try {
+//            NSData *data = [[NSData alloc] initWithContentsOfURL:logFileUrl];
+//        } @catch (NSException *exception) {
+//            return NULL;
+//        }
+//    }
     return NULL;
 }
 
