@@ -1,5 +1,9 @@
 Change Log
 ==========
+Version 1.2.0-beta1
+----------------------------
+* Adds improved support for handling push notifications and connecting them to React Native
+
 Version 1.1.2
 ----------------------------
 * Fix: extraneous bottom padding on in-app overlays
