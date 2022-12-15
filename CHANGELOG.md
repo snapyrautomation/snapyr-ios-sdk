@@ -1,6 +1,6 @@
 Change Log
 ==========
-Version 1.2.0-beta1
+Version 1.2.0
 ----------------------------
 * Adds improved support for handling push notifications and connecting them to React Native
 
